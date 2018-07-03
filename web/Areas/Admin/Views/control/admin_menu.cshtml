@@ -1,0 +1,53 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.Admin_menu_view
+@Html.Raw(Model.Menu)
+<script type="text/javascript">
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    jQuery(function ($) {
+        var url = window.location.href;
+        var query = url.split('?')[1];
+        var act = getParameterByName("act");
+        var ctrl = getParameterByName("ctrl");
+        var type_act = getParameterByName("type_act");
+        var type = getParameterByName("type");
+        if (typeof act == 'undefined' || typeof act == null || act == "") {
+            act = $("#act").val();
+        }
+        if (typeof ctrl == 'undefined' || typeof ctrl == null || ctrl == "") {
+            ctrl = $("#ctrl").val();
+        }
+        if (typeof type_act == 'undefined' || typeof type_act == null || type_act == "") {
+            type_act = $("#type_act").val();
+            if (type_act == "del")
+            {
+                type_act = "view";
+            }
+        }
+        if (typeof type == 'undefined' || typeof type == null || type == "") {
+            type = $("#type").val();
+        }
+        var current = 0;
+        var child = 0;
+        ////remove old active
+        $('.nav-list').find('>li[class="active"]').removeAttr('class');
+
+        if (typeof type == 'undefined' || typeof type == null || type == "") {
+            var seleted = $('.nav-list li').find('> a[href*="act=' + act + '&ctrl=' + ctrl + '&type_act=' + type_act + '"]');
+            seleted.parents("li").addClass('active');
+        }
+        else {
+            var seleted = $('.nav-list li').find('> a[href*="act=' + act + '&ctrl=' + ctrl + '&type_act=' + type_act + '&type=' + type + '"]');
+            seleted.parents("li").addClass('active');
+        }
+
+        
+    });
+</script>

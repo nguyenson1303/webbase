@@ -1,0 +1,639 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FirstPageText" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="LastPageText" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="linkAll" xml:space="preserve">
+    <value>See All</value>
+  </data>
+  <data name="linkDetail" xml:space="preserve">
+    <value>View more</value>
+  </data>
+  <data name="mnuAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="mnuContact" xml:space="preserve">
+    <value>Spa</value>
+  </data>
+  <data name="mnuGallery" xml:space="preserve">
+    <value>Lookbook</value>
+  </data>
+  <data name="mnuHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="mnuLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="mnuNews" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="mnuProduct" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="mnuRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="mnuShopping" xml:space="preserve">
+    <value>Shopping</value>
+  </data>
+  <data name="NextPageText" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="PrevPageText" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="strAddToCart" xml:space="preserve">
+    <value>Add to Cart</value>
+  </data>
+  <data name="strBestseller" xml:space="preserve">
+    <value>Bestseller</value>
+  </data>
+  <data name="strCart" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="strCartEmpty" xml:space="preserve">
+    <value>Your shopping cart empty!</value>
+  </data>
+  <data name="strCollection" xml:space="preserve">
+    <value>Collection</value>
+  </data>
+  <data name="strCompare" xml:space="preserve">
+    <value>Compare</value>
+  </data>
+  <data name="strDate" xml:space="preserve">
+    <value>Date modify</value>
+  </data>
+  <data name="strLatestNews" xml:space="preserve">
+    <value>Latest News</value>
+  </data>
+  <data name="strName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="strProduct" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="strProductNew" xml:space="preserve">
+    <value>Top Newest</value>
+  </data>
+  <data name="strSale" xml:space="preserve">
+    <value>Best seller</value>
+  </data>
+  <data name="strSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="strWishlist" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="strOrderDateAsc" xml:space="preserve">
+    <value>Update product (Old first)</value>
+  </data>
+  <data name="strOrderDateDesc" xml:space="preserve">
+    <value>Update product (New first)</value>
+  </data>
+  <data name="strOrderNameAsc" xml:space="preserve">
+    <value>Name (A - Z)</value>
+  </data>
+  <data name="strOrderNameDesc" xml:space="preserve">
+    <value>Name (Z - A)</value>
+  </data>
+  <data name="strOrderPriceAsc" xml:space="preserve">
+    <value>Price (Lowest first)</value>
+  </data>
+  <data name="strOrderPriceDesc" xml:space="preserve">
+    <value>Price(Highest first)</value>
+  </data>
+  <data name="strSortBy" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="strColor" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="strSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="strFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="strClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="strPriceRange" xml:space="preserve">
+    <value>Price range</value>
+  </data>
+  <data name="strSearchResult" xml:space="preserve">
+    <value>Product not found !</value>
+  </data>
+  <data name="strInStock" xml:space="preserve">
+    <value>In Stock</value>
+  </data>
+  <data name="strOutOfStock" xml:space="preserve">
+    <value>Out of Stock</value>
+  </data>
+  <data name="strAvailability" xml:space="preserve">
+    <value>Availability</value>
+  </data>
+  <data name="strBrand" xml:space="preserve">
+    <value>Made in</value>
+  </data>
+  <data name="strCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="strDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="strReview" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="strCaptcha" xml:space="preserve">
+    <value>Captcha code</value>
+  </data>
+  <data name="strComment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="strInputCaptcha" xml:space="preserve">
+    <value>Input Captcha</value>
+  </data>
+  <data name="strProductSame" xml:space="preserve">
+    <value>Other product</value>
+  </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="strImage" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="strQuantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="strSumPrice" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="strTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="strContinuesShoping" xml:space="preserve">
+    <value>Continues Shoping</value>
+  </data>
+  <data name="strLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="strLoginOther" xml:space="preserve">
+    <value>Use another service to log in</value>
+  </data>
+  <data name="strRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="strMessageLogin" xml:space="preserve">
+    <value>Please login using your existing account</value>
+  </data>
+  <data name="strPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="strResetPassword" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="strUserName" xml:space="preserve">
+    <value>User name or your email</value>
+  </data>
+  <data name="strLogout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="mess403" xml:space="preserve">
+    <value>Error 403 Sorry! Access denied</value>
+  </data>
+  <data name="mess404" xml:space="preserve">
+    <value>Error 404 page not found</value>
+  </data>
+  <data name="messLoginFail" xml:space="preserve">
+    <value>User or password combination wrong</value>
+  </data>
+  <data name="strReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="strCreateNewAccount" xml:space="preserve">
+    <value>Create new account</value>
+  </data>
+  <data name="strLabelCreateNewAccount" xml:space="preserve">
+    <value>Registration allows you to avoid filling in billing and shipping forms every time you checkout on this website.</value>
+  </data>
+  <data name="messCaptcha" xml:space="preserve">
+    <value>Please retype code</value>
+  </data>
+  <data name="messConfirmPassword" xml:space="preserve">
+    <value>Please retype passwod</value>
+  </data>
+  <data name="messErrorRegister" xml:space="preserve">
+    <value>Please register again</value>
+  </data>
+  <data name="strConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="messExistsEmail" xml:space="preserve">
+    <value>This email exists !</value>
+  </data>
+  <data name="messErrorCompare" xml:space="preserve">
+    <value>Your must be at least 2 products for compare</value>
+  </data>
+  <data name="strSummary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="messErrorWishlist" xml:space="preserve">
+    <value>Your Wishlist empty!</value>
+  </data>
+  <data name="strProductView" xml:space="preserve">
+    <value>Product View</value>
+  </data>
+  <data name="strInforOrder" xml:space="preserve">
+    <value>Billing Detail</value>
+  </data>
+  <data name="strInforShipping" xml:space="preserve">
+    <value>Shipping Method</value>
+  </data>
+  <data name="strOrder" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="strOrderList" xml:space="preserve">
+    <value>Order detail</value>
+  </data>
+  <data name="strPaymentMethod" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="strAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="strContent" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="strGender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="strMen" xml:space="preserve">
+    <value>Men</value>
+  </data>
+  <data name="strPhone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="strWoman" xml:space="preserve">
+    <value>Woman</value>
+  </data>
+  <data name="strPaymentAddress" xml:space="preserve">
+    <value>Recieve and paid</value>
+  </data>
+  <data name="strPaymentBaoKim" xml:space="preserve">
+    <value>Bảo Kim</value>
+  </data>
+  <data name="strPaymentNganLuong" xml:space="preserve">
+    <value>Ngân Lượng</value>
+  </data>
+  <data name="strPaymentOther" xml:space="preserve">
+    <value>Other paid</value>
+  </data>
+  <data name="strSendOrder" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="strSubjectOrderConfirm" xml:space="preserve">
+    <value>Confirm your order </value>
+  </data>
+  <data name="strSubjectNewOrderClient" xml:space="preserve">
+    <value>New order from client </value>
+  </data>
+  <data name="strPayment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="messOrderNotFound" xml:space="preserve">
+    <value>Your order not found. Pleasa check your infor.</value>
+  </data>
+  <data name="strOrderCode" xml:space="preserve">
+    <value>Order code</value>
+  </data>
+  <data name="strSubjectPaymentFromClient" xml:space="preserve">
+    <value>Confirm payment status from client </value>
+  </data>
+  <data name="strSubjectPaymentStatus" xml:space="preserve">
+    <value>Confirm your payment status </value>
+  </data>
+  <data name="strPaymentSuccess" xml:space="preserve">
+    <value>Congratulate your successful payment !</value>
+  </data>
+  <data name="strOrderSuccess" xml:space="preserve">
+    <value>Your order created success !</value>
+  </data>
+  <data name="strPost" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="strOtherPost" xml:space="preserve">
+    <value>Related posts</value>
+  </data>
+  <data name="strPostView" xml:space="preserve">
+    <value>Viewed Posts</value>
+  </data>
+  <data name="strForgotPassword" xml:space="preserve">
+    <value>Reset your password</value>
+  </data>
+  <data name="btnResetPassword" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="strForgotYourPassword" xml:space="preserve">
+    <value>Forgot password ?</value>
+  </data>
+  <data name="strMessageForgotPassword" xml:space="preserve">
+    <value>Please input your email register !</value>
+  </data>
+  <data name="strMessageSendNewPassword" xml:space="preserve">
+    <value>We are send confirm to your email. Please check new email and reset your password.</value>
+  </data>
+  <data name="strSubjectConfirmForgotPassword" xml:space="preserve">
+    <value>Request reset your password from </value>
+  </data>
+  <data name="strChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="strConfirmCode" xml:space="preserve">
+    <value>Confirm Code</value>
+  </data>
+  <data name="strMessageClientResetPassword" xml:space="preserve">
+    <value>Please input confirm code from your email.</value>
+  </data>
+  <data name="strMessageUserChangePassword" xml:space="preserve">
+    <value>Please input your email and password !</value>
+  </data>
+  <data name="strNewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="strOldPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="strMessageChangePasswordSuccess" xml:space="preserve">
+    <value>Update your pasword success!</value>
+  </data>
+  <data name="strMessageConfirmPassword" xml:space="preserve">
+    <value>Please enter the same password as above.</value>
+  </data>
+  <data name="strMessageErrorConfirmCode" xml:space="preserve">
+    <value>Please enter your confirm code.</value>
+  </data>
+  <data name="strMessageContactForm" xml:space="preserve">
+    <value>Please input full information!</value>
+  </data>
+  <data name="strMessageContactSend" xml:space="preserve">
+    <value>Thank you for your contact. We will reply in the nearest time.</value>
+  </data>
+  <data name="strMyAccount" xml:space="preserve">
+    <value>My account</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="strPersonalInformation" xml:space="preserve">
+    <value>Personal Information</value>
+  </data>
+  <data name="strOrderHistory" xml:space="preserve">
+    <value>Order history</value>
+  </data>
+  <data name="strBirthday" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="strMessageUpdateInforSuccess" xml:space="preserve">
+    <value>Update success</value>
+  </data>
+  <data name="strOrderDate" xml:space="preserve">
+    <value>Order date</value>
+  </data>
+  <data name="strOrderStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="strFeeShipp" xml:space="preserve">
+    <value>Fee ship</value>
+  </data>
+  <data name="strTaxVAT" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="strEstimated" xml:space="preserve">
+    <value>Estimated</value>
+  </data>
+  <data name="mnuRecruitment" xml:space="preserve">
+    <value>Education</value>
+  </data>
+  <data name="mnuSaleOff" xml:space="preserve">
+    <value>Sale Off</value>
+  </data>
+  <data name="mnuBeautyTips" xml:space="preserve">
+    <value>Beauty tips</value>
+  </data>
+  <data name="messNewsLetter" xml:space="preserve">
+    <value>Signup for our newsletter &amp; promotions from TONYMOLY</value>
+  </data>
+  <data name="strCapacity" xml:space="preserve">
+    <value>Capacity</value>
+  </data>
+  <data name="strDescriptionDetail" xml:space="preserve">
+    <value>Description detail</value>
+  </data>
+  <data name="strPaymentGuide" xml:space="preserve">
+    <value>Payment Guide</value>
+  </data>
+  <data name="strMessShowroom" xml:space="preserve">
+    <value>Spa to  find the Linh Linh, please fill in form.</value>
+  </data>
+  <data name="btnSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="strService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="mnuService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="strNewsletter" xml:space="preserve">
+    <value>Newsletter from Linh Linh spa</value>
+  </data>
+  <data name="strInputEmail" xml:space="preserve">
+    <value>Enter your email here</value>
+  </data>
+  <data name="strChatFacebook" xml:space="preserve">
+    <value>Chat with me ?</value>
+  </data>
+  <data name="strLabelChatFacebook" xml:space="preserve">
+    <value>Chat with me ?</value>
+  </data>
+  <data name="strViewOnline" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="strLinkConnect" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="strAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="placeholderSearch" xml:space="preserve">
+    <value>Please input ...</value>
+  </data>
+  <data name="buttonRegister" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="strLabelExistsAccount" xml:space="preserve">
+    <value>You already have an account please login</value>
+  </data>
+  <data name="btnBookingNow" xml:space="preserve">
+    <value>Book Now</value>
+  </data>
+  <data name="strHotline" xml:space="preserve">
+    <value>HOTLINE</value>
+  </data>
+  <data name="strInputAddress" xml:space="preserve">
+    <value>Input Address</value>
+  </data>
+  <data name="strInputName" xml:space="preserve">
+    <value>Input Name</value>
+  </data>
+  <data name="strInputPhone" xml:space="preserve">
+    <value>Input Phone</value>
+  </data>
+  <data name="btnRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="strPostHot" xml:space="preserve">
+    <value>News hot</value>
+  </data>
+  <data name="strProductHot" xml:space="preserve">
+    <value>Hot</value>
+  </data>
+  <data name="strProductHotLabel" xml:space="preserve">
+    <value>Product type</value>
+  </data>
+  <data name="strStartingForm" xml:space="preserve">
+    <value>Starting Form</value>
+  </data>
+  <data name="strTestimonials" xml:space="preserve">
+    <value>Testimonials</value>
+  </data>
+  <data name="strLabelResultSearch" xml:space="preserve">
+    <value>Search results for</value>
+  </data>
+</root>

@@ -1,0 +1,210 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.Catalog_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "change_catalog_form", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>Cập nhật Danh mục <small><i class="icon-double-angle-right"></i>
+            @Model.Category_name
+        </small>
+        </h1>
+    </div>
+    <!--/.page-header-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{if (!string.IsNullOrEmpty(Model.Message))
+                          { 
+                            <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="icon-remove"></i>
+                                </button>
+                                <strong>@Model.Message</strong>
+                                <br />
+                            </div>
+                          }
+                        }
+                        <div class="form-horizontal">
+                            <div class="control-group" style="display:none">
+                                <label class="control-label" for="form-field-1">Ngôn ngữ</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_language = new SelectList(Model.List_language, "Value", "Text", Web.Models.LanguageModels.ActiveLanguage().LangCultureName);}
+                                    @Html.DropDownListFor(m => m.Lang, list_language, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Danh mục cha</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_parrent = new SelectList(Model.List_parent, "Value", "Text", Model.Parent);}
+                                    @Html.DropDownListFor(m => m.Parent,list_parrent, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Tên danh mục</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Category_name" name="Category_name" class="span6" value="@Model.Category_name" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Ảnh</label>
+
+                                <div class="controls" style="width: 45%">
+                                    @if (!string.IsNullOrEmpty(Model.ImagePath) && Model.ImagePath != "0")
+                                    { 
+                                        <img id="lbImg" name="lbImg" src="@Model.ImagePath" style='width:200px;'/><br />
+                                        <br />
+                                    }
+                                    <input type="file" id="file_image" name="file_image" class="type_file span6" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Tóm tắt</label>
+
+                                <div class="controls">
+                                    <textarea id="Intro" name="Intro" class="span11" rows="5">@Model.Intro</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+
+                                @{
+                                    var class_text = "";
+                                    var label_text = "";
+                                    var link_get_map = "";
+                                    if (Model.Type == "LB")
+                                    {
+                                        class_text = "";
+                                        label_text = "Image map: ";
+                                        link_get_map = "<a href='https://www.image-map.net/' target='_blank'>Tạo map</a>";
+                                    }
+                                    else
+                                    {
+                                        class_text = "ckeditor";
+                                        label_text = "Mô tả";
+                                        link_get_map = "";
+                                    }
+                                }
+                                <label class="control-label" for="form-field-1">@label_text <br />@Html.Raw(link_get_map)</label>
+                                <div class="controls">
+                                    <textarea id="MoreInfo" name="MoreInfo" class="span11 @class_text" style="width: 100%;" rows="30">@Model.MoreInfo</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Hiển thị</label>
+
+                                <div class="controls">
+                                    <input type="checkbox" id="chkShow" name="chkShow" class="ace-switch ace-switch-3" @Html.Raw(Model.Show_text)  onclick="CheckBoxchange()" />
+                                    <span class="lbl"></span>
+                                </div>
+                            </div>
+
+                            <div class="control-group" style="display:none">
+                                <label class="control-label" for="form-field-1">Tiêu đề</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Title" name="Title" class="span6" value="@Model.Title" />
+                                </div>
+                            </div>
+
+                            <div class="control-group" style="display:none">
+                                <label class="control-label" for="form-field-1">Keyword</label>
+
+                                <div class="controls">
+                                    <textarea id="Keyword" name="Keyword" class="span11" rows="5">@Model.Keyword</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group" style="display:none">
+                                <label class="control-label" for="form-field-1">Description</label>
+
+                                <div class="controls">
+                                    <textarea id="Description" name="Description" class="span11" rows="5">@Model.Description</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Thứ tự</label>
+
+                                <div class="controls">
+                                    <input type="number" id="OrderDisplay" name="OrderDisplay" value="@Model.OrderDisplay" />
+                                    <div class="space-6"></div>
+                                </div>                                
+                            </div>
+                            <input type="hidden" id="Cate_id" name="Cate_id" value="@Model.Cate_id" />
+                            <input type="hidden" id="Type" name="Type" value="@Model.Type" />
+                            <input type="hidden" id="Type_act" name="Type_act" value="@Model.Type_act" />
+                            <input type="hidden" id="Act" name="Act" value="@Model.Act" />
+                            <input type="hidden" id="Ctrl" name="Ctrl" value="@Model.Ctrl" />
+                            <input type="hidden" id="ImagePath" name="ImagePath" value="@Model.ImagePath" />
+                            <input type="hidden" id="Show" name="Show" value="@Html.Raw(Model.Show)" />
+                            <input type="hidden" id="Link" name="Link" value="@Model.Link" />
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit" id="save">
+                                    <i class="icon-save bigger-110"></i>
+                                    Cập nhật
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+						        <button class="btn" type="reset" onclick="clearValidation($('#change_catalog_form'));">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.span-->
+    </div>
+    <!--/.row-fluid-->
+}
+<script type="text/javascript">
+    function CheckBoxchange()
+    {
+        if($("#chkShow").is(':checked')){
+            $("#Show").val("true");
+        }
+        else
+        {
+            $("#Show").val("false");
+        }
+    }       
+    $(function () {
+        ////order spinner
+        $('#OrderDisplay').ace_spinner({ value: @Model.OrderDisplay, min: 1, max: 100000, step: 1, btn_up_class: 'btn-info', btn_down_class: 'btn-info' }).on('change', function () {});
+        ////from validate
+        $("#change_catalog_form").validate({
+            errorElement: 'span',
+            errorClass: "error",
+            errorPlacement: function (error, element, value) {
+                error.appendTo(element.parent('div:first'));
+                element.parents('div:first').addClass("error");
+            },
+            rules: {
+                category_name: {
+                    text_validate_default: true
+                }     
+            },
+            messages: {
+                category_name: {
+                    text_validate_default: "Bạn cần nhập tên danh mục"
+                }
+            }
+        });
+    });
+</script>

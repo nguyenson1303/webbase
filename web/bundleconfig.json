@@ -1,0 +1,143 @@
+[
+  {
+    "outputFileName": "Content/themes/salon/wp-content/themes/coiffeur/style3a05.css",
+    "inputFiles": [
+      "Content/themes/salon/wp-content/themes/coiffeur/style3a05.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/style.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/style.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/Pe-icon-7-stroke.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/Pe-icon-7-stroke.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/owl.carousel.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/owl.carousel.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/magnific-popup.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/magnific-popup.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/jquery.mCustomScrollbar.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/jquery.mCustomScrollbar.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/font-awesome.min.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/font-awesome.min.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/flaticon.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/flaticon.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/easyzoom.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/easyzoom.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/color.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/color.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/chosen.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/chosen.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/bootstrap.min.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/bootstrap.min.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/animate.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/animate.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/js/bundle.js",
+    "inputFiles": [
+      "Content/themes/lucky/js/wow.min.js",
+      "Content/themes/lucky/js/jquery-ui.min.js",
+      "Content/themes/lucky/js/jquery.actual.min.js",
+      "Content/themes/lucky/js/jquery.bxslider.min.js",
+      "Content/themes/lucky/js/jquery.countdown.js",
+      "Content/themes/lucky/js/jquery.hoverdir.js",
+      "Content/themes/lucky/js/jquery.magnific-popup.min.js",
+      "Content/themes/lucky/js/jquery.mCustomScrollbar.concat.min.js",
+      "Content/themes/lucky/js/jquery.parallax-1.1.3.js",
+      "Content/themes/lucky/js/jquery.plugin.js",
+      "Content/themes/lucky/js/masonry.js",
+      "Content/themes/lucky/js/masonry.pkgd.min.js",
+      "Content/themes/lucky/js/Modernizr.js",
+      "Content/themes/lucky/js/owl.carousel.min.js",
+      "Content/themes/lucky/js/bootstrap.min.js",
+      "Content/themes/lucky/js/chosen.jquery.min.js",
+      "Content/themes/lucky/js/easyzoom.js",
+      "Content/themes/lucky/js/functions.js",
+      "Content/themes/lucky/js/imagesloaded.pkgd.min.js",
+      "Content/themes/lucky/js/isotope.pkgd.min.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/lucky/css/bundle.css",
+    "inputFiles": [
+      "Content/themes/lucky/css/animate.css",
+      "Content/themes/lucky/css/bootstrap.min.css",
+      "Content/themes/lucky/css/chosen.css",
+      "Content/themes/lucky/css/color.css",
+      "Content/themes/lucky/css/easyzoom.css",
+      "Content/themes/lucky/css/flaticon.css",
+      "Content/themes/lucky/css/font-awesome.min.css",
+      "Content/themes/lucky/css/jquery.mCustomScrollbar.css",
+      "Content/themes/lucky/css/magnific-popup.css",
+      "Content/themes/lucky/css/owl.carousel.css",
+      "Content/themes/lucky/css/Pe-icon-7-stroke.css",
+      "Content/themes/lucky/css/style.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/linhlinh/css/bundle.css",
+    "inputFiles": [
+      "Content/themes/linhlinh/css/venobox.css",
+      "Content/themes/linhlinh/css/animate.css",
+      "Content/themes/linhlinh/css/blog.css",
+      "Content/themes/linhlinh/css/bootstrap.min.css",
+      "Content/themes/linhlinh/css/construction.css",
+      "Content/themes/linhlinh/css/event.css",
+      "Content/themes/linhlinh/css/fakeloader.css",
+      "Content/themes/linhlinh/css/font-awesome.min.css",
+      "Content/themes/linhlinh/css/jquery.bxslider.css",
+      "Content/themes/linhlinh/css/medical.css",
+      "Content/themes/linhlinh/css/owl.carousel.css",
+      "Content/themes/linhlinh/css/pe-icon-7-stroke.css",
+      "Content/themes/linhlinh/css/responsive.css",
+      "Content/themes/linhlinh/css/restaurant.css",
+      "Content/themes/linhlinh/css/shop.css",
+      "Content/themes/linhlinh/css/style.css"
+    ]
+  }
+]

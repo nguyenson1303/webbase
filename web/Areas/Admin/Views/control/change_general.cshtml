@@ -1,0 +1,129 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.General_content_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "change_general_form", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>
+            Cập nhật <small>
+                <i class="icon-double-angle-right"></i>
+                @Model.General_name_text
+            </small>
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div class="alert alert-warning">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="icon-remove"></i>
+                                    </button>
+                                    <strong>@Model.Message</strong>
+                                    <br />
+                                </div>
+                            }
+                        }
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Ngôn ngữ</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_language = new SelectList(Model.List_language, "Value", "Text", Web.Models.LanguageModels.ActiveLanguage().LangCultureName);}
+                                    @Html.DropDownListFor(m => m.Lang, list_language, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Tên</label>
+
+                                <div class="controls">
+                                    <input type="text" id="GeneralName" name="GeneralName" class="span6" value="@Model.GeneralName" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Nội dung</label>
+
+                                <div class="controls">
+                                    <textarea id="GeneralContent" name="GeneralContent" class="span11 ckeditor1" rows="20">@Model.GeneralContent</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Hiển thị</label>
+
+                                <div class="controls">
+                                    <input type="checkbox" id="chkShow" name="chkShow" class="ace-switch ace-switch-3" @Html.Raw(Model.IsShow_text) onclick="CheckBoxchange('Show')" />
+                                    <span class="lbl"></span>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="id" name="id" value="@Model.Id" />
+                            <input type="hidden" id="type" name="type" value="@Model.Type" />
+                            <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                            <input type="hidden" id="act" name="act" value="@Model.Act" />
+                            <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                            <input type="hidden" id="Show" name="Show" value="@Html.Raw(Model.Show)" />
+
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit" id="save">
+                                    <i class="icon-save bigger-110"></i>
+                                    Cập nhật
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset" onclick="clearValidation($('#change_general_form'));">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/.span-->
+        </div>
+    </div>
+    <!--/.row-fluid-->
+                                        }
+<script type="text/javascript">
+    function CheckBoxchange(id)
+    {
+        if($("#chk"+id).is(':checked')){
+            $("#"+id).val("true");
+        }
+        else
+        {
+            $("#"+id).val("false");
+        }
+    }
+    $(function () {
+        ////from validate
+        //$("#change_general_form").validate({
+        //    errorElement: 'span',
+        //    errorClass: "error",
+        //    errorPlacement: function (error, element, value) {
+        //        error.appendTo(element.parent('div:first'));
+        //        element.parents('div:first').addClass("error");
+        //    },
+        //    rules: {
+        //        GeneralContent: {
+        //            text_validate_default: true
+        //        }
+        //    },
+        //    messages: {
+        //        GeneralContent: {
+        //            text_validate_default: "Bạn cần nhập nội dung"
+        //        }
+        //    }
+        //});
+    });
+</script>

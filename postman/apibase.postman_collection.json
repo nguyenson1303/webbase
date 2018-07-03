@@ -1,0 +1,77 @@
+{
+	"id": "48396ba5-2e81-a25a-0b70-f58536a94002",
+	"name": "apibase",
+	"description": "",
+	"order": [
+		"2461318d-5f4d-1b68-ae04-c6a66df90860",
+		"e9ec86cc-09f9-e476-66d5-940303d526a5"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1530527177361,
+	"owner": "1377340",
+	"public": false,
+	"requests": [
+		{
+			"id": "2461318d-5f4d-1b68-ae04-c6a66df90860",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNYXJpbyBSb3NzaSIsImVtYWlsIjoibWFyaW8ucm9zc2lAZG9tYWluLmNvbSIsImJpcnRoZGF0ZSI6IjAwMDEtMDEtMDEiLCJqdGkiOiI1YmE4NWQ0OC1mMjNmLTQ3NGUtOGQxNC0yNDU1ZGM1MmQ0NmEiLCJleHAiOjE1MzA1Njg0ODMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.7UMqK9F51OGMMCBjxC-wj3M6DhYX4uZEul3zOGfLOKk\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNYXJpbyBSb3NzaSIsImVtYWlsIjoibWFyaW8ucm9zc2lAZG9tYWluLmNvbSIsImJpcnRoZGF0ZSI6IjAwMDEtMDEtMDEiLCJqdGkiOiI1YmE4NWQ0OC1mMjNmLTQ3NGUtOGQxNC0yNDU1ZGM1MmQ0NmEiLCJleHAiOjE1MzA1Njg0ODMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.7UMqK9F51OGMMCBjxC-wj3M6DhYX4uZEul3zOGfLOKk",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/books",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://apibase.local/api/books",
+			"description": "get list books test",
+			"descriptionFormat": "html",
+			"time": 1530527192418,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "e9ec86cc-09f9-e476-66d5-940303d526a5",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/token",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://apibase.local/api/token",
+			"description": "get token user",
+			"descriptionFormat": "html",
+			"time": 1530527212633,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n\t\"Username\": \"mario\",\n\t\"Password\": \"secret\"\n}"
+		}
+	]
+}

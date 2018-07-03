@@ -1,0 +1,13 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <BooleanProperty Name="ViolationsAsErrors">True</BooleanProperty>
+    <IntegerProperty Name="MaxViolationCount">100000</IntegerProperty>
+  </GlobalSettings>
+  <Parsers>
+    <Parser ParserId="StyleCop.CSharp.CsParser">
+      <ParserSettings>
+        <BooleanProperty Name="AnalyzeGeneratedFiles">True</BooleanProperty>
+      </ParserSettings>
+    </Parser>
+  </Parsers>
+</StyleCopSettings>

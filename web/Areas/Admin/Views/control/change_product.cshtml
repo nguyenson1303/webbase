@@ -1,0 +1,573 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.Product_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "change_product_form", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>
+            Cập nhật sản phẩm <small>
+                <i class="icon-double-angle-right"></i>
+                @Model.ProductName
+            </small>
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div class="alert alert-warning">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="icon-remove"></i>
+                                    </button>
+                                    <strong>@Model.Message</strong>
+                                    <br />
+                                </div>
+                            }
+                        }
+                                <div class="row-fluid">
+
+                                    <div class="control-group" style="display:none">
+                                        <label class="control-label" for="form-field-1">Ngôn ngữ</label>
+
+                                        <div class="controls">
+                                            @{ SelectList list_language = new SelectList(Model.List_language, "Value", "Text", Web.Models.LanguageModels.ActiveLanguage().LangCultureName);}
+                                            @Html.DropDownListFor(m => m.Lang, list_language, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Danh mục</label>
+
+                                        <div class="controls">
+                                            <script type="text/javascript">
+                                        $(function () {
+                                            var arr = "@Model.Multi_cate";
+                                            $("#Parent_select").val(arr.split(','));
+                                            $("#Parent_select").trigger("liszt:updated");
+                                        });
+                                            </script>
+                                            @{ SelectList list_parrent = new SelectList(Model.List_parent, "Value", "Text");}
+                                            @Html.DropDownListFor(m => m.Parent_select, new MultiSelectList(Model.List_parent, "Value", "Text"), new { @class = "chzn-select", @style = "width: 90.8%", @placeholder = "Danh mục", @Multiple = "multiple" })
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span4">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Mã số tài liệu</label>
+
+                                                <div class="controls">
+                                                    <input type="text" style="width: 91.6%" id="ProductCode" name="ProductCode" value="@Model.ProductCode" placeholder="Mã số tài liệu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Dạng tài liệu</label>
+
+                                                <div class="controls">
+                                                    <input type="text" style="width: 91.6%" id="DocType" name="DocType" value="@Model.DocType" placeholder="Dạng tài liệu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Mã ngôn ngữ tài liệu(ISO)</label>
+
+                                                <div class="controls">
+                                                    <input type="text" style="width: 91.6%" id="DocLangISO" name="DocLangISO" value="@Model.DocLangISO" placeholder="Mã ngôn ngữ tài liệu(ISO)" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Dạng tài liệu</label>
+
+            <div class="controls">
+                <input type="text" id="DocType" name="DocType" class="span3" value="@Model.DocType" />
+            </div>
+        </div>*@
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Mã ngôn ngữ tài liệu(ISO)</label>
+
+            <div class="controls">
+                <input type="text" id="DocLangISO" name="DocLangISO" class="span3" value="@Model.DocLangISO" placeholder="Mã ngôn ngữ tài liệu(ISO)" />
+            </div>
+        </div>*@
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Mã ngôn ngữ tài liệu</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocLang" name="DocLang" style="width: 94%" value="@Model.DocLang" placeholder="Mã ngôn ngữ tài liệu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Mã nước xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocCountryCode" name="DocCountryCode" style="width: 95%" value="@Model.DocCountryCode" placeholder="Mã nước xuất bản" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Mã nước xuất bản</label>
+
+            <div class="controls">
+                <input type="text" id="DocCountryCode" name="DocCountryCode" class="span3" value="@Model.DocCountryCode" />
+            </div>
+        </div>*@
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Tên sản phẩm</label>
+
+                                        <div class="controls">
+                                            <input type="text" id="ProductName" name="ProductName" style="width: 91.6%" value="@Model.ProductName" placeholder="Nhan đề" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Mã sản phẩm</label>
+
+                                        <div class="controls">
+                                            <input type="text" style="width: 91.6%" id="ProductID" name="ProductID" value="@Model.Id" placeholder="Mã sản phẩm" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span4" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Nhan đề dịch sang tiếng việt</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocTitleTranslate" name="DocTitleTranslate" style="width: 91.6%" value="@Model.DocTitleTranslate" placeholder="Nhan đề dịch sang tiếng việt" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Tác giả cá nhân</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocAuthor" name="DocAuthor" style="width: 91.6%" value="@Model.DocAuthor" placeholder="Tác giả cá nhân" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group" style="display:none">
+                                        <label class="control-label" for="form-field-1">Tác giả tập thể</label>
+
+                                        <div class="controls">
+                                            <input type="text" id="DocAuthorGroup" name="DocAuthorGroup" style="width: 97.5%" value="@Model.DocAuthorGroup" placeholder="Tác giả tập thể" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Người chủ biên</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocChuBien" name="DocChuBien" style="width: 94%" value="@Model.DocChuBien" placeholder="Người chủ biên" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Người biên soạn</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocBienSoan" name="DocBienSoan" style="width: 95%" value="@Model.DocBienSoan" placeholder="Người biên soạn" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Người biên soạn</label>
+
+            <div class="controls">
+                <input type="text" id="DocBienSoan" name="DocBienSoan" class="span11" value="@Model.DocBienSoan" />
+            </div>
+        </div>*@
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Người dịch</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocNguoiDich" name="DocNguoiDich" style="width: 94%" value="@Model.DocNguoiDich" placeholder="Người dịch" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Người hiệu đính</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocHieuDinh" name="DocHieuDinh" style="width: 95%" value="@Model.DocHieuDinh" placeholder="Người hiệu đính" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Người hiệu đính</label>
+
+            <div class="controls">
+                <input type="text" id="DocHieuDinh" name="DocHieuDinh" class="span11" value="@Model.DocHieuDinh" />
+            </div>
+        </div>*@
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Địa chỉ nơi xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocDiaChiXuatBan" name="DocDiaChiXuatBan" style="width: 94%" value="@Model.DocDiaChiXuatBan" placeholder="Địa chỉ nơi xuất bản" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Nhà xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocNhaXuatBan" name="DocNhaXuatBan" style="width: 95%" value="@Model.DocNhaXuatBan" placeholder="Nhà xuất bản" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Nhà xuất bản</label>
+
+            <div class="controls">
+                <input type="text" id="DocNhaXuatBan" name="DocNhaXuatBan" class="span11" value="@Model.DocNhaXuatBan" />
+            </div>
+        </div>*@
+
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span4">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Năm xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="number" id="DocNamXuatBan" name="DocNamXuatBan" style="width: 91.6%" value="@Model.DocNamXuatBan" placeholder="Năm xuất bản" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Lần xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="number" id="DocLanXuatBan" name="DocLanXuatBan" style="width: 91.6%" value="@Model.DocLanXuatBan" placeholder="Lần xuất bản" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4" style="display:none">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Số trang</label>
+
+                                                <div class="controls">
+                                                    <input type="number" id="DocSoTrang" name="DocSoTrang" style="width: 91.6%" value="@Model.DocSoTrang" placeholder="Số trang" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Lần xuất bản</label>
+
+            <div class="controls">
+                <input type="number" id="DocLanXuatBan" name="DocLanXuatBan" class="span11" value="@Model.DocLanXuatBan" />
+            </div>
+        </div>*@
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Số trang</label>
+
+            <div class="controls">
+                <input type="number" id="DocSoTrang" name="DocSoTrang" class="span11" value="@Model.DocSoTrang" />
+            </div>
+        </div>*@
+
+                                    <div class="control-group" style="display:none">
+                                        <label class="control-label" for="form-field-1">Tên tập</label>
+
+                                        <div class="controls">
+                                            <input type="text" id="DocTenTap" name="DocTenTap" style="width: 97.5%" value="@Model.DocTenTap" placeholder="Tên tập" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group" style="display:none">
+                                        <label class="control-label" for="form-field-1">Số lần phân loại</label>
+
+                                        <div class="controls">
+                                            <input type="number" id="DocSoLanPhanLoai" name="DocSoLanPhanLoai" style="width: 97.5%" value="@Model.DocSoLanPhanLoai" placeholder="Số lần phân loại" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group" style="display:none">
+                                        <label class="control-label" for="form-field-1">Địa chỉ tài liệu</label>
+
+                                        <div class="controls">
+                                            <input type="text" id="DocDiaChiTaiLieu" name="DocDiaChiTaiLieu" style="width: 97.5%" value="@Model.DocDiaChiTaiLieu" placeholder="Địa chỉ tài liệu" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Mô tả </label>
+
+                                        <div class="controls">
+                                            <textarea id="DocTomTat" name="Summary" style="width: 91.6%" class="ckeditor" placeholder="Tóm tắt">@Model.Summary</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid" style="display:none">
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Địa chỉ nơi xuất bản</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocDiaChiXuatBan" name="DocDiaChiXuatBan" style="width:94%" value="@Model.DocDiaChiXuatBan" placeholder="Địa chỉ nơi xuất bản" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group">
+                                                <label class="control-label" for="form-field-1">Người hiệu đính</label>
+
+                                                <div class="controls">
+                                                    <input type="text" id="DocNguoiHieuDinh" name="DocNguoiHieuDinh" style="width: 95%" value="@Model.DocNguoiHieuDinh" placeholder="Người hiệu đính" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="control-group">
+            <label class="control-label" for="form-field-1">Người hiệu đính</label>
+
+            <div class="controls">
+                <input type="text" id="DocNguoiHieuDinh" name="DocNguoiHieuDinh" class="span11" value="@Model.DocNguoiHieuDinh" />
+            </div>
+        </div>*@
+
+                                </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="form-field-1">Thông số</label>
+
+                            <div class="controls">
+                                <textarea id="Content" name="Content" style="width: 91.6%" class="span11 ckeditor2" rows="30">@Model.Content</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="control-group" style="width: 96%;">
+                                    <label class="control-label" for="form-field-1">Ảnh đại diện</label>
+
+                                    <div class="controls">
+                                        @if (!string.IsNullOrEmpty(Model.ImagePath) && Model.ImagePath != "0")
+                                        {
+                                            <img id="lbImg" name="lbImg" src="@Model.ImagePath" style='width:200px;' /><br />
+                                            <br />
+                                        }
+                                        <input type="file" id="File_image" name="File_image" class="type_file span5" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Giá từ</label>
+
+                                    <div class="controls">
+                                        <input type="number" id="PriceOld" name="PriceOld" value="@Html.Raw(Model.PriceOld)">
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Giá tới</label>
+
+                                    <div class="controls">
+                                        <input type="number" id="PriceNew" name="PriceNew" value="@Model.PriceNew">
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Hiển thị</label>
+
+                                    <div class="controls">
+                                        <input type="checkbox" id="chkIsShow" name="chkIsShow" class="ace-switch ace-switch-3" @Html.Raw(Model.IsShow_text) onclick="CheckBoxchange('IsShow')" />
+                                        <span class="lbl"></span>
+                                    </div>
+                                </div>
+
+                                <div class="control-group" >
+                                    <label class="control-label" for="form-field-1">Hot</label>
+
+                                    <div class="controls">
+                                        <input type="checkbox" id="chkIsHot" name="chkIsHot" class="ace-switch ace-switch-3" @Html.Raw(Model.IsHot_text) onclick="CheckBoxchange('IsHot')" />
+                                        <span class="lbl"></span>
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="display:none">
+                                    <label class="control-label" for="form-field-1">Best Seller</label>
+
+                                    <div class="controls">
+                                        <input type="checkbox" id="chkIsPromotion" name="chkIsPromotion" class="ace-switch ace-switch-3" @Html.Raw(Model.IsPromotion_text) onclick="CheckBoxchange('IsPromotion')" />
+                                        <span class="lbl"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="span6">
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Số lượng </label>
+
+                                    <div class="controls">
+                                        <input type="number" id="Store" name="Store" style="width: 81%;" value="@Model.Store">
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="display:none">
+                                    <label class="control-label" for="form-field-1">Dung tích</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="Promotion" name="Promotion" class="span3" value="@Model.Promotion" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="display:none;">
+                                    <label class="control-label" for="form-field-1">Bảo hành</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="Warranty" name="Warranty" class="span6" value="@Model.Warranty" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="display:none">
+                                    <label class="control-label" for="form-field-1">Tác giả</label>
+
+                                    <div class="controls">
+                                        @*<input type="text" id="Manufacture" name="Manufacture" class="span6" value="@Model.Manufacture" />*@
+                                        @{ SelectList list_brands = new SelectList(Model.List_brand, "Value", "Text", Model.Manufacture);}
+                                        @Html.DropDownListFor(m => m.Manufacture, list_brands, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Thứ tự</label>
+
+                                    <div class="controls">
+                                        <input type="number" id="OrderDisplay" name="OrderDisplay" value="@Model.OrderDisplay" />
+                                        <div class="space-6"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row-fluid">
+                            <input type="hidden" id="id" name="id" value="@Model.Id" />
+                            <input type="hidden" id="type" name="type" value="@Model.Type" />
+                            <input type="hidden" id="type_property" name="type_property" value="@Model.Type_property" />
+                            <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                            <input type="hidden" id="act" name="act" value="@Model.Act" />
+                            <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                            <input type="hidden" id="ImagePath" name="ImagePath" value="@Model.ImagePath" />
+                            <input type="hidden" id="IsShow" name="IsShow" value="@Html.Raw(Model.IsShow)" />
+                            <input type="hidden" id="IsHot" name="IsHot" value="@Html.Raw(Model.IsHot)" />
+                            <input type="hidden" id="IsPromotion" name="IsPromotion" value="@Html.Raw(Model.IsPromotion)" />
+                            <input type="hidden" id="link" name="link" value="@Model.Link" />
+                            <input type="hidden" id="ImageBigPath" name="ImageBigPath" value="@Model.ImageBigPath" />
+                            <input type="hidden" id="Rating" name="Rating" value="@Model.Rating" />
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit" id="save">
+                                    <i class="icon-save bigger-110"></i>
+                                    Lưu
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset" onclick="clearValidation($('#change_product_form'));">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Nhập lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/.span-->
+        </div>
+    </div>
+        <!--/.row-fluid-->
+                                            }
+<script type="text/javascript">
+    function CheckBoxchange(id)
+    {
+        if($("#chk"+id).is(':checked')){
+            $("#"+id).val("true");
+        }
+        else
+        {
+            $("#"+id).val("false");
+        }
+    }
+    $(function () {
+        $(".chzn-select").chosen({
+            placeholder_text_multiple: "Danh mục (multi)"
+        });
+        ////order spinner
+        $('#OrderDisplay').ace_spinner({ value: @Model.OrderDisplay, min: 1, max: 100000, step: 1, btn_up_class: 'btn-info', btn_down_class: 'btn-info' }).on('change', function () {});
+        ////from validate
+        $("#change_product_form").validate({
+            errorElement: 'span',
+            errorClass: "error",
+            errorPlacement: function (error, element, value) {
+                error.appendTo(element.parent('div:first'));
+                element.parents('div:first').addClass("error");
+            },
+            rules: {
+                parent_select: {
+                    select_default_int: true
+                },
+                ProductName: {
+                    text_validate_default: true
+                }
+            },
+            messages: {
+                parent_select: {
+                    select_default_int: "Bạn cần lựa chọn danh mục sách"
+                },
+                ProductName: {
+                    text_validate_default: "Bạn cần nhập Nhan đề"
+                }
+            }
+        });
+    });
+</script>

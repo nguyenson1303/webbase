@@ -1,0 +1,189 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.Showroom_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "change_showroom_form", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>Cập nhật tin tức  @*<small><i class="icon-double-angle-right"></i></small>*@
+        </h1>
+    </div>
+    <!--/.page-header-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{if (!string.IsNullOrEmpty(Model.Message))
+                          {
+                            <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="icon-remove"></i>
+                                </button>
+                                <strong>@Model.Message</strong>
+                                <br />
+                            </div>
+                          }
+                        }
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Thành Phố</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_city = new SelectList(Model.List_city, "Value", "Text", @Model.City);}
+                                    @Html.DropDownListFor(m => m.City, list_city, new { @class = "form-control", @onchange = "call_ajax(this);" })
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Danh mục</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_district = new SelectList(Model.List_district, "Value", "Text", @Model.District);}
+                                    @Html.DropDownListFor(m => m.District, list_district)
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Tên Showroom</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Name" name="Name" class="span6" value="@Model.Name" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Số điện thoại</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Phone" name="Phone" class="span6" value="@Model.Phone" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Địa chỉ</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Address" name="Address" class="span6" value="@Model.Address" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Ảnh</label>
+
+                                <div class="controls" style="width: 45%">
+                                    @if (!string.IsNullOrEmpty(Model.Image) && Model.Image != "0")
+                                    {
+                                        <img id="lbImg" name="lbImg" src="@Model.Image" style='width:200px;' /><br />
+                                        <br />
+                                    }
+                                    <input type="file" id="file_img" name="file_img" class="type_file span6" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Latitude</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Latitude" name="Latitude" class="span6" value="@Model.Latitude" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Longitude</label>
+
+                                <div class="controls">
+                                    <input type="text" id="Longitude" name="Longitude" class="span6" value="@Model.Longitude" />
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="ShowroomID" name="ShowroomID" value="@Model.ShowroomID" />
+                            <input type="hidden" id="type" name="type" value="@Model.Type" />
+                            <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                            <input type="hidden" id="Image" name="Image" value="@Model.Image" />
+                            <input type="hidden" id="act" name="act" value="@Model.Act" />
+                            <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit" id="save">
+                                    <i class="icon-save bigger-110"></i>
+                                    Cập nhật
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset" onclick="clearValidation($('#change_post_form'));">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function call_ajax(e) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("load_district_by_city", "adminShowroom")',
+            data: '{cityID: "' + $(e).val() + '"}',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                var select = $("#district");
+                select.empty();
+                select.append($('<option/>', {
+                    value: 0,
+                    text: "Tất cả"
+                }));
+                for (var x = 0; x < data.length; x++) {
+                    select.append("<option value=" + data[x].Value + ">" + data[x].Text + "</option>");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                ////alert(errorThrown + ";" + textStatus);
+            }
+        });
+    }
+
+    ////from validate
+    $("#change_showroom_form").validate({
+        errorElement: 'span',
+        errorClass: "error",
+        errorPlacement: function (error, element, value) {
+            error.appendTo(element.parent('div:first'));
+            element.parents('div:first').addClass("error");
+        },
+        rules: {
+            Name: {
+                text_validate_default: true
+            },
+            Phone: {
+                text_validate_default: true
+            },
+            Address: {
+                text_validate_default: true
+            },
+            Latitude: {
+                text_validate_default: true
+            },
+            Longitude: {
+                text_validate_default: true
+            },
+        },
+        messages: {
+            Name: {
+                text_validate_default: "Bạn cần nhập tên Showroom"
+            },
+            Phone: {
+                text_validate_default: "Bạn cần nhập số điện thoại"
+            },
+            Address: {
+                text_validate_default: "Bạn cần nhập địa chỉ"
+            },
+            Latitude: {
+                text_validate_default: "Bạn cần nhập Latitude"
+            },
+            Longitude: {
+                text_validate_default: "Bạn cần nhập Longitude"
+            },
+        }
+    });
+
+</script>

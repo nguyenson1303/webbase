@@ -1,0 +1,422 @@
+﻿@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@using Web.Models
+@model Web.Areas.Admin.ViewModels.Order_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "change_order_form", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>
+            Mượn sách <small>
+                <i class="icon-double-angle-right"></i>
+                @Model.Code
+            </small>
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div class="alert alert-warning">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="icon-remove"></i>
+                                    </button>
+                                    <strong>@Model.Message</strong>
+                                    <br />
+                                </div>
+                            }
+
+                            string display_edit = string.Empty;
+                            if (Model.Type_act == CommonGlobal.Add)
+                            {
+                                display_edit = "display:none";
+                            }
+                            else
+                            {
+                                display_edit = string.Empty;
+                            }
+                        }
+                        <div class="row-fluid">
+
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1"><b>Tìm sách</b></label>
+
+                                    <div class="controls">
+                                        <input type="text" id="findBook" name="findBook" class="span6" />
+                                        <input type="number" id="pro_no" name="pro_no" class="input-mini" style="display:none" value="1" />
+                                        <button class="btn btn-danger btn-primary" type="button" id="save" onclick="AddToList()">
+                                            <i class="icon-plus bigger-110"></i>
+                                            Thêm vào danh sách
+                                        </button>
+                                        <input type="hidden" id="pro_id" />
+                                        <div id="suggesstion-box"></div>
+
+                                    </div>
+                                </div>
+
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@Lang.strProduct</th>
+                                            <th>@Lang.strQuantity</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="list_added">
+                                        @if (Model.ShoppingCart != null && Model.ShoppingCart.Count > 0)
+                                        {
+                                            foreach (Web.Models.OrderItem it in Model.ShoppingCart)
+                                            {
+                                                string key = "Pro_" + it.ProductID + "_" + it.Property;
+                                                <tr>
+                                                    <td>
+                                                        @Web.Models.CommonGlobal.CutString(it.ProductName.ToString(), 100)
+                                                    </td>
+                                                    <td>
+                                                        <strong>@Html.Raw(it.Quatity)</strong>
+                                                    </td>
+                                                    <td>
+                                                        <a class="remove-item" style='cursor: pointer;'
+                                                           onclick='RemoveFromList("@key")'><i class="icon-trash bigger-110"></i></a>
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="span6">
+                                <div class="control-group" style="@display_edit">
+                                    <label class="control-label" for="form-field-1">Mã mượn sách</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="code" name="code" class="span6" value="@Model.Code" readonly='readonly' />
+                                    </div>
+                                </div>
+
+                                <div class="control-group" style="@display_edit">
+                                    <label class="control-label" for="form-field-1">Trạng thái</label>
+
+                                    <div class="controls">
+                                        @{ SelectList list_process = new SelectList(Model.List_order_process, "Value", "Text", Model.Process);}
+                                        @Html.DropDownListFor(m => m.Process, list_process, new { @class = "span6 form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Tên người mượn</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="name" name="name" class="span6" value="@Model.Name" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Địa chỉ</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="address" name="address" class="span11" value="@Model.Address" multiple />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Điện thoại</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="phone" name="phone" class="span6" value="@Model.Phone" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Giới tính</label>
+
+                                    <div class="controls">
+                                        @*<input type="text" id="gender" name="gender" class="span6" value="@Model.Gender" />*@
+                                        @{
+                                            var selected_men = string.Empty;
+                                            var selected_woman = string.Empty;
+                                            if (Model.Gender != null)
+                                            {
+                                                if (Model.Gender == Lang.strMen)
+                                                {
+                                                    selected_men = "selected";
+                                                }
+                                                else
+                                                {
+                                                    selected_woman = "selected";
+                                                }
+                                            }
+                                        }
+                                        <select name="gender" id="gender" class="span6 form-control">
+                                            <option value="@Lang.strMen" @selected_men>@Lang.strMen</option>
+                                            <option value="@Lang.strWoman" @selected_woman>@Lang.strWoman</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Ngày mượn (d/m/y)</label>
+                                    <div class="controls">
+                                        <div class="row-fluid input-append">
+                                            @{
+                                                string value_BorrowedDay = string.Empty;
+                                                if (Model.BorrowedDay != null && Model.BorrowedDay != DateTime.MinValue)
+                                                {
+                                                    value_BorrowedDay = Convert.ToDateTime(Model.BorrowedDay).ToString("dd/MM/yyyy");
+                                                }
+                                            }
+                                            <input type="text" id="BorrowedDay" name="BorrowedDay" class="span6 date-picker" value="@value_BorrowedDay" data-date-format="dd/mm/yyyy" />
+                                            <span class="add-on">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Ngày trả (d/m/y)</label>
+                                    <div class="controls">
+                                        <div class="row-fluid input-append">
+                                            @{
+                                                string value_PayDay = string.Empty;
+                                                if (Model.PayDay != null && Model.PayDay != DateTime.MinValue)
+                                                {
+                                                    value_PayDay = Convert.ToDateTime(Model.PayDay).ToString("dd/MM/yyyy");
+                                                }
+                                            }
+                                            <input type="text" id="PayDay" name="PayDay" class="span6 date-picker" value="@value_PayDay" data-date-format="dd/mm/yyyy" />
+                                            <span class="add-on">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="form-field-1">Email người mượn</label>
+
+                                    <div class="controls">
+                                        <input type="text" id="email" name="email" class="span6" value="@Model.Email" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row-fluid">
+
+                            <div class="span6 pull-left">
+                                <h4 class="pull-left">
+                                    Tổng :
+                                    <span class="red" id="counttt">@Html.Raw(Model.Item_count)</span>
+                                    @*<br />
+                                        Bằng chữ :
+                                        <span class="red">@Html.Raw(Model.Total_string)</span>*@
+                                </h4>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="id" name="id" value="@Model.Id" />
+                        <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                        <input type="hidden" id="act" name="act" value="@Model.Act" />
+                        <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                        <input type="hidden" id="code" name="code" value="@Model.Code" />
+                        <div class="form-actions">
+                            <button class="btn btn-info" type="submit" id="btnsave" disabled="disabled">
+                                <i class="icon-save bigger-110"></i>
+                                Lưu
+                            </button>
+                            &nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset" onclick="clearValidation($('#change_order_form'));">
+                                <i class="icon-undo bigger-110"></i>
+                                Làm lại
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.span-->
+    </div>
+    <!--/.row-fluid-->
+                                                }
+<style>
+    #suggest-list {
+        float: left;
+        list-style: none;
+        margin-top: -10px;
+        padding: 0;
+        position: absolute;
+    }
+
+        #suggest-list li {
+            padding: 10px;
+            background: #f0f0f0;
+            border-bottom: #bbb9b9 1px solid;
+        }
+
+            #suggest-list li:hover {
+                background: #ece3d2;
+                cursor: pointer;
+            }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var count_server = '@Model.Item_count';
+        if (count_server != null && count_server != undefined && count_server != "") {
+            $('#btnsave').prop("disabled", false);
+        }
+        $("#findBook").keyup(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FindBook", "AdminOrder")',
+                data: 'name=' + $(this).val(),
+                beforeSend: function () {
+                    $("#findBook").css("background", "#FFF url(/Areas/admin/tem_admin/assets/img/LoaderIcon.gif) no-repeat right");
+                },
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var listSuggest = JSON.parse(data);
+                        var htmlstr = '<ul id="suggest-list" class="span6">';
+                        if (listSuggest.length > 0) {
+                            for (var x in listSuggest) {
+                                htmlstr = htmlstr + "<li onClick=selectSuggest(" + listSuggest[x]["Id"] + ") data-val=" + listSuggest[x]["Id"] + ">" + listSuggest[x]["Name"] + "</li>";
+                            }
+                        }
+                        else {
+                            htmlstr = htmlstr + "<li>Không tìm thấy sách phù hợp !</li>";
+                        }
+                        htmlstr = htmlstr + '</ul>';
+
+                        $("#suggesstion-box").show();
+                        $("#suggesstion-box").html(htmlstr);
+                        $("#findBook").css("background", "#FFF");
+                    }
+
+                }
+            });
+        });
+    });
+    function selectSuggest(obj) {
+        $("#pro_id").val(obj);
+        $("#pro_no").show();
+        var suggest_li = $("li[data-val='" + obj + "']").html();
+        $("#findBook").val(suggest_li);
+        $("#suggesstion-box").hide();
+    }
+    function AddToList() {
+        var id = $("#pro_id").val();
+        var no = $("#pro_no").val();
+        var listPro = "";
+        listPro = ",";
+        if (typeof $("select#option_color option").filter(":selected").val() != 'undefined' && typeof $("select#option_size option").filter(":selected").val() != 'undefined') {
+            listPro = $("select#option_color option").filter(":selected").val() + "," + $("select#option_size option").filter(":selected").val();
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("add_to_cart", "AdminOrder")',
+            data: '{ID: "' + id + '",No: "' + no + '",listProperties: "' + listPro + '" }',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (results) {
+                if (typeof results != 'undefined' && typeof results != null) {
+                    $('#counttt').text(" " + results.split("|")[5] + " ");
+                    var data = results.split("|")[6];
+                    var cart_sidebar = $("#list_added");
+                    $("#list_added").html("");
+                    var arr_from_json = JSON.parse(data);
+                    var li_item = "";
+                    $.each(arr_from_json, function (i, obj) {
+                        li_item = li_item + "<tr>";
+                        li_item = li_item + "<td data-val=" + obj.ProductID + ">" + obj.ProductName + "</td>";
+                        li_item = li_item + "<td>" + obj.Quatity + "</td>";
+                        li_item = li_item + "<td><a class=\"remove-item\" style='cursor: pointer;' onclick=\"RemoveFromList('Pro_" + obj.ProductID + "_" + obj.Property + "')\"><i class=\"icon-trash bigger-110\"></i></a> </td>";
+                        li_item = li_item + "</tr>";
+                    });
+                    cart_sidebar.append(li_item);
+                    if (li_item != "" && li_item.length > 0) {
+                        $('#btnsave').prop("disabled", false);
+                    }
+
+                    $("#findBook").val();
+                    $("#pro_id").val();
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                ////alert(errorThrown + ";" + textStatus);
+            }
+        });
+    }
+    function RemoveFromList(key) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("remove_from_cart", "AdminOrder")',
+            data: '{key: "' + key + '"}',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (results) {
+                if (typeof results != 'undefined' && typeof results != null) {
+                    $('#counttt').text(" " + results.split("|")[5] + " "); ////count
+                    var data = results.split("|")[6];   ////data
+                    var cart_sidebar = $("#list_added");
+                    $("#list_added").html("");
+                    var arr_from_json = JSON.parse(data);
+                    var li_item = "";
+                    $.each(arr_from_json, function (i, obj) {
+                        li_item = li_item + "<tr>";
+                        li_item = li_item + "<td data-val=" + obj.ProductID + ">" + obj.ProductName + "</td>";
+                        li_item = li_item + "<td>" + obj.Quatity + "</td>";
+                        li_item = li_item + "<td><a class=\"remove-item\" style='cursor: pointer;' onclick=\"RemoveFromList('Pro_" + obj.ProductID + "_" + obj.Property + "')\"><i class=\"icon-trash bigger-110\"></i></a> </td>";
+                        li_item = li_item + "</tr>";
+                    });
+                    cart_sidebar.append(li_item);
+                    if (li_item == "") {
+                        $('#btnsave').prop("disabled", true);
+                    }
+                }
+                else {
+                    $('#btnsave').prop("disabled", true);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                ////alert(errorThrown + ";" + textStatus);
+            }
+        });
+    }
+    $(function () {
+        //from validate
+        $("#change_order_form").validate({
+            errorElement: 'span',
+            errorClass: "error",
+            errorPlacement: function (error, element, value) {
+                error.appendTo(element.parent('div:first'));
+                element.parents('div:first').addClass("error");
+            },
+            rules: {
+                name: {
+                    text_validate_default: true
+                },
+                phone: {
+                    text_validate_default: true
+                }
+            },
+            messages: {
+                name: {
+                    text_validate_default: "Bạn cần nhập tên người mượn"
+                },
+                phone: {
+                    text_validate_default: "Bạn cần nhập số điện thoại người mượn"
+                }
+            }
+        });
+    });
+</script>
