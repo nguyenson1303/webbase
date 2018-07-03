@@ -26,7 +26,7 @@ namespace ApiBase.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateToken([FromBody]LoginModel login)
+        public IActionResult CreateToken([FromBody]LoginModelView login)
         {
             IActionResult response = Unauthorized();
             var user = Authenticate(login);
@@ -61,7 +61,7 @@ namespace ApiBase.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private UserInfo Authenticate(LoginModel login)
+        private UserInfo Authenticate(LoginModelView login)
         {
             UserModels sv = new UserModels();
             User it = new User();
