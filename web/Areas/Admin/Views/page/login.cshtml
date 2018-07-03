@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout_No_Login.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.Areas.Admin.ViewModels.Login_view
+<div id="login-box" class="login-box visible widget-box no-border" >
+    <div class="widget-body">
+        <div class="widget-main">
+            <h4 class="header blue lighter bigger">
+                &copy; @Web.Models.Util.GetConfigValue("Domain", Request.UserHostName).ToString()
+            </h4>
+            @*<asp:Literal runat="server" ID="lbErr"></asp:Literal>*@
+            <div class="space-6"></div>
+
+            @using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "login_form", enctype = "multipart/form-data" }))
+            {
+                <fieldset>
+                    <label>
+                        <span class="block input-icon input-icon-right">
+                            <input type="text" id="user_name" name="user_name" class="span12" placeholder="Username" value="@Model.User_name" />
+                            <i class="icon-user"></i>
+                        </span>
+                    </label>
+
+                    <label>
+                        <span class="block input-icon input-icon-right">
+                            <input type="password" id="password" name="password" class="span12" placeholder="Password" value="@Model.Password" />
+                            <i class="icon-lock"></i>
+                        </span>
+                    </label>
+
+                    <div class="space"></div>
+
+                    <div class="clearfix">
+                        <label class="inline">
+                            <input type="checkbox" id="chkremember_me" name="chkremember_me" onclick="CheckBoxchange('remember_me')" checked="checked" />
+                            <span class="lbl"> Remember Me</span>
+                        </label>
+                        <button type="submit" class="width-35 pull-right btn btn-small btn-primary">
+                            <i class="icon-key"></i>
+                            Login
+                        </button>
+                    </div>
+                    <input type="hidden" id="remember_me" name="remember_me" />
+                    <div class="space-4"></div>
+                </fieldset>
+                <input type="hidden" id="return_url" name="return_url" value="@Model.Return_url" />
+            }
+        </div><!--/widget-main-->
+
+        <div class="toolbar clearfix">
+            <div>
+                <a href="@Url.Action("forgot_password", "dashboard", new { area = "admin" })" class="forgot-password-link">
+                    <i class="icon-arrow-left"></i>
+                    Quên mật khẩu
+                </a>
+            </div>
+        </div>
+    </div><!--/widget-body-->
+</div><!--/login-box-->
+<script type="text/javascript">
+    function CheckBoxchange(id) {
+        if ($("#chk" + id).is(':checked')) {
+            $("#" + id).val("true");
+        }
+        else {
+            $("#" + id).val("false");
+        }
+    }
+    $(function () {
+        ////from validate
+        $("#login_form").validate({
+            errorElement: 'span',
+            errorClass: "error",
+            errorPlacement: function (error, element, value) {
+                error.appendTo(element.parent('div:first'));
+                element.parents('div:first').addClass("error");
+            },
+            rules: {
+                user_name: {
+                    text_validate_default: true
+                },
+                password: {
+                    text_validate_default: true
+                }
+            },
+            messages: {
+                user_name: {
+                    text_validate_default: ""
+                },
+                password: {
+                    text_validate_default: ""
+                }
+            }
+        });
+    });
+</script>
+
+
+

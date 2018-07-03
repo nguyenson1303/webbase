@@ -1,0 +1,56 @@
+.action-button li a:hover,
+h2.product-name a:hover,
+.product-tab-menu-style-two li a:hover,
+.product-tab-menu-style-two li.active a,
+.shop-blog-content h4 a:hover,
+.shop-blob-meta a:hover,
+.ev-account > li a:hover,
+.tc-mark,
+.cart-details h5 a:hover,
+.total-price a,
+.primary-menu > ul > li:hover > a,
+.shop-header-meta > li ul li:hover > a,
+.header-v3 .top-action-area > li:hover > a,
+.user-meta > li:hover > a,
+.shop-header-meta.pull-right li:hover > a,
+.product-style-two .add-to-cart.single-p-box:hover{
+	color: #fbaf5d;
+}
+.product-carousel-style-one.owl-theme .owl-controls .owl-buttons div:hover,
+.catr-count,
+.top-search-form button,
+.ev-news-letter button{
+	background: #fbaf5d;
+}
+.ev-news-letter button:hover,
+.top-search-form button:hover{
+	background: #e59642;
+}
+.header-v3 .top-action-area > li > a {
+  color: #323334;
+}
+.chairman-sub-dropdown > li:hover > a,
+.chairman-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+a#scrollUp:hover {
+  background: #fbaf5d none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.cart-details-wrapper,
+.user-meta,
+.shop-header-meta > li ul,
+.shop-header-meta > li ul {
+  border-top: 3px solid #fbaf5d;
+}
+.header-v3 .logo {
+  padding: 40px 0;
+}
+body .readon.border:hover{
+	color: #ffffff;
+	border: 2px solid transparent;
+	background: #c7631a;
+}

@@ -1,0 +1,46 @@
+a:hover,
+.medical-header-top .header-social-bookmark ul li:hover a,
+.tc-mark,
+.medical-footer .ev-account a:hover,
+.medical-footer .ev-single-widget p a,
+.single-medicin-blog h4 > a:hover,
+.doc-links.text-center > li a:hover{
+	color: #18afd3 ;
+}
+.chairman-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+.chairman-sub-dropdown > li:hover > a,
+.handelare-style.owl-theme .owl-controls .owl-buttons div:hover {
+  background: #18afd3 none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu{
+  border-top: 3px solid #18afd3;
+}
+.tc-mark:hover,
+.medical-footer .ev-single-widget p a:hover{
+  color: #ffffff;
+}
+
+.ev-adderss span,  
+.ev-adderss a{
+  color: #aaa;
+}
+.ev-adderss i {
+  border: 1px solid #aaa;
+  color: #aaa;
+  float: left;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  width: 32px;
+}
+.handelare-style.owl-theme .owl-controls .owl-buttons div:hover{
+  border: 1px solid transparent;
+}
+.md-single-cat:hover h4 > a:hover{
+  color: #444;
+}

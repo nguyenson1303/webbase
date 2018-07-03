@@ -1,0 +1,235 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.List_order_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { act = Model.Act, ctrl = Model.Ctrl, enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>
+            Quản lý @Model.Cate_type
+        </h1>
+    </div>
+    <!--/.page-header-->
+    <div class="row-fluid" id="print">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        <div style="border-bottom: 1px solid #cfcfcf;">
+                            <table>
+                                <tr style="display:none">
+                                    <td>Thanh toán:</td>
+                                    <td>
+                                        @{ SelectList list_payment = new SelectList(Model.List_payment_status, "Value", "Text", Model.Payment);}
+                                        @Html.DropDownListFor(m => m.Payment, list_payment, new { @class = "form-control" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái:</td>
+                                    <td>
+                                        @{ SelectList list_process = new SelectList(Model.List_order_process, "Value", "Text", Model.Process);}
+                                        @Html.DropDownListFor(m => m.Process, list_process, new { @class = "form-control" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mã mượn sách:</td>
+                                    <td>
+                                        <input type="text" id="search" name="search" value="@Model.Search" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Từ ngày(d/m/y):</td>
+                                    <td>
+                                        <div class="row-fluid input-append">
+                                            <input type="text" id="from_date" name="from_date" class="span10 date-picker" value="@Convert.ToDateTime(Model.From_date).ToString("dd/MM/yyyy")" data-date-format="dd/mm/yyyy" />
+                                            <span class="add-on">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Đến ngày(d/m/y):</td>
+                                    <td>
+                                        <div class="row-fluid input-append">
+                                            <input type="text" id="to_date" name="to_date" class="span10 date-picker" value="@Convert.ToDateTime(Model.To_date).ToString("dd/MM/yyyy")" data-date-format="dd/mm/yyyy" />
+                                            <span class="add-on">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="submit" class="btn btn-purple btn-small" style="margin-bottom: 10px;"> Tìm kiếm <i class="icon-search icon-on-right bigger-110"></i></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        @{
+                            if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div class="alert alert-warning">
+                                    <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                                    <strong>@Model.Message</strong>
+                                </div>
+                            }
+                        }
+                        <table cellpadding="0" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover" id="list_paging_ajax">
+                            <tbody>
+                                <tr>
+                                    <th>Thứ Tự</th>
+                                    <th><a href="#" class="asc">Mã mượn sách</a></th>
+                                    <th>Tên</th>
+                                    <th>Ngày mượn</th>
+                                    <th>Ngày trả</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                                @{
+                                    if (Model.Total_record > 0)
+                                    {
+                                        for (int i = 0; i < Model.Page_list_order.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>@(i + 1)</td>
+                                                <td><a href="@Url.Action("index", "dashboard", new { act = "change_order", ctrl = "adminOrder", type_act = Web.Models.CommonGlobal.Edit, code = Model.Page_list_order[i].Code })">@Model.Page_list_order[i].Code</a></td>
+                                                <td>@Model.Page_list_order[i].Name</td>
+                                                <td>
+                                                    @*@if (Model.Page_list_order[i] != null && Model.Page_list_order[i].BorrowedDay != null)
+                                                    {
+                                                        @Html.Raw(Convert.ToDateTime(Model.Page_list_order[i].BorrowedDay).ToString("dd/MM/yyyy"))
+                                                    }*@
+                                                </td>
+                                                <td>
+                                                    @*@if (Model.Page_list_order[i] != null && Model.Page_list_order[i].PayDay != null)
+                                                    {
+                                                        @Html.Raw(Convert.ToDateTime(Model.Page_list_order[i].PayDay).ToString("dd/MM/yyyy"))
+                                                    }*@
+                                                </td>
+                                                <td>
+                                                    @if (Model.Page_list_order[i].Address != null && Model.Page_list_order[i].Address != string.Empty)
+                                                    {
+                                                        @Html.Raw(Model.Page_list_order[i].Phone)
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var labeltype = "label-info";
+                                                        var process = Model.Page_list_order[i].Process ?? 0;
+                                                        if (process == 0)
+                                                        {
+                                                            labeltype = "label-warning";
+                                                        }
+                                                        else if (process == 2)
+                                                        {
+                                                            labeltype = "label-success";
+                                                        }
+                                                        else if (process == 3)
+                                                        {
+                                                            labeltype = "label-grey";
+                                                        }
+                                                        else if (process == 4)
+                                                        {
+                                                            labeltype = "label-important";
+                                                        }
+                                                        else if (process == 5)
+                                                        {
+                                                            labeltype = "label-inverse";
+                                                        }
+                                                    }
+                                                    <span class="label @labeltype">@Web.Models.CommonGlobal.GetOrderStatusString(Model.Page_list_order[i].Process ?? 0)</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8">Hiện chưa có mã mượn sách nào.</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            @Html.AjaxPager(  ////PagerHelper
+                            Model.Total_record,
+                            Model.Page_size,
+                            Model.Page,
+                            Model.Parent_action,    ////action
+                            Model.Parent_controller,//controller
+                            "admin_default",  ////routeName
+                            new PagerOptions  ////page option
+                            {
+                                PageIndexParameterName = "page",
+                                ShowNumericPagerItems = true,
+                                ShowPrevNext = true,
+                                FirstPageText = "&#171;",
+                                LastPageText = "&#187;",
+                                NextPageText = "&#155;",
+                                PrevPageText = "&#139;",
+                                ContainerTagName = "ul",
+                                CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+                                CssClass = "pagination",
+                                PagerItemWrapperFormatString = "<li>{0}</li>"
+                            },
+                            new { act = "list_order", ctrl = "adminOrder", from_date = Model.From_date, to_date = Model.To_date, search = Model.Search, order_by = Model.Order_by, order_type = Model.Order_type }, //// routeValues
+                            new AjaxOptions { UpdateTargetId = "list_paging_ajax" },  ////ajax option
+                            null
+                            )
+
+
+                        </div>
+                        <input type="hidden" id="id" name="id" value="@Model.Id" />
+                        <input type="hidden" id="act" name="act" value="@Model.Act" />
+                        <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                        <input type="hidden" id="type" name="type" value="@Model.Type" />
+                        <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                        <input type="hidden" id="page" name="page" value="@Model.Page" />
+                        <input type="hidden" id="page_size" name="pagesize" value="@Model.Page_size" />
+                        <input type="hidden" id="order_by" name="order_by" value="@Model.Order_by" />
+                        <input type="hidden" id="order_type" name="order_type" value="@Model.Order_type" />
+                        <input type="hidden" id="code" name="code" />
+                        <div class="form-actions">
+                            <a class="btn btn-info" style="margin-bottom: 10px;" href="@Url.Action("Export_document", "adminOrder", new { type_export = 1, from_date = Model.From_date, to_date = Model.To_date, Payment = Model.Payment, Process = Model.Process, act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View, search = Model.Search, page = Model.Page, page_size = Model.Page_size, order_by = Model.Order_by, order_type = Model.Order_type })"> Export Excel<i class="fa fa-file-excel-o bigger-110 icon-on-right"></i></a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a class="btn btn-info" style="margin-bottom: 10px;" href="@Url.Action("Export_document", "adminOrder", new { type_export = 2, from_date = Model.From_date, to_date = Model.To_date, Payment = Model.Payment, Process = Model.Process, act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View, search = Model.Search, page = Model.Page, page_size = Model.Page_size, order_by = Model.Order_by, order_type = Model.Order_type })"> Export Word<i class="fa fa-file-word-o bigger-110 icon-on-right"></i></a>
+                            @*&nbsp; &nbsp; &nbsp;*@
+                            @*<a class="btn btn-info" style="margin-bottom: 10px;" href="@Url.Action("export_document", "adminOrder", new { type_export = 3, from_date = Model.From_date, to_date = Model.To_date, Payment = Model.Payment, Process = Model.Process, act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View, search = Model.Search, page = Model.Page, page_size = Model.Page_size, order_by = Model.Order_by, order_type =Model.Order_type })"> Export Pdf<i class="fa fa-file-pdf-o bigger-110 icon-on-right"></i></a>*@
+                            @*&nbsp; &nbsp; &nbsp;
+                                <a class="btn btn-info" style="margin-bottom: 10px;" onclick="printDiv('print')"> Print <i class="icon-print  bigger-110 icon-on-right"></i></a>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.span-->
+    </div>
+    <!--/.row-fluid-->
+                                    <script type="text/javascript">
+                                        function printDiv(divName) {
+                                            var printContents = document.getElementById(divName).innerHTML;
+                                            var originalContents = document.body.innerHTML;
+
+                                            document.body.innerHTML = printContents;
+
+                                            window.print();
+
+                                            document.body.innerHTML = originalContents;
+                                        }
+                                        function ConfirmDelete(code) {
+                                            if (confirm('Bạn thực hiện xóa:' + code)) {
+                                                if (typeof code != 'undefined' && typeof code != null) {
+                                                    $("#code").val(code);
+                                                    $("#type_act").val("@Web.Models.CommonGlobal.Delete");
+                                                    $('form').submit();
+                                                }
+                                            }
+                                        }
+                                    </script>                                   }

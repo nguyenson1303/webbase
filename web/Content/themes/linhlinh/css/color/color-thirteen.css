@@ -1,0 +1,89 @@
+.action-button li a:hover,
+h2.product-name a:hover,
+.product-tab-menu-style-two li a:hover,
+.product-tab-menu-style-two li.active a,
+.shop-blog-content h4 a:hover,
+.shop-blob-meta a:hover,
+.ev-account > li a:hover,
+.tc-mark,
+.cart-details h5 a:hover,
+.total-price a,
+.shop-header-meta > li ul li:hover > a,
+.promo-borderd-style .shop-icon i,
+.product-tab-menu-style-three li.active a,
+.header-v8-light .menu-dark .primary-menu > ul > li:hover > a,
+.header-v8.header-v8-light.header-v8-search-bottom .shop-header-meta > li:hover > a,
+.he-banner-details > h4 a:hover,
+.sp-thine .spical-price{
+	color: #3b9ce7;
+}
+.primary-menu > ul > li:hover > a{
+  color: #f2ba17;
+}
+.product-carousel-style-one.owl-theme .owl-controls .owl-buttons div:hover{
+	background: #afc284;
+}
+.catr-count{
+  background: #de4843;
+}
+.ev-news-letter button:hover{
+	background: #368acc;
+}
+.top-action-area > li > a {
+  color: #323334;
+}
+.chairman-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+.chairman-sub-dropdown > li:hover > a {
+  background: #3b9ce7 none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.cart-details-wrapper,
+.user-meta,
+.shop-header-meta > li ul,
+.shop-header-meta > li ul {
+  border-top: 3px solid #3b9ce7;
+}
+.top-search-form button,
+.add-to-cart-shop,
+.shop-button-border:hover,
+.product-tab-menu-style-four li.active a,
+.ev-news-letter button,
+.top-search-form button:hover{
+	background: #3b9ce7;
+}
+.action-button li a:hover,
+.product-carousel-style-three.owl-theme .owl-controls .owl-buttons div:hover {
+  color: #fff;
+  background: #3b9ce7;
+}
+.border-banner-area-hand{
+  margin-bottom: 40px;
+}
+.shop-full-banner-wrapper{
+  margin-bottom: 70px;
+}
+.rating li a.not-rated {
+  color: #9d9d9e;
+}
+.rating li a {
+  color: #f2ba17;
+}
+.product-style-three .action-button li a:hover{
+  background: transparent;
+  color: #f2ba17;
+  border: 1px solid #f2ba17;
+}
+.hu-rd-btn:hover{
+  background: #3b9ce7;
+  color: #fff;
+}
+body .readon.large{
+  background: #de4843;
+  color: #ffffff;
+  border: 2px solid transparent;
+}

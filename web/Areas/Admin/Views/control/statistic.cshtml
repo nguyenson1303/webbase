@@ -1,0 +1,394 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.Areas.Admin.ViewModels.Statistic_view
+<div class="row-fluid">
+    <div class="span5">
+        <div class="widget-box transparent">
+            <div class="widget-header widget-header-flat">
+                <h4 class="lighter">
+                    <i class="icon-star orange"></i>Thống kê truy cập
+                </h4>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="collapse"><i class="icon-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="icon-caret-right blue"></i>Chỉ số
+                                </th>
+                                <th>
+                                    <i class="icon-caret-right blue"></i>Số lượng
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Online
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["visitors_online"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Hôm nay
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["HomNay"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Trong tuần
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["TuanNay"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tuần trước
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["TuanTruoc"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tháng này
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["ThangNay"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tháng trước
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["ThangTruoc"].ToString()</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tổng
+                                </td>
+                                <td>
+                                    <b class="green">@HttpContext.Current.Application["TatCa"].ToString()</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--/widget-main-->
+            </div>
+            <!--/widget-body-->
+        </div>
+        <!--/widget-box-->
+    </div>
+    <div class="span7">
+        <div class="widget-box transparent">
+            <div class="widget-header widget-header-flat">
+                <h4 class="lighter">
+                    <i class="icon-signal"></i>Biểu đồ truy cập (@Convert.ToDateTime(DateTime.Now.AddYears(-1)).ToString("dd/MM/yyyy") - @Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy"))
+                </h4>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="collapse"><i class="icon-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main padding-4">
+                    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/Scripts/flot/excanvas.min.js"></script><![endif]-->
+                    <script type="text/javascript" src="/Scripts/flot/jquery.flot.min.js"></script>
+                    <script type="text/javascript" src="/Scripts/flot/jquery.flot.time.js"></script>
+                    <script type="text/javascript" src="/Scripts/flot/jquery.flot.symbol.js"></script>
+                    <script type="text/javascript" src="/Scripts/jshashtable-3.0.js"></script>
+                    <script type="text/javascript" src="/Scripts/jquery.numberformatter-1.2.4.js"></script>
+
+                    <script>
+                        var dss = new Date();
+                        var current_year = dss.getFullYear();
+
+                        ////******* 2012 Gold Price Chart
+                        var data2 = [@HttpUtility.HtmlDecode(Model.Chart_text)];
+                        var dataset = [
+                            ////{ label: "Gold Price", data: data1, points: { symbol: "triangle" } },
+                            { label: "Truy cập", data: data2, yaxis: 2, points: { symbol: "triangle" } }
+                        ];
+
+                        var options = {
+                            series: {
+                                lines: {
+                                    show: true
+                                },
+                                points: {
+                                    radius: 3,
+                                    fill: true,
+                                    show: true
+                                }
+                            },
+                            xaxis: {
+                                mode: "time",
+                                ////tickSize: [1, "month"],
+                                tickLength: 0,
+                                ////axisLabel: current_year,
+                                axisLabelUseCanvas: true,
+                                axisLabelFontSizePixels: 12,
+                                axisLabelFontFamily: 'Verdana, Arial',
+                                axisLabelPadding: 10
+                            },
+                            yaxes: [
+                            ////    {
+                            ////        axisLabel: "Truy cập",
+                            ////    axisLabelUseCanvas: true,
+                            ////    axisLabelFontSizePixels: 12,
+                            ////    axisLabelFontFamily: 'Verdana, Arial',
+                            ////    axisLabelPadding: 3,
+                            ////    tickFormatter: function (v, axis) {
+                            ////        return $.formatNumber(v, { format: "#,###", locale: "vn" });
+                            ////    }
+                            ////}//,
+                            {
+                                position: "right",
+                                axisLabel: "Truy cập",
+                                axisLabelUseCanvas: true,
+                                axisLabelFontSizePixels: 12,
+                                axisLabelFontFamily: 'Verdana, Arial',
+                                axisLabelPadding: 3
+                            }
+                            ],
+                            legend: {
+                                noColumns: 0,
+                                labelBoxBorderColor: "#000000",
+                                position: "nw"
+                            },
+                            grid: {
+                                hoverable: true,
+                                borderWidth: 2,
+                                borderColor: "#633200",
+                                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+                                ////backgroundColor: { colors: ["#EDF5FF"] }
+                            },
+                            ////colors: ["#FF0000", "#0022FF"]
+                            colors: ["#0022FF"]
+                        };
+
+                        $(document).ready(function () {
+                            $.plot($("#flot-placeholder1"), dataset, options);
+                            $("#flot-placeholder1").UseTooltip();
+                        });
+
+                        function gd(year, month, day) {
+                            return new Date(year, month, day).getTime();
+                        }
+
+                        var previousPoint = null, previousLabel = null;
+                        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+                        $.fn.UseTooltip = function () {
+                            $(this).bind("plothover", function (event, pos, item) {
+                                if (item) {
+                                    if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                                        previousPoint = item.dataIndex;
+                                        previousLabel = item.series.label;
+                                        $("#tooltip").remove();
+
+                                        var x = item.datapoint[0];
+                                        var y = item.datapoint[1];
+
+                                        var color = item.series.color;
+                                        var month = new Date(x).getMonth();
+
+                                        ////console.log(item);
+
+
+                                        if (item.seriesIndex == 0) {
+                                            showTooltip(item.pageX,
+                                            item.pageY,
+                                            color,
+                                            "<strong>" + item.series.label + "</strong><br>" + monthNames[month] + " : <strong>" + y + "</strong>");
+                                        }
+                                        ////else {
+                                        ////    showTooltip(item.pageX,
+                                        ////    item.pageY,
+                                        ////    color,
+                                        ////    "<strong>" + item.series.label + "</strong><br>" + monthNames[month] + " : <strong>" + y + "</strong>(%)");
+                                        ////}
+                                    }
+                                } else {
+                                    $("#tooltip").remove();
+                                    previousPoint = null;
+                                }
+                            });
+                        };
+
+                        function showTooltip(x, y, color, contents) {
+                            $('<div id="tooltip">' + contents + '</div>').css({
+                                position: 'absolute',
+                                display: 'none',
+                                top: y - 40,
+                                left: x - 120,
+                                border: '2px solid ' + color,
+                                padding: '3px',
+                                'font-size': '9px',
+                                'border-radius': '5px',
+                                'background-color': '#fff',
+                                'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+                                opacity: 0.9
+                            }).appendTo("body").fadeIn(200);
+                        }
+                    </script>
+
+                    <div id="flot-placeholder1" style="width:100%; height:350px;"></div>
+
+                </div>
+                <!--/widget-main-->
+            </div>
+            <!--/widget-body-->
+        </div>
+        <!--/widget-box-->
+    </div>
+</div>
+
+<div class="hr hr32 hr-dotted"></div>
+
+<div class="row-fluid" style="display:none;">
+    <div class="span6">
+        <div class="widget-box transparent" id="recent-box">
+            <div class="widget-header">
+                <h4 class="lighter smaller">
+                    <i class="icon-rss orange"></i>
+                    Phản hồi
+                </h4>
+
+                <div class="widget-toolbar no-border">
+                    <ul class="nav nav-tabs" id="recent-tab">
+                        <li class="active">
+                            <a data-toggle="tab" href="#member-tab">Bình luận và đánh giá</a>
+                        </li>
+
+                        <li>
+                            <a data-toggle="tab" href="#comment-tab">Ý kiến khách hàng</a>
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main padding-4">
+                    <div class="tab-content padding-8 overflow-visible">
+
+                        <div id="member-tab" class="tab-pane active">
+                            <div class="comments clearfix">
+                                @{
+                                    if (Model.List_rating_last != null)
+                                    {
+                                        for (int i = 0; i < Model.List_rating_last.Count; i++)
+                                        {
+                                            <div class="itemdiv commentdiv">
+                                                <div class="user">
+                                                    <img alt="@Html.Raw(Model.List_rating_last[i].name)" src="/Areas/admin/tem_admin/assets/avatars/avatar2.png" />
+                                                </div>
+
+                                                <div class="body">
+                                                    <div class="name">
+                                                        <a href="@Url.Action("index", "dashboard", new { act = "list_Rating", ctrl = "adminProduct", type_act = Web.Models.CommonGlobal.View, type = "", page = "1", pro_id = Model.List_rating_last[i].itemId, lang = "" })">
+                                                            @Html.Raw(Model.List_rating_last[i].name) - @Html.Raw(Model.List_rating_last[i].email)
+                                                            @{
+                                                                if (Model.List_rating_last[i].Rating != null)
+                                                                {
+                                                                    int rat = int.Parse(Model.List_rating_last[i].Rating.ToString());
+                                                                    for (int j = 1; j < rat; j++)
+                                                                    {
+                                                                        <text><i class="icon-asterisk"></i></text>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <i class="icon-quote-left"></i>
+                                                        @Html.Raw(Model.List_rating_last[i].contents)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text><div class="itemdiv commentdiv">Không có bình luận và đánh giá nào.</div></text>
+                                    }
+                                }
+                            </div>
+                            <div class="hr hr-double hr8"></div>
+                        </div>
+
+                        <div id="comment-tab" class="tab-pane ">
+                            <div class="comment-tab">
+                                @{
+                                    if (Model.List_contact_last != null)
+                                    {
+                                        for (int i = 0; i < Model.List_contact_last.Count; i++)
+                                        {
+                                            <div class="itemdiv commentdiv">
+                                                <div class="user">
+                                                    <img alt="@Html.Raw(Model.List_contact_last[i].name)" src="/Areas/admin/tem_admin/assets/avatars/avatar2.png" />
+                                                </div>
+
+                                                <div class="body">
+                                                    <div class="name">
+                                                        <a href="#">
+                                                            @Html.Raw(Model.List_contact_last[i].name) - @Html.Raw(Model.List_contact_last[i].email)                                                           
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="time">
+                                                        <i class="icon-time"></i>
+                                                        <span class="orange">                                                      
+                                                            @{ 
+                                                                DateTime startTime = Convert.ToDateTime(Model.List_contact_last[i].createdate);
+                                                                DateTime endTime = DateTime.Now;
+                                                                TimeSpan span = endTime.Subtract(startTime);
+                                                            }
+                                                            @Html.Raw(span.Days + " day," + span.Hours + " hours," + span.Minutes + " min.")    
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <i class="icon-quote-left"></i>
+                                                        @Html.Raw(Model.List_contact_last[i].contents)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text><div class="itemdiv memberdiv">Không có bình luận và đánh giá nào.</div></text>
+                                    }
+                                }
+                            </div>
+                            <div class="hr hr8"></div>
+                            <div class="center">
+                                <i class="icon-comments-alt icon-2x green"></i>
+                                &nbsp;
+                                <a href="@Url.RouteUrl("admin_default", new { controller = "dashboard", action = "index", act = "list_contact", ctrl = "adminGeneral", type_act = Web.Models.CommonGlobal.View, type = "", page = "1" })">
+                                    Ý kiến khách hàng &nbsp;
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="hr hr-double hr8"></div>
+                        </div>     
+                                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

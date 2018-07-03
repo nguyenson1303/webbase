@@ -1,0 +1,51 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.Management_head_view
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a href="#" class="brand"><small><i class="icon-laptop"></i> @Web.Models.Util.GetConfigValue("Domain", Request.UserHostName).ToString()</small></a>
+            <!--/.brand-->
+            <ul class="nav ace-nav pull-right">
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="/Areas/admin/tem_admin/assets/avatars/ava2.png" alt="http://soncoi.net" />
+                        <span class="user-info">
+                            <small>Xin chào </small>
+                            @Model.User_name
+                        </span><i class="icon-caret-down"></i>
+                    </a>
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                        <li>
+                            <a href="#">
+                                <i class="icon-time"></i>
+                                @Model.Server_time
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="icon-laptop"></i>
+                                @Model.Ip_address
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("change_password", "dashboard",new { area = "admin" })">
+                                <i class="icon-key"></i>
+                                Đổi mật khẩu
+                            </a>
+                        </li>
+                        <li>
+                            @Model.Message
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("logout","dashboard")"><i class="icon-off"></i>Log out </a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--/.ace-nav-->
+        </div>
+        <!--/.container-fluid-->
+    </div>
+    <!--/.navbar-inner-->
+</div>

@@ -1,0 +1,76 @@
+.portfolio-titled h4 a:hover,
+.portfolio-constraction .portfolio-titled .portfolio-cat li a:hover,
+.member-details-2 .member-social li a :hover,
+.member-details-2 .mbc-wrap h4 a:hover,
+.ch-row.shop-blog2 .shop-blog-content h4 a:hover,
+.shop-blog2 .shop-blob-meta a:hover,
+.tc-mark:hover,
+.ev-account a:hover,
+.shop-top-info > li i,
+.header-v3.header-v3.construction-header .shop-top-info > li a:hover,
+.portfolio-titled .portfolio-cat li a,
+.construction-portfolio-2 .portfolio-item:hover .portfolio-titled .port-link:hover{
+	color: #ffb300 !important;
+}
+.ev-news-letter button:hover{
+	background: #e59642;
+  border: 2px solid transparent;
+}
+.portfolio-titled .portfolio-cat li a:hover {
+  color: #ffffff !important;
+}
+.chairman-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+.chairman-sub-dropdown > li:hover > a,
+.action-button li a:hover,
+.product-carousel-style-three.owl-theme .owl-controls .owl-buttons div:hover,
+.portfolio-filter li.active a,
+.portfolio-filter li:hover a,
+.carousel-construction.owl-theme .owl-controls .owl-buttons div:hover,
+a#scrollUp:hover {
+  background: #ffb300 none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.cart-details-wrapper,
+.user-meta,
+.shop-header-meta > li ul {
+  border-top: 3px solid #ffb300;
+}
+.top-search-form button,
+.add-to-cart-shop,
+.portfolio-titled .port-link,
+.portfolio-constraction .portfolio-titled .port-link,
+.bottom-border-title.ev-widget-title::before,
+.ev-news-letter button,
+.potrfolio-3 .portfolio-action-btn li a{
+	background: #ffb300;
+}
+.top-search-form button:hover{
+	background: #eb9c47;
+}
+.border-banner-area-hand{
+  margin-bottom: 40px;
+}
+.co-btn-more:hover{
+  background: #ffae00;
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+.carousel-construction.owl-theme .owl-controls .owl-buttons div:hover{
+  border: 1px solid transparent;
+}
+.single-project-step:hover .project-icon{
+  background: #ffae00;
+  border: 2px solid transparent;
+}
+
+.construction-portfolio-2 .potrfolio-3 .portfolio-action-btn li a.venobox:hover {
+  background-color: #ffffff;
+  border: 2px solid transparent;
+  color: #ffb300;
+}

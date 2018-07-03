@@ -1,0 +1,54 @@
+/*--------------------------------------
+	Chairman Home Color Four
+--------------------------------------------*/
+a:hover,
+.primary-menu.blog-menu > ul > li:hover > a,
+.header-v4 .header-social-bookmark ul li a:hover,
+.blog-post-title  a:hover,
+.shear-links.pull-left a:hover,
+.comments-like a:hover i,
+.post-title-page a:hover,
+.post-link a:hover,
+.footer-style-two .copy-right-text > a:hover,
+.footer-menu li a:hover,
+.popular-post-content a:hover,
+.widget-content .blogers-name a:hover,
+.cat-list li a:hover,
+.header-v5 .header-social-bookmark ul li a:hover,
+.slider-area-blog .blog-post-title > a:hover,
+.slider-area-blog .blog-post-meta a:hover,
+.slider-area-blog .cat-name:hover,
+.post-content-wrapper .cat-name,
+.comments-like li a:hover {
+  color: #81ad7b;
+}
+.header-v5 .chairman-sub-dropdown, 
+.header-v5 .top-search-form, 
+.header-v5 .chairman-dropdown, 
+.header-v5 .chairman-mega-menu {
+  border-top: 3px solid #81ad7b;
+}
+.header-v5 .top-search-form button,
+.widget-newsletter-form > button:hover,
+.top-search-form button {
+  background: #81ad7b none repeat scroll 0 0;
+}
+.header-v5 .top-search-form button:hover,
+.top-search-form button:hover{
+  background: #71996b;
+}
+.cat-name:hover{
+  color: #414141;
+}
+.green-bg-menu .primary-menu ul li:hover a{
+	color: #424242;
+}
+.chairman-dropdown > li:hover > a,
+.chairman-sub-dropdown > li:hover > a,
+a#scrollUp:hover {
+  background: #81ad7b none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, .top-search-form, .chairman-dropdown, .chairman-mega-menu {
+  border-top: 3px solid #81ad7b;
+}

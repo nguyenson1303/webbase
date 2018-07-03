@@ -1,0 +1,90 @@
+.cart-details h5 a:hover,
+.total-price a,
+.mint-color-header.header-v7 .top-action-area > li:hover > a,
+.user-meta > li:hover > a,
+h2.product-name a,
+.ev-account > li a:hover,
+a.tc-mark,
+.shop-medicine-blog .shop-blob-meta a:hover,
+.shop-blog2 .shop-blog-content h4 a:hover,
+.shop-spical-product-content h4 a:hover,
+.header-food .shop-header-meta.pull-right >li ul li:hover > a,
+.product-style-four .add-to-bag:hover,
+.fo-darkfooter .ev-footer-top-area.mint-footer-top .ev-social-book li a:hover{
+	color: #0088cc !important; 
+}
+.header-medicine .primary-menu > ul > li:hover > a,
+.header-medicine .primary-menu > ul > li.current > a{
+  background: #0088cc;
+  color: #fff;
+}
+.product-carousel-style-one.owl-theme .owl-controls .owl-buttons div:hover,
+.catr-count,
+.tab-bg-colored.product-tab-menu-six li.active > a,
+.ev-news-letter button,
+.top-search-form button,
+.add-to-cart-shop{
+	background: #0088cc;
+}
+ 
+.ev-news-letter button:hover{
+	background: #e59642;
+}
+.top-action-area > li > a {
+  color: #323334;
+}
+.chairman-sub-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+.chairman-dropdown > li:hover > a,
+.action-button li a:hover,
+.product-carousel-style-three.owl-theme .owl-controls .owl-buttons div:hover {
+  background: #0088cc none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.cart-details-wrapper,
+.user-meta,
+.shop-header-meta > li ul {
+  border-top: 3px solid #0088cc;
+}
+.ev-brown-footer .ev-news-letter button:hover{
+  background: #b25238;
+}
+.top-search-form button:hover{
+	background: #758c18;
+}
+.border-banner-area-hand{
+  margin-bottom: 40px;
+}
+.shop-hand-mad-header .primary-menu > ul > li > a, .header-v3 .top-action-area > li > a{
+  color: #323334;
+}
+.product-style-four .add-to-bag {
+  border: 2px solid rgba(0, 0, 0, 0);
+  color: #444444;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+}
+.single-spical-product a.add-to-bag:hover{
+  background: #0088cc;
+  border: 2px solid transparent;
+  color: #fff;
+}
+.ev-brown-footer .ev-footer-top-area.mint-footer-top .ev-news-letter button:hover{
+  border: 2px solid transparent;
+  background: #fff;
+  color: #0088cc;
+}
+.header-food .shop-header-meta.pull-right >li:hover > a{
+  color: #444
+}
+h2.product-name a:hover{
+  color: #444444 !important;
+}
+.fo-darkfooter .ev-footer-top-area.mint-footer-top {
+  background: #0088cc none repeat scroll 0 0;
+}

@@ -1,0 +1,65 @@
+/*Color Ten CSS*/
+a:hover,
+.header-v7 .shop-header-meta.pull-right > li:hover > a,
+.header-v7 .shop-header-meta.pull-right a:hover,
+.product-tab-menu > li a:hover,
+.product-tab-menu > li.active a,
+.action-button li a:hover,
+h2.product-name a:hover,
+.spical-price,
+.product-carousel-style-two.owl-theme .owl-controls .owl-buttons div:hover,
+.cart-details h5 a:hover,
+.total-price a,
+.tc-mark,
+.user-meta > li:hover a,
+.add-to-cart.single-p-box,
+.header-v7.ex-paddig-area .single-header-meta.top-action-area > li:hover > a,
+.header-v7 .shop-header-meta.single-header-meta > li:hover > a,
+.shop-header-meta > li ul li:hover > a{
+	color: #ff7f66;
+}
+.hov-btn:hover{
+	background: #fe6a4d;
+}
+.menu-left-align .primary-menu > ul > li:hover > a,
+.header-v7 .top-action-area > li:hover > a,
+.add-to-cart.single-p-box:hover{
+	color: #323334;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu, 
+.shop-header-meta > li ul, 
+.user-meta, .cart-details-wrapper {
+  border-top: 3px solid #3d3d3d;
+}
+.chairman-dropdown > li:hover > a,
+.chairman-sub-dropdown > li:hover > a,
+.single-mega-child li:hover a {
+  background: #3d3d3d none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.onsale li:hover,
+.top-search-form button,
+a#scrollUp:hover,
+.onsale li:first-child,
+.quick-add-to-cart .single_add_to_cart_button,
+.ev-brown-footer .ev-news-letter button,
+.hov-btn {
+  background: #ff7f66 none repeat scroll 0 0;
+}
+.top-search-form button:hover,
+.quick-add-to-cart .single_add_to_cart_button:hover{
+  background: #ff6b4e;
+}
+.low-pad-header-top .catr-count{
+	background: #2c2d2f;
+}
+.tc-mark:hover{
+	color: #848484;
+}
+
+.ev-brown-footer .ev-news-letter button{
+	background: #eb6b52;
+}

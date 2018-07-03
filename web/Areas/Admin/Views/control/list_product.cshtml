@@ -1,0 +1,614 @@
+﻿@using Web.ViewModels
+@using Web.Enums
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.List_product_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { act = Model.Act, ctrl = Model.Ctrl, enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>
+            Danh sách @Model.Cate_type @*<small><i class="icon-double-angle-right"></i></small>*@
+        </h1>
+    </div>
+    <!--/.page-header-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        <div style="border-bottom: 1px solid #cfcfcf;">
+                            @{
+                                var filter_show_text = "";
+                                var filter_hot_text = "";
+                                var filter_promotion_text = "";
+
+                                if (Model.Is_show??false)
+                                {
+                                    filter_show_text = "checked='checked'";
+                                }
+                                else
+                                {
+                                    filter_show_text = "";
+                                }
+
+                                if (Model.Is_hot??false)
+                                {
+                                    filter_hot_text = "checked='checked'";
+                                }
+                                else
+                                {
+                                    filter_hot_text = "";
+                                }
+                                if (Model.Is_promotion??false)
+                                {
+                                    filter_promotion_text = "checked='checked'";
+                                }
+                                else
+                                {
+                                    filter_promotion_text = "";
+                                }
+                            }
+                            <table width="100%" class="table table-striped table-bordered table-hover">
+                                <tr>
+                                    <td>Tên:</td>       
+                                    <td>
+                                        <input type="text" id="search" name="search" class="span12" value="@Model.Search" />
+                                    </td>          
+                                </tr>
+                                <tr style="display:none">
+                                    <td>Ngôn ngữ:</td>
+                                    <td>
+                                        @{ SelectList list_language = new SelectList(Model.List_language, "Value", "Text", Web.Models.LanguageModels.ActiveLanguage().LangCultureName);}
+                                        @Html.DropDownListFor(m => m.Lang, list_language, new { @class = "form-control", @onchange = "$('form').submit();" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Danh mục:</td>
+                                    <td>
+                                        @{ SelectList list_parrent = new SelectList(Model.List_parent, "Value", "Text", 0);}
+                                        @Html.DropDownListFor(m => m.Parent, list_parrent, new { @class = "form-control", @onchange = "$('form').submit();" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hiển thị:</td>
+                                    <td>
+                                        <input type="checkbox" id="chk_is_show" name="chk_is_show" class="ace-switch ace-switch-3" @Html.Raw(filter_show_text) />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mới:</td>
+                                    <td>
+                                        <input type="checkbox" id="chk_is_hot" name="chk_is_hot" class="ace-switch ace-switch-3" @Html.Raw(filter_hot_text)/>
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                                <tr style="display:none">
+                                    <td>Best Seller :</td>
+                                    <td>
+                                        <input type="checkbox" id="chk_is_promotion" name="chk_is_promotion" class="ace-switch ace-switch-3" @Html.Raw(filter_promotion_text)  />
+                                        <span class="lbl"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="submit" class="btn btn-purple btn-small" style="margin-bottom: 10px;">Tìm kiếm <i class="icon-search icon-on-right bigger-110"></i></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        @{if (!string.IsNullOrEmpty(Model.Message))
+                        {
+                            <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="icon-remove"></i>
+                                </button>
+                                <strong>@Model.Message</strong>
+                                <br />
+                            </div>
+                        }
+                        }
+                        <table cellpadding="0" cellspacing="0" width="100%" class="table table-striped table-bordered table-hover" id="list_paging_ajax">
+                            <tbody>
+                                <tr>
+                                    <th><a href="#">Ảnh</a></th>
+                                    <th><a href="#">Mã</a></th>
+                                    <th><a href="#" class="asc">Tên sản phẩm</a></th>
+                                    @*<th><a href="#">Số lượng</a></th>*@
+                                    <th><a href="#">Cập nhật</a></th>
+                                    <th><a href="#">Trạng thái</a></th>
+                                    <th style="width: 96px;">Chức năng</th>
+                                </tr>
+                                @{
+                                    if(Model.Page_list_product!=null && Model.Page_list_product.Count>0)
+                                    {
+                                        for (int i = 0; i < Model.Page_list_product.Count; i++)
+                                        {
+                                        <tr>
+
+                                            <td>
+                                                @{
+                                        if (!string.IsNullOrEmpty(Model.Page_list_product[i].ImagePath) && Model.Page_list_product[i].ImagePath != "0")
+                                        {
+                                            <img alt="150x150" src="@Model.Page_list_product[i].ImagePath" style="width:80px" />
+                                        }
+                                        else
+                                        {
+                                            <text> <span>Không có ảnh!</span> </text>
+                                                                              }
+                                                }
+                                            </td>
+                                            <td>@Model.Page_list_product[i].ProductID</td>
+                                            <td><a href="@Url.Action("index", "dashboard", new { act = "change_product", ctrl = "adminProduct", type = Model.Type, type_act = Web.Models.CommonGlobal.Edit, id = Model.Page_list_product[i].ProductID, lang = Model.Page_list_product[i].Lang })">@Model.Page_list_product[i].ProductName</a></td>
+                                            @*<td>
+                                                Sách trong kho : @Model.Page_list_product[i].Store<br />
+                                                Sách cho mượn : @Model.Page_list_product[i].Borrow
+                                            </td>*@
+                                            <td><span id="label_@Model.Page_list_product[i].ProductID">@Convert.ToDateTime(Model.Page_list_product[i].DateModify).ToString("dd/MM/yyyy")</span></td>
+                                            <td>
+                                                @{
+                                                    var show_text = "";
+                                                    var hot_text = "";
+                                                    var promotion_text = "";
+                                                    var status_new = "false";
+                                                    var status_hot_new = "false";
+                                                    var status_promotion_new = "false";
+
+                                                    if (Model.Page_list_product[i].IsShow)
+                                                    {
+                                                        show_text = "checked='checked'";
+                                                        status_new = "false";
+                                                    }
+                                                    else
+                                                    {
+                                                        show_text = "";
+                                                        status_new = "true";
+                                                    }
+
+                                                    if (Model.Page_list_product[i].IsHot)
+                                                    {
+                                                        hot_text = "checked='checked'";
+                                                        status_hot_new = "false";
+                                                    }
+                                                    else
+                                                    {
+                                                        hot_text = "";
+                                                        status_hot_new = "true";
+                                                    }
+                                                    if (Model.Page_list_product[i].IsPromotion)
+                                                    {
+                                                        promotion_text = "checked='checked'";
+                                                        status_promotion_new = "false";
+                                                    }
+                                                    else
+                                                    {
+                                                        promotion_text = "";
+                                                        status_promotion_new = "true";
+                                                    }
+                                                }
+                                                <table>
+                                                    <tr>
+                                                        <td>Hiển thị:</td>
+                                                        <td>
+                                                            <input type="checkbox" id="chkIsShow_@Model.Page_list_product[i].ProductID" name="chkIsShow_@Model.Page_list_product[i].ProductID" class="ace-switch ace-switch-3" @Html.Raw(show_text) onclick="UpdateStatusIsShowProduct(@Model.Page_list_product[i].ProductID,@status_new)" />
+                                                            <span class="lbl"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr >
+                                                        <td>Hot :</td>
+                                                        <td>
+                                                            <input type="checkbox" id="chkIsHot_@Model.Page_list_product[i].ProductID" name="chkIsHot_@Model.Page_list_product[i].ProductID" class="ace-switch ace-switch-3" @Html.Raw(hot_text) onclick="UpdateStatusIsHotProduct(@Model.Page_list_product[i].ProductID,@status_hot_new)" />
+                                                            <span class="lbl"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="display:none">
+                                                        <td>Best Seller :</td>
+                                                        <td>
+                                                            <input type="checkbox" id="chkIsPromotion_@Model.Page_list_product[i].ProductID" name="chkIsPromotion_@Model.Page_list_product[i].ProductID" class="ace-switch ace-switch-3" @Html.Raw(promotion_text) onclick="UpdateStatusIsPromotionProduct(@Model.Page_list_product[i].ProductID,@status_promotion_new)" />
+                                                            <span class="lbl"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td style="width: 96px;">
+                                                @*@if (Model.Page_list_product[i].CanViewOnline)
+                                                {
+                                                    if (Model.Page_list_product[i].DocTypeViewEnum == DocTypeViewEnum.Pdf)
+                                                    {
+                                                        <a class="btn btn-mini btn-search" onclick="ViewPdfOnline(@Model.Page_list_product[i].ProductID)"><i class="icon-search"></i>@Lang.strViewOnline</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-mini btn-search" onclick="ViewImgOnline(@Model.Page_list_product[i].ProductID)"><i class="icon-search"></i>@Lang.strViewOnline</a>
+                                                    }
+                                                }*@
+                                                <button type="submit" class="btn btn-mini btn-danger" onclick="ConfirmDelete(@Model.Page_list_product[i].ProductID, '@Model.Page_list_product[i].ProductName')"><i class="icon-trash bigger-120"></i></button>
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+                                }                                
+                            </tbody>
+                            <tfoot style="display:none;">
+                                <tr style="background-color:gainsboro">
+                                    <td colspan="6" style="text-align:right;">
+                                        <b><i>Cho mượn :</i>@Model.Total_borrow</b><br />
+                                        <b><i>Còn lại :</i>@Model.Total_in_stock</b><br />
+                                        <b><i>Tổng số :</i>@Model.Total_store</b> 
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <script type="text/javascript">
+                            $(function() {
+                                $('#chk_is_show').click(function() {
+                                    $("#is_show").val(this.checked);
+                                });
+                                $('#chk_is_hot').click(function() {
+                                    $("#is_hot").val(this.checked);
+                                });
+                                $('#chk_is_promotion').click(function() {
+                                    $("#is_promotion").val(this.checked);
+                                });
+                            });
+                            function ConfirmDelete(id, name) {
+                                if (confirm('Bạn thực hiện xóa:' + name)) {
+                                    if (typeof id != 'undefined' && typeof id != null) {
+                                        $("#id").val(id);
+                                        $("#type_act").val("@Web.Models.CommonGlobal.Delete");
+                                        $('form').submit();
+                                    }
+                                }
+                            }
+
+                            function UpdateStatusIsShowProduct(id, status) {
+                                var type = '@Model.Type';
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "@Url.Action("update_status_is_show_product", "adminProduct")",
+                                    data: '{id: "' + id + '",status: "' + status + '",type: "' + type + '" }',
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: 'json',
+                                    success: function (results) {
+                                        if (typeof results != 'undefined' && typeof results != null) {
+                                            $('#label_' + id).html(" " + results.split("|")[0]);    ////date modified
+                                            var data = results.split("|")[1];   ////data
+                                            if (data == "true" || data == "True") {
+                                                $("#chkIsShow_" + id).prop("checked", true);
+                                                $("#chkIsShow_" + id).attr("onclick", "UpdateStatusIsShowProduct('" + id + "','false')");
+                                            } else {
+                                                $("#chkIsShow_" + id).prop("checked", false);
+                                                $("#chkIsShow_" + id).attr("onclick", "UpdateStatusIsShowProduct('" + id + "','true')");
+                                            }
+                                        }
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        ////alert(errorThrown + ";" + textStatus);
+                                    }
+                                });
+                            }
+
+                            function UpdateStatusIsHotProduct(id, status) {
+                                var type = '@Model.Type';
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "@Url.Action("update_status_is_hot_product", "adminProduct")",
+                                    data: '{id: "' + id + '",status: "' + status + '",type: "' + type + '" }',
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: 'json',
+                                    success: function (results) {
+                                        if (typeof results != 'undefined' && typeof results != null) {
+                                            $('#label_' + id).html(" " + results.split("|")[0]);    ////date modified
+                                            var data = results.split("|")[1];   ////data
+                                            if (data == "true" || data == "True") {
+                                                $("#chkIsHot_" + id).prop("checked", true);
+                                                $("#chkIsHot_" + id).attr("onclick", "UpdateStatusIsHotProduct('" + id + "','false')");
+                                            } else {
+                                                $("#chkIsHot_" + id).prop("checked", false);
+                                                $("#chkIsHot_" + id).attr("onclick", "UpdateStatusIsHotProduct('" + id + "','true')");
+                                            }
+                                        }
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        ////alert(errorThrown + ";" + textStatus);
+                                    }
+                                });
+                            }
+
+                            function UpdateStatusIsPromotionProduct(id, status) {
+                                var type = '@Model.Type';
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "@Url.Action("update_status_is_promotion_product", "adminProduct")",
+                                    data: '{id: "' + id + '",status: "' + status + '",type: "' + type + '" }',
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: 'json',
+                                    success: function (results) {
+                                        if (typeof results != 'undefined' && typeof results != null) {
+                                            $('#label_' + id).html(" " + results.split("|")[0]);    ////date modified
+                                            var data = results.split("|")[1];   ////data
+                                            if (data == "true" || data == "True") {
+                                                $("#chkIsPromotion_" + id).prop("checked", true);
+                                                $("#chkIsPromotion_" + id).attr("onclick", "UpdateStatusIsPromotionProduct('" + id + "','false')");
+                                            } else {
+                                                $("#chkIsPromotion_" + id).prop("checked", false);
+                                                $("#chkIsPromotion_" + id).attr("onclick", "UpdateStatusIsPromotionProduct('" + id + "','true')");
+                                            }
+                                        }
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        ////alert(errorThrown + ";" + textStatus);
+                                    }
+                                });
+                            }
+                            
+                        </script>
+
+                        <script type="text/javascript">
+                            var BASE_URL = '/vi/';
+                            var productId = 0;
+                            var productUrl = "";
+
+                            function ViewImgOnline(id) {
+                                var frameSrc = "/Scripts/turnjs/samples/docs/index.html";
+                                productId = id;
+                                $('#productModal').on('shown.bs.modal', function () {
+                                    $(this).find('iframe').attr('src', frameSrc);
+                                });
+
+                                $('#productModal').modal('show');
+                            }
+
+                            function loadDataAjax(url, dataInput, callbacks) {
+                                var options = {
+                                    url: url,
+                                    method: "GET",
+                                    data: dataInput,
+                                    dataType: "application/json"
+                                };
+
+                                options.complete = function (response) {
+                                    try {
+                                        if (callbacks) {
+                                            callbacks($.parseJSON(response.responseText));
+                                        }
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                };
+
+                                return $.ajax(options);
+                            }
+
+                            function ViewPdfOnline(id) {
+                                var url = BASE_URL + "Product/GetPictureByProductId",
+                                    dataInput = { productId: id, page: 1 };
+
+                                loadDataAjax(url, dataInput, function (jsonData) {
+                                    productUrl = jsonData.Url;
+                                    var frameSrc = "/Scripts/pdfjs/web/viewer.html";
+
+                                    $('#productModal').on('shown.bs.modal', function () {
+                                        var dialog = $(this);
+
+                                        $.ajax({
+                                            url: frameSrc,
+                                            success: function (result) {
+                                                dialog.find('.modal-body').html(result);
+                                                initPdfViewer(productUrl);
+                                            }
+                                        });
+                                    });
+
+                                    $('#productModal').modal('show');
+                                });
+                            }
+
+                            function resizeFrame(content) {
+                                var fr = $('iframe');
+                                fr.height(content.height() + 150);
+                                fr.width(content.width() + 200);
+                                $('#productModal').find('.modal-dialog').css({
+                                    width: fr.width(), //probably not needed
+                                    height: fr.height(), //probably not needed
+                                    'max-height': '100%'
+                                });
+                            }
+
+                            function initPdfViewer() {
+                                // If absolute URL from the remote server is provided, configure the CORS
+                                // header on that server.
+                                var url = productUrl;
+
+                                // The workerSrc property shall be specified.
+                                PDFJS.workerSrc = '/Scripts/pdfjs/build/pdf.worker.js';
+
+                                var pdfDoc = null,
+                                    pageNum = 1,
+                                    pageRendering = false,
+                                    pageNumPending = null,
+                                    scale = 1,
+                                    canvas = document.getElementById('the-canvas'),
+                                    ctx = canvas.getContext('2d');
+
+                                /**
+                                 * Get page info from document, resize canvas accordingly, and render page.
+                                 * @@param num Page number.
+                                 */
+                                function renderPage(num) {
+                                    pageRendering = true;
+                                    // Using promise to fetch the page
+                                    pdfDoc.getPage(num).then(function (page) {
+                                        var viewport = page.getViewport(scale);
+                                        canvas.height = viewport.height;
+                                        canvas.width = viewport.width;
+
+                                        // Render PDF page into canvas context
+                                        var renderContext = {
+                                            canvasContext: ctx,
+                                            viewport: viewport
+                                        };
+                                        var renderTask = page.render(renderContext);
+
+                                        // Wait for rendering to finish
+                                        renderTask.promise.then(function () {
+                                            pageRendering = false;
+                                            if (pageNumPending !== null) {
+                                                // New page rendering is pending
+                                                renderPage(pageNumPending);
+                                                pageNumPending = null;
+                                            }
+                                        });
+                                    });
+
+                                    // Update page counters
+                                    $(document).find('#pageNumber').val(pageNum);
+                                }
+
+                                /**
+                                 * If another page rendering in progress, waits until the rendering is
+                                 * finised. Otherwise, executes rendering immediately.
+                                 */
+                                function queueRenderPage(num) {
+                                    if (pageRendering) {
+                                        pageNumPending = num;
+                                    } else {
+                                        renderPage(num);
+                                    }
+                                }
+
+                                /**
+                                 * Displays previous page.
+                                 */
+                                function onPrevPage() {
+                                    if (pageNum <= 1) {
+                                        return;
+                                    }
+                                    pageNum--;
+                                    queueRenderPage(pageNum);
+                                }
+                                document.getElementById('previous').addEventListener('click', onPrevPage);
+
+                                /**
+                                 * Displays next page.
+                                 */
+                                function onNextPage() {
+                                    if (pageNum >= pdfDoc.numPages) {
+                                        return;
+                                    }
+                                    pageNum++;
+                                    queueRenderPage(pageNum);
+                                }
+                                document.getElementById('next').addEventListener('click', onNextPage);
+
+                                function onPagePress(input) {
+                                    var val = $.trim(input);
+
+                                    if (!isInt(val)) {
+                                        return false;
+                                    }
+
+                                    val = parseInt(val);
+                                    if (val >= pdfDoc.numPages || val <= 0) {
+                                        return false;
+                                    }
+
+                                    pageNum = val;
+
+                                    queueRenderPage(pageNum);
+                                }
+
+                                document.getElementById('pageNumber').addEventListener('keypress', function (e) {
+                                    var key = e.which || e.keyCode;
+                                    if (key === 13) { // 13 is enter
+                                        onPagePress(this);
+                                        return false;
+                                    }
+                                });
+
+                                function isInt(value) {
+                                    return !isNaN(value) && (function (x) { return (x | 0) === x; })(parseFloat(value))
+                                }
+
+                                /**
+                                 * Asynchronously downloads PDF.
+                                 */
+                                PDFJS.getDocument(url).then(function (pdfDoc_) {
+                                    pdfDoc = pdfDoc_;
+                                    document.getElementById('numPages').textContent = '/' + pdfDoc.numPages;
+
+                                    // Initial/first page rendering
+                                    renderPage(pageNum);
+                                });
+                            }
+
+                        </script>
+                        <script src="/Scripts/pdfjs/build/pdf.js"></script>
+                        <div class="pagination">
+
+                            @Html.AjaxPager(  ////PagerHelper
+                            Model.Total_record,
+                            Model.Page_size,
+                            Model.Page,
+                            Model.Parent_action,//action
+                            Model.Parent_controller,//controller
+                            "admin_default",  ////routeName
+                            new PagerOptions  ////page option
+                            {
+                                PageIndexParameterName = "page",
+                                ShowNumericPagerItems = true,
+                                ShowPrevNext = true,
+                                FirstPageText = "&#171;",
+                                LastPageText = "&#187;",
+                                NextPageText = "&#155;",
+                                PrevPageText = "&#139;",
+                                ContainerTagName = "ul",
+                                CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+                                CssClass = "pagination",
+                                PagerItemWrapperFormatString = "<li>{0}</li>"
+                            },
+                            new { act = "list_product", ctrl = "adminProduct", parent = Model.Parent, type = Model.Type, lang = Model.Lang, search = Model.Search, order_by = Model.Order_by, order_type = Model.Order_type }, //// routeValues
+                            new AjaxOptions { UpdateTargetId = "list_paging_ajax" },  ////ajax option
+                            null
+                            )
+
+                        </div>
+                        <input type="hidden" id="act" name="act" value="@Model.Act" />
+                        <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                        <input type="hidden" id="type" name="type" value="@Model.Type" />
+                        <input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+                        <input type="hidden" id="id" name="id" />
+                        <input type="hidden" id="is_show" name="is_show" />
+                        <input type="hidden" id="is_hot" name="is_hot" />
+                        <input type="hidden" id="is_promotion" name="is_promotion" />
+
+                        <div class="form-actions">
+                            <a class="btn btn-info" style="margin-bottom: 10px;" href="@Url.Action("Export_documentProduct", "adminOrder", new { type_export = 1, parent =  Model.Parent, act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View, search = Model.Search, page = Model.Page, page_size = Model.Page_size, order_by = Model.Order_by, order_type = Model.Order_type , is_show = Model.Is_show, is_hot = Model.Is_hot, is_promotion = Model.Is_promotion })"> Export Excel<i class="fa fa-file-excel-o bigger-110 icon-on-right"></i></a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a class="btn btn-info" style="margin-bottom: 10px;" href="@Url.Action("Export_documentProduct", "adminOrder", new { type_export = 2, parent =  Model.Parent, act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View, search = Model.Search, page = Model.Page, page_size = Model.Page_size, order_by = Model.Order_by, order_type = Model.Order_type, is_show = Model.Is_show, is_hot = Model.Is_hot, is_promotion = Model.Is_promotion  })"> Export Word<i class="fa fa-file-word-o bigger-110 icon-on-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.span-->
+    </div>
+    <!--/.row-fluid-->
+    <!-- Modal -->
+        <div class="modal fade modal-lg" id="productModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body" id="viewerBody">
+                        <iframe src="" style="width:100%; height:100%" frameborder="0"></iframe>
+                    </div><!-- .modal-body -->
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div>
+    <!-- END Modal -->
+}

@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Areas/admin/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.Areas.Admin.ViewModels.Index_view
+@{Html.RenderAction(Model.Act, Model.Ctrl);}
+<input type="hidden" id="act" name="act" value="@Model.Act"/>
+<input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl"/>
+<input type="hidden" id="type_act" name="type_act" value="@Model.Type_act" />
+<input type="hidden" id="type" name="type" value="@Model.Type" />
+<input type="hidden" id="return_url" name="return_url" value="@Model.Return_url" />

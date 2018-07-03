@@ -1,0 +1,83 @@
+.action-button li a:hover,
+h2.product-name a:hover,
+.product-tab-menu-style-two li a:hover,
+.product-tab-menu-style-two li.active a,
+.shop-blog-content h4 a:hover,
+.shop-blob-meta a:hover,
+.ev-account > li a:hover,
+.tc-mark,
+.cart-details h5 a:hover,
+.total-price a,
+.primary-menu > ul > li:hover > a,
+.shop-header-meta > li ul li:hover > a,
+.promo-borderd-style .shop-icon i,
+.product-tab-menu-style-three li.active a,
+.header-v3 .shop-header-top .top-action-area > li:hover > a,
+.user-meta > li:hover > a,
+.shop-header-meta.pull-right li:hover > a,
+.product-tab-menu.product-tab-menu-style-ex > li.active > a,
+.top-action-area > li:hover > a,
+.header-social-bookmark ul li a:hover{
+	color: #e98f2e;
+}
+.product-carousel-style-one.owl-theme .owl-controls .owl-buttons div:hover,
+.catr-count{
+	background: #e98f2e;
+}
+.ev-news-letter button,
+.quick-add-to-cart .single_add_to_cart_button,
+.product-tab-menu > li.active::after {
+  background: #e98f2e none repeat scroll 0 0;
+}
+.ev-news-letter button:hover,
+.top-search-form button:hover,
+.quick-add-to-cart .single_add_to_cart_button:hover{
+	background: #e8871e;
+}
+.chairman-dropdown > li:hover > a {
+  background: #e98f2e none repeat scroll 0 0;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+a#scrollUp:hover,
+body .readon.large:hover {
+  background: #e98f2e none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.cart-details-wrapper,
+.user-meta,
+.shop-header-meta > li ul,
+.shop-header-meta > li ul {
+  border-top: 3px solid #e98f2e;
+}
+.top-search-form button,
+.add-to-cart-shop{
+	background: #e98f2e;
+}
+.action-button li a:hover,
+.product-carousel-style-three.owl-theme .owl-controls .owl-buttons div:hover {
+  color: #fff;
+  background: #e98f2e;
+}
+.border-banner-area-hand{
+  margin-bottom: 40px;
+}
+.add-to-cart-shop:hover {
+  background: #ffffff none repeat scroll 0 0;
+  border: 1px solid;
+  color: #e98f2e;
+}
+.shop-promotion-area {
+  padding: 0 0 50px;
+}
+.header-top-content-wrap {
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
+}
+body .readon.large:hover{
+  border: 2px solid transparent;
+}

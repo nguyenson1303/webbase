@@ -1,0 +1,74 @@
+a:hover,
+.header-v3 .primary-menu > ul > li:hover > a,
+.header-v3 .top-action-area > li:hover > a,
+.user-meta > li:hover a,
+h2.product-name a:hover,
+.action-button.text-center li a:hover,
+.shop-banner-area h3:hover,
+.product-tab-menu > li a:hover,
+.product-tab-menu > li.active a,
+.shop-header-meta.pull-right li ul li:hover a,
+.top-action-area.pull-right li:hover > a,
+.shop-header-meta.pull-right > li:hover > a,
+.tc-mark,
+.menu-left-align .primary-menu > ul > li:hover > a,
+.spical-price,
+.ev-dark-bg-footer .ev-account > li a:hover,
+.cart-details h5 a:hover{
+	color: #1abc9c;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.user-meta,
+.cart-details-wrapper {
+  border-top: 3px solid #1abc9c;
+}
+.chairman-dropdown > li:hover > a,
+.product-tab-menu > li.active::after,
+.quick-add-to-cart .single_add_to_cart_button,
+.catr-count,
+.top-search-form button,
+.onsale li:first-child {
+  background: #1abc9c none repeat scroll 0 0;
+}
+.quick-add-to-cart .single_add_to_cart_button:hover,
+.top-search-form button:hover,
+.ev-news-letter button:hover{
+	background: #17a488;
+}
+.header-v3 .top-action-area > li > a {
+  color: #323334;
+}
+.chairman-sub-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+a#scrollUp:hover,
+.btn-hoverd {
+  background: #1abc9c none repeat scroll 0 0 !important;
+  color: #fff !important;
+}
+.ev-dark-bg-footer .top-search-form button:hover {
+  background: #0ba183 none repeat scroll 0 0;
+}
+.tc-mark:hover{
+	color: #999;
+}
+.header-v3 .primary-menu > ul > li > a {
+  padding: 20px 0px 0px 0px;
+}
+.header-v3 .top-action-area > li > a {
+	padding: 43px 0;
+}
+.header-v3 .logo {
+  padding: 5px 0;
+}
+.btn-hoverd{ 
+  border: 2px solid transparent  !important;
+}
+.name_soft{
+    margin: 40px 0px 10px 45px;
+    color: khaki;
+    font-weight: bold;
+    font-size: 16px;
+}

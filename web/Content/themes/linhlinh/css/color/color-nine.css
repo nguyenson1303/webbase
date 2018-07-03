@@ -1,0 +1,67 @@
+.menu-left-align .primary-menu > ul > li:hover > a,
+.header-v7 .shop-header-meta.pull-right > li:hover > a,
+.shop-header-meta.pull-right > li ul li:hover > a,
+.header-v7 .ht-dirk.top-action-area > li:hover > a,
+.cart-details h5 a:hover,
+.cart-details > p,
+.total-price a,
+.product-tab-menu > li:hover a,
+.product-tab-menu > li.active  a,
+.action-button li a:hover,
+h2.product-name a:hover,
+.spical-price,
+.columned-banner-text.text-right a:hover,
+.tc-mark,
+.ev-dark-bg-footer .ev-account > li a:hover,
+.user-meta > li > a:hover,
+.add-to-cart.single-p-box{
+	color: #c69c60;
+}
+.chairman-dropdown > li:hover > a,
+.single-mega-child li:hover a,
+.quick-add-to-cart .single_add_to_cart_button,
+a#scrollUp:hover,
+.btn-hoverd {
+  background: #c69c60 none repeat scroll 0 0;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown > li:hover > a {
+  background: #c69c60 none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu,
+.shop-header-meta.pull-right > li ul,
+.user-meta,
+.cart-details-wrapper {
+  border-top: 3px solid #c69c60;
+}
+.catr-count{
+	background: #c69c60;
+}
+.top-search-form button,
+.onsale li:hover,
+.product-tab-menu > li.active::after,
+.onsale li:first-child {
+  background: #c69c60 none repeat scroll 0 0;
+}
+.top-search-form button:hover{
+	background: #ac8042;
+}
+.ev-news-letter button {
+  background: #c69c60 none repeat scroll 0 0;
+}
+.ev-news-letter button:hover {
+	background: #b07d34;
+}
+.add-to-cart.single-p-box:hover{
+  color: #323334;
+}
+.quick-add-to-cart .single_add_to_cart_button:hover{
+  background: #c48e41;
+}
+.btn-hoverd{ 
+  border: 2px solid transparent  !important;
+}

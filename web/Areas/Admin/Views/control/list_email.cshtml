@@ -1,0 +1,226 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.Areas.Admin.ViewModels.List_email_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "list_email_template", enctype = "multipart/form-data" }))
+{
+    <div class="page-header position-relative">
+        <h1>Email marketing  @*<small><i class="icon-double-angle-right"></i></small>*@
+        </h1>
+    </div>
+    <!--/.page-header-->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    @Html.Raw(Model.Html_link_tab)
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active">
+                        @{if (!string.IsNullOrEmpty(Model.Message))
+                          {
+                            <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="icon-remove"></i>
+                                </button>
+                                <strong>@Model.Message</strong>
+                                <br />
+                            </div>
+                          }
+                        }
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Gửi All</label>
+                                <div class="controls">
+                                    <input type="checkbox" id="chkIsSendAll" name="chkIsSendAll" class="ace-switch ace-switch-3" @Html.Raw(Model.IsSendAllText) onclick="CheckBoxSendAll()" />
+                                    <span class="lbl"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Tiêu đề</label>
+                                <div class="controls">
+                                    <input type="text" id="emailSubject" name="emailSubject" class="span6" value="@Html.Raw(Model.SubjectEmail)" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Nội dung mẫu</label>
+
+                                <div class="controls">
+                                    @{ SelectList list_template = new SelectList(Model.ListTemplate, "Value", "Text", @Model.Parent);}
+                                    @Html.DropDownListFor(m => m.Parent, list_template, new { @class = "form-control", @onChange = "call_ajax(this);" })
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Nội dung</label>
+                                <div class="controls">
+                                    @*<input type="text" id="emailBody" name="emailBody" class="span6" />*@
+                                    <textarea id="emailBody" name="emailBody" class="span11 ckeditor" style="width: 100%; height: 500px">@Html.Raw(Model.BodyEmail)</textarea>
+                                </div>
+                            </div>
+                            <table cellpadding="0" cellspacing="0" style="width:100%" class="inputCheckbox table table-striped table-bordered table-hover" id="list_paging_ajax">
+                                <tbody>
+                                    <tr>
+                                        <th style="text-align: center">
+                                            <input type="checkbox" id="chkCheckALL" name="chkCheckALL" onclick="checkall('chkCheckALL', 'strCheck')" />
+                                        </th>
+                                        <th><a class="asc">@Lang.strName</a></th>
+                                        <th><a>@Lang.strPhone</a></th>
+                                        <th><a>Email</a></th>
+                                        <th><a>@Lang.strAddress</a></th>
+                                        <th style="width: 96px; text-align: center">Chức năng</th>
+                                    </tr>
+                                    @{
+                                       string strClassCheck = "strCheck";
+                                       for (int i = 0; i < Model.ListEmail.Count; i++)
+                                       {
+                                           string add = "chk_" + Model.ListEmail[i].id;
+                                           string email = "email_" + Model.ListEmail[i].id;
+                                    <tr>
+                                        <input type="hidden" id="@email" name="@email" value="@Model.ListEmail[i].email" />
+                                        <td style="text-align: center; width: 8%">@Html.CheckBox(add, false, new { @class = strClassCheck })</td>
+                                        <td>@Model.ListEmail[i].name</td>
+                                        <td>@Model.ListEmail[i].phone</td>
+                                        <td>@Model.ListEmail[i].email</td>
+                                        <td>@Model.ListEmail[i].address</td>
+                                        <td style="width: 96px; text-align: center">
+                                            <button type="submit" class="btn btn-mini btn-danger" onclick="ConfirmDelete(@Model.ListEmail[i].id, '@Model.ListEmail[i].email')"><i class="icon-trash bigger-120"></i></button>
+                                        </td>
+                                    </tr>
+                                       }
+                                    }
+                                </tbody>
+                            </table>
+                            <style>
+                                .inputCheckbox input[type="checkbox"]
+                                {
+                                    opacity: 100 !important;
+                                    position: static !important;
+                                    margin: 0 !important;
+                                }
+                            </style>
+
+                            <div class="pagination">
+
+                                @Html.AjaxPager(  ////PagerHelper
+                                Model.Total_record,
+                                Model.Page_size,
+                                Model.Page,
+                                Model.Parent_action,    ////action
+                                Model.Parent_controller,//controller
+                                "admin_default",  ////routeName
+                                new PagerOptions  ////page option
+                                {
+                                    PageIndexParameterName = "page",
+                                    ShowNumericPagerItems = true,
+                                    ShowPrevNext = true,
+                                    FirstPageText = "&#171;",
+                                    LastPageText = "&#187;",
+                                    NextPageText = "&#155;",
+                                    PrevPageText = "&#139;",
+                                    ContainerTagName = "ul",
+                                    CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+                                    CssClass = "pagination",
+                                    PagerItemWrapperFormatString = "<li>{0}</li>"
+                                },
+                                new { act = "list_post", ctrl = "adminPost", type = Model.Type, lang = Model.Lang }, //// routeValues
+                                new AjaxOptions { UpdateTargetId = "list_paging_ajax" },  ////ajax option
+                                null
+                                )
+                            </div>
+                            <input type="hidden" id="act" name="act" value="@Model.Act" />
+                            <input type="hidden" id="ctrl" name="ctrl" value="@Model.Ctrl" />
+                            <input type="hidden" id="type" name="type" value="@Model.Type" />
+                            <input type="hidden" id="isSendAll" name="isSendAll" value="@Html.Raw(Model.IsSendAll)" />
+                            <input type="hidden" id="type_act" name="type_act" />
+                            <input type="hidden" id="total_record_on_page" name="total_record_on_page" value="@Model.Total_record_on_page"/>
+                            <input type="hidden" id="email_id" name="email_id" />
+                            <input type="hidden" id="email_address" name="email_address" />
+
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit" id="save">
+                                    <i class="icon-save bigger-110"></i>
+                                    Gửi Email
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                 <a class="btn btn-info" href="@Url.Action("export_email", "adminEmail", new { act = Model.Act, ctrl = Model.Ctrl, type_act = Web.Models.CommonGlobal.View })">Export Email To Excel<i class="fa fa-file-excel-o bigger-110 icon-on-right"></i></a>
+                                &nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset" onclick="clearValidation($('#change_post_form'));">
+                                <i class="icon-undo bigger-110"></i>
+                                Reset
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.span-->
+    </div>
+    <!--/.row-fluid-->
+    
+    <script type="text/javascript">
+        function checkall(id, css_name) {
+            $(document).ready(function () {
+                $(document).ready(function () {
+                    $("#" + id).change(function () {
+                        $("." + css_name).prop('checked', $(this).prop("checked"));
+                    });
+                });
+            });
+        }
+        $(function () {
+            ////from validate
+            $("#list_email_template").validate({
+                errorElement: 'span',
+                errorClass: "error",
+                errorPlacement: function (error, element, value) {
+                    error.appendTo(element.parent('div:first'));
+                    element.parents('div:first').addClass("error");
+                },
+                rules: {
+                    txtSubject: {
+                        text_validate_default: true
+                    }
+                },
+                messages: {
+                    txtSubject: {
+                        text_validate_default: "Bạn cần nhập tiêu đề của email."
+                    }
+                }
+            });
+        });
+        function ConfirmDelete(id, name) {
+            if (confirm('Bạn thực hiện xóa:' + name)) {
+                if (typeof id != 'undefined' && typeof id != null) {
+                    $("#email_id").val(id);
+                    $("#email_address").val(name);
+                    $("#type_act").val("@Web.Models.CommonGlobal.Delete");
+                    $('form').submit();
+                }
+            }
+        }
+        function CheckBoxSendAll() {
+            if ($("#chkIsSendAll").is(':checked')) {
+                $("#isSendAll").val("true");
+            }
+            else {
+                $("#isSendAll").val("false");
+            }
+        }
+        function call_ajax(e) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("email_marketing_template", "adminEmail")',
+                data: '{id: "' + $(e).val() + '"}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (results) {
+                    CKEDITOR.instances['emailBody'].setData(results);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ////alert(errorThrown + ";" + textStatus);
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,50 @@
+a:hover,
+.primary-menu > ul > li:hover > a,
+.primary-menu > ul > li.current a,
+.header-social-bookmark ul li a:hover,
+.ev-author-content h4 a:hover,
+.aut-social > li a:hover,
+.single-collection > h4 a:hover,
+.up-ev-content a:hover,
+.ev-blog-content > h4 > a:hover,
+.ev-speaker-profile > li a:hover,
+.ev-speaker-details h4 a:hover,
+.re-post-content a:hover,
+.re-post-content > h4 > a:hover,
+.re-footer-menu a:hover,
+.food-menu-details.text-center a:hover,
+.re-post-content-boxed h4 a:hover{
+	color: #de2532;
+}
+.chairman-sub-dropdown, 
+.top-search-form, 
+.chairman-dropdown, 
+.chairman-mega-menu {
+  border-top: 3px solid #de2532;
+}
+.chairman-dropdown > li:hover > a,
+.chairman-sub-dropdown > li:hover > a,
+.single-mega-child li:hover > a {
+  background: #fff none repeat scroll 0 0 !important;
+  color: #de2532 !important;
+}
+.tc-mark{
+	color: #de2532;
+}
+.tc-mark:hover{
+	color: #ddd;
+}
+.ev-news-letter button {
+  background: #3b9ce7 none repeat scroll 0 0;
+}
+.ev-news-letter button:hover{
+	background: #de2532;
+}
+.ev-news-letter input {
+  padding: 0 10p;
+  height: 40px;
+}
+a#scrollUp:hover {
+  background: #de2532 none repeat scroll 0 0;
+  color: #ffffff;
+}
