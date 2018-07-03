@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@{Html.RenderAction("head", "control");}
+<div class="none">
+    <p><a href="#content">Skip to Content</a></p>
+</div>
+<!--.none-->
+<div id="main" class="">
+    <div class="container no-sidebar  no-vc no-sidebar  no-vc ">
+        @{Html.RenderAction("collection_list_all", "product", new { id = Model.cate_id, Link = Model.link, cate_type = Web.Models.CommonGlobal.CATE_COLLECTION, search = Model.text_search, tag = Model.tag, param = Model.param, style_list = Model.style_list });}
+        <!--#content-->
+        <div class="clear"></div>
+    </div>
+    <!--.container-->
+    @{Html.RenderAction("footer", "control");}
+    @{Html.RenderAction("cart_mini", "cart");}
+</div>
+<!--#main-->
+<style type="text/css">
+        .ozy-page-model-full #main > .container.no-vc,
+        .ozy-page-model-full.ozy-page-model-no-sidebar #content > div > article > div > .wpb_row.ozy-custom-full-row,
+        .ozy-page-model-full.ozy-page-model-no-sidebar #content > div > article > div > .wpb_row > .parallax-wrapper,
+        .ozy-page-model-has-sidebar #main > .container {
+            padding-left: 36px;
+            padding-right: 36px;
+        }
+
+        #nav-primary > nav > div > ul > li.menu-item-64 > a > span {
+            background-color: #ffffff;
+            color: #000000;
+            ;
+            padding: 10px;
+        }
+
+        .ozy-alternate-menu #nav-primary > nav > div > ul > li.menu-item-64 > a > span {
+            background-color: #000000;
+            color: #ffffff;
+            ;
+        }
+
+        a[href^=tel] {
+            color: inherit;
+            text-decoration: none;
+        }
+
+         /* Body Background Styling
+            /*-----------------------------------------------------------------------------------*/
+        body {
+            background-color: #000000;
+            background-repeat: inherit;
+        }
+
+        /* Layout and Layout Styling
+            /*-----------------------------------------------------------------------------------*/
+        #main,
+        .main-bg-color {
+            background-color: rgba(255,255,255,1);
+        }
+
+            #main.header-slider-active > .container,
+            #main.footer-slider-active > .container {
+                margin-top: 0px;
+            }
+
+        .ozy-header-slider {
+            margin-top: px;
+        }
+
+        /* Specific heading styling
+            /*-----------------------------------------------------------------------------------*/
+        #page-title-wrapper {
+            height: 100px;
+        }
+
+        #main {
+            margin-top: 150px;
+        }
+
+        body.ozy-page-locked #main,
+        body.no-page-title #main {
+            margin-top: 150px;
+        }
+
+        /* Conditional Page Template Styles
+            /*-----------------------------------------------------------------------------------*/
+        .ozy-grid-gallery .info {
+            background-color: #f33337;
+        }
+        .ozy-grid-gallery .info h3 a {
+            color: #fff !important;
+        }
+        .vc_custom_1413581957566 {
+            margin-top: 0px !important;
+            padding-top: 70px !important;
+            margin:0 auto !important;
+        }
+        #content.no-vc {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+        }
+</style>

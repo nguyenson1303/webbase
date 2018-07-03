@@ -1,0 +1,212 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @Html.Raw(ViewBag.meta)
+    <title>@ViewBag.Title</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/style.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/fonts/raleway/raleway.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/fonts/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/fonts/playfair-display/playfair-display.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/plugin/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/plugin/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/themify-icons.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/animate.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/bootstrap-datepicker3.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/nice-select.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/lightgallery.css">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/bootstrap-datetimepicker.min.css" media="screen">
+    <link rel="stylesheet" href="/Content/themes/themanorcentralpark/css/semantic.css" type="text/css">
+</head>
+<body oncontextmenu="return false;">
+    <div class="vk-sparta-menu-left-dark">
+        <!-- Mobile nav -->
+        @{Html.RenderAction("menu_account_head", "account");}
+        
+        <nav class="visible-sm visible-xs mobile-menu-container mobile-nav vk-menu-mobile-nav">
+            <div class="menu-mobile-nav navbar-toggle">
+                <span class="icon-bar"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                <span class="icon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+            </div>
+            <div id="cssmenu" class="animated">
+                <div class="uni-icon-close">
+                    <span class="ti-close"></span>
+                </div>                
+                <ul class="nav navbar-nav">
+                    @{Html.RenderAction("menu_main_mobile", "control");}
+                </ul>
+                <div class="uni-nav-mobile-bottom">                    
+                    <div class="form-search-wrapper-mobile">
+                        @{Html.RenderAction("search_box", "control");}
+                        @*<div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <span class="input-group-addon success"><i class="fa fa-search"></i></span>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </nav>
+        <!-- End mobile menu -->
+        <div class="animsition main-wrapper">
+            @{Html.RenderAction("head", "control");}
+            <!--content-->
+            <div id="main-content" class="site-main-content">
+
+                <div class="side-body">
+                    <div id="home-main-content" class="site-home-main-content">
+                        <div class="container-fluid">
+                            <div class="row">
+
+                                @RenderBody()
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @{Html.RenderAction("footer", "control");}
+
+                <!-- Latest compiled and minified JavaScript -->
+                <script src="/Content/themes/themanorcentralpark/js/jquery.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery1.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/plugin/dist/owl.carousel.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/bootstrap.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery.waypoints.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/number-count/jquery.counterup.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/isotope.pkgd.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery-ui.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/bootstrap-datepicker.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/bootstrap-datepicker.tr.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/moment.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/wow.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+                <script src="/Content/themes/themanorcentralpark/js/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+                <script src="/Content/themes/themanorcentralpark/js/picturefill.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lightgallery.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-pager.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-autoplay.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-fullscreen.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-zoom.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-hash.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/lg-share.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery.nice-select.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/semantic.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/parallax.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery.nicescroll.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/jquery.maphilight.min.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/BigVideo/lib/video.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/BigVideo/lib/bigvideo.js"></script>
+                <script src="/Content/themes/themanorcentralpark/js/main.js"></script>
+
+                @*All theme*@
+                <script type="text/javascript">
+                var link_add_cart = '@Url.Action("add_to_cart", "cart")';
+                var link_add_compare = '@Url.Action("add_to_compare", "product")';
+                var link_add_wishlist = '@Url.Action("process_wishlist", "product")';
+                var link_product_detail = '@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product" })'; ////"@Url.RouteUrl("Default_Link", new { controller = "product", action = "product" })";
+                var link_rating = '@Url.Action("add_to_rating", "control")';
+                var link_remove_from_cart = '@Url.Action("remove_from_cart", "cart")';
+                var link_update_product_number_cart = '@Url.Action("Update_product_number_cart", "cart")';
+                var email_marketing = '@Url.Action("email_marketing", "control")';
+                var search_product_link = '@Url.Action("search", "product")';
+                var get_list_image_product ='@Url.Action("getListImageProduct", "product")';
+                </script>
+                <script src="/Scripts/jquery.maskedinput.min.js?v=1.0"></script>
+                <script src="/Scripts/jquery.ba-outside-events.min.js?v=1.0"></script>
+                <script src="/Scripts/shop.js?v=1.1"></script>
+                <script src="/Scripts/jquery.validate.js"></script>
+                <script src="/Scripts/validate-menthod.js?v=1.0"></script>
+
+                <link rel="stylesheet" type="text/css" href="/Scripts/filterable/css/portfolio.css" />
+                <script src="/Scripts/filterable/js/filterable.pack.js"></script>
+
+                @*Gallery*@
+                <!-- Fresco -->
+                <script type="text/javascript" src="/Scripts/frescojs/js/fresco/fresco.js"></script>
+                <link rel="stylesheet" type="text/css" href="/Scripts/frescojs/css/fresco/fresco.css" />
+                <!-- Isotope -->
+                <script type="text/javascript" src="/Scripts/frescojs/js/isotope/jquery.isotope.min.js"></script>
+                <link rel="stylesheet" type="text/css" href="/Scripts/frescojs/css/isotope.css" />
+                <link rel="stylesheet" href="/Scripts/frescojs/css/custom.css" type="text/css" />
+                <div id="js_gallery"></div>
+                @{
+                    Web.Models.WebInfoModels extendm = new Web.Models.WebInfoModels();
+                }
+                @Html.Raw(extendm.GetContent(Web.Models.CommonGlobal.GoogleAnalysis))
+                @Html.Raw(extendm.GetContent(Web.Models.CommonGlobal.AppExtendOne))
+                @Html.Raw(extendm.GetContent(Web.Models.CommonGlobal.AppExtendTwo))
+                @{Html.RenderAction("chat_facebook", "control");}
+                @*@{Html.RenderAction("paneltool", "control");}*@
+                @*@{Html.RenderAction("chat_facebook", "control");}*@
+
+                <script language="JavaScript">
+                    window.onload = function () {
+                        document.addEventListener("contextmenu", function (e) {
+                            e.preventDefault();
+                        }, false);
+                        document.addEventListener("keydown", function (e) {
+                            //document.onkeydown = function(e) {
+                            // "I" key
+                            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                                disabledEvent(e);
+                            }
+                            // "J" key
+                            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                                disabledEvent(e);
+                            }
+                            // "S" key + macOS
+                            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                                disabledEvent(e);
+                            }
+                            // "U" key
+                            if (e.ctrlKey && e.keyCode == 85) {
+                                disabledEvent(e);
+                            }
+                            // "F12" key
+                            if (event.keyCode == 123) {
+                                disabledEvent(e);
+                            }
+                            // Ctrl + 'C'
+                            if (e.ctrlKey && event.keyCode == 67) {
+                                disabledEvent(e);
+                            }
+                            // Ctrl + 'V'
+                            if (e.ctrlKey && event.keyCode == 86) {
+                                disabledEvent(e);
+                            }
+                        }, false);
+                        function disabledEvent(e) {
+                            if (e.stopPropagation) {
+                                e.stopPropagation();
+                            } else if (window.event) {
+                                window.event.cancelBubble = true;
+                            }
+                            e.preventDefault();
+                            return false;
+                        }
+                    };
+                </script>
+
+                @*<script src="~/Scripts/webpjs-0.0.2.min.js"></script>
+        <script src="/Scripts/webp-main.js"></script>*@
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

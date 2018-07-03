@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Viperdb - Gallery Maker</title>
+
+
+<!-- jQuery -->
+<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+
+<!-- Fresco -->
+<script type="text/javascript" src="../js/fresco/fresco.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/fresco/fresco.css" />
+
+<!-- Isotope -->
+<script type="text/javascript" src="../js/isotope/jquery.isotope.min.js">
+</script>
+<!--<link rel="stylesheet" type="text/css" href="./css/style.css"/>-->
+<link rel="stylesheet" type="text/css" href="../css/isotope.css"/>
+    <link href="../css/custom.css" rel="stylesheet" type="text/css" />
+
+<!--<link rel="stylesheet" type="text/css" href="css/style.css" />-->
+<meta name="robots" content="noindex,nofollow" />
+</head>
+
+<body>
+	<div id='page'>
+
+		<!--<ul id="filters">
+			  <li><a href="#" data-filter="*">Show All</a></li>
+			  <h3>Sort by Family</h3>
+			  <li><a href="#" data-filter=".picornaviridae">Picornaviridae</a></li>
+			  <li><a href="#" data-filter=".siphoviridae">Siphoviridae</a></li>
+			  <li><a href="#" data-filter=".tombusviridae">Tombusviridae</a></li>
+		</ul>-->
+
+		<!--<div id="container" class="isotope clearfix" style="position: relative; overflow; hidden; height: 240px;">
+
+			<div class="virus picornaviridae">
+				<a href='images/frans_hals.jpg' 
+		    		class='fresco' 
+		     		data-fresco-group='example' 
+		     		data-fresco-caption="Frans Hals, Banquet of the Officers of the St George Civic Guard, 1627">
+		    		<img src='images/thumbnails/frans_hals.jpg' alt=''/>
+		  		</a>
+		  	</div>
+
+		  	<div class="virus siphoviridae">
+				<a href='images/reynolds.jpg' 
+				class='fresco' 
+			    data-fresco-group='example' 
+			    data-fresco-caption="Sir Joshua Reynolds, The Countess of Dartmouth, 1757"> 
+			    <img src='images/thumbnails/reynolds.jpg' alt=''/>
+				</a>
+			</div>
+			<div class="virus picornaviridae">
+				<a href='images/frans_hals.jpg' 
+		    		class='fresco' 
+		     		data-fresco-group='example' 
+		     		data-fresco-caption="Frans Hals, Banquet of the Officers of the St George Civic Guard, 1627">
+		    		<img src='images/thumbnails/frans_hals.jpg' alt=''/>
+		  		</a>
+		  	</div>
+		  	<div class="virus siphoviridae">
+				<a href='images/reynolds.jpg' 
+					class='fresco' 
+				    data-fresco-group='example' 
+				    data-fresco-caption="Sir Joshua Reynolds, The Countess of Dartmouth, 1757"> 
+				    <img src='images/thumbnails/reynolds.jpg' alt=''/>
+				</a>
+			</div>
+
+		</div>-->
+
+        <!--<div class="thumbnail" id="dorhout-mees">
+          <img src="images/thumbnails/frans_hals.jpg" alt="">
+          <div class="thumbnail-overlay"><!-- [] --></div>
+        </div>
+
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $('#dorhout-mees').bind('click', function () {
+                    Fresco.show([
+
+          {
+              url: '/images/default/index/dorhout-mees/01a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/01a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/01b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/01b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/02a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/02a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/02b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/02b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/03a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/03a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/03b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/03b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/03c.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/03c.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/04a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/04a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/04b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/04b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/04c.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/04c.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/05a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/05a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/05b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/05b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/06a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/06a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/06b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/06b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/07a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/07a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/07b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/07b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/08a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/08a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/08b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/08b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/09a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/09a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/09b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/09b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/10a.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/10a.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/10b.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/10b.jpg&w=240&h=240&zc=1'
+              }
+          },
+          {
+              url: '/images/default/index/dorhout-mees/10c.jpg',
+              caption: "Dorhout Mees - S/S 2015",
+              options: {
+                  thumbnail: '/assets/library/phpThumb/phpThumb.php?src=/images/default/index/dorhout-mees/10c.jpg&w=240&h=240&zc=1'
+              }
+          }
+        ]);
+                });
+            });
+  </script>-->
+  <div class='column demo-column'>
+    <div class='thumbnail' id='art'>
+      <img src='images/thumbnails/frans_hals.jpg' alt=''/>
+      <div class='thumbnail-overlay'><!-- [] --></div>
+    </div>
+
+    <div class='by'>Art - 1600-1800</div>
+  </div>
+
+  <script type='text/javascript'>
+      /* We are using the API for all demonstrations so we can have one element opening multiple images.
+      * http://www.frescojs.com/documentation/api
+      *
+      * The alternative is using class='fresco' on links, see:
+      * http://www.frescojs.com/documentation/usage
+      *
+      */
+      $(document).ready(function () {
+          $('#art').bind('click', function () {
+              Fresco.show([
+          { url: 'images/frans_hals.jpg', caption: "Frans Hals, Banquet of the Officers of the St George Civic Guard, 1627" },
+          { url: 'images/rembrandt.jpg', caption: "Rembrandt, The Night Watch, 1642" },
+          { url: 'images/charles_le_brun.jpg', caption: "Charles Le Brun, The Repentant Magdalen, 1655" },
+          { url: 'images/reynolds.jpg', caption: "Sir Joshua Reynolds, The Countess of Dartmouth, 1757" }
+        ]);
+          });
+      });
+  </script>
+
+		<!--<script>
+			$(function(){
+				var $container = $('#container');
+
+				$container.isotope({
+					filter: '.virus'
+				});
+
+				$('#container').isotope({ layoutMode : 'fitRows' });
+
+				$('#filters a').click(function(){
+					var selector = $(this).attr('data-filter');
+					$container.isotope({filter:selector});
+					return false;
+				})
+			});
+
+		</script>-->
+
+	<!--	<form action="" method="">
+			<select name="virus1">
+				<option value="1">1</option>
+				<option value="1">1</option>
+				<option value="1">1</option>
+			</select>
+			<select name="virus2">
+				<option value="2">2</option>
+				<option value="2">2</option>
+				<option value="2">2</option>
+			</select>
+			<button onclick="myFunction()">Compare Images</button>
+		</form>!-->
+
+
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<!-- Featured product area start -->
+<div class="featured-product-area margin-top-20" style="margin-top:20px">
+    <div class="container margin-top-30">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="shop-section-title-wrapper">
+                    <h4 class="shop-section-title">@Lang.strProductNew</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="product-carousel-wrapper product-carousel-style-one carousel-column-handelar">
+                @{
+                    if (Model != null)
+                    {
+                        for (int i = 0; i < Model.Count; i++)
+                        {
+                            <div class="col-md-3">
+                                <div class="product-wrapper">
+                                    <ul class="onsale">
+                                        <li class="sale-text">new</li>
+                                        @*<li class="sale-text">sale</li>*@
+                                    </ul>
+                                    <div class="product-image">
+                                        @{
+                                            var img = Model[i].ImagePath;
+                                            if (img == "0" || img == "" || img == null)
+                                            {
+                                                img = "/images/no-face2.png";
+                                            }
+                                        }
+                                        <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })">
+                                            <img class="first-img" src="@img" alt="@Model[i].ProductName">
+                                            <img class="second-img" src="@img" alt="@Model[i].ProductName">
+                                        </a>
+                                        <ul class="action-button text-center" style="display:none">
+                                            <li class="action-cart"><a onclick="AddToCart(@Model[i].ProductID,1,$(this))"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li class="action-heart"><a onclick="ProcessWishlish(@Model[i].ProductID,1,$(this))"><i class="fa fa-heart-o"></i></a></li>
+                                            <li class="action-files"><a onclick="AddToCompare(@Model[i].ProductID,1,$(this))"><i class="fa fa-files-o"></i></a></li>
+                                            @*<li class="action-search"><a data-target="#productModal" data-toggle="modal" class="modal-view detail-link quickview" href="#"><i class="fa fa-search"></i></a></li>*@
+                                        </ul>
+                                    </div>
+                                    <div class="gridview">
+                                        <h2 class="product-name">
+                                            <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })">@Web.Models.CommonGlobal.CutString(Model[i].ProductName, 200)</a>
+                                        </h2>
+                                        <div class="rating" style="display:none">
+                                            <ul>
+                                                <li><a href="#"><i class="fa fa-star-o"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star-o"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star-o"></i></a></li>
+                                                <li><a href="#" class="not-rated"><i class="fa fa-star-o"></i></a></li>
+                                                <li><a href="#" class="not-rated"><i class="fa fa-star-o"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="price-rate fix" style="display:none">
+                                            <div class="price-box pull-left">
+                                                <span class="spical-price">@Web.Models.CommonGlobal.FormatMoney(Model[i].PriceNew.ToString())</span>
+                                                <span class="old-price">@Web.Models.CommonGlobal.FormatMoney(Model[i].PriceOld.ToString())</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Featured product area end -->

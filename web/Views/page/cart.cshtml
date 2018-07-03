@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                @{Html.RenderAction("cart_full", "cart");}   
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->

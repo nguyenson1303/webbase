@@ -1,0 +1,39 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<div class="widget-block" id="property_box">
+    @{
+        if (Model != null && Model.Count > 0)
+        {
+            if (Model[0].Type == Web.Models.CommonGlobal.Color)
+            {
+                <h3 class="article-header">@Lang.strColor</h3>
+            }
+            else if (Model[0].Type == Web.Models.CommonGlobal.Size)
+            {
+                <h3 class="article-header">@Lang.strSize</h3>               
+            }
+            else { }
+
+            <ul class="colors clearfix list-unstyled">
+
+            @{for (int i = 0; i < Model.Count; i++)
+                {
+                    if (Model[i].Type == Web.Models.CommonGlobal.Color)
+                    {
+                    <li><input type="checkbox" class="checkbox" property="@Web.Models.CommonGlobal.Color" id="@Model[i].Value" value="@Model[i].Value" /> <a data-rel="@Model[i].Value.ToString().Replace("#", "")" title="@Model[i].Name"></a></li>
+                    }
+                    else if (Model[i].Type == Web.Models.CommonGlobal.Size)
+                    {
+                    <li><input type="checkbox" class="checkbox" property="@Web.Models.CommonGlobal.Size" id="@Model[i].Value" value="@Model[i].Value" />@Model[i].Name</li>
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                }
+            </ul>
+
+        }
+    }
+</div>

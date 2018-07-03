@@ -1,0 +1,10 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-blog-list-right-category">
+    <h4>@ViewBag.cate_type_text</h4>
+    @*<a href="@Url.RouteUrl("_product_only", new { controller = "product", action = "products" })"></a>*@
+    <ul>
+        @Html.Raw(Model)
+    </ul>
+</div>

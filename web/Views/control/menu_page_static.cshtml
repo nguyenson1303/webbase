@@ -1,0 +1,10 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<div class="header-for-light clearfix">
+    <h2>@Lang.mnuAbout</h2>
+</div>
+<nav class="catalog" id="catalog-menu">
+    <div class="panel list-group">
+        @Html.Raw(Model.ToString())
+    </div>
+</nav>

@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Order_register_view
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        @{
+                            if (int.Parse(Model.ItemCount) > 0)
+                            {
+                                <h3><i class="ion-ios-paper-outline"></i>@Lang.strOrderList</h3>
+                                <table class="shop_table cart" cellspacing="0">
+                                    <tbody>
+                                        @foreach (Web.Models.OrderItem it in Model.ShoppingCart)
+                                        {
+                                            <tr class="cart_item">
+                                                <td class="product-thumbnail" data-th="Image">
+                                                    <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = it.ProductID, Link = "" })">
+                                                        <img title="@it.ProductName" alt="@it.ProductName" src="@it.ImagePath" width="150" height="150" class="attachment-shop_thumbnail wp-post-image">
+                                                    </a>
+                                                </td>
+                                                <td class="product-name" data-th="Product Name">
+                                                    <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = it.ProductID, Link = it.ProductLink })">@Web.Models.CommonGlobal.CutString(it.ProductName.ToString(), 100)</a>@*&nbsp;&nbsp;@Html.Raw(it.Property_detail)*@
+                                                    <br />@Html.Raw(it.ItemQuatity) &nbsp; x &nbsp; @Html.Raw(Web.Models.CommonGlobal.FormatMoney(((it.Price) * (it.ItemQuatity)).ToString()))
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="widget widget_product_categories">
+                                    <ul class="product-categories">
+                                        <li class="cat-item">@Lang.strSumPrice:<strong>@Model.Sub_total</strong></li>
+                                        <li class="cat-item">@Lang.strTaxVAT: <strong>@Model.Tax</strong></li>
+                                        <li class="cat-item">@Lang.strFeeShipp: <strong>@Model.FeeShip</strong></li>
+                                        <li class="cat-item">
+                                            <hr>
+                                        </li>
+                                        <li class="cat-item"><b>@Lang.strTotal:</b> <strong id="subtt2">@Html.Raw(Model.Total)</strong></li>
+                                        <li class="cat-item"><strong id="subtt3">@Html.Raw(Model.Total_string)</strong></li>
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="col-md-7">
+                        <div class="block-form">
+                            <h3 class="form-heading">@Lang.strOrder</h3>
+                            <p><span class="text-error">@Model.Message</span></p>
+                            @using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "order_register_form", enctype = "multipart/form-data" }))
+                            {
+                                if (int.Parse(Model.ItemCount) > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p><input type="text" class="form-control" id="name" name="name" placeholder="@Lang.strName" value="@Model.Name"></p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p><input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" value="@Model.Email"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p><input type="text" class="form-control" id="phone" name="phone" placeholder="@Lang.strPhone" value="@Model.Phone"></p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p><input type="text" class="form-control" id="address" name="address" placeholder="@Lang.strAddress" value="@Model.Address"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p><input type="text" class="form-control" id="code" name="code" placeholder="@Lang.strCaptcha"></p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p><img class="captcha" src="@Url.Action("ShowCaptchaImage", "base")" /></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p>
+                                                <select name="gender" id="gender" class="form-control">
+                                                    <option value="@Lang.strMen">@Lang.strMen</option>
+                                                    <option value="@Lang.strWoman">@Lang.strWoman</option>
+                                                </select>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <textarea class="form-control" id="content" name="content" placeholder="@Lang.strContent" rows="10"></textarea>
+                                    </p>
+                                    <div>
+                                        <input type="submit" value="@Lang.strSendOrder" class="button primary">
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Raw(Lang.strCartEmpty)
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->
+

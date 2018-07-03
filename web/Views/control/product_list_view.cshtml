@@ -1,0 +1,48 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+@{
+    if (Model.ListView != null)
+    {
+        <div class="vk-blog-list-right-recent-post">
+            <h4>@Lang.strProductView</h4>
+            @{
+                if (Model.ListView != null)
+                {
+                    for (int i = 0; i < Model.ListView.Count; i++)
+                    {
+                        <div class="vk-recent-post-item">
+                            <div class="vk-recent-post-item-img">
+                                <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.ListView[i].ProductID, Link = Model.ListView[i].Link })"><img src="@Model.ListView[i].ImagePath" alt="@Model.ListView[i].ProductName" class="img-responsive"></a>
+                            </div>
+                            <div class="vk-recent-post-text">
+                                <h2><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.ListView[i].ProductID, Link = Model.ListView[i].Link })">@Web.Models.CommonGlobal.CutString(Model.ListView[i].ProductName, 200)</a></h2>
+                                @{
+                                    var priceForm = Convert.ToInt32(Model.ListView[i].PriceOld);
+                                    var priceTo = Convert.ToInt32(Model.ListView[i].PriceNew);
+                                    if ((priceForm != null && priceForm != 0) && (priceTo != null && priceTo != 0))
+                                    {
+                                        <div class="time">@Lang.strStartingForm : @priceForm - @priceTo tỷ/ <span>căn</span></div>
+                                    }
+                                    else if ((priceForm != null && priceForm != 0) && (priceTo == null || priceTo == 0))
+                                    {
+                                        <div class="time">@Lang.strStartingForm : @priceForm tỷ/ <span>căn</span></div>
+                                    }
+                                    else if ((priceForm == null || priceForm == 0) && (priceTo != null && priceTo != 0))
+                                    {
+                                        <div class="time">@Lang.strStartingForm : @priceTo tỷ/ <span>căn</span></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="time">@Lang.strStartingForm : liên hệ</div>
+                                    }
+                                }
+                                </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    }
+}
+

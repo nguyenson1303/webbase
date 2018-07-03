@@ -1,0 +1,46 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<!-- Product -slide -->
+<div class="heading-section text-center margin-top-25">
+    <img src="/Content/themes/lucky/images/icons/button3.png" class="padding-bottom-10" />
+    <h3 class="title"><a href="#" class="button_last_product">@Lang.strProductNew</a></h3>
+</div>
+<div class="section-product-slide">
+    <div class="container container_last_product">
+        <ul class="owl-carousel nav-center nav-style-1" data-loop="true" data-nav="true" data-dots="false" data-margin="10" data-responsive='{"0":{"items":1,"nav":"false"},"600":{"items":3},"1000":{"items":4}}'>
+            @{
+                if (Model != null)
+                {
+                    for (int i = 0; i < Model.Count; i++)
+                    {
+                        <li class="product-item style2">
+                            <div class="product-inner">
+                                <div class="thumb has-second-image">
+                                    <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })">
+                                        <img src="@Model[i].ImagePath" alt="@Model[i].ProductName">
+                                        @*<img class="second-image" src="images/products/2.jpg" alt="">*@
+                                    </a>
+                                    <div class="group-button">
+                                        <a onclick="ProcessWishlish(@Model[i].ProductID,1,$(this))" class="wishlist">@Lang.strWishlist</a>
+                                        <a onclick="AddToCart(@Model[i].ProductID,1,$(this))" class="button add_to_cart_button">@Lang.strAddToCart</a>
+                                        <a onclick="AddToCompare(@Model[i].ProductID,1,$(this))" class="compare button" >@Lang.strCompare</a>
+                                    </div>
+                                    <div class="flash">
+                                        <span class="new">New</span>
+                                    </div>
+                                    <a href="#" title="Quick View" class="button quick-view yith-wcqv-button">Quick View</a>
+                                </div>
+                                <div class="info">
+                                    <h3 class="product-name short"><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })">@Web.Models.CommonGlobal.CutString(Model[i].ProductName, 200)</a></h3>
+                                    <span class="price">@Web.Models.CommonGlobal.FormatMoney(Model[i].PriceNew.ToString())</span>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>
+<!-- Product -slide -->
+

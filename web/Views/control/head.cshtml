@@ -1,0 +1,50 @@
+﻿@using Web.App_GlobalResources
+
+<!--header-->
+<header class="vk-header vk-header-left-menu vk-header-home">
+    <nav class="vk-navbar  navbar navbar-default">
+        <div class="">
+            <div class="navbar-header">
+                <div class="brand-wrapper">
+                    <!-- Brand -->
+                    <div class="brand-name-wrapper">
+                        <a class="vk-navbar-brand" href="@Url.Action("index","home")">
+                            <img src="~/Content/themes/themanorcentralpark/images/logo/logo (3).png" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Menu -->
+            <div class="side-menu-container">
+                <ul class="nav navbar-nav">
+                    @{Html.RenderAction("menu_main", "control");}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+            <div class="clearfix"></div>
+            <div class="vk-btn-book-now hidden-sm hidden-xs">
+                <a href="@Url.Action("index","home")#bookingForm">@Lang.btnBookingNow</a>
+            </div>
+            <div class="vk-sidebar-menu-left-slogan hidden-sm hidden-xs">
+                <p>@Html.Raw(ViewBag.slogan)</p>
+            </div>
+            <div class="vk-sidebar-menu-left-address hidden-sm hidden-xs">
+                <p>@Html.Raw(ViewBag.address)</p>
+                <p>@Html.Raw(ViewBag.email)</p>
+            </div>
+            <div class="vk-sidebar-menu-left-footer hidden-sm hidden-xs">
+                <img src="@ViewBag.ImageMap" style="width:100%" />
+                <div class="vk-sidebar-menu-left-copyright">
+                    <p>@Lang.strHotline</p>
+                </div>
+                <div class="vk-sidebar-menu-left-language">
+                    <p>@Html.Raw(ViewBag.hotline)</p>
+                </div>
+            </div>
+            
+            @*@{Html.RenderAction("cart_mini", "cart");}*@
+        </div>
+    </nav>
+    <!--./vk-navbar-->
+    <div class="clearfix"></div>
+</header>
+<!--./vk-header-->

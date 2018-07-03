@@ -1,0 +1,83 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-sparta-dark-our-rooms">
+    <div class="container">
+        <div class="vk-sparta-head-title">
+            <h3>@Lang.strProductHot</h3>
+            <h2>@Lang.strProductHotLabel</h2>
+            <div class="vk-sparta-about-border"></div>
+        </div>
+        <div class="row">
+            <div class="vk-sparta-dark-our-rooms-content">
+                <div id="vk-owl-dark-our-rooms" class="vk-owl-one-item owl-carousel owl-theme">
+                    @{
+                        if (Model != null)
+                        {
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                <div class="item">
+                                    <div class="col-md-6 vk-dark-our-room-item-left  vk-clear-padding">
+                                        <div class="vk-dark-our-room-item-img">
+                                            <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })"><img src="@Model[i].ImagePath" alt="@Model[i].ProductName" class="img-responsive"></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 vk-dark-our-room-item-right vk-clear-padding">
+                                        <div class="vk-dark-our-room-item-content">
+                                            <h3><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model[i].ProductID, Link = Model[i].Link })">@Model[i].ProductName</a></h3>
+                                            
+                                            @Html.Raw(Model[i].Content)
+
+                                            <div class="vk-dark-our-room-item-book">
+                                                <div class="vk-dark-our-room-item-book-left">
+                                                    <ul>
+                                                        <li>
+                                                            <p>@Lang.strStartingForm : </p>
+                                                        </li>
+                                                        <li>
+                                                            @{
+                                                                var priceForm = Convert.ToInt32(Model[i].PriceOld);
+                                                                var priceTo = Convert.ToInt32(Model[i].PriceNew);
+                                                                if ((priceForm != null && priceForm != 0) && (priceTo != null && priceTo != 0))
+                                                                {
+                                                                    <p>@priceForm - @priceTo tỷ/ <span>căn</span></p>
+                                                                }
+                                                                else if ((priceForm != null && priceForm != 0) && (priceTo == null || priceTo == 0))
+                                                                {
+                                                                    <p>@priceForm tỷ/ <span>căn</span></p>
+                                                                }
+                                                                else if ((priceForm == null || priceForm == 0) && (priceTo != null && priceTo != 0))
+                                                                {
+                                                                    <p>@priceTo tỷ/ <span>căn</span></p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <p>liên hệ</p>
+                                                                }
+                                                            }                                                            
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="vk-dark-our-room-item-book-right">
+                                                    <a href="@Url.Action("index","home")#bookingForm"> @Lang.btnBookingNow <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    <ul class="action-button text-center" style="display:none">
+                                                        <li class="action-cart"><a onclick="AddToCart(@Model[i].ProductID,1,$(this))"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        <li class="action-heart"><a onclick="ProcessWishlish(@Model[i].ProductID,1,$(this))"><i class="fa fa-heart-o"></i></a></li>
+                                                        <li class="action-files"><a onclick="AddToCompare(@Model[i].ProductID,1,$(this))"><i class="fa fa-files-o"></i></a></li>
+                                                        <li class="action-search"><a data-target="#productModal" data-toggle="modal" class="modal-view detail-link quickview" href="#"><i class="fa fa-search"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

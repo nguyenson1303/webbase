@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Login_view
+
+<!-- Main Page Content Area Start -->
+<section id="content" >
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-register">
+                            <h3 class="title">@Lang.strCreateNewAccount</h3>
+                            <p>@Lang.strLabelCreateNewAccount</p>
+                            <a href="@Url.Action("register","account", new { return_url = Model.ReturnUrl })" class="button-border"><i class="fa fa-user-plus"></i> @Lang.strRegister</a>
+                            <br /><br />
+                            <div class="wpb_row" style="display:none">
+                                <h3 class="title">@Lang.strLoginOther</h3>
+                                @Html.ActionLink("Login with Facebook.", "Facebook", "Account", new { return_url = Model.ReturnUrl }, new { @class = "login_facebook_btn" })
+                                @Html.ActionLink("Login with Google.", "Google", "Account", new { return_url = Model.ReturnUrl }, new { @class = "login_google_btn" })
+                                @Html.ActionLink("Login with Instagram.", "Instagram", "Account", new { return_url = Model.ReturnUrl }, new { @class = "login_instagram_btn" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-login">
+                            <h3 class="title">@Lang.strLogin</h3>
+                            <p><span class="text-error">@Model.Message</span></p>
+                            @using (Html.BeginForm(Model.ParentAction, Model.ParentController, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <p>
+                                    <input type="text" class="form-control" id="user_name" name="user_name" placeholder="@Lang.strUserName">
+                                </p>
+                                <p>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="@Lang.strPassword">
+                                </p>
+                                @*<label for="rememberme" class="inline">
+                                    <input name="rememberme" id="rememberme" value="forever" type="checkbox"> Remember me
+                                </label>*@
+                                <p>
+                                    <input type="submit" value="@Lang.strLogin" class="button-border">
+                                    <input type="hidden" value="@Model.ReturnUrl" id="return_url" name="return_url" />
+                                    <a href="@Url.Action("forgot_password","account")" class="read-more">@Lang.strForgotYourPassword</a>
+                                </p>                                
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->
+

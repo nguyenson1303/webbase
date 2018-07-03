@@ -1,0 +1,31 @@
+.fresco_gallery {}
+
+.thumbnail {
+    /*float: left;*/
+    display:block;
+    position: relative;
+    margin: 0 20px 20px 0;
+    padding: 1px;
+    /*max-width: 120px;*/
+    zoom: 1;
+    cursor:pointer;
+}
+
+.thumbnail img {
+    float: left;
+    /*max-width: 120px;
+    max-height: 160px;
+    border: 1px solid black;*/
+}
+
+.thumbnail:last-child {
+    margin-right: 0 !important;
+}
+
+.entry-content a {
+    border-bottom: 1px solid #fff !important;
+}
+
+.entry-content a:hover, .entry-content a:focus {
+    border-bottom:1px solid #fff !important;
+}

@@ -1,0 +1,75 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-slide">
+    <div id="owl-slide-home" class="owl-carousel owl-theme">
+        @{
+            if (Model.List1 != null && Model.List1.Count > 0)
+            {
+                for (int i = 0; i < Model.List1.Count; i++)
+                {
+                    var img_p = Model.List1[i].ImagePath;
+                    if (!string.IsNullOrEmpty(img_p) && !img_p.EndsWith(".mp4"))
+                    {
+                        if (img_p != "0")
+                        {
+                            img_p = img_p.Replace("sc_small_", "sc_full_");
+                        }
+                        else
+                        {
+                            img_p = "/Content/themes/themanorcentralpark/images/bg-default.jpg";
+                        }
+                        <div class="item">
+                            <div class="vk-item-slide">
+                                <img src="@img_p" alt="@Model.List1[i].Title" class="img-responsive">
+                                <div class="vk-slide-caption">
+                                    <h3 class="animated fadeInDown slide-delay-1"><a href='@Model.List1[i].Link'>@Model.List1[i].Title</a></h3>
+                                    <h2 class="animated fadeInUp slide-delay-2">@Model.List1[i].Summary</h2>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        if (img_p == "0")
+                        {
+                            img_p = "/Content/themes/themanorcentralpark/images/bg-default.jpg";
+                        }
+                        if (!Web.Models.Util.FBrowserIsMobile())
+                        {
+                            <div class="item">
+                                <div class="vk-item-slide">
+                                    <div class="slider-video">
+                                        <video id="video-demo" class="video-demo" data-id="@Model.List1[i].ID" url="@img_p" preload="auto" autoplay loop>
+                                            <source src="@img_p" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="vk-item-slide-btn">
+                                        <ul>
+                                            <li>
+                                                <button class="vk-play" onclick="playPause()"></button>
+                                                <button class="vk-pause" onclick="playPause()"></button>
+                                            </li>
+                                            <li>
+                                                <button class="vk-mutesound" onclick="enableMute()" type="button"></button>
+                                                <button class="vk-enablemute" onclick="disableMute()" type="button"></button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="vk-slide-caption">
+                                        <h3 class="animated fadeInDown slide-delay-1"><a href='@Model.List1[i].Link'>@Model.List1[i].Title</a></h3>
+                                        <h2 class="animated fadeInUp slide-delay-2">@Model.List1[i].Summary</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
+
+
+

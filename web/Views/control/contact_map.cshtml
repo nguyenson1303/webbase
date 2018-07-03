@@ -1,0 +1,20 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Contact_map_view
+
+<div class="vk-sparta-dark-contact-us">
+    <div class="col-md-7 vk-clear-padding">
+        <div class="vk-sparta-dark-contact-us-map">
+            <iframe class="map"  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.4984322547202!2d105.81438911530383!3d20.972648195066466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acef8781e3c5%3A0xf250a4da30ca30c0!2zTmjDoCBMaeG7gW4gS-G7gSBCaeG7h3QgVGjhu7EgVGhlIE1hbm9yIENlbnRyYWwgUGFyayBCaXRleGNv!5e0!3m2!1svi!2s!4v1529920247121" width="600" height="688" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+
+    </div>
+    <div class="col-md-5 vk-clear-padding">
+        <div class="vk-sparta-dark-contact-us-info">
+            @Html.Raw(ViewBag.contactdetail)
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+

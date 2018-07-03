@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Register_view
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        @{Html.RenderAction("menu_my_account", "account");}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-login">
+                            <h3 class="title">@Lang.strPersonalInformation</h3>
+                            <p><span class="text-error">@Html.Raw(Model.Message)</span></p>
+                            @using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "my_account_form", enctype = "multipart/form-data" }))
+                            {
+                                <p>
+                                    <input type="text" class="form-control" id="fname" name="fname" value="@Model.FirstName" placeholder="@Lang.strName">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="email" name="email" value="@Model.Email" readonly="readonly" placeholder="E-Mail">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="@Model.Phone" placeholder="@Lang.strPhone">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="address" name="address" value="@Model.Address" placeholder="@Lang.strAddress">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control input-mask-date" id="Birthday" name="Birthday" value="@Model.Birthday" placeholder="@Lang.strBirthday: dd/mm/yyyy">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="code" name="code" placeholder="@Lang.strCaptcha">
+                                </p>
+                                <p>
+                                    <img class="captcha" src="@Url.Action("ShowCaptchaImage", "base")" />
+                                </p>
+                                <p>
+                                    <input type="submit" value="@Lang.btnSave" class="button primary">
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->
+

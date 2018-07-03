@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Register_view
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-register">
+                            <h3 class="title">@Lang.strLogin</h3>
+                            <p>@Lang.strLabelExistsAccount</p>
+                            <a href="@Url.Action("login","account")" class="button-border"><i class="fa fa-user-plus"></i> @Lang.strLogin</a>
+                            <br /><br />
+                            <div class="wpb_row" style="display:none">
+                                <h3 class="title">@Lang.strLoginOther</h3>
+                                @Html.ActionLink("Login with Facebook.", "Facebook", "Account", new { return_url = Url.Action("index", "home") }, new { @class = "login_facebook_btn" })
+                                @Html.ActionLink("Login with Google.", "Google", "Account", new { return_url = Url.Action("index", "home") }, new { @class = "login_google_btn" })
+                                @Html.ActionLink("Login with Instagram.", "Instagram", "Account", new { return_url = Url.Action("index", "home") }, new { @class = "login_instagram_btn" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-login">
+                            <h3 class="title">@Lang.strRegister</h3>
+                            <p><span class="text-error">@Model.Message</span></p>
+                            @using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "register_form", enctype = "multipart/form-data" }))
+                            {
+                                <p>
+                                    <input type="text" class="form-control" id="fname" name="fname" value="@Model.FirstName" placeholder="@Lang.strName">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="email" name="email" value="@Model.Email" placeholder="Email">
+                                </p>
+                                <p>
+                                    <input type="password" class="form-control" id="password" name="password" value="@Model.Password" placeholder="@Lang.strPassword">
+                                </p>
+                                <p>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="@Model.Confirm_password" placeholder="@Lang.strConfirmPassword">
+                                </p>
+                                <p>
+                                    <input type="text" class="form-control" id="code" name="code" placeholder="code">
+                                </p>
+                                <p>
+                                    <img class="captcha" src="@Url.Action("ShowCaptchaImage", "base")" />
+                                </p>
+                                <div class="col-md-12">
+                                    <input type="hidden" value="@Model.Return_url" id="Return_url" name="Return_url" />
+                                    <input type="submit" value="@Lang.buttonRegister" class="button-border">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->
+
+

@@ -1,0 +1,35 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<a href="#"><i class="fa fa-shopping-cart"></i><span class="catr-count" id="counttt">@Model.ItemCount</span></a>
+<div class="cart-details-wrapper" >
+    <div id="cart-sidebar">
+        @{
+            if (int.Parse(Model.ItemCount) > 0)
+            {
+                for (int i = 0; i < Model.ShoppingCart.Count; i++)
+                {
+                    <div class="single-cart-product fix">
+                        <a href="#"><img src="@Model.ShoppingCart[i].ImagePath" alt="@Model.ShoppingCart[i].ProductName" style="width:58px"></a>
+                        <div class="cart-details">
+                            <h5><a href="#">@Web.Models.CommonGlobal.CutString(Model.ShoppingCart[i].ProductName.ToString(), 100)</a></h5>
+                            <p>@Html.Raw(Model.ShoppingCart[i].Price_Format_money.ToString()) <span class="pull-right">x @Model.ShoppingCart[i].Quatity</span></p>
+                            <a class="remove-item" onclick="RemoveFromCart('Pro_@Html.Raw(Model.ShoppingCart[i].ProductID)_@Html.Raw(Model.ShoppingCart[i].Property)',$(this))"><i class="fa fa-close"></i></a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="single-cart-product fix">
+                    <span>@Lang.strCartEmpty</span>
+                </div>
+            }
+        }
+    </div>
+    <div class="single-cart-product fix">
+        <p class="total-price">@*$45.89*@ <a href="@Url.Action("cart", "cart")" class="view-cart-link pull-right">@Lang.linkDetail</a></p>
+    </div>
+</div>
+
+
+

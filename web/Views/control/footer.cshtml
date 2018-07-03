@@ -1,0 +1,81 @@
+﻿@using Web.ViewModels
+@using Web.Models
+@using Web.App_GlobalResources
+
+
+<!--footer-->
+<footer class="site-footer footer-default">
+    <div class="footer-main-content">
+        <div class="container">
+            <div class="row">
+                <div class="footer-main-content-elements">
+                    <div class="footer-main-content-element col-sm-4">
+                        <aside class="widget">
+                            <div class="vk-widget-footer-1">                                
+                                <div class="widget-title">
+                                    <a href="#"><img src="~/Content/themes/themanorcentralpark/images/logo/logo (3).png" alt="" class="img-responsive"></a>
+                                </div>
+                                <div class="widget-content">
+                                    <div class="vk-widget-content-info">
+                                        <p><span class="ti-mobile"></span> @Html.Raw(ViewBag.hotline) </p>
+                                        <p><span class="ti-email"></span> @Html.Raw(ViewBag.email) </p>
+                                        <p><span class="ti-location-pin"></span> @Html.Raw(ViewBag.address) </p>
+                                    </div>
+                                    <div class="vk-widget-content-share">
+                                        <p>
+                                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </aside>
+                    </div>
+                    <div class="footer-main-content-element col-sm-4">
+                        <aside class="widget">
+                            @{Html.RenderAction("List_link", "Control", new { Type = CommonGlobal.Link });}                            
+                        </aside>
+                    </div>
+                    @*<div class="footer-main-content-element col-sm-4">
+                        <aside class="widget">
+                            <div class="vk-widget-footer-4">
+                                <h3 class="widget-title">@Lang.strNewsletter</h3>        
+                                <div class="widget-content">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="vk-widget-trip">
+                                        <a href="#"><img src="/Content/themes/themanorcentralpark/images/01_01_default/stripad.png" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright-area">
+        <div class="container">
+            <div class="copyright-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="copyright-text">
+                            @Html.Raw(Model.Footer)                            
+                        </p>
+                    </div>
+                    <div class="col-sm-6">                        
+                        <ul class="copyright-menu">
+                            @Html.Raw(Model.Footer5)                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Order_register_view
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        @{
+                            if (Model.ShoppingCart != null && Model.ShoppingCart.Count > 0)
+                            {
+
+                                <h3><i class="oic-files"></i>@Lang.strOrderCode: <span style="font-family:Arial !important;color:red !important;">@Model.Order_code</span></h3>
+                                <div class="widget widget_product_categories">
+                                    <ul class="product-categories">
+                                        <li class="cat-item">@Lang.strName: <strong>@Model.Name</strong></li>
+                                        <li class="cat-item">E-Mail: <strong>@Model.Email</strong></li>
+                                        <li class="cat-item">@Lang.strPhone: <strong>@Model.Phone</strong></li>
+                                        <li class="cat-item">@Lang.strAddress: <strong>@Model.Address</strong></li>
+                                        <li class="cat-item">@Lang.strContent: <strong>@Model.Content</strong></li>
+                                    </ul>
+                                    <table class="shop_table cart" cellspacing="0">
+                                        <tbody>
+                                            @foreach (Web.Data.DetailOrder it in Model.ShoppingCart)
+                                            {
+                                                <tr class="cart_item">
+                                                    @*<td class="product-thumbnail" data-th="Image">
+                                                            <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = it.ProductID, Link = "" })">
+                                                                <img title="@it.ProductName" alt="@it.ProductName" src="@it.ImagePath" width="150" height="150" class="attachment-shop_thumbnail wp-post-image">
+                                                            </a>
+                                                        </td>*@
+                                                    <td class="product-name" data-th="Product Name">
+                                                        <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = it.ProductID, Link = "" })">@Web.Models.CommonGlobal.CutString(it.ProductName.ToString(), 100)</a>@*&nbsp;&nbsp;@Html.Raw(it.Property_detail)*@
+                                                        <br />@Html.Raw(it.Quantity) &nbsp; x &nbsp; @Html.Raw(Web.Models.CommonGlobal.FormatMoney(it.TotalPrice != null ? it.TotalPrice.ToString() : "0"))
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        }    
+                    </div>
+                    <div class="col-md-7">
+                        <div class="block-form">
+                            <h3 class="form-heading">@Lang.strPaymentMethod</h3>
+                            <p><span class="text-error">@Model.Message</span></p>
+                            <div class="margin-top-60">
+                                @using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = "order_register_form", enctype = "multipart/form-data" }))
+                                {
+                                    <div class="container">
+                                        <!-- Nav tabs -->
+                                        @{
+
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <img src="https://www.nganluong.vn/data/images/merchant/button/btn-paynow-122.png" id="img_NL" onclick="location.href='@Url.Action("NLCheckOut", "cart")?order=@HttpUtility.HtmlEncode(Model.Order_code)'" style="width:142px;height:40px;cursor:pointer" />
+                                                    <p>Thanh toán online qua NgânLượng và được Ngân Lượng bảo vệ khi có tranh chấp phát sinh.</p>
+                                                    <hr style="width:80%">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <img src="https://www.baokim.vn/application/uploads/buttons/btn_safety_payment_2.png" id="img_BK" onclick="location.href='@Url.Action("BKCheckOut", "cart")?order=@HttpUtility.HtmlEncode(Model.Order_code)'" style="width:144px;height:39px;cursor:pointer" />
+                                                    <p>Thanh toán online qua BảoKim và được BảoKim bảo vệ khi có tranh chấp phát sinh.</p>
+                                                    <hr style="width:80%">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <a href="@Url.Action("order_success", "cart", new { order = Model.Order_code })" class="button primary" title="@Lang.strSendOrder">Xác nhận</a>
+                                                    <p>Thanh toán tiền mặt sau khi nhận được hàng.</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->

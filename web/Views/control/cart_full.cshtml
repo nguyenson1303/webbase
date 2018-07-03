@@ -1,0 +1,117 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<!-- Cart Main Area  -->
+<div class="crt-main-area">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <form action="#">
+                <div class="table-content table-responsive">
+                    <table class="shop_table cart">
+                        @{
+                            if (Model.ItemCount != null && int.Parse(Model.ItemCount) > 0)
+                            {
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">@Lang.strImage</th>
+                                        <th class="product-name">@Lang.strProduct</th>
+                                        <th class="product-quantity">@Lang.strQuantity</th>
+                                        <th class="product-price">@Lang.strPrice</th>
+                                        <th class="product-quantity">@Lang.strSumPrice</th>
+                                        <th class="product-remove">@Lang.btnDelete</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart_full_list">
+
+                                    @for (int i = 0; i < Model.ShoppingCart.Count; i++)
+                                    {            
+                                        <tr class="cart_item">
+
+                                            <td class="product-thumbnail">
+                                                <a href="@Url.RouteUrl("Default_Link", new { controller = "product", action = "product", id = Model.ShoppingCart[i].ProductID, Link = Model.ShoppingCart[i].ProductLink })"><img width="150" height="150" src="@Model.ShoppingCart[i].ImagePath" class="attachment-shop_thumbnail wp-post-image" alt="@Model.ShoppingCart[i].ProductName"></a>
+                                            </td>
+
+                                            <td class="product-name">
+                                                <a href="@Url.RouteUrl("Default_Link", new { controller = "product", action = "product", id = Model.ShoppingCart[i].ProductID, Link = Model.ShoppingCart[i].ProductLink })">@Web.Models.CommonGlobal.CutString(Model.ShoppingCart[i].ProductName.ToString(), 100)</a>
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <input type="number" step="1" min="0" id="Qty_@Html.Raw(Model.ShoppingCart[i].ProductID)" name="Qty_@Html.Raw(Model.ShoppingCart[i].ProductID)" value="@Model.ShoppingCart[i].Quatity" title="Qty" class="input-text qty text" style="width:50px;">
+                                                <a onclick="UpdateNumberProductCart('Pro_@Html.Raw(Model.ShoppingCart[i].ProductID)_@Html.Raw(Model.ShoppingCart[i].Property)',@Html.Raw(Model.ShoppingCart[i].ProductID),$(this))"><i class="fa fa-refresh"></i> </a>
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">@Model.ShoppingCart[i].Price_Format_money.ToString()</span>
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                <span class="amount">@Html.Raw((Model.ShoppingCart[i].Total_Format_money))</span>
+                                            </td>
+
+                                            <td class="product-remove">
+                                                <a onclick="RemoveFromCart('Pro_@Html.Raw(Model.ShoppingCart[i].ProductID)_@Html.Raw(Model.ShoppingCart[i].Property)',$(this))" class="remove" title="Remove this item"><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            }
+                            else
+                            {
+                                <tbody><tr><td colspan="6"><span class="item pull-left">@Lang.strCartEmpty</span></td></tr></tbody>
+                            }
+                        }
+
+                    </table>
+                </div>
+                @{ if (int.Parse(Model.ItemCount) > 0)
+                    {
+                        <div class="cart-collaterals">
+
+                            <div class="cart_totals ">
+                                <table cellspacing="0">
+                                    <tbody>
+
+                                        <tr class="shipping">
+                                            <th>@Lang.strInforShipping</th>
+                                            <td>
+                                                @Html.Raw(Model.ContentShipping)
+                                            </td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>@Lang.strSumPrice</th>
+                                            <td><span class="amount" id="subtt4">@Model.SubTotal</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>@Lang.strTaxVAT</th>
+                                            <td><span class="amount" id="subtt5">@Model.Tax</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>@Lang.strFeeShipp</th>
+                                            <td><span class="amount" id="subtt6">@Model.FeeShip</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>@Lang.strTotal</th>
+                                            <td><strong><span class="amount" id="subtt2">@Html.Raw(Model.Total)</span>&nbsp;&nbsp;&nbsp;<span id="subtt3"> @Html.Raw(Model.TotalString)</span></strong> </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <div class="wc-proceed-to-checkout">
+                                    <a href="@Url.Action("order", "cart")" class="button button pull-right primary">@Lang.strOrder</a>
+                                    <a href="@Url.Action("index", "home")" class="button primary">@Lang.strContinuesShoping</a>                                    
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End of Cart main area -->

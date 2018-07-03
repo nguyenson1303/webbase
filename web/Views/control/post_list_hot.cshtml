@@ -1,0 +1,60 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-sparta-dark-blog">
+    <div class="container">
+        <div class="vk-sparta-head-title">
+            <h3>@Lang.mnuNews</h3>
+            <h2>@Lang.strPostHot</h2>
+            <div class="vk-sparta-about-border"></div>
+        </div>
+        <div class="vk-sparta-home-blog-content-destop">
+            <div class="vk-sparta-home-blog-content">
+                <div id="vk-owl-home-blog" class="vk-owl-three-dots owl-carousel owl-theme">
+                    @{
+                        if (Model != null)
+                        {
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                <div class="item">
+                                    <div class="vk-sparta-item-blog-content">
+                                        <div class="vk-item-img">
+                                            <a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = Model[i].PostID, Link = Model[i].Link })"><img src="@Model[i].ImagePath" alt="@Model[i].PostName" class="img-responsive"></a>
+                                        </div>
+                                        <div class="vk-item-text">
+                                            <h2><a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = Model[i].PostID, Link = Model[i].Link })">@Web.Models.CommonGlobal.CutString(Model[i].PostName.ToString(), 50)</a></h2>
+                                            <div class="time">@String.Format("{0:ddd, MMM d, yyyy}", Convert.ToDateTime(Model[i].DateModified))</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="vk-sparta-home-blog-content-mobile">
+            @{
+                if (Model != null)
+                {
+                    for (int i = 0; i < Model.Count; i++)
+                    {
+                        <div class="item">
+                            <div class="vk-sparta-item-blog-content">
+                                <div class="vk-item-img">
+                                    <a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = Model[i].PostID, Link = Model[i].Link })"><img src="@Model[i].ImagePath" alt="@Model[i].PostName" class="img-responsive"></a>
+                                </div>
+                                <div class="vk-item-text">
+                                    <h2><a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = Model[i].PostID, Link = Model[i].Link })">@Web.Models.CommonGlobal.CutString(Model[i].PostName.ToString(), 50)</a></h2>
+                                    <div class="time">@String.Format("{0:ddd, MMM d, yyyy}", Convert.ToDateTime(Model[i].DateModified))</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+

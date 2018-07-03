@@ -1,0 +1,106 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-top-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="vk-top-header-left">
+                    @*<span>45 Queen's Park Rd, Brighton, BN2 oGJ, UK</span>
+                        <span>-</span>
+                        <span>Reservation (+233) 123 456789</span>*@
+
+                    @{
+                        string mem = string.Empty;
+                        string role = string.Empty;
+
+                        if (Session["mem"] != null)
+                        { mem = Session["mem"].ToString(); }
+                        if (Session["role"] != null)
+                        { role = Session["role"].ToString(); }
+
+                        if (Session["mem"] == null || Session["role"] == null)
+                        {
+                            HttpCookie cookie = Request.Cookies["mem"];
+                            HttpCookie cookie_acc = Request.Cookies["acc"];
+                            if (cookie != null)
+                            {
+                                HttpCookie decodedCookie = Web.Models.HttpSecureCookie.Decode(cookie);
+                                if (decodedCookie != null && decodedCookie.Value != null)
+                                {
+                                    Session["mem"] = decodedCookie.Value;
+                                    mem = decodedCookie.Value;
+                                    role = "2";
+                                    if (cookie_acc != null)
+                                    {
+                                        Session["acc"] = Web.Models.HttpSecureCookie.Decode(cookie_acc).Value;
+                                    }
+                                }
+                                else
+                                {
+                                    mem = string.Empty;
+                                    role = string.Empty;
+                                }
+                            }
+                        }
+
+                        if (mem != null && role == "2")
+                        {
+                            var acc_name = Session["acc"] != null ? Session["acc"].ToString() : string.Empty;
+                            <a href="@Url.Action("my_account","account")"><i class="fa fa-user"></i> @Html.Raw(acc_name)</a>
+                            <ul class="meta-dropdown">
+                                @*<li><a href="@Url.Action("compare", "product")"><i class="fa fa-user"></i>@Lang.strCompare</a></li>
+                                    <li><a href="@Url.Action("whishlist", "product")"><i class="fa fa-user"></i>@Lang.strWishlist</a></li>*@
+                                <li><a href="@Url.Action("logout","account")"><i class="fa fa-sign-out"></i>@Lang.strLogout</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("register","account")"><i class="fa fa-user"></i>@Lang.mnuRegister</a>
+                            <a href="@Url.Action("login","account")"><i class="fa fa-sign-in"></i> @Lang.mnuLogin</a>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-4 vk-top-header-right">
+                <div class="vk-top-header-right" style="display:none">
+                    <ul>
+                        <li>
+                            <div class="wrap-select" >
+                                <div id="ddc" class="wrapper-dropdown-3">
+                                    <span style="display:none">
+                                        @Html.Raw(@Html.ActionLink("[replacetext]", "ChangeLanguage", "control", new { lang = Web.Models.LanguageModels.ActiveLanguage().LangCultureName }, null).ToHtmlString().Replace("[replacetext]", "<img src=\"" + Web.Models.LanguageModels.ActiveLanguage().LangFlag + "\" /><i class=\"fa fa-angle-down\"></i>"))
+                                    </span>
+                                    <ul class="dropdown" style="display:none">
+                                        @{
+                                            foreach (var i in Web.Models.LanguageModels.AvailableLanguages)
+                                            {
+                                                <li>
+                                                    @Html.Raw(@Html.ActionLink("[replacetext]", "ChangeLanguage", "control", new { lang = i.LangCultureName }, null).ToHtmlString().Replace("[replacetext]", "<img height=\"12\" src=\"" + i.LangFlag + "\" /> &nbsp;" + i.LangFullName))
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        @*<li>
+                            <div class="wrap-select">
+                                <div id="dde" class="wrapper-dropdown-3">
+                                    
+                                    <span style="display:none">USA</span>
+                                    <ul class="dropdown" style="display:none">
+                                        <li><a href="#">VND</a></li>
+                                        <li><a href="#">$</a></li>
+                                        <li><a href="#">VNĐ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>*@
+                        <li><a href="#">@Lang.btnBookingNow</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<table class="cart-table table wow fadeInLeft" data-wow-duration="1s">
+    @{
+        if (int.Parse(Model.item_count) > 0)
+        {
+            <thead>
+                <tr>
+                    <th class="card_product_image">@Lang.strImage</th>
+                    <th class="card_product_name">@Lang.strProduct</th>
+                    <th class="card_product_quantity">@Lang.strQuantity</th>
+                    <th class="card_product_price">@Lang.strPrice</th>
+                    <th class="card_product_total">@Lang.strSumPrice</th>
+                    <th class="card_product_model">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody id="cart_full_list">
+
+                @for (int i = 0; i < Model.ListWishlist.Count; i++)
+                {
+                    <tr id="@Model.ListWishlist[i].ProductID">
+                        <td class="card_product_image" data-th="Image">
+                            <a href="#">
+                                <img title="@Model.ListWishlist[i].ProductName" alt="@Model.ListWishlist[i].ProductName" src="@Model.ListWishlist[i].ImagePath" style="width:150px">
+                            </a>
+                        </td>
+                        <td class="card_product_name" data-th="Product Name">
+                            <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.ListWishlist[i].ProductID, Link = Model.ListWishlist[i].Link })">@Web.Models.CommonGlobal.CutString(Model.ListWishlist[i].ProductName.ToString(), 200)</a>
+                        </td>
+                        <td class="card_product_quantity" data-th="Quantity">
+                            <input type="number" min="1" value="@Model.ListWishlist[i].Store" name="Qty_@Html.Raw(Model.ListWishlist[i].ProductID)" id="Qty_@Html.Raw(Model.ListWishlist[i].ProductID)" class="input-text qty text" style="width:40px;">
+                        </td>
+                        <td class="card_product_price" data-th="Unit Price">@Model.ListWishlist[i].PriceNew.ToString()</td>
+                        <td class="card_product_total" data-th="Total">@Html.Raw((Model.ListWishlist[i].PriceNew ?? 0))</td>
+                        <td class="card_product_model" data-th="Model">
+                                <a onclick="AddToCart(@Model.ListWishlist[i].ProductID,1,$(this))" class="add_to_cart_button" title="@Lang.strAddToCart"><i class="fa fa-cart-plus"></i></a>
+                                <a onclick="ProcessWishlish('@Html.Raw(Model.ListWishlist[i].ProductID)',2,$(this))" class="product-card-icon "><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        }
+        else
+        {
+            <tr><td colspan="6"><span class="item pull-left">@Lang.messErrorWishlist</span></td></tr>
+        }
+    }
+</table>
+

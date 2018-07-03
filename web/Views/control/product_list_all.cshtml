@@ -1,0 +1,262 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.ViewModels.Page_products_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = Model.Cate_id, Link = Model.Link, enctype = "multipart/form-data" }))
+{
+    <div class="col-md-6 col-sm-5" style="display:none">
+        <div class="product-filter-area pull-right">
+            <div class="woocommerce-ordering">
+                @{ SelectList list_order = new SelectList(Model.List_order, "Value", "Text", Model.Order);}
+                @Html.DropDownListFor(m => m.Order, list_order, new { @class = "orderby", @style = "display: none;", @onchange = "$('form').submit();" })
+
+                <div style="display:none;">
+                    @{ SelectList list_page_size = new SelectList(Model.List_page_size, "Value", "Text", Model.List_page_size.FirstOrDefault());}
+                    @Html.DropDownListFor(m => m.Page_size, list_page_size, new { @class = "orderby", @style = "display: none;", @onchange = "$('form').submit();" })
+                </div>
+            </div>
+            <div class="shop-display-mode" style="display:none;">
+                <span class="label-filter">View as:</span>
+                @{
+                    if (Model.Style_list == "grid")
+                    {
+                        <a data-mode="list" class="display-mode" href="@Url.Action("products", "product")/@Model.Cate_id/@Html.Raw(Model.Link)?style_list=list"><i class="fa fa-th-list"></i></a>
+                        <a data-mode="grid" class="display-mode active" href="#"><i class="fa fa-th-large"></i></a>
+                    }
+                    else
+                    {
+                        <a data-mode="list" class="display-mode active" href="#"><i class="fa fa-th-list"></i></a>
+                        <a data-mode="grid" class="display-mode" href="@Url.Action("products", "product")/@Model.Cate_id/@Html.Raw(Model.Link)?style_list=grid"><i class="fa fa-th-large"></i></a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="product-style-two" id="list_paging_ajax">
+
+        @if (Model.Style_list == "grid")
+        {
+            for (int i = 0; i < Model.Page_list_product.Count; i++)
+            {
+                <div class="row">
+                    <div class="item">
+                        <div class="col-md-6 vk-dark-our-room-item-left  vk-clear-padding">
+                            <div class="vk-dark-our-room-item-img">
+                                @{
+                                    var img = Model.Page_list_product[i].ImagePath;
+                                    if (img == "0" || img == "" || img == null)
+                                    {
+                                        img = "/Content/themes/themanorcentralpark/images/product-default.png";
+                                    }
+                                }
+                                <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.Page_list_product[i].ProductID, Link = Model.Page_list_product[i].Link })">
+                                    <img src="@img" alt="@Model.Page_list_product[i].ProductName" class="img-responsive">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 vk-dark-our-room-item-right vk-clear-padding">
+                            <div class="vk-dark-our-room-item-content">
+                                <h3><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.Page_list_product[i].ProductID, Link = Model.Page_list_product[i].Link })">@Web.Models.CommonGlobal.CutString(Model.Page_list_product[i].ProductName, 30)</a></h3>
+                                
+                                @Html.Raw(Model.Page_list_product[i].Content)
+                                
+                                <div class="vk-dark-our-room-item-book">
+                                    <div class="vk-dark-our-room-item-book-left">
+                                        <ul>
+                                            <li>
+                                                <p>@Lang.strStartingForm : </p>
+                                            </li>
+                                            <li>
+                                                @{
+                                                    var priceForm = Convert.ToInt32(Model.Page_list_product[i].PriceOld);
+                                                    var priceTo = Convert.ToInt32(Model.Page_list_product[i].PriceNew??0);
+                                                    if (priceForm > 0 && priceTo > 0)
+                                                    {
+                                                        <p>@priceForm - @priceTo tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else if (priceForm > 0 && priceTo == 0)
+                                                    {
+                                                        <p>@priceForm tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else if (priceForm == 0 && priceTo > 0)
+                                                    {
+                                                        <p>@priceTo tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>liên hệ</p>
+                                                    }
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="vk-dark-our-room-item-book-right">
+                                        <a href="@Url.Action("index","home")#bookingForm"> @Lang.btnBookingNow <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                        <a style="display:none" onclick="AddToCart(@Model.Page_list_product[i].ProductID,1,$(this))" class="add-to-cart-shop"><i class="fa fa-shopping-cart"></i></a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Model.Page_list_product.Count; i++)
+            {
+                <div class="row">
+                    <div class="item">
+                        <div class="col-md-6 vk-dark-our-room-item-left  vk-clear-padding">
+                            <div class="vk-dark-our-room-item-img">
+                                @{
+                                    var img = Model.Page_list_product[i].ImagePath;
+                                    if (img == "0" || img == "" || img == null)
+                                    {
+                                        img = "/Content/themes/themanorcentralpark/images/product-default.png";
+                                    }
+                                }
+                                <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.Page_list_product[i].ProductID, Link = Model.Page_list_product[i].Link })">
+                                    <img src="@img" alt="@Model.Page_list_product[i].ProductName" class="img-responsive">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 vk-dark-our-room-item-right vk-clear-padding">
+                            <div class="vk-dark-our-room-item-content">
+                                <h3><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.Page_list_product[i].ProductID, Link = Model.Page_list_product[i].Link })">@Web.Models.CommonGlobal.CutString(Model.Page_list_product[i].ProductName, 30)</a></h3>
+                                
+                                @Html.Raw(Model.Page_list_product[i].Content)
+                                
+                                <div class="vk-dark-our-room-item-book">
+                                    <div class="vk-dark-our-room-item-book-left">
+                                        <ul>
+                                            <li>
+                                                <p>@Lang.strStartingForm : </p>
+                                            </li>
+                                            <li>
+                                                @{
+                                                    var priceForm = Convert.ToInt32(Model.Page_list_product[i].PriceOld);
+                                                    var priceTo = Convert.ToInt32(Model.Page_list_product[i].PriceNew??0);
+                                                    if (priceForm > 0 && priceTo > 0)
+                                                    {
+                                                        <p>@priceForm - @priceTo tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else if (priceForm > 0 && priceTo == 0)
+                                                    {
+                                                        <p>@priceForm tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else if (priceForm == 0 && priceTo > 0)
+                                                    {
+                                                        <p>@priceTo tỷ/ <span>căn</span></p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>liên hệ</p>
+                                                    }
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="vk-dark-our-room-item-book-right">
+                                        <a href="@Url.Action("index","home")#bookingForm"> @Lang.btnBookingNow <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                        <a style="display:none" onclick="AddToCart(@Model.Page_list_product[i].ProductID,1,$(this))" class="add-to-cart-shop"><i class="fa fa-shopping-cart"></i></a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            }
+        }
+
+
+        @if (!string.IsNullOrEmpty(Model.Text_search_result))
+        {
+            if (Model.Style_list == "grid")
+            {
+                <div class="col-md-6 vk-dark-our-room-item-left  vk-clear-padding searchResult">
+                    <span>@Html.Raw(Model.Text_search_result)</span>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6 vk-dark-our-room-item-left  vk-clear-padding searchResult">
+                    <span>@Html.Raw(Model.Text_search_result)</span>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="vk-select-room-pagination">
+        @{
+            var route_name = "";
+            if (Model.Cate_type == Web.Models.CommonGlobal.CateProduct)
+            {
+                if (Model.Is_search)
+                {
+                    route_name = "_product_search";
+                }
+                else
+                {
+                    if (Model.Cate_id == 0)
+                    {
+                        route_name = "_product_only";
+                    }
+                    else
+                    {
+                        route_name = "_products_Link";
+                    }
+                }
+            }
+            else
+            {
+                if (Model.Cate_id == 0)
+                {
+                    route_name = "_product_only";
+                }
+                else
+                {
+                    route_name = "_collection_Link";
+                }
+            }
+        }
+        @Html.AjaxPager(
+        Model.Page_list_product,
+        route_name,
+        new { id = Model.Cate_id, Link = Model.Link, param = HttpUtility.HtmlEncode(Model.Param), key = Model.Text_search },
+        new PagerOptions
+        {
+            PageIndexParameterName = "page",
+            ShowNumericPagerItems = true,
+            ShowPrevNext = true,
+            FirstPageText = "&#171;",
+            LastPageText = "&#187;",
+            NextPageText = "&#155;",
+            PrevPageText = "&#139;",
+            ContainerTagName = "ul",
+            CurrentPagerItemWrapperFormatString = "<li class=\"active\">{0}</li>",
+            CssClass = "",
+            PagerItemWrapperFormatString = "<li>{0}</li>"
+        },
+        new AjaxOptions { UpdateTargetId = "list_paging_ajax" }
+        )
+        <!-- Pagination area End -->
+    </div>
+
+    <input type="hidden" id="style_list_show" name="style_list_show" value="@Model.Style_list" />
+    <input type="hidden" id="cate_type" name="cate_type" value="@Model.Cate_type" />
+    <input type="hidden" id="tag" name="tag" value="@Model.Tag" />
+    <input type="hidden" id="search" name="search" value="@Model.Text_search" />
+    <input type="hidden" id="Cate_id" name="cate_id" value="@Model.Cate_id" />
+    <input type="hidden" id="link_text" name="link_text" value="@Model.Link" />
+    <input type="hidden" id="param" name="param" value="@Model.Param" />
+    <input type="hidden" id="Style_list" name="Style_list" value="@Model.Style_list" />
+    <input type="hidden" id="price_min" name="price_min" value="@Model.Price_min" />
+    <input type="hidden" id="price_max" name="price_max" value="@Model.Price_max" />
+}

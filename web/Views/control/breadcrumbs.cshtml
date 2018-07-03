@@ -1,0 +1,22 @@
+﻿@using Web.App_GlobalResources
+
+<div class="vk-gallery-grid-full-banner">
+    <div class="vk-about-banner">
+        <div class="vk-about-banner-destop">
+            @*<div class="vk-banner-img"></div>*@
+            <div class="vk-about-banner-caption">
+                @*<h2>Blog list</h2>
+                <h3>
+                    <a href="#">Blog</a>
+                    <span><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                    <a href="#">List</a>
+                </h3>*@
+
+                <ul class="breadcrumb-list text-center">
+                    <li><a href="@Url.Action("index","home")">@Lang.mnuHome </a></li>
+                    @Html.Raw(ViewBag.str_breadcrumbs)
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

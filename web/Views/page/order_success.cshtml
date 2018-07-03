@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Order_register_view
+<!-- Main Page Content Area Start -->
+<section id="content">
+    <div class="content-body">
+        <!-- Start breadcrumb area  -->
+        @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+        <!-- End breadcrumb area  -->
+        <!-- Page Main Content Start     -->
+        <div class="page-inner-content padding100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-register">
+                            <img width="100%" src="/images/success2.png" class=" vc_box_border_grey attachment-full" alt="salon2" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-login">
+                            <h3 class="form-heading">@Lang.strOrderSuccess</h3>
+                            <div class="wpb_wrapper">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        @Html.Raw(Model.Message.ToString())
+                                        <a href="@Url.Action("index","home")">@Lang.mnuHome <i class="ion-android-arrow-forward"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Main Content End     -->
+    </div>
+</section>
+<!-- Main Page Content Area End -->

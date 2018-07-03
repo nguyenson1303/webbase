@@ -1,0 +1,126 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.ViewModels.Page_products_view
+@using (Html.BeginForm(Model.Parent_action, Model.Parent_controller, FormMethod.Post, new { id = Model.Cate_id, Link = Model.Link, enctype = "multipart/form-data" }))
+{
+
+    <div id="content" class="no-sidebar  no-vc no-sidebar  no-vc no-sidebar  no-vc  template-clean-page">
+        <div class="page type-page status-publish hentry">
+            <article>
+                <div class="post-content page-content">
+                    <div class="block-products-modes" style="display:none;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 col-md-4 col-lg-4">
+                                <div class="product-view-mode">
+                                    @{
+                                        if (Model.Style_list == "grid")
+                                        {
+                                    <a class="active" disabled><i class="fa fa-th-large"></i></a>
+                                    <a href="@Url.Action("products", "product")/@Model.Cate_id/@Html.Raw(Model.Link)?style_list=list"><i class="fa fa-th-list"></i></a>
+                                        }
+                                        else
+                                        {
+                                    <a href="@Url.Action("products", "product")/@Model.Cate_id/@Html.Raw(Model.Link)?style_list=grid"><i class="fa fa-th-large"></i></a>
+                                    <a class="active" disabled><i class="fa fa-th-list"></i></a>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-md-offset-1">
+                                        <label class="pull-right">@Lang.strSortBy</label>
+                                    </div>
+                                    <div class="col-md-5 col-sm-6">
+                                        @{ SelectList list_order = new SelectList(Model.List_order, "Value", "Text", Model.Order);}
+                                        @Html.DropDownListFor(m => m.Order, list_order, new { @class = "form-control", @onchange = "$('form').submit();" })
+                                    </div>
+                                    <div class="col-md-3 col-sm-3">
+                                        @{ SelectList list_page_size = new SelectList(Model.List_page_size, "Value", "Text", Model.List_page_size.FirstOrDefault());}
+                                        @Html.DropDownListFor(m => m.Page_size, list_page_size, new { @class = "form-control", @onchange = "$('form').submit();" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vc_row wpb_row vc_row-fluid vc_custom_1413581957566">
+                        <div class="parallax-wrapper">
+                            <div class="vc_col-sm-12 textaligncenter wpb_column vc_column_container">
+                                <div class="wpb_wrapper">
+                                    <div class="vc_custom_heading wpb_content_element"><h2 style="font-size: 60px;color: #c4a26c;line-height: 64px;text-align: center;font-family:Playfair Display;font-weight:900;font-style:italic">@Model.Cate_parent_name</h2></div>
+                                    <div class="wpb_text_column wpb_content_element  vc_custom_1413581920094">
+                                        <div class="wpb_wrapper">
+                                            <p>@Model.Cate_parent_summary</p>
+                                        </div>
+                                    </div> 
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--ozy-grid-gallery-->
+                    <div class="ozy-grid-gallery">                        
+                        <ul id="list_paging_ajax">
+                            @{
+                                for (int i = 0; i < Model.Page_list_product.Count; i++)
+                                {
+                                    <li>
+                                        <div title="@Model.Page_list_product[i].ProductName">
+                                            <img class="load-delay" data-original="@Model.Page_list_product[i].ImagePath" alt="@Model.Page_list_product[i].ProductName" />
+                                            <div class="info">
+                                                <h3 class="title">
+                                                    <a href="@Url.RouteUrl("Default_Link", new { controller = "product", action = "product", id = Model.Page_list_product[i].ProductID, Link = Model.Page_list_product[i].Link })">@Web.Models.CommonGlobal.CutString(Model.Page_list_product[i].ProductName, 200)</a>                                                    
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </li>                                    
+                                    }
+                                    if (!string.IsNullOrEmpty(Model.Text_search_result))
+                                    {
+                                        <li>
+                                            <span>@Html.Raw(Model.Text_search_result)</span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <nav class="woocommerce-pagination">
+                                @Html.AjaxPager(               
+                            Model.Page_list_product,        
+                            "Default_Link", new { id = Model.Cate_id, Link = Model.Link, param = HttpUtility.HtmlEncode(Model.Param) }, ////routeName , routeValues
+                            new PagerOptions                
+                            {
+                                PageIndexParameterName = "page",
+                                ShowNumericPagerItems = true,
+                                ShowPrevNext = true,
+                                FirstPageText = "&#171;",
+                                LastPageText = "&#187;",
+                                NextPageText = "&#155;",
+                                PrevPageText = "&#139;",
+                                ContainerTagName = "ul",
+                                CurrentPagerItemWrapperFormatString = "<li class=\"current\"><a href=\"#\">{0}</a></li>",
+                                CssClass = "page-numbers",
+                                PagerItemWrapperFormatString = "<li>{0}</li>"
+                            },
+                            new AjaxOptions { UpdateTargetId = "list_paging_ajax" }  
+                            )
+
+                        </nav>
+                    </div>
+                    <!--.ozy-grid-gallery-->
+                </div><!--.post-content .page-content -->
+            </article>
+        </div>
+    </div><!--#content-->
+    <input type="hidden" id="style_list_show" name="style_list_show" value="@Model.Style_list" />
+    <input type="hidden" id="cate_type" name="cate_type" value="@Model.Cate_type" />
+    <input type="hidden" id="tag" name="tag" value="@Model.Tag" />
+    <input type="hidden" id="search" name="search" value="@Model.Text_search" />
+    <input type="hidden" id="cate_id" name="cate_id" value="@Model.Cate_id" />
+    <input type="hidden" id="link_text" name="link_text" value="@Model.Link" />
+    <input type="hidden" id="param" name="param" value="@Model.Param" />
+    <input type="hidden" id="style_list" name="style_list" value="@Model.Style_list" />
+    <input type="hidden" id="price_min" name="price_min" value="@Model.Price_min" />
+    <input type="hidden" id="price_max" name="price_max" value="@Model.Price_max" />
+}

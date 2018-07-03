@@ -1,0 +1,17 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<div class="widget widget_product_categories">
+    <h2 class="widget-title">
+        @{
+            if (Session["acc"] != null && Session["mem"] != null && Session["role"] != null && Session["role"].ToString() == "2")
+            {
+                @Html.Raw(Session["acc"].ToString())
+            }
+        }
+    </h2>
+    <ul class="product-categories">
+        <li><a href="@Url.Action("my_account", "account")"><i class="fa fa-user"></i>&nbsp; @Lang.strPersonalInformation</a></li>
+        <li><a href="@Url.Action("order_history", "account")"><i class="fa fa-file-text-o"></i>&nbsp; @Lang.strOrderHistory</a></li>
+        <li><a href="@Url.Action("change_password", "account")"><i class="fa fa-key"></i>&nbsp; @Lang.strChangePassword</a></li>
+    </ul>
+</div>

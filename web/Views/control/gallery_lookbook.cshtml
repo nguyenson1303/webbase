@@ -1,0 +1,51 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-iso-nav">
+    <ul>
+        <li class="active" data-filter="*">All</li>
+        @{
+            if (Model != null)
+            {
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    <li data-filter=".@Model[i].CatalogID">@Model[i].CategoryName</li>
+                    <div class="thumb" style="display:none">
+                        <div class="thumbnail" id="art_@Model[i].CatalogID" data-id="@Model[i].CatalogID">
+                            <img src="@Model[i].ImagePath" alt="@Model[i].CategoryName" />
+                            <input type="hidden" id="resultGallery_@Model[i].CatalogID" />
+                            <div class="shadow"></div>
+                            <div class="thumbnail-overlay"><!-- [] --></div>
+                        </div>
+                    </div>                    
+                }
+            }
+        }
+    </ul>
+    <div class="vk-iso-nav-line"></div>
+</div>
+
+<div class="vk-main-iso">
+    <div id="lightgallery1">
+        @{
+            if (Model != null)
+            {
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="col-md-4 vk-clear-padding item @Model[i].CatalogID col-sm-4" data-src="@Model[i].ImagePath">
+                        <div class="vk-item-img">
+                            <a href="@Url.RouteUrl("_lookbook_detail", new { controller = "gallery", action = "LookbookDetail", id = Model[i].CatalogID })"><img src="@Model[i].ImagePath" alt="" class="img-responsive"></a>
+                            <div class="vk-item-caption">
+                                <div class="featured-slider-overlay"></div>
+                                <div class="vk-item-caption-text">
+                                    <a href="@Url.RouteUrl("_lookbook_detail", new { controller = "gallery", action = "LookbookDetail", id = Model[i].CatalogID })"><h2>@Model[i].CategoryName</h2></a>  
+                                    <a href="@Url.RouteUrl("_lookbook_detail", new { controller = "gallery", action = "LookbookDetail", id = Model[i].CatalogID })"><h4>@Model[i].Intro</h4></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>

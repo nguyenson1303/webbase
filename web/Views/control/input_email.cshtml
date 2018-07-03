@@ -1,0 +1,81 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Email_view
+
+
+<div class="vk-sidebar-menu-dark">
+    <div class="vk-booking-hotel" id="bookingForm">
+        <div class="container">
+            <div class="form-horizontal  booking-hotel-all">
+                <ul>
+                    <li>
+                        <h4>@Lang.strName</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="@Lang.strInputName" id="input_name" name="input_name">
+                        </div>
+                    </li>
+                    <li>
+                        <h4>@Lang.strPhone</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="@Lang.strInputPhone" id="input_phone" name="input_phone">
+                        </div>
+                    </li>
+                    <li>
+                        <h4>Email</h4>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="@Lang.strInputEmail" id="input_email" name="input_email">
+                        </div>
+                    </li>
+                    <li>
+                        <h4>@Lang.strAddress</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="@Lang.strInputAddress" id="input_address" name="input_address">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="vk-btn-check">
+                            <button type="button" id="btnRegister" onclick="validate()" class="btn vk-btn-primary btn-block btn-check">@Lang.btnRegister</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function validate() {
+        var name = $("#input_name").val();
+        var phone = $('#input_phone').val();
+        var email = $('#input_email').val();
+        var is_ok = true;
+        if (name == null || name == undefined || name == "") {
+            is_ok = false;
+            $("#input_name").attr('placeholder', ' Hãy nhập tên của bạn');  
+            $("#input_name").val(''); //Remove the value so that youll see the new attribute
+            $("#input_name").addClass('red'); //Add a class so that placeholder will be red.
+        } 
+        if (phone == null || phone == undefined || phone == "") {
+            is_ok = false;
+            $("#input_phone").attr('placeholder', ' Hãy nhập số điện thoại');
+            $("#input_phone").val(''); //Remove the value so that youll see the new attribute
+            $("#input_phone").addClass('red'); //Add a class so that placeholder will be red.
+        }
+
+        if (email != null && email != undefined && email != "") {
+            if (!validateEmail(email)) {
+                is_ok = false;
+                $("#input_email").attr('placeholder', ' Hãy nhập email hợp lệ ');
+                $("#input_email").val(''); //Remove the value so that youll see the new attribute
+                $("#input_email").addClass('red'); //Add a class so that placeholder will be red.
+            } 
+        } 
+
+        if (is_ok) {
+            email_input();
+        }        
+        return false;
+    }
+</script>

@@ -1,0 +1,67 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Web.Data
+
+<!-- Theme standard row Start for portfolio -->
+<div class="dirk-portfolio-bg service-bg2 padding80">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="area-heading margin-bottom-increse dirk-bg text-center">
+                    <h2><a style="color: #fff;" href="@Url.RouteUrl("_product_only", new { controller = "product", action = "products" })">@Lang.strProduct</a></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--body content start-->
+    <div class="body-content page-content">
+        <div class="container">
+            @{
+                if (Model != null)
+                {
+                    List<C_Catalog> list_all = (List<C_Catalog>)Model;
+
+                    <div class="portfolio-filter-wrap text-center">
+                        <ul class="portfolio-filter no-borderd">
+                            <li class="active"><a href="#" data-filter="*"> Tất cả</a></li>
+                            @foreach (var item in list_all)
+                            {
+                                if (item.ParentID == 0)
+                                {
+                                    <li><a href="#" data-filter=".@item.CatalogID">@item.CategoryName</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="portfolio col-3 pading10 potrfolio-3 portfolio-style-4">
+                        @foreach (var item in list_all)
+                        {
+                            if (item.ImagePath != null && item.ImagePath != "0")
+                            {
+                                <div class="portfolio-item @item.ParentID ">
+                                    <div class="thumb">
+                                        <img src="@item.ImagePath" alt="@item.CategoryName">
+                                        <div class="portfolio-description">
+                                            <h4><a href="@Url.RouteUrl("_products_Link", new { controller = "product", action = "products", id = item.CatalogID, Link = item.Link })">@item.CategoryName</a></h4>
+                                            <ul class="portfolio-cat">
+                                                <li><a href="@Url.RouteUrl("_products_Link", new { controller = "product", action = "products", id = item.CatalogID, Link = item.Link })">@Web.Models.CommonGlobal.CutString(item.Intro, 80)</a></li>
+                                                @*<li><a href="#">Print Art</a></li>*@
+                                            </ul>
+                                            <ul class="portfolio-action-btn">
+                                                <li><a href="@Url.RouteUrl("_products_Link", new { controller = "product", action = "products", id = item.CatalogID, Link = item.Link })"><i class="fa fa-link"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+    <!--body content end-->
+</div>
+<!-- Theme standard row Start for portfolio -->

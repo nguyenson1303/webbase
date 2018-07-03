@@ -1,0 +1,19 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+@using (Html.BeginForm("search", "product", FormMethod.Get, new { @id = "form_search_top", @class = "widget-newsletter-form", @name = "form_search_top" }))
+{
+    @*SelectList List_TypeKey = new SelectList(ViewBag.ListTypeKey, "Value", "Text", ViewBag.typekey);
+    <input class="input" type="text" placeholder="@Lang.placeholderSearch" value="@Html.AttributeEncode(ViewBag.key)" name="key" id="key">
+    @Html.DropDownList("typekey", List_TypeKey, new { @class = "span6 form-control" })
+    <br />
+    <button type="submit" id="submit" value="@Lang.btnSearch">@Lang.btnSearch</button>*@
+
+    //SelectList List_TypeKey = new SelectList(ViewBag.ListTypeKey, "Value", "Text", ViewBag.typekey);
+    <div class="input-group stylish-input-group">
+        <input type="text" class="form-control" placeholder="@Lang.placeholderSearch" value="@Html.AttributeEncode(ViewBag.key)" name="key" id="key">
+        @*@Html.DropDownList("typekey", List_TypeKey, new { @class = "span6 form-control", @style = "display:none;" })*@
+        <span class="input-group-addon success"><button type="submit" id="submit"><i class="fa fa-search"></i></button></span>
+    </div>
+}
+

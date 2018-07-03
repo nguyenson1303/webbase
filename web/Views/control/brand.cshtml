@@ -1,0 +1,16 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<div class="vc_row wpb_row vc_row-fluid vc_custom_1413301132011 ozy-crfclr-7427 ozy-custom-row parallax" style="color:#ffffff;">
+    <div class="parallax-wrapper">
+        <div class="vc_col-sm-12 wpb_column vc_column_container">
+            <div class="wpb_wrapper">
+                <h3 class="ozy-divider-cap-center wpb_content_element">@ViewBag.cate_type_text</h3>
+                <div class="ozy-content-divider " style="border-top-style:solid;border-top-width:2px;border-top-color:#f33337;width:40px;max-width:40px;margin:20px auto;"></div>
+                <div class="ozy-owlcarousel  " data-autoplay="9000" data-items="6" data-singleitem="false" data-slidespeed="400" data-paginationSpeed="800" data-autoheight="false">
+                    @Html.Raw(Model)
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

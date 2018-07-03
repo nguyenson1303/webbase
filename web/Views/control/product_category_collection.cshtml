@@ -1,0 +1,23 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+@{
+    if (Model != null)
+    {
+        for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="kt-tabs style3 kt-tab-fadeeffect kt-banner block-banner-text style3 margin-top-30" data-height="293" data-background="@Model[i].ImagePath" data-positionright="40" data-verticalmiddle="middle">
+                <div class="tab-head">
+                    <h3 class="tab-title">Khuyến mại</h3>
+                </div>
+                <a href="@Url.RouteUrl("_collection_Link", new { controller = "product", action = "collection", id = Model[i].CatalogID, Link = Model[i].Link })" class="bg-image">Banner Bg</a>
+                <div class="content text-right">
+                    <h3 class="title">@Web.Models.CommonGlobal.CutString(Model[i].Title.ToString(), 50)</h3>
+                    <h4 class="subtitle">@Web.Models.CommonGlobal.CutString(Model[i].CategoryName.ToString(), 50)</h4>
+                    <a class="link-more" href="@Url.RouteUrl("_collection_Link", new { controller = "product", action = "collection", id = Model[i].CatalogID, Link = Model[i].Link })">@Lang.linkDetail</a>
+                </div>
+            </div>            
+        }
+    }
+}
+

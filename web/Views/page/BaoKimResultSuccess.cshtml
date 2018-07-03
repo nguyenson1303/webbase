@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@{Html.RenderAction("head", "control");}
+<section>
+    <div class="top-header-m-bg dark"></div>
+    <div class="second-page-header bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>@Html.Raw(ViewBag.heading)</h1>
+                    @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="block2">
+        <div class="container">
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="box-border block-form wow fadeInLeft" data-wow-duration="1s">
+                        <!-- Nav tabs -->
+                        @{
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active">
+                                    <br>
+                                    <h3>@Lang.strPaymentSuccess</h3>                                    
+                                    <hr />
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="/images/success3.jpg" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                @Html.Raw(Model.message.ToString())
+                                                <a href="@Url.Action("index","home")">@Lang.mnuHome <i class="ion-android-arrow-forward"></i></a>
+                                            </div>                                            
+                                        </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </article>
+                @{
+                    if (Model.shoppingCart !=null && Model.shoppingCart.Count > 0)
+                    {
+                    <article class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="block-form block-order-total box-border wow fadeInRight" data-wow-duration="1s">
+                            <h3><i class="ion-ios-paper-outline"></i>@Lang.strOrderCode: <span class="text-error">@Model.order_code</span></h3>
+                            <ul class="list-unstyled">
+                                <li>@Lang.strName: <strong>@Model.name</strong></li>
+                                <li>E-Mail: <strong>@Model.email</strong></li>
+                                <li>@Lang.strPhone: <strong>@Model.phone</strong></li>
+                                <li>@Lang.strAddress: <strong>@Model.address</strong></li>
+                                <li>@Lang.strContent: <strong>@Model.content</strong></li>
+                            </ul>
+                            <hr>
+                            <ul class="list-unstyled">                       
+                                        @foreach (var it in Model.shoppingCart)    
+                                        {                                                                       
+                                            <li>
+                                                <a href="@Url.RouteUrl("Default_Link", new { controller = "product", action = "product", id = it.ProductID, Link = "" })">@Web.Models.CommonGlobal.CutString(it.ProductName.ToString(), 100)</a>&nbsp;&nbsp;@Html.Raw(it.Propertices) 
+                                                <strong>@Html.Raw(it.Quantity) x @Html.Raw(Web.Models.CommonGlobal.FormatMoney(it.TotalPrice!=null?it.TotalPrice.ToString():"0")) </strong>
+                                            </li>
+                                        }     
+                                    <li><hr /></li>
+                                    <li><b>@Lang.strTotal:</b> <strong id="subtt2">@Html.Raw(Model.sub_total)</strong></li>                           
+                                  </ul>
+                        </div>
+                    </article>
+                    }
+                    
+                }
+            </div>
+        </div>
+    </div>
+</section>
+@{Html.RenderAction("ad_bottom", "control");}
+@{Html.RenderAction("footer", "control");}

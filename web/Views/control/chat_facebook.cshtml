@@ -1,0 +1,183 @@
+﻿@using Web.App_GlobalResources
+@*<div id="fb-root"></div>*@
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    var raido = $(".wrap").attr("data-toggle");
+    //    if (raido == 1) {
+    //        $(".snc-tuvan").css("display", "none");
+    //        $(".x").click(function () {
+    //            $(".wrap").slideToggle();
+    //            $(".snc-tuvan").slideToggle();
+    //        });
+    //        $(".snc-tuvan").click(function () {
+    //            $(".wrap").slideToggle();
+    //            $(this).slideToggle();
+    //        });
+    //    }
+    //    else {
+    //        $(".wrap").css("display", "none");
+    //        $(".x-chart").click(function () {
+    //            $(".wrap").slideToggle();
+    //            $(".snc-tuvan").slideToggle();
+    //        }
+    //        );
+    //        $(".snc-tuvan").click(function () {
+    //            $(".wrap").slideToggle();
+    //            $(this).slideToggle();
+    //            $(".img-tuvan").slideToggle();
+    //        });
+    //    }
+    //});
+    //$(document).ready(function (d, s, id) {
+    //    var js, fjs = d.getElementsByTagName(s)[0];
+    //    if (d.getElementById(id)) return;
+    //    js = d.createElement(s);
+    //    js.id = id;
+    //    js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.5&appId=561973880635651";
+    //    fjs.parentNode.insertBefore(js, fjs);
+    //}(document, "script", "facebook-jssdk"));
+</script>
+<style>
+    .wrap {
+        position: fixed;
+        width: 300px;
+        height: 400px;
+        z-index: 9999999;
+        right: 0px;
+        bottom: 0px;
+    }
+
+    .x-chart {
+        font-family: arial, helvetica;
+        background: rgba(78,86,101,0.8) none repeat scroll 0 0;
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        display: inline-block;
+        height: 25px;
+        line-height: 25px;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: -19px;
+        width: 25px;
+        z-index: 99999999;
+    }
+
+        .x-chart:hover {
+            cursor: pointer;
+        }
+
+    .pxem {
+        text-align: left;
+        height: 20px;
+        margin-bottom: 0;
+        margin-top: 0;
+        background: #34495E;
+        width: 100%;
+        bottom: 0;
+        display: block;
+        left: 0px;
+        position: absolute;
+        z-index: 999999999;
+        border-left: 1px solid #fff;
+    }
+
+        .pxem a.axem {
+            color: #fff;
+            font-family: arial,helvetica;
+            font-size: 12px;
+            line-height: 23px;
+            padding-left: 5px;
+            text-decoration: none;
+        }
+
+            .pxem a.axem:hover {
+                text-decoration: underline;
+            }
+
+    .alogo {
+        position: absolute;
+        bottom: 0;
+        right: 0px;
+        z-index: 999999999999;
+        width: 75px;
+        height: 20px;
+        display: inline-block;
+        background: #34495E;
+        border-left: 2px solid #2c3e50;
+        padding-right: 0px;
+        padding-left: 5px;
+    }
+
+    .snc-tuvan {
+        position: fixed;
+        width: 300px;
+        background: #34495E;
+        z-index: 99999999;
+        right: 146px;
+        bottom: 0px;
+        border-style: solid solid none;
+        border-width: 1px 1px 0;
+        border-color: #2c3e50;
+    }
+        .snc-tuvan span {
+            font-family: 'Optima';
+            color: #fff;
+            float: right;
+            margin-top: -26px;
+            margin-right: 5px;
+        }
+        .snc-tuvan p {
+            font-family: 'Optima';
+            color: #fff;
+            font-size: 15px;
+            margin: 0;
+            padding: 0 13px;
+            text-align: left;
+        }
+
+            .snc-tuvan p a {
+                color: #fff;
+                font-size: 15px;
+                padding: 5px 0px 7px;
+                margin: 0;
+                display: inline-block;
+                font-family: arial, helvetica;
+                text-decoration: none;
+            }
+
+                .snc-tuvan p a:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+
+            .snc-tuvan p img {
+                float: right;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+</style>
+@*<div data-toggle="0" class="wrap" style="position:fixed; width:300px; height: 320px; ">
+    <span class="x-chart" style="">
+        X
+    </span>
+    <div class="fb-page" data-adapt-container-width="true" data-height="320" data-hide-cover="false" data-href="@ViewBag.facebook" data-show-facepile="true" data-show-posts="false" data-small-header="false" data-tabs="messages" data-width="300" style="position:relative; z-index:9999999; right:0px; bottom:21px;border-left: 1px solid #fff;border-top: 1px solid #fff;">
+        </div>
+     Load Facebook SDK for JavaScript 
+    <p class="pxem" style="">
+        <a class="axem" style="" href="http://soncoi.net/trang-chu" target="_blank">
+            Design by Soncoi.net
+        </a>
+    </p>
+</div>*@
+<div class="snc-tuvan img-tuvan" style="width: 298px;background: none;border: none;">
+    <img src="@ViewBag.ImageMap" style="width: 298px;" />
+</div>
+<div class="snc-tuvan" style="width: 298px;">
+    <p style=" ">
+        <a style="">@Lang.strHotline</a>
+    @*<img src="/images/supprt.png">*@
+    </p>
+    <span>@Html.Raw(ViewBag.hotline)</span>
+</div>

@@ -1,0 +1,37 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Web.Data
+@model Web.ViewModels.List_post_view
+
+@{
+    if (Model.ListView != null && Model.ListView.Count > 0 && int.Parse(Model.ItemCount) > 0)
+    {
+        <div class="vk-blog-list-right-recent-post">
+            <h4>@Lang.strPostView</h4>
+            @{
+                if (Model.ListView != null && Model.ListView.Count > 0 && int.Parse(Model.ItemCount) > 0)
+                {
+                    for (int i = 0; i < Model.ListView.Count; i++)
+                    {
+                        if (Model.ListView[i] != null)
+                        {
+                            C_Post item = (C_Post)Model.ListView[i];
+
+                            <div class="vk-recent-post-item">
+                                <div class="vk-recent-post-item-img">
+                                    <a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = item.PostID, Link = item.Link })"><img src="@item.ImagePath" alt="@item.Title" class="img-responsive"></a>
+                                </div>
+                                <div class="vk-recent-post-text">
+                                    <h2><a href="@Url.RouteUrl("_post_detail", new { controller = "news", action = "post", id = item.PostID, Link = item.Link })">@Web.Models.CommonGlobal.CutString(item.Title, 100)</a></h2>
+                                    <div class="time"><i class="fa fa-calendar" aria-hidden="true"></i> @String.Format("{0:ddd, MMM d, yyyy}", Convert.ToDateTime(item.DateModified))</div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+    }
+}
+
+

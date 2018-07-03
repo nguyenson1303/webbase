@@ -1,0 +1,66 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Webdiyer.WebControls.Mvc
+@model Web.ViewModels.Order_history_view
+
+    <div class="block-form wow fadeInLeft" data-wow-duration="1s">
+        <h3><i class="fa fa-tasks"></i>@Lang.strOrderHistory</h3>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>@Lang.strOrderCode</th>
+                        <th>@Lang.strOrderDate</th>
+                        <th>@Lang.strTotal</th>
+                        <th>@Lang.strPayment</th>
+                        <th>@Lang.strOrderStatus</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     @{
+                        for (int i = 0; i < Model.Page_list_order.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.Page_list_order[i].Code</td>
+                                <td>@Convert.ToDateTime(Model.Page_list_order[i].CreateDate).ToString("dd/M/yyyy")</td>
+                                <td>@Web.Models.CommonGlobal.FormatMoney(Model.Page_list_order[i].Total)</td>
+                                <td >
+                                    <span class="button quick-view yith-wcqv-button">@Web.Models.CommonGlobal.GetPaymentStatusString(int.Parse(Model.Page_list_order[i].Payment ?? "0"))</span>
+                                </td>
+                                <td>
+                                    <span class="button quick-view yith-wcqv-button">@Web.Models.CommonGlobal.GetOrderStatusString(Model.Page_list_order[i].Process ?? 0)</span>
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-mini" href="@Url.Action("order_view", "account", new { fcode = Model.Page_list_order[i].Code })">@Lang.linkDetail &nbsp; <i class="fa fa-angle-right"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="block-pagination">                           
+                @Html.AjaxPager(                
+                Model.Page_list_order,        
+
+                new PagerOptions                
+                {
+                    PageIndexParameterName = "page",
+                    ShowNumericPagerItems = true,
+                    ShowPrevNext = true,
+                    FirstPageText = "&#171;",
+                    LastPageText = "&#187;",
+                    NextPageText = "&#155;",
+                    PrevPageText = "&#139;",
+                    ContainerTagName = "ul",
+                    CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+                    CssClass = "pagination",
+                    PagerItemWrapperFormatString = "<li>{0}</li>"
+                },
+                new AjaxOptions { UpdateTargetId = "list_paging_ajax" }  
+                )
+            </div>
+        </div>
+
+    </div>
+

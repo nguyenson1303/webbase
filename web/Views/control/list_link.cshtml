@@ -1,0 +1,23 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-widget-footer-3">
+    <h3 class="widget-title">@ViewBag.cate_type_text</h3>
+    <div class="widget-content">
+        <ul class="vk-widget-content-2">
+            @{
+                if (Model != null && Model.Count > 0)
+                {
+                    for (int i = 0; i < Model.Count; i++)
+                    {
+                        if (i % 5 == 0 && i > 0)
+                        {
+                            @Html.Raw("</ul></div></div></aside></div><div class=\"footer-main-content-element col-sm-4\"><aside class=\"widget\"><div class=\"vk-widget-footer-3\"><h3 class=\"widget-title\">&nbsp;&nbsp;</h3><div class=\"widget-content\"><ul class=\"vk-widget-content-2\">");
+                        }
+                        <li><a href="@Model[i].Link"><i class="fa fa-angle-right" aria-hidden="true"></i> @Html.Raw(Model[i].Title)</a></li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>

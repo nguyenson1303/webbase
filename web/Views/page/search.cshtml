@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+
+<div class="vk-search-results-header">
+    <div class="container">
+        <h2>@Lang.strLabelResultSearch "<span>@ViewBag.key</span>"</h2>
+        @{
+            if (!string.IsNullOrEmpty(ViewBag.cateName))
+            {
+                <h2>@Html.Raw(ViewBag.cateName)</h2>
+            }
+        }
+    </div>
+</div>
+
+<div class="vk-search-results-body">
+    <div class="container">
+
+        <div class="page-variation-area " style="display:none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <h4 class="variation-title text-capitaliz">@*Variations*@</h4>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="variation-menu-wrap pull-right">
+                            <ul class="var-menu">
+                                @{
+                                    var hrefList = string.Empty;
+                                    var hrefGrid = string.Empty;
+
+                                    hrefList = Url.RouteUrl("_product_search", new { controller = "product", action = "search", key = Model.Text_search, typekey = Model.Typekey, style_list = "list" });
+                                    hrefGrid = Url.RouteUrl("_product_search", new { controller = "product", action = "search", key = Model.Text_search, typekey = Model.Typekey, style_list = "grid" });
+
+                                    if (Model.Style_list == "grid")
+                                    {
+                                        <li><a href="@hrefList"><i class="fa fa-list"></i></a></li>
+                                        <li class="current"><a href="#"><i class="fa fa-th"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="current"><a href="#"><i class="fa fa-list"></i></a></li>
+                                        <li><a href="@hrefGrid"><i class="fa fa-th"></i></a></li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*@{Html.RenderAction("product_list_all", "product", new { id = Model.Cate_id, Link = Model.Link, cate_type = Web.Models.CommonGlobal.CateProduct, search = Model.Text_search, tag = Model.Tag, param = Model.Param, style_list = Model.Style_list, strbreadcrumbs = ViewBag.str_breadcrumbs, is_search = true, typekey = Model.Typekey });}*@
+
+        @{Html.RenderAction("post_list_all", "news", new { id = Model.Cate_id, Link = Model.Link, cate_type = Web.Models.CommonGlobal.CateNews, search = Model.Text_search, tag = Model.Tag, param = Model.Param, style_list = Model.Style_list });}
+
+        @*@{Html.RenderAction("Menu_category", "control", new { cate_type = Web.Models.CommonGlobal.CateProduct, cate_id = Model.Cate_id });}
+
+        @{Html.RenderAction("search_box", "control");}*@
+    </div>
+</div>

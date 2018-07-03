@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.Models
+@using Web.App_GlobalResources
+
+@{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+<div class="vk-posts-details-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                @{Html.RenderAction("post_detail", "news", new { id = ViewBag.id, cate_id = ViewBag.cate_id, cate_type = ViewBag.cate_type });}
+            </div>
+            <div class="col-md-3">
+                <div class="vk-blog-list-body-right">
+                    <div class="vk-blog-list-right-search">
+                        @*<div class="input-group stylish-input-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </span>
+                        </div>*@
+                        @{Html.RenderAction("search_box", "control");}
+                    </div>
+
+                    @{Html.RenderAction("menu_category", "Control", new { cate_type = CommonGlobal.CateNews });}                    
+
+                    @{Html.RenderAction("post_list_view", "news");}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+
+@{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+
+<div class="vk-room-list-content">
+    <div class="container">
+        <div class="vk-room-list-header">
+            <h3>@Lang.mnuProduct</h3>
+            @{
+                if (!string.IsNullOrEmpty(ViewBag.cateName))
+                {
+                    <h2>@Html.Raw(ViewBag.cateName)</h2>
+                }
+            }
+            <div class="vk-room-list-border"></div>
+        </div>
+
+        <div class="page-variation-area " style="display:none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <h4 class="variation-title text-capitaliz">@Model.Heading</h4>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="variation-menu-wrap pull-right">
+                            <ul class="var-menu">
+                                @{
+                                    var hrefList = string.Empty;
+                                    var hrefGrid = string.Empty;
+                                    if (Model.Cate_id != null && Model.Cate_id > 0)
+                                    {
+                                        hrefList = Url.RouteUrl("_products_Link", new { controller = "product", action = "products", id = Model.Cate_id, Link = Model.Link, style_list = "list" });
+                                        hrefGrid = Url.RouteUrl("_products_Link", new { controller = "product", action = "products", id = Model.Cate_id, Link = Model.Link, style_list = "grid" });
+                                    }
+                                    else
+                                    {
+                                        hrefList = Url.RouteUrl("_product_only", new { controller = "product", action = "products", style_list = "list" });
+                                        hrefGrid = Url.RouteUrl("_product_only", new { controller = "product", action = "products", style_list = "grid" });
+                                    }
+
+                                    if (Model.Style_list == "grid")
+                                    {
+                                        <li><a href="@hrefList"><i class="fa fa-list"></i></a></li>
+                                        <li class="current"><a href="#"><i class="fa fa-th"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="current"><a href="#"><i class="fa fa-list"></i></a></li>
+                                        <li><a href="@hrefGrid"><i class="fa fa-th"></i></a></li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @{Html.RenderAction("product_list_all", "product", new { id = Model.Cate_id, Link = Model.Link, cate_type = Web.Models.CommonGlobal.CateProduct, search = Model.Text_search, tag = Model.Tag, param = Model.Param, style_list = Model.Style_list, strbreadcrumbs = ViewBag.str_breadcrumbs });}
+
+        @*@{Html.RenderAction("Menu_category", "control", new { cate_type = Web.Models.CommonGlobal.CateProduct, cate_id = Model.Cate_id });}
+
+        @{Html.RenderAction("search_box", "control");}*@
+
+      
+    </div>
+</div>

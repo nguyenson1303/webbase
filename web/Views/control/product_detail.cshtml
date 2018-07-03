@@ -1,0 +1,248 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@using Web.Enums
+@model Products_detail_view
+
+<div class="vk-room-details-content-left">
+
+    <div class="vk-room-details-left-slide">
+        <div id="owl-slide-room-details" class="vk-owl-one-item owl-carousel owl-theme">
+            @Html.Raw(Model.ListThumbImageView)
+        </div>
+    </div>
+
+    <div class="vk-room-details-title-price">
+        <div class="vk-room-details-title">
+            <h2>@Model.ProductName</h2>
+        </div>
+        <div class="vk-room-details-price">
+            <ul>
+                <li>
+                    @Lang.strStartingForm:
+                </li>
+                <li>
+                    @{
+                        var priceForm = Model.PriceOld;
+                        var priceTo = string.IsNullOrEmpty(Model.PriceNew) ? "0" : Model.PriceNew;
+                        if (priceForm > 0 && (priceTo != string.Empty && priceTo != "0"))
+                        {
+                            <p>@Convert.ToInt32(priceForm) - @priceTo tỷ/ <span>căn</span></p>
+                        }
+                        else if (priceForm > 0 && (priceTo == string.Empty || priceTo == "0"))
+                        {
+                            <p>@Convert.ToInt32(priceForm) tỷ/ <span>căn</span></p>
+                        }
+                        else if (priceForm == 0 && (priceTo != string.Empty && priceTo != "0"))
+                        {
+                            <p>@priceTo tỷ/ <span>căn</span></p>
+                        }
+                        else
+                        {
+                            <p>liên hệ</p>
+                        }
+                    }
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="vk-room-details-description">
+        @*<h4>@Lang.strDescription</h4>*@
+        <p>
+            @Html.Raw(Model.Summary)
+        </p>
+    </div>
+
+    <div class="vk-room-details-info padding-bottom-20">
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix "></div>
+
+    <div class="fb-like" data-href="@Model.Url" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+
+    @{Html.RenderAction("comment_facebook", "control", new { url = Model.Url });}
+
+    <div class="container-fluid">
+    </div>
+
+    @{
+        if (Model.ListOtherProduct != null && Model.ListOtherProduct.Count > 0)
+        {
+            <div class="row">
+                <div class="vk-room-details-related-rooms">
+                    <div class="container">
+                        <div class="vk-room-related-rooms">
+                            <h2>@Lang.strProductSame</h2>
+                            <div class="vk-room-related-border"></div>
+                        </div>
+
+                        <div class="vk-room-related-rooms-destop">
+                            <div class="vk-room-related-slide">
+                                <div id="owl-room-related-slide" class="vk-owl-three-dots owl-carousel owl-theme">
+
+                                    @{
+                                        for (int i = 0; i < Model.ListOtherProduct.Count; i++)
+                                        {
+                                            var img0 = Model.ListOtherProduct[i].ImagePath;
+                                            if (img0 == "0" || img0 == "" || img0 == null)
+                                            {
+                                                img0 = "/Content/themes/themanorcentralpark/images/product-default.jpg";
+                                            }
+                                            <div class="item">
+                                                <div class="vk-sparta-item-content">
+                                                    <div class="vk-item-img">
+                                                        <a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.ListOtherProduct[i].ProductID, Link = Model.ListOtherProduct[i].Link })"><img src="@img0" alt="@Model.ListOtherProduct[i].ProductName" class="img-responsive"></a>
+                                                    </div>
+                                                    <div class="vk-item-text">
+                                                        <h2><a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = Model.ListOtherProduct[i].ProductID, Link = Model.ListOtherProduct[i].Link })">@Model.ListOtherProduct[i].ProductName</a></h2>
+                                                        <ul>
+                                                            @*<li>
+                                                                <p>@Html.Raw(Model.ListOtherProduct[i].ProductName) </p>
+                                                            </li>*@
+                                                            <li>
+                                                                @{
+                                                                    var priceFormo = Model.ListOtherProduct[i].PriceOld;
+                                                                    var priceToo = Model.ListOtherProduct[i].PriceNew;
+                                                                    if (priceFormo > 0 && priceToo > 0)
+                                                                    {
+                                                                        <p>@Lang.strStartingForm : @Convert.ToInt32(priceFormo) - @Convert.ToInt32(priceToo) tỷ/ <span>căn</span></p>
+                                                                    }
+                                                                    else if (priceFormo > 0 && priceToo == 0)
+                                                                    {
+                                                                        <p>@Lang.strStartingForm : @Convert.ToInt32(priceFormo) tỷ/ <span>căn</span></p>
+                                                                    }
+                                                                    else if (priceForm == 0 && priceToo > 0)
+                                                                    {
+                                                                        <p>@Lang.strStartingForm : @Convert.ToInt32(priceToo) tỷ/ <span>căn</span></p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p>@Lang.strStartingForm : liên hệ</p>
+                                                                    }
+                                                                }
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+<!-- Review Area Start -->
+<div class="row" style="display:none">
+    <div class="col-md-12">
+        <div class="single-product-dc-tab">
+            <!-- Nav tabs -->
+            <ul class="product-tab-menu  clearfloat" role="tablist">
+                <li class="active"><a href="#reviews " data-toggle="tab">@Lang.strReview</a></li>
+                @*<li ><a href="#description" data-toggle="tab">@Lang.strDescription</a></li>*@
+                <li><a href="#additional-info" data-toggle="tab">@Lang.strComment</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade" id="description">
+                    @Html.Raw(Model.Content)
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="additional-info">
+                    <div class="additional-info-panel">
+                        @{Html.RenderAction("comment_facebook", "control", new { url = Model.Url });}
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade in active" id="reviews">
+                    <div class="reviews-wrap">
+                        <div class="panel-body" id="review">
+                            <div class="media" id="comments">
+                                <ol class="commentlist" id="review_lst">
+                                    @Html.Raw(Model.ListRatingView)
+                                </ol>
+                            </div>
+                            <form id="rating_form">
+                                <div class="reviews-area">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="inputName" name="inputName" placeholder="@Lang.strName">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="captcha_text" name="captcha_text" placeholder="@Lang.strInputCaptcha" size="6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img class="captcha" src="@Url.Action("ShowCaptchaImage", "base")" />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" id="inputContents" name="inputContents" cols="30" rows="5" placeholder="@Lang.strContent"></textarea>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">@Lang.strReview:</label>
+                                            <p>
+                                                <span class="rating">
+                                                    <input type="radio" class="rating-input" id="rating-input-1-5" value="5" name="Rating" />
+                                                    <label for="rating-input-1-5" class="rating-star"></label>
+                                                    <input type="radio" class="rating-input" id="rating-input-1-4" value="4" name="Rating" />
+                                                    <label for="rating-input-1-4" class="rating-star"></label>
+                                                    <input type="radio" class="rating-input" id="rating-input-1-3" value="3" name="Rating" />
+                                                    <label for="rating-input-1-3" class="rating-star"></label>
+                                                    <input type="radio" class="rating-input" id="rating-input-1-2" value="2" name="Rating" />
+                                                    <label for="rating-input-1-2" class="rating-star"></label>
+                                                    <input type="radio" class="rating-input" id="rating-input-1-1" value="1" name="Rating" />
+                                                    <label for="rating-input-1-1" class="rating-star"></label>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <input type="submit" value="@Lang.btnSend">
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    function Rating_product()
+                                    {
+                                        var rates = document.getElementsByName('Rating');
+                                        var rate_value;
+                                        for(var i = 0; i < rates.length; i++){
+                                            if(rates[i].checked){
+                                                rate_value = rates[i].value;
+                                            }
+                                        };
+
+                                        var item_id = @Model.ProductID;
+                                        var name = encodeURI(document.getElementById('inputName').value);
+                                        var Rating = rate_value;
+                                        var email = encodeURI(document.getElementById('inputEmail').value);
+                                        var contents = encodeURI(document.getElementById('inputContents').value);
+                                        var code = encodeURI(document.getElementById('captcha_text').value);
+                                        Add_rating(item_id,Rating,name,email,contents,code);
+                                    };
+                                </script>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Review Area End -->

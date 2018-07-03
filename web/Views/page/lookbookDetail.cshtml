@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.Models
+@using Web.App_GlobalResources
+
+@{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+
+<div class="row">
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.ImagePath) && ViewBag.ImagePath != "0")
+        {
+            <div class="vk-posts-details-left-img map_image" img_src="@ViewBag.ImagePath" img_id="@ViewBag.cate_id" style="overflow:auto;margin-top: 10px;margin-left: 15px;margin-bottom: 15px;">
+                @Html.Raw(ViewBag.MoreInfo)
+            </div>
+        }
+    }
+</div>

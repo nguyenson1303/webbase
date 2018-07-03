@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Order_register_view
+@{Html.RenderAction("ad_top", "control");}
+<div class="main-container left-sidebar">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-md-9 main-content">
+                <div class="shop-page-bar">
+                    @{Html.RenderAction("breadcrumbs", "control", new { str_breadcrumbs = ViewBag.str_breadcrumbs });}
+                </div>
+                <div class="form-authentication1">
+                    <div class="wpb_wrapper">
+                        <h2 class="ozy-divider-cap-left wpb_content_element">@Lang.strOrderList</h2><div class="ozy-content-divider " style="border-top-style:solid;border-top-width:2px;border-top-color:#f33337;width:40px;max-width:40px;"></div>
+                        <div class="wpb_text_column wpb_content_element  vc_custom_1413917458296">
+                            <div class="wpb_wrapper">
+                                <p><span class="text-error">@Html.Raw(Model.Message)</span></p>
+                            </div>
+                        </div>
+                        <div role="form" class="wpcf7" id="wpcf7-f1019-p62-o1" lang="en-US" dir="ltr">
+                            <div class="screen-reader-response"></div>
+                            <div class="block-form block-order-total box-border wow fadeInLeft" data-wow-duration="1s" id="printDIV">
+                                <h3><i class="fa fa-tasks"></i>@Lang.strOrderCode:@Model.Order_code</h3>
+                                <hr>
+                                @{
+                                    if (Model.ShoppingCart != null && Model.ShoppingCart.Count > 0)
+                                    {
+                                        <ul class="list-unstyled">
+                                            <li>@Lang.strName: <strong>@Model.Name</strong></li>
+                                            <li>E-Mail: <strong>@Model.Email</strong></li>
+                                            <li>@Lang.strPhone: <strong>@Model.Phone</strong></li>
+                                            <li>@Lang.strAddress: <strong>@Model.Address</strong></li>
+                                            <li>@Lang.strContent: <strong>@Model.Content</strong></li>
+                                            <li>@Lang.strPayment: <strong>@Model.Payment_status_text</strong></li>
+                                            <li>@Lang.strOrderStatus: <strong>@Model.Process_status_text</strong></li>
+                                        </ul>
+                                        <table class="cart-table table wow fadeInLeft" data-wow-duration="1s">
+                                            <thead>
+                                                <tr>
+                                                    <th class="card_product_name1">@Lang.strProduct</th>
+                                                    <th class="card_product_quantity1">@Lang.strQuantity</th>
+                                                    <th class="card_product_price1">@Lang.strPrice</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="cart_full_list">
+
+                                                @foreach (Web.Data.DetailOrder it in Model.ShoppingCart)
+                                                {
+                                                    <tr>
+                                                        <td class="card_product_name1">
+                                                            @*<a href="@Url.RouteUrl("_products_detail_Link", new { controller = "product", action = "product", id = it.ProductID, Link = "" })"></a>*@
+                                                            @Web.Models.CommonGlobal.CutString(it.ProductName.ToString(), 100)
+                                                            @*@Html.Raw(it.Propertices)*@
+                                                        </td>
+                                                        <td class="card_product_quantity1">
+                                                            <strong>@Html.Raw(it.Quantity) x </strong>
+                                                        </td>
+                                                        <td class="card_product_price1">@Html.Raw(Web.Models.CommonGlobal.FormatMoney(it.TotalPrice != null ? it.TotalPrice.ToString() : "0")) </td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <hr />
+                                        <ul class="list-unstyled">
+                                            <li><b>@Lang.strTotal:</b> <strong id="subtt2">@Html.Raw(Model.Sub_total)</strong></li>
+                                        </ul>
+                                    }
+                                }
+                            </div>
+
+                            <div class="product-icon">
+                                <a onclick="printDiv('printDIV')" class="product-card-icon" title="Print"><span class="menu-icon pe-7s-print"></span> Print </a>
+                            </div>
+                            <script type="text/javascript">
+                                function printDiv(divName) {
+                                    var printContents = document.getElementById(divName).innerHTML;
+                                    var originalContents = document.body.innerHTML;
+
+                                    document.body.innerHTML = printContents;
+
+                                    window.print();
+
+                                    document.body.innerHTML = originalContents;
+                                };
+                            </script>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-sm-4 col-md-3 sidebar">
+                @{Html.RenderAction("menu_my_account", "account");}
+            </div>
+        </div>
+    </div>
+</div>

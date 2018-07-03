@@ -1,0 +1,44 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+@model Web.ViewModels.Contact_register_view
+<div class="form-contact">
+    <div class="row">
+        <div class="col-sm-8">
+
+            <div id="message-box-conact">@Model.Message</div>
+            <div class="row">
+                @using (Html.BeginForm(Model.ParentAction, Model.ParentController, FormMethod.Post, new { id = "contact_register_form", @class = "wpcf7-form", enctype = "multipart/form-data" }))
+                {
+                    <div class="col-sm-4">
+                        <p><input type="text" name="name" id="name" value="" size="40" placeholder="@Lang.strName" /></p>
+                        <p><input type="text" name="email" id="email" value="" size="40" placeholder="Email" /></p>
+                        <p><input type="text" name="phone" id="phone" value="" size="40" placeholder="@Lang.strPhone" /></p>
+                        <p><input type="text" id="address" name="address" value="" size="40" placeholder="@Lang.strAddress" /></p>                        
+                        <p><input type="text" id="code" name="code" value="" size="40" placeholder="@Lang.strCaptcha" /></p>
+                        <p><img class="captcha" src="@Url.Action("ShowCaptchaImage", "base")" /></p>
+                    </div>
+                    <div class="col-sm-8">
+                        <p><textarea name="contents" id="contents" cols="40" rows="15" placeholder="Your Message"></textarea></p>
+                        <p><input type="submit" value="@Lang.btnSend" class="button pull-right primary" /></p>
+                    </div>
+                 }
+              </div>
+        </div>
+        <div class="col-sm-4">
+
+            <p>
+                <label>@Lang.strAddress:</label>
+                @ViewBag.Address
+            </p>
+            <p>
+                <label>Hot line:</label>
+                @ViewBag.hotline
+            </p>
+            <p>
+                <label>Email:</label>
+                @ViewBag.email
+            </p>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@using Web.App_GlobalResources
+@*panel*@
+<link rel="stylesheet" type="text/css" href="/Scripts/paneltool/paneltool.css" />
+<script type="text/javascript">
+        var link_facebook = "@ViewBag.facebook";
+        var link_phone = "@ViewBag.hotline";
+</script>
+<script src="/Scripts/paneltool/panel.js"></script>
+<input type="hidden" id="panel_view_type" value="" />
+<div id="facebook_pannel">
+    <div class="paneltool">
+        <div class="panelbutton">
+                <i class="fa fa-facebook"></i>
+        </div>
+        <div class="panelcontent">
+            <div class="panelinner"></div>
+        </div>
+
+    </div>
+</div>
+<div id="instagram_pannel">
+    <div class="paneltool">
+        <div class="panelbutton">
+                <i class="fa fa-instagram"></i>
+        </div>
+        <div class="panelcontent">
+            <div class="panelinner">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div id="phone_pannel">
+    <div class="paneltool">
+        <div class="panelbutton">
+                <i class="fa fa-phone"></i>
+        </div>
+        <div class="panelcontent">
+            <div class="panelinner"></div>
+        </div>
+    </div>
+</div>

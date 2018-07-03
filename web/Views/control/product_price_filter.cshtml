@@ -1,0 +1,24 @@
+﻿@using Web.ViewModels
+@using Web.App_GlobalResources
+<li class="widget">
+    <h4>@Lang.strPriceRange (triệu vnđ)</h4>
+    <form>
+        <div class="price_slider_wrapper">
+            <div class="price_slider" style="display:none;"></div>
+            <div class="price_slider_amount">
+                <input type="text" id="min_price" name="min_price" value="" data-min="@Model.price_min" placeholder="Min price" />
+                <input type="text" id="max_price" name="max_price" value="" data-max="@Model.price_max" placeholder="Max price" />
+                <button type="submit" class="button">Filter</button>
+                <div class="price_label" style="display:none;">
+                    @Lang.strPrice: <span class="from"></span> &mdash; <span class="to"></span>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var price_min_js = "@Model.price_min";
+            var price_max_js = "@Model.price_max";
+        </script>
+    </form>
+</li>
