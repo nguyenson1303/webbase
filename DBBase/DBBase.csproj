@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D104EFC-E584-41EA-BAD3-F6BF89A4CEEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DBBase</RootNamespace>
+    <AssemblyName>DBBase</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\City.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ConvertDelimitedListIntoTable_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Catalog.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Contact.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Email.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_EmailTemplate.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_General.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Invoices.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Languages.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Link.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Pages.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Payment.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Post.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_PostTag.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Product.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_ProductProperty.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_ProductTag.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Rating.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Role.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_Statistic.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_User.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_UserInfo.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_UserPage.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_UserPermission.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\C_WebInfo.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DetailOrder.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\District.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\f_Catalog_GetByProductHot_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\f_Product_GetByCatalogType_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\f_Statistic_All_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\f_ThongKe_Edit_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\f_UserInfor_Statistic_Result.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ImageAlbum.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ImageProduct.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Log.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\order.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Showroom.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntitysObject\cart_mini_view.cs" />
+    <Compile Include="EntitysObject\contact_map_view.cs" />
+    <Compile Include="EntitysObject\contact_register_view.cs" />
+    <Compile Include="EntitysObject\email_view.cs" />
+    <Compile Include="EntitysObject\footer_view.cs" />
+    <Compile Include="EntitysObject\ImgSlideObject.cs" />
+    <Compile Include="EntitysObject\list_post_view.cs" />
+    <Compile Include="EntitysObject\list_product_view.cs" />
+    <Compile Include="EntitysObject\login_view.cs" />
+    <Compile Include="EntitysObject\menu_main_view.cs" />
+    <Compile Include="EntitysObject\order_history_view.cs" />
+    <Compile Include="EntitysObject\order_register_view.cs" />
+    <Compile Include="EntitysObject\page_posts_view.cs" />
+    <Compile Include="EntitysObject\page_products_view.cs" />
+    <Compile Include="EntitysObject\page_static_view.cs" />
+    <Compile Include="EntitysObject\posts_view.cs" />
+    <Compile Include="EntitysObject\post_detail_view.cs" />
+    <Compile Include="EntitysObject\products_detail_view.cs" />
+    <Compile Include="EntitysObject\products_price_view.cs" />
+    <Compile Include="EntitysObject\products_view.cs" />
+    <Compile Include="EntitysObject\register_view.cs" />
+    <Compile Include="EntitysObject\showroom_view.cs" />
+    <Compile Include="EntitysObject\slide_view.cs" />
+    <Compile Include="EntitysObject\wishlist_view.cs" />
+    <Compile Include="Models\CatalogModels.cs" />
+    <Compile Include="Models\CityModels.cs" />
+    <Compile Include="Models\CommonGlobals.cs" />
+    <Compile Include="Models\ContactModels.cs" />
+    <Compile Include="Models\DetailOrderModels.cs" />
+    <Compile Include="Models\DistrictModels.cs" />
+    <Compile Include="Models\EmailModels.cs" />
+    <Compile Include="Models\EmailTemplateModels.cs" />
+    <Compile Include="Models\GalleryModels.cs" />
+    <Compile Include="Models\GeneralModels.cs" />
+    <Compile Include="EntitysObject\GoogleCustomClient.cs" />
+    <Compile Include="EntitysObject\ImageViewer.cs" />
+    <Compile Include="Models\LanguageModels.cs" />
+    <Compile Include="EntitysObject\Languages.cs" />
+    <Compile Include="Models\LinkModels.cs" />
+    <Compile Include="Models\LogModels.cs" />
+    <Compile Include="Models\MD5Extend.cs" />
+    <Compile Include="Models\MyExtensions.cs" />
+    <Compile Include="Models\OrderItem.cs" />
+    <Compile Include="Models\OrderList.cs" />
+    <Compile Include="Models\OrderModels.cs" />
+    <Compile Include="Models\PageModels.cs" />
+    <Compile Include="Models\PostModels.cs" />
+    <Compile Include="Models\PostTagModels.cs" />
+    <Compile Include="Models\ProductImagesModels.cs" />
+    <Compile Include="Models\ProductModels.cs" />
+    <Compile Include="Models\ProductPropertyModels.cs" />
+    <Compile Include="Models\ProductTagModels.cs" />
+    <Compile Include="Models\RatingModels.cs" />
+    <Compile Include="Models\RoleModels.cs" />
+    <Compile Include="Models\ShowroomModels.cs" />
+    <Compile Include="Models\StatisticModels.cs" />
+    <Compile Include="Models\UserModels.cs" />
+    <Compile Include="Models\Util.cs" />
+    <Compile Include="Models\WebInfoModels.cs" />
+    <Compile Include="EntitysObject\PagePermission.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Data\DB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Data\DB.edmx.diagram">
+      <DependentUpon>DB.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\DB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DB.edmx</DependentUpon>
+      <LastGenOutput>DB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\DB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DB.edmx</DependentUpon>
+      <LastGenOutput>DB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
