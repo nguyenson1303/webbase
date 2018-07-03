@@ -3,8 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ApiBase.Model;
-using DBBase.Data;
-using DBBase.Models;
+using ApiBase.Models.BusinessAccess;
+using ApiBase.Models.DB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -40,10 +40,10 @@ namespace ApiBase.Controllers
             return response;
         }
 
-        private string BuildToken(C_UserInfo user)
+        private string BuildToken(UserInfo user)
         {
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, user.FName + " " + user.LName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Fname + " " + user.Lname),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Birthdate, user.Birthday != null ? user.Birthday.Value.ToString("yyyy-MM-dd") : string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -61,11 +61,11 @@ namespace ApiBase.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private C_UserInfo Authenticate(LoginModel login)
+        private UserInfo Authenticate(LoginModel login)
         {
             UserModels sv = new UserModels();
-            C_User it = new C_User();
-            C_UserInfo iit = new C_UserInfo();
+            User it = new User();
+            UserInfo iit = new UserInfo();
             it = sv.GetUserbyUserName(login.Username);
             if (it != null && MD5Extend.EncodePassword(login.Password) == it.Password)
             {
