@@ -23,6 +23,7 @@ namespace ApiBase.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             UserModels userModels = new UserModels();
             List<AdminMenu> adminMenu = new List<AdminMenu>();
@@ -37,7 +38,7 @@ namespace ApiBase.Controllers
                     menuItem.icon = parent.Icon;
                     menuItem.link = parent.Path;
                     menuItem.home = parent.Path == "dashboard" ? true : false;
-                    menuItem.group = false;                    
+                    menuItem.group = false;
 
                     List<UserPage> lstChild = userModels.GetListUserPageByParrentID(parent.Id);
                     bool isChild = false;
@@ -49,18 +50,16 @@ namespace ApiBase.Controllers
                             AdminMenu menuItemChild = new AdminMenu();
                             menuItemChild.title = child.Title;
                             menuItemChild.icon = child.Icon;
-                            menuItemChild.link = string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path ;
+                            menuItemChild.link = string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path;
                             menuItemChild.home = false;
-                            menuItem.group = false;                            
-
-                            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value; ;
+                            menuItem.group = false;
 
                             var isShow = UserModels.CheckPermission(userLogin, menuItemChild.link, child.TypeAction, child.Tye);
                             if (isShow)
                             {
                                 menuChild.Add(menuItemChild);
                                 isChild = true;
-                            }                          
+                            }
                         }
                     }
 
@@ -68,7 +67,7 @@ namespace ApiBase.Controllers
                     {
                         menuItem.children = menuChild;
                     }
-                    
+
 
                     adminMenu.Add(menuItem);
                 }
