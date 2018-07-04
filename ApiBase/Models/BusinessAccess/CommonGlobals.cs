@@ -1517,9 +1517,9 @@
         /// <param name="type_act">The type act.</param>
         /// <param name="type">The type.</param>
         /// <returns>IsShow On Menu Admin</returns>
-        public static string IsShowOnMenuAdmin(string user_name, string act, string ctrl, string type_act, string type)
+        public static string IsShowOnMenuAdmin(string user_name, string path, string type_act, string type)
         {
-            var returnActive = UserModels.CheckPermission(user_name, act, ctrl, type_act, type);
+            var returnActive = UserModels.CheckPermission(user_name, path, type_act, type);
 
             return returnActive ? "style='display:'" : "style='display:none'";
         }

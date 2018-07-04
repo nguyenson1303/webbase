@@ -42,17 +42,17 @@
         public ActionResult Admin_menu()
         {
             StringBuilder strData = new StringBuilder();
-            UserModels objUserModels = new UserModels();
+            UserModels userModels = new UserModels();
             var admin_menu_view = new Admin_menu_view();
             using (var data = new Entities())
             {
-                List<C_UserPage> lstParent = objUserModels.GetListParentPage();
+                List<C_UserPage> lstParent = userModels.GetListParentPage();
                 if (lstParent.Any())
                 {
                     strData.Append(" <ul class=\"nav nav-list\">");
                     foreach (var parent in lstParent)
                     {
-                        List<C_UserPage> lstChild = objUserModels.GetListUserPageByParrentID(parent.id);
+                        List<C_UserPage> lstChild = userModels.GetListUserPageByParrentID(parent.id);
                         bool isAdd = false;
                         StringBuilder menuChild = new StringBuilder();
                         if (lstChild.Any())

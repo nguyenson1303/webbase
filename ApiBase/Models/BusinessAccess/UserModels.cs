@@ -22,12 +22,12 @@
         /// Checks the permission.
         /// </summary>
         /// <param name="user_name">Name of the user.</param>
-        /// <param name="act">The act.</param>
+        /// <param name="path">The act.</param>
         /// <param name="ctrl">The control.</param>
         /// <param name="type_action">The type action.</param>
         /// <param name="type">The type.</param>
         /// <returns>Checks the permission</returns>
-        public static bool CheckPermission(string user_name, string act, string ctrl, string type_action, string type)
+        public static bool CheckPermission(string user_name, string path, string type_action, string type)
         {
             try
             {
@@ -36,11 +36,11 @@
                     UserPage objUserPage = new UserPage();
                     if (string.IsNullOrEmpty(type))
                     {
-                        objUserPage = data.UserPage.Where(c => c.Act == act && c.Ctrl == ctrl).FirstOrDefault();
+                        objUserPage = data.UserPage.Where(c => c.Path == path).FirstOrDefault();
                     }
                     else
                     {
-                        objUserPage = data.UserPage.Where(c => c.Act == act && c.Ctrl == ctrl && c.Tye == type).FirstOrDefault();
+                        objUserPage = data.UserPage.Where(c => c.Path == path && c.Tye == type).FirstOrDefault();
                     }
 
                     if (objUserPage != null)
