@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ApiBase
 {
@@ -36,7 +37,19 @@ namespace ApiBase
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
-                        
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "API Base",
+                    Description = "ASP.NET Core Web API Base",
+                    TermsOfService = "None",
+                    Contact = new Swashbuckle.AspNetCore.Swagger.Contact() { Name = "Team Transgender", Email = "Transgender@gmail.com", Url = "www.transgender.com" }
+                });
+            });
+
             services.AddMvc();
         }
 
@@ -51,6 +64,11 @@ namespace ApiBase
             app.UseAuthentication();
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }
