@@ -38,6 +38,19 @@ namespace ApiBase
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Authenticated",
+                    policy => policy.RequireAuthenticatedUser());
+
+                //options.AddPolicy("Member",
+                //    policy => policy.RequireClaim("RoleUser", "Client"));
+
+                //options.AddPolicy("Admin",
+                //    policy => policy.RequireClaim("RoleUser", "Admin"));
+
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info

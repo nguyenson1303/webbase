@@ -577,5 +577,26 @@
                 return rt;
             }
         }
+
+        /// <summary>
+        /// Gets the name of the role.
+        /// </summary>
+        /// <param name="user_name">Name of the user.</param>
+        /// <returns>Gets the name of the user by user</returns>
+        public Role GetRolebyId(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.Role.Where(p => p.Id == id).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

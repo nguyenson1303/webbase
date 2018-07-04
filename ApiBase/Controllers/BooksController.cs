@@ -13,7 +13,7 @@ namespace ApiBase.Controllers
     [Route("api/[controller]")]
     public class BooksController : Controller
     {
-        [HttpGet, Authorize]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IEnumerable<Book> Get()
         {
             var currentUser = HttpContext.User;

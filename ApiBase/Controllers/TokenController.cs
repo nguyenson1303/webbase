@@ -6,6 +6,7 @@ using ApiBase.Model;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
 using DBBase.EntitysObject;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -30,21 +31,24 @@ namespace ApiBase.Controllers
         public IActionResult CreateToken([FromBody]LoginView login)
         {
             IActionResult response = Unauthorized();
-            var user = Authenticate(login);
+            Role userRole = null;
+            var user = Authenticate(login, out userRole);
 
             if (user != null)
-            {
-                var tokenString = BuildToken(user);
+            {             
+                var tokenString = BuildToken(user, userRole);
                 response = Ok(new { token = tokenString });
             }
 
             return response;
         }
 
-        private string BuildToken(UserInfo user)
+        private string BuildToken(UserInfo user, Role role)
         {
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Fname + " " + user.Lname),
+                new Claim(JwtRegisteredClaimNames.NameId, user.InforId.ToString()),
+                new Claim("roles", role.Role1.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Birthdate, user.Birthday != null ? user.Birthday.Value.ToString("yyyy-MM-dd") : string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -62,14 +66,14 @@ namespace ApiBase.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private UserInfo Authenticate(LoginView login)
+        private UserInfo Authenticate(LoginView login, out Role role)
         {
             UserModels sv = new UserModels();
-            User it = new User();
             UserInfo iit = new UserInfo();
-            it = sv.GetUserbyUserName(login.UserName);
+            User it = sv.GetUserbyUserName(login.UserName);
             if (it != null && MD5Extend.EncodePassword(login.Password) == it.Password)
             {
+                role = sv.GetRolebyId(it.Role);
                 iit = sv.GetUserInforByEmail(it.Username);
                 if (iit != null)
                 {
@@ -82,6 +86,7 @@ namespace ApiBase.Controllers
             }
             else
             {
+                role = null;
                 return null;
             }
         }
