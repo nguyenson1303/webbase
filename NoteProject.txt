@@ -1,4 +1,5 @@
-﻿+ Create new Entity Models from Existing Database:
+﻿===================================================
++ Create new Entity Models from Existing Database:
 1, open cmd "run as administrator"
 2, run command 'pushd D:\Sonnv6460\webbase\webbase_github\ApiBase' (pushd + space + path project folder)
 3, run command 'dotnet ef dbcontext scaffold "Server=DESKTOP-O9JNBR1;Database=themanor;user id=sa;password=sa123456;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models/DB'
@@ -27,3 +28,9 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 }
 ----------------------------------
 done => connection database
+============================================
+server: 137.59.106.71
+Database name : soncoi_HXcF1350_apibase
+Database user name: apibase_sa
+password user:8plAk4*8
+============================================

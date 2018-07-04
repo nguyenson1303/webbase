@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DatabaseQuery\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
