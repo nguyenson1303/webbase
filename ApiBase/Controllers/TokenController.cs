@@ -5,6 +5,7 @@ using System.Text;
 using ApiBase.Model;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
+using DBBase.EntitysObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,7 @@ namespace ApiBase.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateToken([FromBody]LoginModelView login)
+        public IActionResult CreateToken([FromBody]LoginView login)
         {
             IActionResult response = Unauthorized();
             var user = Authenticate(login);
@@ -61,12 +62,12 @@ namespace ApiBase.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private UserInfo Authenticate(LoginModelView login)
+        private UserInfo Authenticate(LoginView login)
         {
             UserModels sv = new UserModels();
             User it = new User();
             UserInfo iit = new UserInfo();
-            it = sv.GetUserbyUserName(login.Username);
+            it = sv.GetUserbyUserName(login.UserName);
             if (it != null && MD5Extend.EncodePassword(login.Password) == it.Password)
             {
                 iit = sv.GetUserInforByEmail(it.Username);
