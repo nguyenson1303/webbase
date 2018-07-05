@@ -467,7 +467,7 @@
                 }
                 else
                 {
-                    list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogId ? true : false, Text = this.ReplaceSpace(level) + cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
+                    list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogId ? true : false, Text = this.ReplaceSpace(level) + cata.CategoryName.ToString(), Value = cata.CatalogId.ToString() });
                 }
 
                 this.List_catalog_parent(cata.CatalogId, level, selected, type, lang, ref list_select_catalog);

@@ -31,7 +31,7 @@ namespace ApiBase.Controllers
             StringBuilder sb = new StringBuilder();
             List<SelectListItem> list_select_catalog = new List<SelectListItem>();
             BaseClass baseClass = new BaseClass();
-            var list_catalog_view = new admin_list_catalog_view();
+            var list_catalog_view = new AdminListCatalogView();
             int total_record = 0;
             int level = 0;
 
@@ -131,7 +131,7 @@ namespace ApiBase.Controllers
             StringBuilder sb = new StringBuilder();
             List<SelectListItem> list_select_catalog = new List<SelectListItem>();
             BaseClass baseClass = new BaseClass();
-            var catalog_view = new admin_catalog_view();
+            var catalog_view = new AdminCatalogView();
             int level = 0;
 
             if (UserModels.CheckPermission(userLogin, path, type_act, type) == false)
@@ -229,14 +229,15 @@ namespace ApiBase.Controllers
         public void Post([FromBody]string value)
         {
             CatalogModels cateModels = new CatalogModels();
-            C_Catalog cate = new C_Catalog();
+            Catalog cate = new Catalog();
             StringBuilder sb = new StringBuilder();
+            BaseClass baseClass = new BaseClass();
             int rt = 0;
             bool is_valid = true;
             int level = 0;
+
             List<SelectListItem> list_select_catalog = new List<SelectListItem>();
-            var catalog_view = new Web.Areas.Admin.ViewModels.Catalog_view();
-            this.TryUpdateModel(catalog_view);
+            var catalog_view = new AdminCatalogView();
 
             if (catalog_view.Cate_id > 0)
             {
@@ -251,8 +252,8 @@ namespace ApiBase.Controllers
             }
 
             ////action
-            catalog_view.Parent_action = HttpContext.Request.RequestContext.RouteData.Values["action"].ToString();
-            catalog_view.Parent_controller = HttpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
+            // catalog_view.Parent_action = HttpContext.Request.RequestContext.RouteData.Values["action"].ToString();
+            // catalog_view.Parent_controller = HttpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
 
             if (catalog_view.Cate_id != 0 && catalog_view.Type_act == CommonGlobal.Edit)
             {
@@ -261,11 +262,11 @@ namespace ApiBase.Controllers
                 sb.Append("<li><a href=\"" + link_catalog + "\"><span><span>Danh sách " + CommonGlobal.GetCatalogTypeName(catalog_view.Type) + "</span></span></a></li>");
                 sb.Append("<li class=\"active\"><a href=\"#\"><span><span>" + cate.CategoryName + "</span></span></a></li>");
                 ////list parent
-                cateModels.List_catalog_parent(0, level, cate.ParentID ?? 0, catalog_view.Type, cate.Lang, ref list_select_catalog);
+                cateModels.List_catalog_parent(0, level, cate.ParentId ?? 0, catalog_view.Type, cate.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
                 ////list lang
-                catalog_view.List_language = this.List_select_language(cate.Lang);
-                catalog_view.Cate_id = cate.CatalogID;
+                catalog_view.List_language = baseClass.List_select_language(cate.Lang);
+                catalog_view.Cate_id = cate.CatalogId;
             }
             else
             {
@@ -276,14 +277,14 @@ namespace ApiBase.Controllers
                 cateModels.List_catalog_parent(0, level, 0, catalog_view.Type, catalog_view.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
                 ////list lang
-                catalog_view.List_language = this.List_select_language(catalog_view.Lang);
+                catalog_view.List_language = baseClass.List_select_language(catalog_view.Lang);
             }
 
             catalog_view.Html_link_tab = sb.ToString();
 
             if (!is_valid)
             {
-                return this.PartialView("../control/change_catalog", catalog_view);
+                //return this.PartialView("../control/change_catalog", catalog_view);
             }
 
             cate.CategoryName = catalog_view.Category_name;
@@ -303,7 +304,7 @@ namespace ApiBase.Controllers
             cate.MoreInfo = string.IsNullOrEmpty(catalog_view.MoreInfo) == false ? catalog_view.MoreInfo : string.Empty;
             cate.Lang = catalog_view.Lang;
             cate.OrderDisplay = catalog_view.OrderDisplay;
-            cate.ParentID = catalog_view.Parent;
+            cate.ParentId = catalog_view.Parent;
             cate.Show = catalog_view.Show;
             if ((cate.Show ?? false) == true)
             {
@@ -322,28 +323,28 @@ namespace ApiBase.Controllers
             var imgPathTemp = "images/catalog/" + DateTime.Now.Year.ToString() + "/" + DateTime.Now.Month.ToString() + "/";
             var name_time = DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + string.Empty;
 
-            if (file_image != null && file_image.ContentLength > 0 && CommonGlobal.IsImage(file_image) == true)
-            {
-                string image_small = imgPathTemp + "sc_small_" + name_time + "_" + CommonGlobal.CompleteNamefileImages(file_image.FileName);
-                string image_lager = imgPathTemp + "sc_full_" + name_time + "_" + CommonGlobal.CompleteNamefileImages(file_image.FileName);
-                ////save image and delete old file
-                //this.SavephotoCategory(cate.ImagePath, file_image, imgPathTemp, image_small, image_lager);
+            //if (file_image != null && file_image.ContentLength > 0 && CommonGlobal.IsImage(file_image) == true)
+            //{
+            //    string image_small = imgPathTemp + "sc_small_" + name_time + "_" + CommonGlobal.CompleteNamefileImages(file_image.FileName);
+            //    string image_lager = imgPathTemp + "sc_full_" + name_time + "_" + CommonGlobal.CompleteNamefileImages(file_image.FileName);
+            //    ////save image and delete old file
+            //    //this.SavephotoCategory(cate.ImagePath, file_image, imgPathTemp, image_small, image_lager);
 
-                ////save image and delete old file
-                this.SavephotoOriginal(cate.ImagePath, file_image, imgPathTemp, image_lager);
+            //    ////save image and delete old file
+            //    this.SavephotoOriginal(cate.ImagePath, file_image, imgPathTemp, image_lager);
 
-                ////set image thumb to link catalog
-                cate.ImagePath = "/" + image_lager;
-                catalog_view.ImagePath = "/" + image_lager;
-            }
-            else if (string.IsNullOrEmpty(cate.ImagePath))
-            {
-                cate.ImagePath = "0";
-            }
-            else
-            {
-                cate.ImagePath = catalog_view.ImagePath;
-            }
+            //    ////set image thumb to link catalog
+            //    cate.ImagePath = "/" + image_lager;
+            //    catalog_view.ImagePath = "/" + image_lager;
+            //}
+            //else if (string.IsNullOrEmpty(cate.ImagePath))
+            //{
+            //    cate.ImagePath = "0";
+            //}
+            //else
+            //{
+            //    cate.ImagePath = catalog_view.ImagePath;
+            //}
 
             if (catalog_view.Cate_id != 0 && catalog_view.Type_act == "edit")
             {
@@ -365,7 +366,7 @@ namespace ApiBase.Controllers
                 catalog_view.Message = "Cập nhật không thành công!";
             }
 
-            return this.PartialView("../control/change_catalog", catalog_view);
+            // return this.PartialView("../control/change_catalog", catalog_view);
         }
 
         // PUT api/values/5

@@ -1,9 +1,13 @@
-﻿namespace ApiBase.Models.AdminViewModels
+﻿using ApiBase.Models.DB;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+
+namespace ApiBase.Models.AdminViewModels
 {
     /// <summary>
-    /// Catalog view
+    /// list catalog view
     /// </summary>
-    public class admin_catalog_view
+    public class AdminListCatalogView
     {
         /// <summary>
         /// Gets or sets the Path.
@@ -12,6 +16,18 @@
         /// The Path.
         /// </value>
         public string Path
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the alias.
+        /// </summary>
+        /// <value>
+        /// The name of the alias.
+        /// </value>
+        public string Alias_name
         {
             get;
             set;
@@ -53,17 +69,6 @@
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public string Description
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets the HTML link tab.
@@ -78,60 +83,12 @@
         }
 
         /// <summary>
-        /// Gets or sets the image path.
-        /// </summary>
-        /// <value>
-        /// The image path.
-        /// </value>
-        public string ImagePath
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the intro.
-        /// </summary>
-        /// <value>
-        /// The intro.
-        /// </value>
-        public string Intro
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the keyword.
-        /// </summary>
-        /// <value>
-        /// The keyword.
-        /// </value>
-        public string Keyword
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the language.
         /// </summary>
         /// <value>
         /// The language.
         /// </value>
         public string Lang
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the label image.
-        /// </summary>
-        /// <value>
-        /// The label image.
-        /// </value>
-        public string Label_image
         {
             get;
             set;
@@ -162,6 +119,18 @@
         }
 
         /// <summary>
+        /// Gets or sets the list order.
+        /// </summary>
+        /// <value>
+        /// The list order.
+        /// </value>
+        public List<SelectListItem> List_order
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the list page size.
         /// </summary>
         /// <value>
@@ -174,10 +143,10 @@
         }
 
         /// <summary>
-        /// Gets or sets the list parent.
+        /// Gets or sets the list parent object.
         /// </summary>
         /// <value>
-        /// The list parent.
+        /// The list parent object.
         /// </value>
         public List<SelectListItem> List_parent
         {
@@ -198,24 +167,60 @@
         }
 
         /// <summary>
-        /// Gets or sets the more information.
+        /// Gets or sets the order by.
         /// </summary>
         /// <value>
-        /// The more information.
+        /// The order by.
         /// </value>
-        public string MoreInfo
+        public string Order_by
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the order display.
+        /// Gets or sets the type of the order.
         /// </summary>
         /// <value>
-        /// The order display.
+        /// The type of the order.
         /// </value>
-        public int OrderDisplay
+        public string Order_type
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the page.
+        /// </summary>
+        /// <value>
+        /// The page.
+        /// </value>
+        public int Page
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the page size.
+        /// </summary>
+        /// <value>
+        /// The page size.
+        /// </value>
+        public int Page_size
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the page list catalog.
+        /// </summary>
+        /// <value>
+        /// The page list catalog.
+        /// </value>
+        public List<Catalog> Page_list_catalog
         {
             get;
             set;
@@ -270,24 +275,24 @@
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Catalog_view"/> is show.
+        /// Gets or sets the style list.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if show; otherwise, <c>false</c>.
+        /// The style list.
         /// </value>
-        public bool Show
+        public string Style_list
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the show text.
+        /// Gets or sets the tag.
         /// </summary>
         /// <value>
-        /// The show text.
+        /// The tag.
         /// </value>
-        public string Show_text
+        public string Tag
         {
             get;
             set;
@@ -306,12 +311,12 @@
         }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the total record.
         /// </summary>
         /// <value>
-        /// The title.
+        /// The total record.
         /// </value>
-        public string Title
+        public int Total_record
         {
             get;
             set;
