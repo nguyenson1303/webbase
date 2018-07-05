@@ -23,19 +23,10 @@
         /// Actives the language.
         /// </summary>
         /// <returns>Active Language</returns>
-        //public static Languages ActiveLanguage()
-        //{
-        //    HttpCookie cookie = HttpContext.Current.Request.Cookies["CurrentLanguage"];
-        //    if (cookie != null && cookie.Value != null)
-        //    {
-        //        var lang = cookie.Value;
-        //        return AvailableLanguages.Where(p => p.LangCultureName == lang).FirstOrDefault();
-        //    }
-        //    else
-        //    {
-        //        return AvailableLanguages.FirstOrDefault();
-        //    }
-        //}
+        public static Languages ActiveLanguage()
+        {
+            return AvailableLanguages.FirstOrDefault();
+        }
 
         /// <summary>
         /// Gets the default language.
