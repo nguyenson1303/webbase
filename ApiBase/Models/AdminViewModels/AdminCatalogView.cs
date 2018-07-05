@@ -68,17 +68,6 @@ namespace ApiBase.Models.AdminViewModels
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the HTML link tab.
-        /// </summary>
-        /// <value>
-        /// The HTML link tab.
-        /// </value>
-        public string Html_link_tab
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets the image path.
@@ -231,30 +220,6 @@ namespace ApiBase.Models.AdminViewModels
         /// The parent.
         /// </value>
         public int Parent
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the parent action.
-        /// </summary>
-        /// <value>
-        /// The parent action.
-        /// </value>
-        public string Parent_action
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the parent controller.
-        /// </summary>
-        /// <value>
-        /// The parent controller.
-        /// </value>
-        public string Parent_controller
         {
             get;
             set;
