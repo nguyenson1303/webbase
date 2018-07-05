@@ -697,7 +697,7 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.Token)
                     .HasColumnName("token")
-                    .HasMaxLength(200)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
             });
 
@@ -708,6 +708,10 @@ namespace ApiBase.Models.DB
                 entity.ToTable("_UserInfo");
 
                 entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.Avatar)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
 
@@ -720,6 +724,8 @@ namespace ApiBase.Models.DB
                 entity.Property(e => e.Fname)
                     .HasColumnName("FName")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.FullName).HasMaxLength(250);
 
                 entity.Property(e => e.Lname)
                     .HasColumnName("LName")
