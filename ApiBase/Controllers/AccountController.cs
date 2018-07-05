@@ -1,4 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using ApiBase.Models.BusinessAccess;
+using ApiBase.Models.DB;
+using ApiBase.Models.ViewModels;
+using DBBase.EntitysObject;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,9 +17,51 @@ namespace ApiBase.Controllers
     {
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public UserInfo Get()
         {
-            return new string[] { "value1", "value2" };
+            UserModels sv = new UserModels();
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var userInfor = sv.GetUserInforByEmail(userLogin);
+            return userInfor;
+        }
+
+        [HttpPost("changePassword")]
+        [Authorize]
+        public IActionResult ChangePassword([FromBody]ChangePasswordView login)
+        {
+            UserModels sv = new UserModels();
+            IActionResult response = null;
+            var mess = string.Empty;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            if (!string.IsNullOrEmpty(login.Password) && !string.IsNullOrEmpty(login.ConfirmPassword))
+            {
+                // user change password
+                User user = sv.GetUserbyUserName(userLogin);
+                if (user != null && MD5Extend.EncodePassword(login.OldPassword) == user.Password)
+                {
+                    if (login.Password == login.ConfirmPassword)
+                    {
+                        user.Password = MD5Extend.EncodePassword(login.Password);
+                        sv.UpdateUser(user);
+                        mess = "Thay đổi mật khẩu thành công !";
+                        response = StatusCode(200, mess); 
+                    }
+                    else
+                    {
+                        mess = "Vui lòng xác nhận lại mật khẩu !";
+                        response = StatusCode(201, mess); 
+                    }
+                }
+            }
+
+            return response;
         }
 
         //// GET api/<controller>/abc@gmail.com
@@ -63,7 +112,7 @@ namespace ApiBase.Controllers
         //    else
         //    {
         //        return false;
-        //    }          
+        //    }
         //}
 
         // DELETE api/<controller>/5

@@ -17,5 +17,7 @@ namespace ApiBase.Models.DB
         public string Note { get; set; }
         public DateTime? DateJoin { get; set; }
         public DateTime? DateRegister { get; set; }
+        public string Avatar { get; set; }
+        public string FullName { get; set; }
     }
 }
