@@ -552,7 +552,7 @@
         /// </summary>
         /// <param name="user">user object.</param>
         /// <returns>Updates the user</returns>
-        public string Update_User(User user)
+        public string UpdateUser(User user)
         {
             using (var data = new themanorContext())
             {
@@ -570,6 +570,34 @@
                     rt = user.Username;
                 }
                 catch (Exception)
+                {
+                    rt = string.Empty;
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Updates the user.
+        /// </summary>
+        /// <param name="user">user object.</param>
+        /// <returns>Updates the user</returns>
+        public string RefreshTokenUser(User user)
+        {
+            using (var data = new themanorContext())
+            {
+                string rt = string.Empty;
+                try
+                {
+                    var c_gen = data.User.Where(p => p.Username == user.Username).FirstOrDefault();
+                    c_gen.Token = user.Token.ToString();
+                    c_gen.Expire = user.Expire;
+
+                    data.SaveChanges();
+                    rt = user.Username;
+                }
+                catch (Exception ex)
                 {
                     rt = string.Empty;
                 }

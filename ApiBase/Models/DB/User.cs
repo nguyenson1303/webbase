@@ -11,5 +11,7 @@ namespace ApiBase.Models.DB
         public bool? Online { get; set; }
         public DateTime? LastLogin { get; set; }
         public string Ip { get; set; }
+        public string Token { get; set; }
+        public DateTime? Expire { get; set; }
     }
 }

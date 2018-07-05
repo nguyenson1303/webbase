@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using ApiBase.Model;
+using System.Threading.Tasks;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
+using ApiBase.Models.ViewModels;
 using DBBase.EntitysObject;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -32,26 +34,55 @@ namespace ApiBase.Controllers
         {
             IActionResult response = Unauthorized();
             Role userRole = null;
-            var user = Authenticate(login, out userRole);
+            User user = null;
+            var userInfor = Authenticate(login, out user, out userRole);
 
-            if (user != null)
+            var expiresDate = DateTime.Now.AddHours(12);
+            var now = DateTime.Now;
+            if (userInfor != null)
             {             
-                var tokenString = BuildToken(user, userRole);
-                response = Ok(new { token = tokenString });
+                var tokenResource = BuildToken(userInfor, user, userRole, now, expiresDate);
+                response = Json(tokenResource); 
             }
 
             return response;
         }
 
-        private string BuildToken(UserInfo user, Role role)
+        [HttpPost("refresh")]
+        [Authorize]
+        public IActionResult Refresh([FromBody]RefreshTokenResource resource)
+        {
+            UserModels sv = new UserModels();
+            IActionResult response = null;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+       
+            User user = sv.GetUserbyUserName(userLogin);
+            if (user != null && user.Token == resource.Token)
+            {
+                var role = sv.GetRolebyId(user.Role);
+                var expiresDate = DateTime.Now.AddHours(12);
+                var now = DateTime.Now;
+                var userInfo = sv.GetUserInforByEmail(user.Username);
+                var tokenResource = BuildToken(userInfo, user, role, now, expiresDate);
+                response = Json(tokenResource); 
+            }
+
+            return response;            
+        }
+
+        private TokenResource BuildToken(UserInfo userInfor, User user, Role role, DateTime now, DateTime expiresDate)
         {
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Fname + " " + user.Lname),
-                new Claim(JwtRegisteredClaimNames.NameId, user.InforId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, userInfor.Fname + " " + userInfor.Lname),
+                new Claim(JwtRegisteredClaimNames.NameId, userInfor.InforId.ToString()),
                 new Claim("roles", role.Role1.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Birthdate, user.Birthday != null ? user.Birthday.Value.ToString("yyyy-MM-dd") : string.Empty),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Email, userInfor.Email),
+                new Claim(JwtRegisteredClaimNames.Birthdate, userInfor.Birthday != null ? userInfor.Birthday.Value.ToString("yyyy-MM-dd") : string.Empty),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Expired, expiresDate.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -60,21 +91,31 @@ namespace ApiBase.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
               claims,
-              expires: DateTime.Now.AddHours(12),
+              expires: expiresDate,
               signingCredentials: creds);
+            var tokenKey = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            UserModels sv = new UserModels();
+            user.Token = tokenKey;
+            user.Expire = expiresDate;
+            sv.RefreshTokenUser(user);
+
+            var tokenResource = new TokenResource();
+            tokenResource.Token = tokenKey;
+            tokenResource.Expiry = expiresDate;
+
+            return tokenResource;
         }
 
-        private UserInfo Authenticate(LoginView login, out Role role)
+        private UserInfo Authenticate(LoginView login, out User user, out Role role)
         {
             UserModels sv = new UserModels();
             UserInfo iit = new UserInfo();
-            User it = sv.GetUserbyUserName(login.UserName);
-            if (it != null && MD5Extend.EncodePassword(login.Password) == it.Password)
+            user = sv.GetUserbyUserName(login.UserName);
+            if (user != null && MD5Extend.EncodePassword(login.Password) == user.Password)
             {
-                role = sv.GetRolebyId(it.Role);
-                iit = sv.GetUserInforByEmail(it.Username);
+                role = sv.GetRolebyId(user.Role);
+                iit = sv.GetUserInforByEmail(user.Username);
                 if (iit != null)
                 {
                     return iit;

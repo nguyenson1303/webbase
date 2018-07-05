@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace ApiBase.Models.DB
@@ -50,11 +46,11 @@ namespace ApiBase.Models.DB
         public virtual DbSet<UserPage> UserPage { get; set; }
         public virtual DbSet<UserPermission> UserPermission { get; set; }
         public virtual DbSet<WebInfo> WebInfo { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {                
+            {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())
                    .AddJsonFile("appsettings.json")
@@ -685,6 +681,10 @@ namespace ApiBase.Models.DB
                     .HasMaxLength(100)
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.Expire)
+                    .HasColumnName("expire")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Ip)
                     .HasColumnName("IP")
                     .HasMaxLength(100);
@@ -694,6 +694,11 @@ namespace ApiBase.Models.DB
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(500);
+
+                entity.Property(e => e.Token)
+                    .HasColumnName("token")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<UserInfo>(entity =>
