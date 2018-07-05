@@ -43,17 +43,17 @@ namespace ApiBase.Controllers
                     if (lstChild.Any())
                     {
                         foreach (var child in lstChild)
-                        {
-                            AdminMenu menuItemChild = new AdminMenu();
-                            menuItemChild.title = child.Title;
-                            menuItemChild.icon = child.Icon;
-                            menuItemChild.link = string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path;
-                            menuItemChild.home = false;
-                            menuItem.group = false;
-
-                            var isShow = UserModels.CheckPermission(userLogin, menuItemChild.link, child.TypeAction, child.Tye);
+                        {                           
+                            var isShow = UserModels.CheckPermission(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), child.TypeAction, child.Tye);
                             if (isShow)
                             {
+                                AdminMenu menuItemChild = new AdminMenu();
+                                menuItemChild.title = child.Title;
+                                menuItemChild.icon = child.Icon;
+                                menuItemChild.link = string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path;
+                                menuItemChild.home = false;
+                                menuItem.group = false;
+
                                 menuChild.Add(menuItemChild);
                                 isChild = true;
                             }
