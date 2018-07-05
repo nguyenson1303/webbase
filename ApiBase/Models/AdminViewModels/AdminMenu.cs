@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ApiBase.Model
+namespace ApiBase.Model.AdminViewModels
 {
     /// <summary>
     /// admin menu view

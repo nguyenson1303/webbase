@@ -92,7 +92,7 @@ namespace ApiBase.Controllers
             list_catalog_view.Html_link_tab = sb.ToString();
 
             ////list language
-            list_catalog_view.List_language = baseClass.List_select_language(lang);
+            list_catalog_view.List_language = baseClass.ListSelectLanguage(lang);
 
             ////list category
             cateModels.List_catalog_parent(0, level, (int)parent, type, lang, ref list_select_catalog);
@@ -196,7 +196,7 @@ namespace ApiBase.Controllers
                     catalog_view.Show_text = string.Empty;
                 }
 
-                catalog_view.List_language = baseClass.List_select_language(cate.Lang ?? lang);
+                catalog_view.List_language = baseClass.ListSelectLanguage(cate.Lang ?? lang);
                 catalog_view.OrderDisplay = (int)cate.OrderDisplay;
             }
             else
@@ -206,7 +206,7 @@ namespace ApiBase.Controllers
                 sb.Append("<li><a class=\"active\" href=\"" + link_catalog + "\"><span><span>Danh mục " + CommonGlobal.GetCatalogTypeName(type) + "</span></span></a></li>");
                 sb.Append("<li class=\"active\"><a href=\"#\"><span><span>Thêm danh mục</span></span></a></li>");
                 catalog_view.Lang = lang;
-                catalog_view.List_language = baseClass.List_select_language(lang);
+                catalog_view.List_language = baseClass.ListSelectLanguage(lang);
                 catalog_view.OrderDisplay = cateModels.GetMaxOrderDisplay(type);
                 catalog_view.Parent = (int)parent;
             }
@@ -265,7 +265,7 @@ namespace ApiBase.Controllers
                 cateModels.List_catalog_parent(0, level, cate.ParentId ?? 0, catalog_view.Type, cate.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
                 ////list lang
-                catalog_view.List_language = baseClass.List_select_language(cate.Lang);
+                catalog_view.List_language = baseClass.ListSelectLanguage(cate.Lang);
                 catalog_view.Cate_id = cate.CatalogId;
             }
             else
@@ -277,7 +277,7 @@ namespace ApiBase.Controllers
                 cateModels.List_catalog_parent(0, level, 0, catalog_view.Type, catalog_view.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
                 ////list lang
-                catalog_view.List_language = baseClass.List_select_language(catalog_view.Lang);
+                catalog_view.List_language = baseClass.ListSelectLanguage(catalog_view.Lang);
             }
 
             catalog_view.Html_link_tab = sb.ToString();

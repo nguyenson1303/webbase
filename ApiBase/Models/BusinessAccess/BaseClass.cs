@@ -13,7 +13,7 @@ namespace ApiBase.Models.BusinessAccess
         /// </summary>
         /// <param name="selected">The selected.</param>
         /// <returns>list select language</returns>
-        public List<SelectListItem> List_select_language(string selected)
+        public List<SelectListItem> ListSelectLanguage(string selected)
         {
             var list_lang = LanguageModels.AvailableLanguages;
             var list_item_lang = new List<SelectListItem>();
