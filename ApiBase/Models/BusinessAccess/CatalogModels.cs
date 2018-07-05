@@ -6,6 +6,8 @@
     using System.Linq;
     using ApiBase.Models.DB;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Web;
 
     /// <summary>
     /// Catalog Models
@@ -444,33 +446,33 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <param name="list_select_catalog">The list select catalog.</param>
-        //public void List_catalog_parent(int parent, int level, int selected, string type, string lang, ref List<SelectListItem> list_select_catalog)
-        //{
-        //    ////CatalogModels cateModels = new CatalogModels();
-        //    List<Catalog> catalog = this.GetbyParentID(parent, type, lang);
-        //    if (parent == 0)
-        //    {
-        //        list_select_catalog.Add(new SelectListItem { Selected = selected == parent ? true : false, Text = "Không thuộc mục nào", Value = "0" });
-        //    }
-        //    else
-        //    {
-        //        level++;
-        //    }
+        public void List_catalog_parent(int parent, int level, int selected, string type, string lang, ref List<SelectListItem> list_select_catalog)
+        {
+            ////CatalogModels cateModels = new CatalogModels();
+            List<Catalog> catalog = this.GetbyParentID(parent, type, lang);
+            if (parent == 0)
+            {
+                list_select_catalog.Add(new SelectListItem { Selected = selected == parent ? true : false, Text = "Không thuộc mục nào", Value = "0" });
+            }
+            else
+            {
+                level++;
+            }
 
-        //    foreach (Catalog cata in catalog)
-        //    {
-        //        if (parent == 0)
-        //        {
-        //            list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogID ? true : false, Text = cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
-        //        }
-        //        else
-        //        {
-        //            list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogID ? true : false, Text = this.ReplaceSpace(level) + cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
-        //        }
+            foreach (Catalog cata in catalog)
+            {
+                if (parent == 0)
+                {
+                    list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogId ? true : false, Text = cata.CategoryName.ToString(), Value = cata.CatalogId.ToString() });
+                }
+                else
+                {
+                    list_select_catalog.Add(new SelectListItem { Selected = selected == cata.CatalogId ? true : false, Text = this.ReplaceSpace(level) + cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
+                }
 
-        //        this.List_catalog_parent(cata.CatalogID, level, selected, type, lang, ref list_select_catalog);
-        //    }
-        //}
+                this.List_catalog_parent(cata.CatalogId, level, selected, type, lang, ref list_select_catalog);
+            }
+        }
 
         /// <summary>
         /// Lists the name of the catalog parent no append.
@@ -550,15 +552,15 @@
         /// </summary>
         /// <param name="count">The count.</param>
         /// <returns>the Space</returns>
-        //public string ReplaceSpace(int count)
-        //{
-        //    string rt = string.Empty;
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        rt = rt + HttpUtility.HtmlDecode("--");
-        //    }
+        public string ReplaceSpace(int count)
+        {
+            string rt = string.Empty;
+            for (int i = 0; i < count; i++)
+            {
+                rt = rt + HttpUtility.HtmlDecode("--");
+            }
 
-        //    return rt;
-        //}
+            return rt;
+        }
     }
 }
