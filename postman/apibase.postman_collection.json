@@ -3,8 +3,12 @@
 	"name": "apibase",
 	"description": "",
 	"order": [
+		"e9ec86cc-09f9-e476-66d5-940303d526a5",
 		"2461318d-5f4d-1b68-ae04-c6a66df90860",
-		"e9ec86cc-09f9-e476-66d5-940303d526a5"
+		"a9813037-bd56-7f8f-46bd-b8ecd90135ff",
+		"aef8d4c4-95c9-e1f6-712d-f4e753b3fdfb",
+		"f57ed136-26cc-6676-4e66-c59fa5529de2",
+		"c4165088-751a-e55c-c837-4ba04062f9bb"
 	],
 	"folders": [],
 	"folders_order": [],
@@ -43,6 +47,95 @@
 			"helperAttributes": {}
 		},
 		{
+			"id": "a9813037-bd56-7f8f-46bd-b8ecd90135ff",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImQzMDMzYjIzLThmMzEtNDliNy04M2UyLWZlMjgzZDRhZTZiYSIsImV4cCI6MTUzMDc0MzkyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.kPteBO6Lax4r19cMiVHq4U8CeF5C_dVP8rm4wcVlkUE\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImQzMDMzYjIzLThmMzEtNDliNy04M2UyLWZlMjgzZDRhZTZiYSIsImV4cCI6MTUzMDc0MzkyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.kPteBO6Lax4r19cMiVHq4U8CeF5C_dVP8rm4wcVlkUE",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/adminmenu",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1530759132653,
+			"name": "http://apibase.local/api/adminmenu copy",
+			"description": "",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"responses": []
+		},
+		{
+			"id": "aef8d4c4-95c9-e1f6-712d-f4e753b3fdfb",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:56625/api/token",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://localhost:56625/api/token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1530700283848,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n\t\"Username\": \"sonnguyenvan1986@gmail.com\",\n\t\"Password\": \"123456\"\n}"
+		},
+		{
+			"id": "c4165088-751a-e55c-c837-4ba04062f9bb",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImQzMDMzYjIzLThmMzEtNDliNy04M2UyLWZlMjgzZDRhZTZiYSIsImV4cCI6MTUzMDc0MzkyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.kPteBO6Lax4r19cMiVHq4U8CeF5C_dVP8rm4wcVlkUE\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImQzMDMzYjIzLThmMzEtNDliNy04M2UyLWZlMjgzZDRhZTZiYSIsImV4cCI6MTUzMDc0MzkyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.kPteBO6Lax4r19cMiVHq4U8CeF5C_dVP8rm4wcVlkUE",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:56625/api/adminmenu",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1530759067113,
+			"name": "http://localhost:56625/api/adminmenu",
+			"description": "",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"responses": []
+		},
+		{
 			"id": "e9ec86cc-09f9-e476-66d5-940303d526a5",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
@@ -72,6 +165,36 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"rawModeData": "{\n\t\"Username\": \"mario\",\n\t\"Password\": \"secret\"\n}"
+		},
+		{
+			"id": "f57ed136-26cc-6676-4e66-c59fa5529de2",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJCw6xuaCAiLCJuYW1laWQiOiI3Iiwicm9sZXMiOiJVc2VyIiwiZW1haWwiOiJzb25uZ3V5ZW52YW4xOTg2QGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjlmY2ZlMzIzLWZmN2ItNGJhMS1iZDgxLWJhY2ZkYjI2MThmNiIsImV4cCI6MTUzMDczNTE5MCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Bf6f2eDVHAzqpKnTVEelM6T2B7iI_xAgLA10JGE2Vvs\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJCw6xuaCAiLCJuYW1laWQiOiI3Iiwicm9sZXMiOiJVc2VyIiwiZW1haWwiOiJzb25uZ3V5ZW52YW4xOTg2QGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjlmY2ZlMzIzLWZmN2ItNGJhMS1iZDgxLWJhY2ZkYjI2MThmNiIsImV4cCI6MTUzMDczNTE5MCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Bf6f2eDVHAzqpKnTVEelM6T2B7iI_xAgLA10JGE2Vvs",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:56625/api/books",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://localhost:56625/api/books",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1530700293304,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
 		}
 	]
 }
