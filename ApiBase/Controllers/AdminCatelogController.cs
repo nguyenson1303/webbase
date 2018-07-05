@@ -209,7 +209,7 @@ namespace ApiBase.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]string value)
         {
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
@@ -235,8 +235,6 @@ namespace ApiBase.Controllers
             }
 
             ////action
-            // catalog_view.Parent_action = HttpContext.Request.RequestContext.RouteData.Values["action"].ToString();
-            // catalog_view.Parent_controller = HttpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
 
             if (catalog_view.Cate_id != 0 && catalog_view.Type_act == CommonGlobal.Edit)
             {
@@ -341,7 +339,7 @@ namespace ApiBase.Controllers
                 catalog_view.Message = "Cập nhật không thành công!";
             }
 
-            // return this.PartialView("../control/change_catalog", catalog_view);
+            return Json(catalog_view);
         }
 
         // DELETE api/values/5
