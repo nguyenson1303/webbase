@@ -51,7 +51,7 @@ namespace ApiBase.Controllers
             /////parent is parent id
             type = type ?? CommonGlobal.CateProduct;
 
-            path = path ?? "list_catalog";
+            path = path ?? "listCatalog";
 
             page = page ?? 1;
 
@@ -84,12 +84,6 @@ namespace ApiBase.Controllers
             list_catalog_view.Parent = (int)parent;
             list_catalog_view.Lang = lang;
             list_catalog_view.Type_act = type_act;
-            ////tab
-            var link_dashboard = Url.Action("index", "dashboard", new { act = "list_catalog", ctrl = "adminCatalog", type_act = CommonGlobal.View, type = type, page = "1", parent = parent, lang = lang });
-            var link_change_catalog = Url.Action("index", "dashboard", new { act = "change_catalog", ctrl = "adminCatalog", type_act = CommonGlobal.Add, type = type, parent = parent, lang = lang });
-            sb.Append("<li class=\"active\"><a class=\"active\" href=\"" + link_dashboard + "\"><span><span>Danh sách " + CommonGlobal.GetCatalogTypeName(type) + "</span></span></a></li>");
-            sb.Append("<li><a href=\"" + link_change_catalog + "\"><span><span>Thêm mới</span></span></a></li>");
-            list_catalog_view.Html_link_tab = sb.ToString();
 
             ////list language
             list_catalog_view.List_language = baseClass.List_select_language(lang);
@@ -112,8 +106,6 @@ namespace ApiBase.Controllers
 
             ////acton and parent action
             list_catalog_view.Path = path;
-            //list_catalog_view.Parent_action = HttpContext.Request.RequestContext.RouteData.Values["action"].ToString();
-            //list_catalog_view.Parent_controller = HttpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
 
             return Json(list_catalog_view);
         }
@@ -171,9 +163,6 @@ namespace ApiBase.Controllers
             {
                 cate = cateModels.GetbyID((int)cate_id);
                 cateModels.List_catalog_parent(0, level, cate.ParentId ?? 0, type, cate.Lang ?? lang, ref list_select_catalog);
-                var link_catalog = Url.Action("index", "dashboard", new { act = "list_catalog", ctrl = "adminCatalog", type_act = CommonGlobal.View, type = type, page = "1", parent = parent, lang = cate.Lang ?? lang });
-                sb.Append("<li><a class=\"active\" href=\"" + link_catalog + "\"><span><span>Danh mục " + CommonGlobal.GetCatalogTypeName(type) + "</span></span></a></li>");
-                sb.Append("<li class=\"active\"><a href=\"#\"><span><span>" + cate.CategoryName + "</span></span></a></li>");
                 catalog_view.Lang = cate.Lang ?? lang;
                 catalog_view.Cate_id = cate.CatalogId;
                 catalog_view.Category_name = cate.CategoryName;
@@ -202,9 +191,6 @@ namespace ApiBase.Controllers
             else
             {
                 cateModels.List_catalog_parent(0, level, (int)parent, type, lang, ref list_select_catalog);
-                var link_catalog = Url.Action("index", "dashboard", new { act = "list_catalog", ctrl = "adminCatalog", type = type, page = "1", parent = parent, lang = lang });
-                sb.Append("<li><a class=\"active\" href=\"" + link_catalog + "\"><span><span>Danh mục " + CommonGlobal.GetCatalogTypeName(type) + "</span></span></a></li>");
-                sb.Append("<li class=\"active\"><a href=\"#\"><span><span>Thêm danh mục</span></span></a></li>");
                 catalog_view.Lang = lang;
                 catalog_view.List_language = baseClass.List_select_language(lang);
                 catalog_view.OrderDisplay = cateModels.GetMaxOrderDisplay(type);
@@ -212,7 +198,6 @@ namespace ApiBase.Controllers
             }
 
             catalog_view.List_parent = list_select_catalog;
-            catalog_view.Html_link_tab = sb.ToString();
             catalog_view.Type = type;
             catalog_view.Type_act = type_act;
 
@@ -220,8 +205,6 @@ namespace ApiBase.Controllers
             catalog_view.Path = path;
 
             return Json(catalog_view);
-            //catalog_view.Parent_action = HttpContext.Request.RequestContext.RouteData.Values["action"].ToString();
-            //catalog_view.Parent_controller = HttpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
         }
 
         // POST api/values
@@ -257,10 +240,6 @@ namespace ApiBase.Controllers
 
             if (catalog_view.Cate_id != 0 && catalog_view.Type_act == CommonGlobal.Edit)
             {
-                ////tab
-                var link_catalog = Url.Action("index", "dashboard", new { act = "list_catalog", ctrl = "adminCatalog", type_act = CommonGlobal.View, type = catalog_view.Type, page = "1", parent = catalog_view.Parent, lang = catalog_view.Lang });
-                sb.Append("<li><a href=\"" + link_catalog + "\"><span><span>Danh sách " + CommonGlobal.GetCatalogTypeName(catalog_view.Type) + "</span></span></a></li>");
-                sb.Append("<li class=\"active\"><a href=\"#\"><span><span>" + cate.CategoryName + "</span></span></a></li>");
                 ////list parent
                 cateModels.List_catalog_parent(0, level, cate.ParentId ?? 0, catalog_view.Type, cate.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
@@ -270,9 +249,6 @@ namespace ApiBase.Controllers
             }
             else
             {
-                ////tab
-                sb.Append("<li><a href=\"" + Url.Action("index", "dashboard", new { act = "list_catalog", ctrl = "adminCatalog", type_act = CommonGlobal.View, type = catalog_view.Type, page = "1", parent = catalog_view.Parent, lang = catalog_view.Lang }) + "\"><span><span>Danh sách " + CommonGlobal.GetCatalogTypeName(catalog_view.Type) + "</span></span></a></li>");
-                sb.Append("<li class=\"active\"><a href=\"#\"><span><span>Thêm danh mục</span></span></a></li>");
                 ////list parent
                 cateModels.List_catalog_parent(0, level, 0, catalog_view.Type, catalog_view.Lang, ref list_select_catalog);
                 catalog_view.List_parent = list_select_catalog;
@@ -280,7 +256,6 @@ namespace ApiBase.Controllers
                 catalog_view.List_language = baseClass.List_select_language(catalog_view.Lang);
             }
 
-            catalog_view.Html_link_tab = sb.ToString();
 
             if (!is_valid)
             {
@@ -369,16 +344,67 @@ namespace ApiBase.Controllers
             // return this.PartialView("../control/change_catalog", catalog_view);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{cate_id}")]
+        public void Delete(int? cate_id, string type, string path, string lang, string type_act)
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            CatalogModels cateModels = new CatalogModels();
+            Catalog cate = new Catalog();
+
+            IActionResult response = null;
+            var mess = string.Empty;
+
+            if (UserModels.CheckPermission(userLogin, path, type_act, type))
+            {
+                cate = cateModels.GetbyID((int)cate_id);
+                if (cate != null)
+                {
+                    ////delete old image
+                    //if (!string.IsNullOrEmpty(cate.ImagePath))
+                    //{
+                    //    string strImg = cate.ImagePath;
+                    //    strImg = "~" + strImg;
+                    //    string fileDelete = Server.MapPath(strImg);
+                    //    if (System.IO.File.Exists(fileDelete))
+                    //    {
+                    //        System.IO.File.Delete(fileDelete);
+                    //    }
+
+                    //    string fileDelete2 = Server.MapPath(strImg.Replace("sc_small_", "sc_full_"));
+                    //    if (System.IO.File.Exists(fileDelete2))
+                    //    {
+                    //        System.IO.File.Delete(fileDelete2);
+                    //    }
+                    //}
+
+                    ////delete category
+                    bool rt = cateModels.Delete((int)cate_id);
+                    if (rt)
+                    {
+                        mess = "Bạn đã xóa danh mục " + cate_id;
+                        response = StatusCode(200, mess);
+                    }
+                    else
+                    {
+                        mess = "Xóa không thành công";
+                        response = StatusCode(201, mess);
+                    }
+                }
+                else
+                {
+                    mess = "Không tìm thấy danh mục : " + cate_id;
+                    response = StatusCode(201, mess);
+                }
+            }
+            else
+            {
+                mess = " Bạn không có quyền thực thi hành động xóa cho danh mục này ";
+                response = StatusCode(201, mess);
+            }
         }
     }
 }
