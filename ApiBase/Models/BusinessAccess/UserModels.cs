@@ -252,30 +252,47 @@
         /// <summary>
         /// Deletes the user.
         /// </summary>
-        /// <param name="user_name">Name of the user.</param>
+        /// <param name="userName">Name of the user.</param>
         /// <returns>Delete User</returns>
-        public bool Delete_User(string user_name)
+        public bool DeleteUser(string userName)
         {
             using (var data = new themanorContext())
             {
                 bool rt;
-                try
+                using (var dbContextTransaction = data.Database.BeginTransaction())
                 {
-                    var c_gen = data.User.Where(p => p.Username == user_name).FirstOrDefault();
-                    if (c_gen != null)
+                    try
                     {
-                        data.User.Remove(c_gen);
-                        data.SaveChanges();
-                        rt = true;
+                        var c_infor = data.UserInfo.Where(p => p.Email == userName).FirstOrDefault();
+                        if(c_infor != null)
+                        {
+                            data.UserInfo.Remove(c_infor);
+                            data.SaveChanges();
+                            var c_gen = data.User.Where(p => p.Username == userName).FirstOrDefault();
+                            if (c_gen != null) {
+                                data.User.Remove(c_gen);
+                                data.SaveChanges();
+                                rt = true;
+                                dbContextTransaction.Commit();
+                            }
+                            else
+                            {
+                                rt = false;
+                                dbContextTransaction.Rollback();
+                            }
+                        }
+                        else
+                        {
+                            rt = false;
+                            dbContextTransaction.Rollback();
+                        }
+                        
                     }
-                    else
+                    catch (Exception)
                     {
                         rt = false;
+                        dbContextTransaction.Rollback();
                     }
-                }
-                catch (Exception)
-                {
-                    rt = false;
                 }
 
                 return rt;

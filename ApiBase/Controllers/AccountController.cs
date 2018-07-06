@@ -18,7 +18,7 @@ namespace ApiBase.Controllers
     public class AccountController : Controller
     {
         // GET: api/<controller>
-        [HttpGet]
+        [HttpGet, Authorize]
         public UserInfo Get()
         {
             UserModels sv = new UserModels();
@@ -163,7 +163,9 @@ namespace ApiBase.Controllers
         }
 
         // POST api/<controller>
+        // add and edit admin user
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody]AdminUserView userView)
         {
             IActionResult response = null;
@@ -341,9 +343,55 @@ namespace ApiBase.Controllers
         //}
 
         // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpDelete("{userName}")]
+        public IActionResult Delete(string userName, string type)
         {
+            IActionResult response = null;
+            string mess = string.Empty;
+            UserModels userModels = new UserModels();
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string path = "/account";
+
+            string type_act = CommonGlobal.Delete;
+
+            type = type ?? string.Empty;
+
+            ////check permission delete
+            if (UserModels.CheckPermission(userLogin, path, type_act, type))
+            {
+                User cuser = userModels.GetUserbyUserName(userName);
+                if (cuser != null)
+                {
+                    ////delete user
+                    bool rt = userModels.DeleteUser(userName);
+                    if (rt)
+                    {
+                        mess = "Bạn đã xóa " + userName;
+                        response = StatusCode(200, Json(new { code = 1, message = mess }));
+                    }
+                    else
+                    {
+                        mess = "Xóa không thành công";
+                        response = StatusCode(200, Json(new { code = 2, message = mess }));
+                    }
+                }
+                else
+                {
+                    mess = "Không tìm thấy  : " + userName;
+                    response = StatusCode(200, Json(new { code = 3, message = mess }));
+                }
+            }
+            else
+            {
+                mess = " Bạn không có quyền thực thi hành động xóa.";
+                response = StatusCode(200, Json(new { code = 4, message = mess }));
+            }
+
+            return response;
         }
     }
 }
