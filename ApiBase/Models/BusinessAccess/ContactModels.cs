@@ -79,7 +79,7 @@
                         c_gen = c_gen.OrderByDescending(p => p.ContactId);
                     }
 
-                    return c_gen.Skip(page_index * page_size).Take(page_size).ToList();
+                    return c_gen.Skip((page_index-1) * page_size).Take(page_size).ToList();
                 }
                 catch (Exception)
                 {

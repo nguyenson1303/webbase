@@ -603,7 +603,7 @@
                         c_pro = c_pro.OrderByDescending(p => p.DateModify);
                     }
 
-                    return c_pro.Skip(page_index * page_size).Take(page_size).ToList();
+                    return c_pro.Skip((page_index-1) * page_size).Take(page_size).ToList();
                 }
                 catch (Exception)
                 {
@@ -771,7 +771,7 @@
                         c_pro = c_pro.OrderByDescending(p => p.DateModify);
                     }
 
-                    return c_pro.Skip(page_index * page_size).Take(page_size).ToList();
+                    return c_pro.Skip((page_index-1) * page_size).Take(page_size).ToList();
                 }
                 catch (Exception)
                 {
@@ -974,7 +974,7 @@
                     total = 0;
                 }
 
-                return list.Skip(page_index * page_size).Take(page_size).ToList();
+                return list.Skip((page_index-1) * page_size).Take(page_size).ToList();
             }
         }
 

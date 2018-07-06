@@ -241,17 +241,67 @@
 		},
 		{
 			"id": "cb25e1b3-498a-ca85-816f-f956e5dd664a",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImE2NmFhODY3LTBlZmYtNGI4Mi1hN2U4LWE0MDkwYzk3NzAyMCIsImV4cCI6MTUzMDgwNTI4NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Z06smY0DvcCoYZHnPnbyG13kVhMKOjG5y2QSYrF7OKs\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjM2NjhiNDJhLTM3ZGUtNGY0YS1hZGZlLWY1Y2Y3NDU5OGQ4MCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDQ6NTk6MDcgQU0iLCJleHAiOjE1MzA5MTQzNDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.RtegM27jn-gnpJqD0cMDisBeVLeg1rve3RXJMimV5hk\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImE2NmFhODY3LTBlZmYtNGI4Mi1hN2U4LWE0MDkwYzk3NzAyMCIsImV4cCI6MTUzMDgwNTI4NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Z06smY0DvcCoYZHnPnbyG13kVhMKOjG5y2QSYrF7OKs",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjM2NjhiNDJhLTM3ZGUtNGY0YS1hZGZlLWY1Y2Y3NDU5OGQ4MCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDQ6NTk6MDcgQU0iLCJleHAiOjE1MzA5MTQzNDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.RtegM27jn-gnpJqD0cMDisBeVLeg1rve3RXJMimV5hk",
 					"description": "",
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:56625/api/adminmenu",
-			"queryParams": [],
+			"url": "http://localhost:56625/api/account/listuser?type=Admin&lang=vi&search=&pageIndex=1&pageSize=30&orderBy=&orderType=",
+			"queryParams": [
+				{
+					"key": "type",
+					"value": "Admin",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "lang",
+					"value": "vi",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "search",
+					"value": "",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "pageIndex",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "pageSize",
+					"value": "30",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "orderBy",
+					"value": "",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "orderType",
+					"value": "",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
 			"preRequestScript": null,
 			"pathVariables": {},
 			"pathVariableData": [],
@@ -262,13 +312,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1530772086720,
+			"time": 1530873268301,
 			"name": "get list user admin",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
-			"responses": [],
-			"isFromCollection": true,
-			"collectionRequestId": "c4165088-751a-e55c-c837-4ba04062f9bb"
+			"responses": []
 		},
 		{
 			"id": "d17e7225-9fd8-c059-9423-a853113d2da5",

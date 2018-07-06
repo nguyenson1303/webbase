@@ -153,7 +153,7 @@
 
                     total = lstShowroom.Count();
 
-                    return lstShowroom.Skip(page_index * page_size).Take(page_size).ToList();
+                    return lstShowroom.Skip((page_index-1) * page_size).Take(page_size).ToList();
                 }
                 catch (Exception)
                 {

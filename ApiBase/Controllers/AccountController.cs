@@ -45,6 +45,7 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             var listUserView = new AdminListUserView();
             int total_record = 0;
+            var isOk = true;
 
             type = type ?? string.Empty;
 
@@ -56,7 +57,13 @@ namespace ApiBase.Controllers
 
             if (type == string.Empty)
             {
+                isOk = false;
                 response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }
+
+            if (!isOk)
+            {
+                return response;
             }
             
             if (pageIndex == null || pageIndex == 0)
@@ -83,25 +90,11 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                listUserView.Type = type;
+                listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
                 listUserView.CateType = roleModels.GetRoleByRole(type);
-                listUserView.Lang = lang;
-                listUserView.TypeAct = typeAct;
-
-                ////list language
-                listUserView.List_language = baseClass.ListSelectLanguage(lang);
-
-                ////list page size and paging
-                listUserView.List_page_size = baseClass.GetSizePagingPublic((int)pageSize);
-                listUserView.Page = (int)pageIndex;
-                listUserView.Page_size = (int)pageSize;
-
-                ////list catalog
-                listUserView.Page_list_user = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-                listUserView.Search = search;
-                listUserView.Order_by = orderBy;
-                listUserView.Order_type = orderType;
-                listUserView.Total_record = total_record;
+                listUserView.PageIndex = (int)pageIndex;
+                listUserView.PageSize = (int)pageSize;                
+                listUserView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
 
                 response = Json(listUserView);
             }
