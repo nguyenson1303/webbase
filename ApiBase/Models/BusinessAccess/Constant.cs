@@ -46,9 +46,29 @@
         public const string MessagePermissionDenied = "Bạn không có quyền thực hiện hành động này";
 
         /// <summary>
-        /// UpdateUnCompleted
+        /// Data not Exist
         /// </summary>
         public const string MessageNotExist = "Dữ liệu không tồn tại";
+
+        /// <summary>
+        /// Data Exist
+        /// </summary>
+        public const string MessageDuplicate = "Dữ liệu trùng lặp";
+
+        /// <summary>
+        /// Data not Valid
+        /// </summary>
+        public const string MessageNotValid = "Dữ liệu không hợp lệ";
+
+        /// <summary>
+        /// Data not Exist
+        /// </summary>
+        public const string MessageConfirmPassword = "Vui lòng xác nhận lại mật khẩu";
+
+        /// <summary>
+        /// Data not empty
+        /// </summary>
+        public const string MessageDataEmpty = "Dữ liệu không được để trống";
 
         #endregion
 
@@ -73,6 +93,21 @@
         /// No exist
         /// </summary>
         public const int NotExist = 4;
+
+        /// <summary>
+        /// Duplicate
+        /// </summary>
+        public const int Duplicate = 5;
+
+        /// <summary>
+        /// Data Empty
+        /// </summary>
+        public const int Empty = 6;
+
+        /// <summary>
+        /// No Valid
+        /// </summary>
+        public const int NotValid = 7;
 
         #endregion
 

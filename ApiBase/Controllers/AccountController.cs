@@ -25,6 +25,7 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
             var userInfor = sv.GetUserInforByEmail(userLogin);
+
             return userInfor;
         }
 
@@ -55,8 +56,7 @@ namespace ApiBase.Controllers
 
             if (type == string.Empty)
             {
-                mess = "Chúng tôi không tìm thấy danh sách bạn yêu cầu";
-                response = StatusCode(200, Json(new { code = 2, message = mess }));
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
             
             if (pageIndex == null || pageIndex == 0)
@@ -107,8 +107,7 @@ namespace ApiBase.Controllers
             }
             else
             {
-                mess = "Bạn không có quyền xem danh sách này";
-                response = StatusCode(200, Json(new { code = 4, message = mess }));
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }                        
 
             return response;
@@ -120,7 +119,6 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-            var mess = string.Empty;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -136,13 +134,11 @@ namespace ApiBase.Controllers
                     {
                         user.Password = MD5Extend.EncodePassword(login.Password);
                         sv.UpdateUserPassword(user);
-                        mess = "Thay đổi mật khẩu thành công !";
-                        response = StatusCode(200, Json(new { code = 1, message = mess }));
+                        response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
                     }
                     else
                     {
-                        mess = "Vui lòng xác nhận lại mật khẩu !";
-                        response = StatusCode(200, Json(new { code = 2, message = mess }));
+                        response = Json(new { code = Constant.Fail, message = Constant.MessageConfirmPassword });
                     }
                 }
             }
@@ -171,8 +167,7 @@ namespace ApiBase.Controllers
                     is_valid = false;
                     if (mess == string.Empty)
                     {
-                        mess = "Tài khoản đã tồn tại";
-                        response = StatusCode(200, Json(new { code = 4, message = mess }));
+                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate });
                     }
                 }                
             }
@@ -205,8 +200,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn phải nhập mật khẩu";
-                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess });
                 }
             }
 
@@ -215,8 +210,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn phải xác nhận mật khẩu";
-                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess });
                 }
             }
 
@@ -225,8 +220,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn phải xác nhận mật khẩu";
-                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                    mess = Constant.MessageConfirmPassword;
+                    response = Json(new { code = Constant.Fail, message = mess });
                 }
             }
 
@@ -235,8 +230,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Role id không hợp lệ";
-                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                    mess = Constant.MessageNotExist;
+                    response = Json(new { code = Constant.NotExist, message = mess });
                 }
             }       
 
@@ -258,14 +253,12 @@ namespace ApiBase.Controllers
                        
             if (rt.Length > 0)
             {
-                mess = "Tạo tài khoản thành công";
                 userView.Username = rt;
-                response = StatusCode(200, Json(new { code = 1, message = mess }));
+                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
             }
             else
             {
-                mess = "Tạo tài khoản thất bại";
-                response = StatusCode(200, Json(new { code = 6, message = mess }));
+                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
             }
 
             return response;
@@ -305,8 +298,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn phải nhập User Name";
-                    response = StatusCode(200, Json(new { code = 2, message = mess }));
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess });
                 }
             }
 
@@ -316,8 +309,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "UserName không hợp lệ!";
-                    response = StatusCode(200, Json(new { code = 3, message = mess }));
+                    mess = Constant.MessageNotValid;
+                    response = Json(new { code = Constant.NotValid, message = mess });
                 }
             }
 
@@ -341,20 +334,17 @@ namespace ApiBase.Controllers
 
                 if (rt.Length > 0)
                 {
-                    mess = "Cập nhật thành công!";
                     userView.Username = rt;
-                    response = StatusCode(200, Json(new { code = 1, message = mess }));
+                    response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
                 }
                 else
                 {
-                    mess = "Cập nhật không thành công!";
-                    response = StatusCode(200, Json(new { code = 6, message = mess }));
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
                 }
             }
             else
             {
-                mess = "Bạn không có quyền cập nhật.";
-                response = StatusCode(200, Json(new { code = 4, message = mess }));
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }
 
             return response;
@@ -389,25 +379,22 @@ namespace ApiBase.Controllers
                     bool rt = userModels.DeleteUser(userName);
                     if (rt)
                     {
-                        mess = "Bạn đã xóa " + userName;
-                        response = StatusCode(200, Json(new { code = 1, message = mess }));
+                        response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
                     }
                     else
                     {
-                        mess = "Xóa không thành công";
-                        response = StatusCode(200, Json(new { code = 2, message = mess }));
+                        response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
                     }
                 }
                 else
                 {
-                    mess = "Không tìm thấy  : " + userName;
-                    response = StatusCode(200, Json(new { code = 3, message = mess }));
+                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
                 }
             }
             else
             {
                 mess = " Bạn không có quyền thực thi hành động xóa.";
-                response = StatusCode(200, Json(new { code = 4, message = mess }));
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }
 
             return response;

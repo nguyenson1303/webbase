@@ -46,7 +46,7 @@ namespace ApiBase.Controllers
             }
             else
             {
-                response = StatusCode(401, Json(new { code = 1, message = "Sai tài khoản hoặc mật khẩu." }));
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;
