@@ -44,7 +44,7 @@ namespace ApiBase.Controllers
                     {
                         foreach (var child in lstChild)
                         {                           
-                            var isShow = UserModels.CheckPermission(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), child.TypeAction, child.Tye);
+                            var isShow = UserModels.CheckPermission(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), (child.TypeActionId != null ? child.TypeActionId.ToString() : string.Empty), child.Tye);
                             if (isShow)
                             {
                                 AdminMenu menuItemChild = new AdminMenu();

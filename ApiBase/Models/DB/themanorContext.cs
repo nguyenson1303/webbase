@@ -44,6 +44,7 @@ namespace ApiBase.Models.DB
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<UserPage> UserPage { get; set; }
+        public virtual DbSet<UserPageAction> UserPageAction { get; set; }
         public virtual DbSet<UserPermission> UserPermission { get; set; }
         public virtual DbSet<WebInfo> WebInfo { get; set; }
 
@@ -774,10 +775,21 @@ namespace ApiBase.Models.DB
                 entity.Property(e => e.Tye)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
 
-                entity.Property(e => e.TypeAction)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+            modelBuilder.Entity<UserPageAction>(entity =>
+            {
+                entity.ToTable("_UserPageAction");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ActionDescription).HasMaxLength(500);
+
+                entity.Property(e => e.ActionName).HasMaxLength(100);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<UserPermission>(entity =>
@@ -786,19 +798,15 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Add).HasColumnName("add");
-
-                entity.Property(e => e.Del).HasColumnName("del");
-
-                entity.Property(e => e.Edit).HasColumnName("edit");
-
                 entity.Property(e => e.PageId).HasColumnName("page_id");
+
+                entity.Property(e => e.TypeActionId)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.User)
                     .HasColumnName("user")
                     .HasMaxLength(100);
-
-                entity.Property(e => e.View).HasColumnName("view");
             });
 
             modelBuilder.Entity<WebInfo>(entity =>

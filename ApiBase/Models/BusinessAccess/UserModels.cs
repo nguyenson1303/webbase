@@ -49,23 +49,16 @@
                         if (objUserPermission != null)
                         {
                             bool isOK = false;
-                            switch (type_action)
-                            {
-                                case CommonGlobal.Add:
-                                    isOK = (bool)objUserPermission.Add;
-                                    break;
-                                case CommonGlobal.Edit:
-                                    isOK = (bool)objUserPermission.Edit;
-                                    break;
-                                case CommonGlobal.Delete:
-                                    isOK = (bool)objUserPermission.Del;
-                                    break;
-                                case CommonGlobal.View:
-                                    isOK = (bool)objUserPermission.View;
-                                    break;
-                                default:
-                                    isOK = false;
-                                    break;
+                            var listActionID = objUserPermission.TypeActionId;
+                            List<string> listAction = new List<string>();
+
+                            if (!string.IsNullOrEmpty(listActionID)) {
+                                listAction = listActionID.Split(',').ToList();
+
+                                if (listAction.Contains(type_action))
+                                {
+                                    isOK = true;
+                                }                                
                             }
 
                             return isOK;
@@ -327,7 +320,7 @@
                             where u.User == username
                             select new
                 {
-                    u.User, u.PageId, u.Del, u.Add, u.Edit, u.View, p.Title, p.ParentId, p.OrderDisplay
+                    u.User, u.PageId, p.Title, p.ParentId, p.OrderDisplay, u.TypeActionId
                 };
                 if (query.Any())
                 {
@@ -337,10 +330,10 @@
                         page.Page_ID = (int)obj.PageId;
                         page.User_Name = obj.User;
                         page.Title = obj.Title;
-                        page.Add = (bool)obj.Add;
-                        page.Edit = (bool)obj.Edit;
-                        page.Delete = (bool)obj.Del;
-                        page.View = (bool)obj.View;
+                        //page.Add = (bool)obj.Add;
+                        //page.Edit = (bool)obj.Edit;
+                        //page.Delete = (bool)obj.Del;
+                        //page.View = (bool)obj.View;
                         page.Parent_ID = (int)obj.ParentId;
                         page.OrderDisplay = (int)obj.OrderDisplay;
                         lstPagePermission.Add(page);
@@ -372,10 +365,10 @@
                             page.Page_ID = obj.Id;
                             page.User_Name = username;
                             page.Title = obj.Title;
-                            page.Add = false;
-                            page.Edit = false;
-                            page.Delete = false;
-                            page.View = false;
+                            //page.Add = false;
+                            //page.Edit = false;
+                            //page.Delete = false;
+                            //page.View = false;
                             page.Parent_ID = (int)obj.ParentId;
                             page.OrderDisplay = (int)obj.OrderDisplay;
                             lstPagePermission.Add(page);
@@ -393,10 +386,10 @@
                             page.Page_ID = obj.Id;
                             page.User_Name = username;
                             page.Title = obj.Title;
-                            page.Add = false;
-                            page.Edit = false;
-                            page.Delete = false;
-                            page.View = false;
+                            //page.Add = false;
+                            //page.Edit = false;
+                            //page.Delete = false;
+                            //page.View = false;
                             page.Parent_ID = (int)obj.ParentId;
                             page.OrderDisplay = (int)obj.OrderDisplay;
                             lstPagePermission.Add(page);
@@ -411,10 +404,10 @@
                     page.Page_ID = parent.Id;
                     page.User_Name = username;
                     page.Title = parent.Title;
-                    page.Add = false;
-                    page.Edit = false;
-                    page.Delete = false;
-                    page.View = false;
+                    //page.Add = false;
+                    //page.Edit = false;
+                    //page.Delete = false;
+                    //page.View = false;
                     page.Parent_ID = (int)parent.ParentId;
                     page.OrderDisplay = (int)parent.OrderDisplay;
                     lstData.Add(page);
@@ -543,10 +536,11 @@
                     UserPermission objUserPer = data.UserPermission.Where(p => p.PageId == userPermission.PageId && p.User == userPermission.User).FirstOrDefault();
                     if (objUserPer != null)
                     {
-                        objUserPer.Add = userPermission.Add;
-                        objUserPer.Edit = userPermission.Edit;
-                        objUserPer.Del = userPermission.Del;
-                        objUserPer.View = userPermission.View;
+                        //objUserPer.Add = userPermission.Add;
+                        //objUserPer.Edit = userPermission.Edit;
+                        //objUserPer.Del = userPermission.Del;
+                        //objUserPer.View = userPermission.View;
+                        objUserPer.TypeActionId = userPermission.TypeActionId;
                         data.SaveChanges();
                     }
                     else

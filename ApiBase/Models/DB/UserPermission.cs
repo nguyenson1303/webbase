@@ -7,10 +7,7 @@ namespace ApiBase.Models.DB
     {
         public int Id { get; set; }
         public int? PageId { get; set; }
-        public bool? Del { get; set; }
-        public bool? Edit { get; set; }
-        public bool? Add { get; set; }
-        public bool? View { get; set; }
         public string User { get; set; }
+        public string TypeActionId { get; set; }
     }
 }
