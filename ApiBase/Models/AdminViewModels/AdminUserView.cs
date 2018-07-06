@@ -1,4 +1,4 @@
-﻿namespace Web.Areas.Admin.ViewModels
+﻿namespace ApiBase.Models.AdminViewModels
 {
     /// <summary>
     /// user view

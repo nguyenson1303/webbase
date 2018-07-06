@@ -1,46 +1,13 @@
-﻿namespace DBBase.EntitysObject
+﻿using ApiBase.Models.DB;
+using System.Collections.Generic;
+
+namespace DBBase.EntitysObject
 {
     /// <summary>
     /// Page Permission
     /// </summary>
     public partial class PagePermission
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PagePermission"/> is add.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if add; otherwise, <c>false</c>.
-        /// </value>
-        public bool Add
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PagePermission"/> is delete.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if delete; otherwise, <c>false</c>.
-        /// </value>
-        public bool Delete
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PagePermission"/> is edit.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if edit; otherwise, <c>false</c>.
-        /// </value>
-        public bool Edit
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Gets or sets the order display.
         /// </summary>
@@ -59,7 +26,7 @@
         /// <value>
         /// The page identifier.
         /// </value>
-        public int Page_ID
+        public int PageId
         {
             get;
             set;
@@ -71,7 +38,7 @@
         /// <value>
         /// The parent identifier.
         /// </value>
-        public int Parent_ID
+        public int ParentId
         {
             get;
             set;
@@ -95,22 +62,12 @@
         /// <value>
         /// The name of the user.
         /// </value>
-        public string User_Name
+        public string UserName
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PagePermission"/> is view.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if view; otherwise, <c>false</c>.
-        /// </value>
-        public bool View
-        {
-            get;
-            set;
-        }
+        public string ListActionId { get; set; }
     }
 }

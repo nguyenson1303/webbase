@@ -176,13 +176,13 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <param name="search">The search.</param>
-        /// <param name="page_index">The page index.</param>
-        /// <param name="page_size">The page size.</param>
-        /// <param name="order_by">The order by.</param>
-        /// <param name="order_type">Type of the order.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="orderBy">The order by.</param>
+        /// <param name="orderType">Type of the order.</param>
         /// <param name="total">The total.</param>
         /// <returns>Admin Get All User</returns>
-        public List<User> AdminGetAllUser(string type, string lang, string search, int page_index, int page_size, string order_by, string order_type, out int total)
+        public List<User> AdminGetAllUser(string type, string lang, string search, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
         {
             using (var data = new themanorContext())
             {
@@ -192,6 +192,7 @@
                     if (!string.IsNullOrEmpty(search))
                     {
                         c_gen = (from p in data.User
+                                 join i in data.UserInfo on p.Username equals i.Email
                                  join r in data.Role on p.Role equals r.Id
                                  where r.Role1 == type && p.Username != "Admin" && p.Username.Contains(search)
                                  select p).OrderByDescending(p => p.Username).AsQueryable<User>();
@@ -199,6 +200,7 @@
                     else
                     {
                         c_gen = (from p in data.User
+                                 join i in data.UserInfo on p.Username equals i.Email
                                  join r in data.Role on p.Role equals r.Id
                                  where r.Role1 == type && p.Username != "Admin"
                                  select p).OrderByDescending(p => p.Username).AsQueryable<User>();
@@ -206,12 +208,12 @@
 
                     total = c_gen.Count();
 
-                    if (!string.IsNullOrEmpty(order_by) && !string.IsNullOrEmpty(order_type))
+                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
-                        Type sortByPropType = typeof(User).GetProperty(order_by).PropertyType;
+                        Type sortByPropType = typeof(User).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(User), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_gen, order_by, order_type }) as IQueryable<User>;
+                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<User>;
                     }
                     else
                     {
@@ -219,7 +221,7 @@
                         c_gen = c_gen.OrderBy(p => p.Username);
                     }
 
-                    return c_gen.Skip((page_index-1) * page_size).Take(page_size).ToList();
+                    return c_gen.Skip((pageIndex-1) * pageSize).Take(pageSize).ToList();
                 }
                 catch (Exception)
                 {
@@ -334,9 +336,9 @@
         /// <summary>
         /// Gets the list permission by user.
         /// </summary>
-        /// <param name="username">The username.</param>
+        /// <param name="userName">The username.</param>
         /// <returns>Get List permission By User</returns>
-        public List<PagePermission> GetListPermissionByUser(string username)
+        public List<PagePermission> GetListPermissionByUser(string userName, int pageIndex, int pageSize, out int total)
         {
             List<PagePermission> lstPagePermission = new List<PagePermission>();
             List<PagePermission> lstData = new List<PagePermission>();
@@ -344,7 +346,7 @@
             {
                 var query = from u in data.UserPermission
                             join p in data.UserPage on u.PageId equals p.Id
-                            where u.User == username
+                            where u.User == userName
                             select new
                 {
                     u.User, u.PageId, p.Title, p.ParentId, p.OrderDisplay, u.TypeActionId
@@ -353,35 +355,21 @@
                 {
                     foreach (var obj in query)
                     {
+                        
                         PagePermission page = new PagePermission();
-                        page.Page_ID = (int)obj.PageId;
-                        page.User_Name = obj.User;
+                        page.PageId = (int)obj.PageId;
+                        page.UserName = obj.User;
                         page.Title = obj.Title;
-                        //page.Add = (bool)obj.Add;
-                        //page.Edit = (bool)obj.Edit;
-                        //page.Delete = (bool)obj.Del;
-                        //page.View = (bool)obj.View;
-                        page.Parent_ID = (int)obj.ParentId;
+                        page.ParentId = (int)obj.ParentId;
                         page.OrderDisplay = (int)obj.OrderDisplay;
+                        page.ListActionId = obj.TypeActionId;
                         lstPagePermission.Add(page);
                     }
 
-                    List<UserPermission> lstUserPermission = data.UserPermission.Where(u => u.User == username).ToList();
-                    var dataID = from c in data.UserPermission
-                                where c.User == username
-                                select new
-                    {
-                        c.PageId
-                    };
-
-                    List<int> lstPageID = new List<int>();
-                    if (dataID.Any())
-                    {
-                        foreach (var obj in dataID)
-                        {
-                            lstPageID.Add((int)obj.PageId);
-                        }
-                    }
+                    List<UserPermission> lstUserPermission = data.UserPermission.Where(u => u.User == userName).ToList();
+                    List<int> lstPageID = (from c in data.UserPermission
+                                where c.User == userName
+                                select (int)c.PageId).ToList<int>();
 
                     List<UserPage> lstUserPage = data.UserPage.Where(c => !lstPageID.Contains(c.Id) && c.ParentId > 0).ToList();
                     if (lstUserPage.Any())
@@ -389,15 +377,12 @@
                         foreach (var obj in lstUserPage)
                         {
                             PagePermission page = new PagePermission();
-                            page.Page_ID = obj.Id;
-                            page.User_Name = username;
+                            page.PageId = obj.Id;
+                            page.UserName = userName;
                             page.Title = obj.Title;
-                            //page.Add = false;
-                            //page.Edit = false;
-                            //page.Delete = false;
-                            //page.View = false;
-                            page.Parent_ID = (int)obj.ParentId;
+                            page.ParentId = (int)obj.ParentId;
                             page.OrderDisplay = (int)obj.OrderDisplay;
+                            page.ListActionId = string.Empty;
                             lstPagePermission.Add(page);
                         }
                     }
@@ -410,15 +395,12 @@
                         foreach (var obj in lstUserPage)
                         {
                             PagePermission page = new PagePermission();
-                            page.Page_ID = obj.Id;
-                            page.User_Name = username;
+                            page.PageId = obj.Id;
+                            page.UserName = userName;
                             page.Title = obj.Title;
-                            //page.Add = false;
-                            //page.Edit = false;
-                            //page.Delete = false;
-                            //page.View = false;
-                            page.Parent_ID = (int)obj.ParentId;
+                            page.ParentId = (int)obj.ParentId;
                             page.OrderDisplay = (int)obj.OrderDisplay;
+                            page.ListActionId = string.Empty;
                             lstPagePermission.Add(page);
                         }
                     }
@@ -428,21 +410,20 @@
                 foreach (var parent in lstUserPageParent)
                 {
                     PagePermission page = new PagePermission();
-                    page.Page_ID = parent.Id;
-                    page.User_Name = username;
+                    page.PageId = parent.Id;
+                    page.UserName = userName;
                     page.Title = parent.Title;
-                    //page.Add = false;
-                    //page.Edit = false;
-                    //page.Delete = false;
-                    //page.View = false;
-                    page.Parent_ID = (int)parent.ParentId;
+                    page.ParentId = (int)parent.ParentId;
                     page.OrderDisplay = (int)parent.OrderDisplay;
+                    page.ListActionId = string.Empty;
                     lstData.Add(page);
-                    lstData.AddRange(lstPagePermission.Where(p => p.Parent_ID == parent.Id).OrderBy(p => p.OrderDisplay));
+                    lstData.AddRange(lstPagePermission.Where(p => p.ParentId == parent.Id).OrderBy(p => p.OrderDisplay));
                 }
+
+                total = lstData.Count();
             }
 
-            return lstData;
+            return lstData.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
         /// <summary>

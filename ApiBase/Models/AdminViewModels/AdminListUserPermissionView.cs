@@ -1,56 +1,59 @@
 ﻿namespace ApiBase.Models.AdminViewModels
 {
+    using DBBase.EntitysObject;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// user view
+    /// List user permission view
     /// </summary>
-    public class AdminEditUserView
+    public class AdminListUserPermissionView
     {
         /// <summary>
-        /// Gets or sets the username.
+        /// Gets or sets the list permission.
         /// </summary>
         /// <value>
-        /// The username.
+        /// The list permission.
         /// </value>
-        public string Username
+        public List<PagePermission> List_permission
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the Internet Protocol address.
+        /// Gets or sets the page.
         /// </summary>
         /// <value>
-        /// The Internet Protocol address.
+        /// The page.
         /// </value>
-        public string Ip
+        public int PageIndex
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="User_view"/> is online.
+        /// Gets or sets the page size.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if online; otherwise, <c>false</c>.
+        /// The page size.
         /// </value>
-        public bool Online
+        public int PageSize
         {
             get;
             set;
         }
-       
+
         /// <summary>
-        /// Gets or sets the role.
+        /// Gets or sets the total page.
         /// </summary>
         /// <value>
-        /// The role.
+        /// The total page.
         /// </value>
-        public int Role
+        public int TotalPage
         {
             get;
             set;
-        }  
-    }
+        }
+    }  
 }

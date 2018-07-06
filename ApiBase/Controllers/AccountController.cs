@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using ApiBase.Models.AdminViewModels;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
 using DBBase.EntitysObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Web.Areas.Admin.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -102,6 +102,72 @@ namespace ApiBase.Controllers
             {
                 response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }                        
+
+            return response;
+        }
+
+        [HttpGet("listUserPermission"), Authorize(Roles = "Admin")]
+        public IActionResult listUserPermission(string type, int? pageIndex, int? pageSize)
+        {
+            IActionResult response = null;
+            BaseClass baseClass = new BaseClass();
+            UserModels userModels = new UserModels();
+            RoleModels roleModels = new RoleModels();
+            User cuser = new User();
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            var mess = string.Empty;
+            var permissionView = new AdminListUserPermissionView();
+            int totalRecord = 0;
+            var isOk = true;
+
+            type = type ?? string.Empty;
+
+            string path = "/api/account/listUserPermission";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            if (type == string.Empty)
+            {
+                isOk = false;
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }
+
+            if (!isOk)
+            {
+                return response;
+            }
+
+            if (pageIndex == null || pageIndex == 0)
+            {
+                pageIndex = 1;
+            }
+
+            if (pageSize == null)
+            {
+                // fix get all page permission
+                pageSize = 1000; 
+            }
+
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            {
+                List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);                
+                permissionView.List_permission = lstPagePermission.Skip(((int)pageIndex - 1) * (int)pageSize).Take((int)pageSize).ToList();
+                permissionView.PageIndex = (int)pageIndex;
+                permissionView.PageSize = (int)pageSize;
+                permissionView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
+                response = Json(permissionView);
+            }
+            else
+            {
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+            }
 
             return response;
         }
@@ -392,5 +458,7 @@ namespace ApiBase.Controllers
 
             return response;
         }
+
+
     }
 }

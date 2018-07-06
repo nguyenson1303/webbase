@@ -1,4 +1,4 @@
-﻿namespace Web.Areas.Admin.ViewModels
+﻿namespace ApiBase.Models.AdminViewModels
 {
     using ApiBase.Models.DB;
     using Microsoft.AspNetCore.Mvc.Rendering;
