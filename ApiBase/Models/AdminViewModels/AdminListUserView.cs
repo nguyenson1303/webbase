@@ -27,7 +27,7 @@
         /// <value>
         /// The type of the cate.
         /// </value>
-        public string Cate_type
+        public string CateType
         {
             get;
             set;
@@ -267,7 +267,7 @@
         /// <value>
         /// The type act.
         /// </value>
-        public string Type_act
+        public string TypeAct
         {
             get;
             set;

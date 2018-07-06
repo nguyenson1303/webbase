@@ -29,8 +29,9 @@ namespace ApiBase.Controllers
         }
 
         [HttpGet("listUser"), Authorize(Roles = "Admin")]
-        public IActionResult ListUser(string user_name, string path, string type_act, string type, string lang, string search, int? page, int? page_size, string order_by, string order_type)
+        public IActionResult ListUser(string type, string lang, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
+            IActionResult response = null;
             BaseClass baseClass = new BaseClass();
             UserModels userModels = new UserModels();
             RoleModels roleModels = new RoleModels();
@@ -40,21 +41,27 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
+            var mess = string.Empty;
             var listUserView = new AdminListUserView();
             int total_record = 0;
 
             type = type ?? string.Empty;
 
-            path = string.IsNullOrEmpty(path) ? "/account/listUser" : string.Empty;
+            string path = "/api/account/listUser";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.View);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             if (type == string.Empty)
             {
-                listUserView.Message = "Chúng tôi không tìm thấy danh sách bạn yêu cầu";
+                mess = "Chúng tôi không tìm thấy danh sách bạn yêu cầu";
+                response = StatusCode(200, Json(new { code = 2, message = mess }));
             }
             
-            if (page == null || page == 0)
+            if (pageIndex == null || pageIndex == 0)
             {
-                page = 1;
+                pageIndex = 1;
             }            
 
             if (string.IsNullOrEmpty(lang))
@@ -62,36 +69,49 @@ namespace ApiBase.Controllers
                 lang = LanguageModels.ActiveLanguage().LangCultureName;
             }
 
-            if (page_size == null)
+            if (pageSize == null)
             {
-                page_size = 30;
+                pageSize = 30;
             }
 
-            if (string.IsNullOrEmpty(order_by) || string.IsNullOrEmpty(order_type))
+            if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
             {
-                order_by = "Username";
-                order_type = "asc";
+                orderBy = "Username";
+                orderType = "asc";
             }
 
-            listUserView.Type = type;
-            listUserView.Cate_type = roleModels.GetRoleByRole(type);
-            listUserView.Lang = lang;
-            listUserView.Type_act = type_act;
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            {
+                listUserView.Type = type;
+                listUserView.CateType = roleModels.GetRoleByRole(type);
+                listUserView.Lang = lang;
+                listUserView.TypeAct = typeAct;
 
-            ////list language
-            listUserView.List_language = baseClass.ListSelectLanguage(lang);
-            ////list page size and paging
-            listUserView.List_page_size = baseClass.GetSizePagingPublic((int)page_size);
-            listUserView.Page = (int)page;
-            listUserView.Page_size = (int)page_size;
-            ////list catalog
-            listUserView.Page_list_user = userModels.AdminGetAllUser(type, lang, search, (int)page, (int)page_size, order_by, order_type, out total_record);
-            listUserView.Search = search;
-            listUserView.Order_by = order_by;
-            listUserView.Order_type = order_type;
-            listUserView.Total_record = total_record;
+                ////list language
+                listUserView.List_language = baseClass.ListSelectLanguage(lang);
 
-            return Json(listUserView);
+                ////list page size and paging
+                listUserView.List_page_size = baseClass.GetSizePagingPublic((int)pageSize);
+                listUserView.Page = (int)pageIndex;
+                listUserView.Page_size = (int)pageSize;
+
+                ////list catalog
+                listUserView.Page_list_user = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+                listUserView.Search = search;
+                listUserView.Order_by = orderBy;
+                listUserView.Order_type = orderType;
+                listUserView.Total_record = total_record;
+
+                response = Json(listUserView);
+            }
+            else
+            {
+                mess = "Bạn không có quyền xem danh sách này";
+                response = StatusCode(200, Json(new { code = 4, message = mess }));
+            }                        
+
+            return response;
         }
 
         [HttpPost("changePassword")]
@@ -262,6 +282,18 @@ namespace ApiBase.Controllers
             string rt = string.Empty;
             bool is_valid = true;
 
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string path = "/api/account";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            string type = string.Empty;          
+
             if (!string.IsNullOrEmpty(userName))
             {
                 user = userModels.GetUserbyUserName(userName);
@@ -294,84 +326,41 @@ namespace ApiBase.Controllers
                 return response;
             }
 
-            if(user != null)
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                user.Username = userView.Username;
-                user.Online = userView.Online;
-                user.Role = userView.Role;
-                user.Ip = userView.Ip;
+                if (user != null)
+                {
+                    user.Username = userView.Username;
+                    user.Online = userView.Online;
+                    user.Role = userView.Role;
+                    user.Ip = userView.Ip;
 
-                rt = userModels.UpdateUser(userName, user);
-            }            
+                    rt = userModels.UpdateUser(userName, user);
+                }
 
-            if (rt.Length > 0)
-            {
-                mess = "Cập nhật thành công!";
-                userView.Username = rt;
-                response = StatusCode(200, Json(new { code = 1, message = mess }));
+                if (rt.Length > 0)
+                {
+                    mess = "Cập nhật thành công!";
+                    userView.Username = rt;
+                    response = StatusCode(200, Json(new { code = 1, message = mess }));
+                }
+                else
+                {
+                    mess = "Cập nhật không thành công!";
+                    response = StatusCode(200, Json(new { code = 6, message = mess }));
+                }
             }
             else
             {
-                mess = "Cập nhật không thành công!";
-                response = StatusCode(200, Json(new { code = 6, message = mess }));
+                mess = "Bạn không có quyền cập nhật.";
+                response = StatusCode(200, Json(new { code = 4, message = mess }));
             }
 
             return response;
         }
 
-        //// GET api/<controller>/abc@gmail.com
-        //[HttpGet("{email}")]
-        //public UserInfo Get(string email)
-        //{
-        //    UserModels sv = new UserModels();
-        //    UserInfo iit = new UserInfo();
-
-        //    iit = sv.GetUserInforByEmail(email);
-        //    return iit;
-        //}
-
-        //// POST api/<controller>
-        //// register new user
-        //[HttpPost]
-        //public void Post([FromBody]Register_view register_view)
-        //{
-
-        //}
-
-        //// PUT api/<controller>/5
-        //// update account infor by id
-        //[HttpPut("{email}")]
-        //public bool Put(string email, [FromBody]Register_view register_view)
-        //{
-        //    UserModels sv = new UserModels();
-        //    User it = new User();
-        //    UserInfo iit = new UserInfo();
-
-        //    bool infors = false;
-
-        //    iit.FName = register_view.FirstName;
-        //    iit.Email = register_view.Email;
-        //    iit.Address = register_view.Address;
-        //    if (!string.IsNullOrEmpty(register_view.Birthday))
-        //    {
-        //        iit.Birthday = DateTime.Parse(register_view.Birthday);
-        //    }
-
-        //    iit.Phone = register_view.Phone;
-
-        //    infors = sv.Add_User_Infor(iit);
-        //    if (infors)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        // DELETE api/<controller>/5
-
+        // DELETE api/<controller>/email
         [HttpDelete("{userName}")]
         public IActionResult Delete(string userName)
         {
@@ -386,12 +375,12 @@ namespace ApiBase.Controllers
 
             var action = userModels.GetActionByActionName(CommonGlobal.Delete);
 
-            string type_act = action != null ? action.Id.ToString() : string.Empty;
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             string type = string.Empty;
 
             ////check permission delete
-            if (UserModels.CheckPermission(userLogin, path, type_act, type))
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
                 User cuser = userModels.GetUserbyUserName(userName);
                 if (cuser != null)
