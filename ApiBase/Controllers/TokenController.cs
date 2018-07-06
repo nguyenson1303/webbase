@@ -44,6 +44,10 @@ namespace ApiBase.Controllers
                 var tokenResource = BuildToken(userInfor, user, userRole, now, expiresDate);
                 response = Json(tokenResource); 
             }
+            else
+            {
+                response = StatusCode(401, Json(new { code = 1, message = "Sai tài khoản hoặc mật khẩu." }));
+            }
 
             return response;
         }

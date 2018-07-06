@@ -98,20 +98,47 @@
         /// </summary>
         /// <param name="user">user object.</param>
         /// <returns>Adds the user</returns>
-        public string Add_User(User user)
+        public string AddUser(User user)
         {
             using (var data = new themanorContext())
             {
                 string rt = string.Empty;
-                try
+                using (var dbContextTransaction = data.Database.BeginTransaction())
                 {
-                    data.User.Add(user);
-                    data.SaveChanges();
-                    rt = user.Username;
-                }
-                catch (Exception)
-                {
-                    rt = string.Empty;
+                    try
+                    {
+                        data.User.Add(user);
+                        data.SaveChanges();
+                        rt = user.Username;
+
+                        if (rt != null)
+                        {
+                            UserInfo uf = new UserInfo();
+                            uf.Email = user.Username;
+                            uf.DateRegister = DateTime.Now;
+
+                            data.UserInfo.Add(uf);
+                            data.SaveChanges();
+                            var ufId = uf.InforId;
+                            if (ufId > 0)
+                            {
+                                dbContextTransaction.Commit();
+                            }
+                            else
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
                 }
 
                 return rt;
@@ -563,7 +590,36 @@
         /// </summary>
         /// <param name="user">user object.</param>
         /// <returns>Updates the user</returns>
-        public string UpdateUser(User user)
+        public string UpdateUser(string userName, User user)
+        {
+            using (var data = new themanorContext())
+            {
+                string rt = string.Empty;
+                try
+                {
+                    var c_gen = data.User.Where(p => p.Username == userName).FirstOrDefault();
+                    c_gen.Role = user.Role;
+                    c_gen.Online = user.Online;
+                    c_gen.Ip = user.Ip;
+
+                    data.SaveChanges();
+                    rt = user.Username;
+                }
+                catch (Exception ex) 
+                {
+                    rt = string.Empty;
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Updates the user.
+        /// </summary>
+        /// <param name="user">user object.</param>
+        /// <returns>Updates the user</returns>
+        public string UpdateUserPassword(User user)
         {
             using (var data = new themanorContext())
             {
@@ -572,15 +628,11 @@
                 {
                     var c_gen = data.User.Where(p => p.Username == user.Username).FirstOrDefault();
                     c_gen.Password = user.Password;
-                    c_gen.Role = user.Role;
-                    c_gen.Online = user.Online;
-                    c_gen.Ip = user.Ip;
-                    c_gen.LastLogin = user.LastLogin;
 
                     data.SaveChanges();
                     rt = user.Username;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     rt = string.Empty;
                 }
@@ -629,6 +681,23 @@
                 try
                 {
                     var c_gen = data.Role.Where(p => p.Id == id).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+
+        public UserPageAction GetActionByActionName(string actionName)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.UserPageAction.Where(p => p.ActionName == actionName).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception ex)

@@ -6,12 +6,24 @@
     public class AdminUserView
     {
         /// <summary>
-        /// Gets or sets the type of the cate.
+        /// Gets or sets the username.
         /// </summary>
         /// <value>
-        /// The type of the cate.
+        /// The username.
         /// </value>
-        public string Cate_type
+        public string Username
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        public string Password
         {
             get;
             set;
@@ -35,43 +47,7 @@
         /// <value>
         /// The Internet Protocol address.
         /// </value>
-        public string Ip_address
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the language.
-        /// </summary>
-        /// <value>
-        /// The language.
-        /// </value>
-        public string Lang
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the link.
-        /// </summary>
-        /// <value>
-        /// The link.
-        /// </value>
-        public string Link
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message
+        public string Ip
         {
             get;
             set;
@@ -88,31 +64,7 @@
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the online text.
-        /// </summary>
-        /// <value>
-        /// The online text.
-        /// </value>
-        public string Online_text
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        public string Password
-        {
-            get;
-            set;
-        }
-
+       
         /// <summary>
         /// Gets or sets the role.
         /// </summary>
@@ -123,54 +75,6 @@
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public string Type
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type act.
-        /// </summary>
-        /// <value>
-        /// The type act.
-        /// </value>
-        public string Type_act
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the username.
-        /// </summary>
-        /// <value>
-        /// The username.
-        /// </value>
-        public string Username
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the username text.
-        /// </summary>
-        /// <value>
-        /// The username text.
-        /// </value>
-        public string Username_text
-        {
-            get;
-            set;
-        }
+        }  
     }
 }

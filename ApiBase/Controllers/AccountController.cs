@@ -3,12 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
-using ApiBase.Models.ViewModels;
 using DBBase.EntitysObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Areas.Admin.ViewModels;
-using ApiBase.Models.BusinessAccess;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -69,36 +67,6 @@ namespace ApiBase.Controllers
                 page_size = 30;
             }
 
-            //if (user_name != null && type_act != null && type_act == CommonGlobal.Delete)
-            //{
-            //    ////check permission delete
-            //    if (UserModels.CheckPermission(userLogin, path, type_act, type ?? string.Empty))
-            //    {
-            //        cuser = userModels.GetUserbyUserName(user_name);
-            //        if (cuser != null)
-            //        {
-            //            ////delete user
-            //            bool rt = userModels.Delete_User(user_name);
-            //            if (rt)
-            //            {
-            //                listUserView.Message = "Bạn đã xóa " + user_name;
-            //            }
-            //            else
-            //            {
-            //                listUserView.Message = "Xóa không thành công";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            listUserView.Message = "Không tìm thấy  : " + user_name;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        listUserView.Message = " Bạn không có quyền thực thi hành động xóa.";
-            //    }
-            //}
-
             if (string.IsNullOrEmpty(order_by) || string.IsNullOrEmpty(order_type))
             {
                 order_by = "Username";
@@ -147,7 +115,7 @@ namespace ApiBase.Controllers
                     if (login.Password == login.ConfirmPassword)
                     {
                         user.Password = MD5Extend.EncodePassword(login.Password);
-                        sv.UpdateUser(user);
+                        sv.UpdateUserPassword(user);
                         mess = "Thay đổi mật khẩu thành công !";
                         response = StatusCode(200, Json(new { code = 1, message = mess }));
                     }
@@ -163,7 +131,6 @@ namespace ApiBase.Controllers
         }
 
         // POST api/<controller>
-        // add and edit admin user
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody]AdminUserView userView)
@@ -178,6 +145,16 @@ namespace ApiBase.Controllers
             if (!string.IsNullOrEmpty(userView.Username))
             {
                 user = userModels.GetUserbyUserName(userView.Username);
+
+                if(user != null)
+                {
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        mess = "Tài khoản đã tồn tại";
+                        response = StatusCode(200, Json(new { code = 4, message = mess }));
+                    }
+                }                
             }
 
             ////validation server
@@ -201,46 +178,48 @@ namespace ApiBase.Controllers
                     response = StatusCode(200, Json(new { code = 3, message = mess }));
                 }
             }
-            
-            if (!string.IsNullOrEmpty(userView.Username) && userView.Type_act == CommonGlobal.Edit)
-            {
-                // update
-            }
-            else
-            {
-                // create new
-                // validation password
-                if (string.IsNullOrEmpty(userView.Password))
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        mess = "Bạn phải nhập mật khẩu";
-                        response = StatusCode(200, Json(new { code = 4, message = mess }));
-                    }
-                }
 
-                if (string.IsNullOrEmpty(userView.ConfirmPassword))
+            // validation password
+            if (string.IsNullOrEmpty(userView.Password))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
                 {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        mess = "Bạn phải xác nhận mật khẩu";
-                        response = StatusCode(200, Json(new { code = 5, message = mess }));
-                    }
-                }
-
-                if (userView.Password != userView.ConfirmPassword)
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        mess = "Bạn phải xác nhận mật khẩu";
-                        response = StatusCode(200, Json(new { code = 5, message = mess }));
-                    }
+                    mess = "Bạn phải nhập mật khẩu";
+                    response = StatusCode(200, Json(new { code = 5, message = mess }));
                 }
             }
-           
+
+            if (string.IsNullOrEmpty(userView.ConfirmPassword))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = "Bạn phải xác nhận mật khẩu";
+                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                }
+            }
+
+            if (userView.Password != userView.ConfirmPassword)
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = "Bạn phải xác nhận mật khẩu";
+                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                }
+            }
+
+            if(userModels.GetRolebyId(userView.Role) == null)
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = "Role id không hợp lệ";
+                    response = StatusCode(200, Json(new { code = 5, message = mess }));
+                }
+            }       
+
             if (!is_valid)
             {
                 return response;
@@ -248,38 +227,87 @@ namespace ApiBase.Controllers
 
             user = new User();
             user.Username = userView.Username;
+            user.Online = userView.Online;            
+            user.Role = user.Role;
+            user.Password = MD5Extend.EncodePassword(userView.Password);
+            user.Ip = userView.Ip;
             user.Online = userView.Online;
+            user.LastLogin = null;
 
-            if (user.Online == true)
+            rt = userModels.AddUser(user);
+                       
+            if (rt.Length > 0)
             {
-                userView.Online = true;
-                userView.Online_text = "checked='checked'";
+                mess = "Tạo tài khoản thành công";
+                userView.Username = rt;
+                response = StatusCode(200, Json(new { code = 1, message = mess }));
             }
             else
             {
-                userView.Online = false;
-                userView.Online_text = string.Empty;
+                mess = "Tạo tài khoản thất bại";
+                response = StatusCode(200, Json(new { code = 6, message = mess }));
             }
 
-            if (!string.IsNullOrEmpty(userView.Username) && userView.Type_act == CommonGlobal.Edit)
+            return response;
+        }
+
+        // PUT api/<controller>/email
+        [HttpPut("{userName}")]
+        public IActionResult Put(string userName, [FromBody]AdminEditUserView userView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            User user = null;
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;
+
+            if (!string.IsNullOrEmpty(userName))
             {
-                rt = userModels.UpdateUser(user);
+                user = userModels.GetUserbyUserName(userName);
             }
-            else
+
+            ////validation server
+            if (string.IsNullOrEmpty(userView.Username))
             {
-                user.Role = 1;
-                user.Password = MD5Extend.EncodePassword(userView.Password);
-                user.Ip = "not login";
-                user.Online = true;
-                user.LastLogin = null;
-                rt = userModels.Add_User(user);
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = "Bạn phải nhập User Name";
+                    response = StatusCode(200, Json(new { code = 2, message = mess }));
+                }
             }
+
+            ////UserName duplicate Admin
+            if (userView.Username == "Admin")
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = "UserName không hợp lệ!";
+                    response = StatusCode(200, Json(new { code = 3, message = mess }));
+                }
+            }
+
+            if (!is_valid)
+            {
+                return response;
+            }
+
+            if(user != null)
+            {
+                user.Username = userView.Username;
+                user.Online = userView.Online;
+                user.Role = userView.Role;
+                user.Ip = userView.Ip;
+
+                rt = userModels.UpdateUser(userName, user);
+            }            
 
             if (rt.Length > 0)
             {
                 mess = "Cập nhật thành công!";
                 userView.Username = rt;
-                userView.Type_act = CommonGlobal.Edit;
                 response = StatusCode(200, Json(new { code = 1, message = mess }));
             }
             else
@@ -290,7 +318,7 @@ namespace ApiBase.Controllers
 
             return response;
         }
-       
+
         //// GET api/<controller>/abc@gmail.com
         //[HttpGet("{email}")]
         //public UserInfo Get(string email)
@@ -345,7 +373,7 @@ namespace ApiBase.Controllers
         // DELETE api/<controller>/5
 
         [HttpDelete("{userName}")]
-        public IActionResult Delete(string userName, string type)
+        public IActionResult Delete(string userName)
         {
             IActionResult response = null;
             string mess = string.Empty;
@@ -354,11 +382,13 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/account";
+            string path = "/api/account";
 
-            string type_act = CommonGlobal.Delete;
+            var action = userModels.GetActionByActionName(CommonGlobal.Delete);
 
-            type = type ?? string.Empty;
+            string type_act = action != null ? action.Id.ToString() : string.Empty;
+
+            string type = string.Empty;
 
             ////check permission delete
             if (UserModels.CheckPermission(userLogin, path, type_act, type))
@@ -366,7 +396,7 @@ namespace ApiBase.Controllers
                 User cuser = userModels.GetUserbyUserName(userName);
                 if (cuser != null)
                 {
-                    ////delete user
+                    //// delete user
                     bool rt = userModels.DeleteUser(userName);
                     if (rt)
                     {
