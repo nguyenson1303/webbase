@@ -14,7 +14,7 @@
         /// <value>
         /// The list permission.
         /// </value>
-        public List<PagePermission> List_permission
+        public List<PagePermission> ListPermission
         {
             get;
             set;

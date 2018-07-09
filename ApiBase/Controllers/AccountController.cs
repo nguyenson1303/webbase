@@ -107,7 +107,7 @@ namespace ApiBase.Controllers
         }
 
         [HttpGet("listUserPermission"), Authorize(Roles = "Admin")]
-        public IActionResult listUserPermission(string type, int? pageIndex, int? pageSize)
+        public IActionResult ListUserPermission(string type, int? pageIndex, int? pageSize)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -157,8 +157,8 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);                
-                permissionView.List_permission = lstPagePermission.Skip(((int)pageIndex - 1) * (int)pageSize).Take((int)pageSize).ToList();
+                List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);
+                permissionView.ListPermission = lstPagePermission;
                 permissionView.PageIndex = (int)pageIndex;
                 permissionView.PageSize = (int)pageSize;
                 permissionView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
@@ -168,6 +168,36 @@ namespace ApiBase.Controllers
             {
                 response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }
+
+            return response;
+        }
+
+        [HttpPost("saveUserPermission")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult SaveUserPermission([FromBody]AdminSaveUserPermissionView saveView)
+        {
+            UserModels sv = new UserModels();
+            IActionResult response = null;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            if(saveView.ListPermission.Count() > 0)
+            {
+                foreach(var item in saveView.ListPermission)
+                {
+                    UserPermission up = new UserPermission
+                    {
+                        PageId = item.PageId,
+                        User = item.UserName,
+                        TypeActionId = item.ListActionId
+                    };
+                    sv.UpdatePermission(up);
+                }
+            }
+
+            response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
 
             return response;
         }

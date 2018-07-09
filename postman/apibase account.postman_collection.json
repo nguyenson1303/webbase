@@ -15,7 +15,7 @@
 		"c4165088-751a-e55c-c837-4ba04062f9bb",
 		"cb25e1b3-498a-ca85-816f-f956e5dd664a",
 		"6ed16180-3862-9982-958a-052cb3309de5",
-		"f57ed136-26cc-6676-4e66-c59fa5529de2"
+		"8210dda8-9c22-8963-b06e-a64448b26cd5"
 	],
 	"folders": [],
 	"folders_order": [],
@@ -125,11 +125,11 @@
 		},
 		{
 			"id": "6ed16180-3862-9982-958a-052cb3309de5",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjM2NjhiNDJhLTM3ZGUtNGY0YS1hZGZlLWY1Y2Y3NDU5OGQ4MCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDQ6NTk6MDcgQU0iLCJleHAiOjE1MzA5MTQzNDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.RtegM27jn-gnpJqD0cMDisBeVLeg1rve3RXJMimV5hk\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjFkYTYwMzRiLTJmMWUtNGVmZC04NjlhLWMwYmEyNDgwMmU0MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDEwOjQ5OjQ3IFBNIiwiZXhwIjoxNTMxMTUxMzg3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.VXhDdh3yMZ9FPZdHd9Jeb1PKlxfnk4OkpRzu3mlFKyM\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjM2NjhiNDJhLTM3ZGUtNGY0YS1hZGZlLWY1Y2Y3NDU5OGQ4MCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDQ6NTk6MDcgQU0iLCJleHAiOjE1MzA5MTQzNDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.RtegM27jn-gnpJqD0cMDisBeVLeg1rve3RXJMimV5hk",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjFkYTYwMzRiLTJmMWUtNGVmZC04NjlhLWMwYmEyNDgwMmU0MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDEwOjQ5OjQ3IFBNIiwiZXhwIjoxNTMxMTUxMzg3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.VXhDdh3yMZ9FPZdHd9Jeb1PKlxfnk4OkpRzu3mlFKyM",
 					"description": "",
 					"enabled": true
 				}
@@ -175,11 +175,47 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1530877215550,
+			"time": 1531109902877,
 			"name": "get list page permission by user",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": []
+		},
+		{
+			"id": "8210dda8-9c22-8963-b06e-a64448b26cd5",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:56625/api/account/saveUserPermission",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1531109875378,
+			"name": "update list page permission",
+			"description": "",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"responses": [],
+			"rawModeData": "{\r\n  \"listPermission\": [\r\n    {\r\n        \"orderDisplay\": 1,\r\n        \"pageId\": 9,\r\n        \"parentId\": 69,\r\n        \"title\": \"Thêm sản phẩm\",\r\n        \"userName\": \"nguyenson1303@gmail.com\",\r\n        \"listActionId\": \"1,2,3,4\"\r\n    },\r\n    {\r\n        \"orderDisplay\": 2,\r\n        \"pageId\": 12,\r\n        \"parentId\": 69,\r\n        \"title\": \"Sản phẩm\",\r\n        \"userName\": \"nguyenson1303@gmail.com\",\r\n        \"listActionId\": \"1,2,3,4\"\r\n    },\r\n    {\r\n        \"orderDisplay\": 3,\r\n        \"pageId\": 1,\r\n        \"parentId\": 69,\r\n        \"title\": \"Danh mục sản phẩm\",\r\n        \"userName\": \"nguyenson1303@gmail.com\",\r\n        \"listActionId\": \"1,2,3,4\"\r\n    }\r\n  ]\r\n}"
 		},
 		{
 			"id": "a9813037-bd56-7f8f-46bd-b8ecd90135ff",
@@ -477,42 +513,6 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"rawModeData": "{\n\t\"Username\": \"mario\",\n\t\"Password\": \"secret\"\n}"
-		},
-		{
-			"id": "f57ed136-26cc-6676-4e66-c59fa5529de2",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImE2NmFhODY3LTBlZmYtNGI4Mi1hN2U4LWE0MDkwYzk3NzAyMCIsImV4cCI6MTUzMDgwNTI4NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Z06smY0DvcCoYZHnPnbyG13kVhMKOjG5y2QSYrF7OKs\n",
-			"headerData": [
-				{
-					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImE2NmFhODY3LTBlZmYtNGI4Mi1hN2U4LWE0MDkwYzk3NzAyMCIsImV4cCI6MTUzMDgwNTI4NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUifQ.Z06smY0DvcCoYZHnPnbyG13kVhMKOjG5y2QSYrF7OKs",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://localhost:56625/api/books?id=1",
-			"queryParams": [
-				{
-					"key": "id",
-					"value": "1",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1530772093648,
-			"name": "http://localhost:56625/api/books",
-			"description": "",
-			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
-			"responses": []
 		}
 	]
 }

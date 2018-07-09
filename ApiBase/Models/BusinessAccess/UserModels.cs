@@ -544,10 +544,6 @@
                     UserPermission objUserPer = data.UserPermission.Where(p => p.PageId == userPermission.PageId && p.User == userPermission.User).FirstOrDefault();
                     if (objUserPer != null)
                     {
-                        //objUserPer.Add = userPermission.Add;
-                        //objUserPer.Edit = userPermission.Edit;
-                        //objUserPer.Del = userPermission.Del;
-                        //objUserPer.View = userPermission.View;
                         objUserPer.TypeActionId = userPermission.TypeActionId;
                         data.SaveChanges();
                     }
