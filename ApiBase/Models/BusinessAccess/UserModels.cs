@@ -36,11 +36,11 @@
                     UserPage objUserPage = new UserPage();
                     if (string.IsNullOrEmpty(type))
                     {
-                        objUserPage = data.UserPage.Where(c => c.Path == path).FirstOrDefault();
+                        objUserPage = data.UserPage.Where(c => c.Path.ToLower() == path.ToLower()).FirstOrDefault();
                     }
                     else
                     {
-                        objUserPage = data.UserPage.Where(c => c.Path == path && c.Tye == type).FirstOrDefault();
+                        objUserPage = data.UserPage.Where(c => c.Path.ToLower() == path.ToLower() && c.Tye == type).FirstOrDefault();
                     }
 
                     if (objUserPage != null)
@@ -450,15 +450,15 @@
         /// <summary>
         /// Gets the name of the user by user.
         /// </summary>
-        /// <param name="user_name">Name of the user.</param>
+        /// <param name="userName">Name of the user.</param>
         /// <returns>Gets the name of the user by user</returns>
-        public User GetUserbyUserName(string user_name)
+        public User GetUserbyUserName(string userName)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.User.Where(p => p.Username == user_name).FirstOrDefault();
+                    var c_gen = data.User.Where(p => p.Username == userName).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception ex)
@@ -681,6 +681,185 @@
                 {
                     return null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Admins the get all page action.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="lang">The language.</param>
+        /// <param name="search">The search.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="orderBy">The order by.</param>
+        /// <param name="orderType">Type of the order.</param>
+        /// <param name="total">The total.</param>
+        /// <returns>Admin Get All User</returns>
+        public List<UserPageAction> AdminGetAllPageAction(string type, string lang, string search, int pageId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    IQueryable<UserPageAction> c_gen = null;
+                    if (pageId != 0)
+                    {
+                        c_gen = (from p in data.UserPageAction
+                                 where p.ActionPage == "0"
+                                 select p).AsQueryable<UserPageAction>();
+                    }
+                    else
+                    {
+                        c_gen = (from p in data.UserPageAction
+                                 where p.ActionPage == "0"
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();
+                    }
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        c_gen = c_gen.Where(p=>p.ActionName.Contains(search)).AsQueryable<UserPageAction>();
+                    }
+
+                    total = c_gen.Count();
+
+                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
+                    {
+                        Type sortByPropType = typeof(User).GetProperty(orderBy).PropertyType;
+                        ////calling the extension method using reflection
+                        c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPageAction), sortByPropType })
+                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<UserPageAction>;
+                    }
+                    else
+                    {
+                        ////if  orderBy null set default is ID
+                        c_gen = c_gen.OrderBy(p => p.ActionName);
+                    }
+
+                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                }
+                catch (Exception)
+                {
+                    total = 0;
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Admins the get all page action.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="lang">The language.</param>
+        /// <param name="search">The search.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="orderBy">The order by.</param>
+        /// <param name="orderType">Type of the order.</param>
+        /// <param name="total">The total.</param>
+        /// <returns>Admin Get All User</returns>
+        public List<UserPageAction> AdminGetAllPageAction(string type, string lang, int pageId)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    IQueryable<UserPageAction> c_gen = null;
+                    if (pageId != 0)
+                    {
+                        c_gen = (from p in data.UserPageAction
+                                 where p.ActionPage == "0"
+                                 select p).AsQueryable<UserPageAction>();
+                    }
+                    else
+                    {
+                        c_gen = (from p in data.UserPageAction
+                                 where p.ActionPage == "0"
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();
+                    }
+
+                    return c_gen.ToList();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets Page Action detail
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Gets the name of the user by user</returns>
+        public UserPageAction GetUserPageActionbyId(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.UserPageAction.Where(p => p.Id == id).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets Page Action detail
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Gets the name of the user by user</returns>
+        public UserPageAction GetUserPageActionbyActionName(string actionName)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.UserPageAction.Where(p => p.ActionName == actionName).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the user.
+        /// </summary>
+        /// <param name="userPageAction">user object.</param>
+        /// <returns>Adds the user</returns>
+        public int AddUserPageAction(UserPageAction userPageAction)
+        {
+            using (var data = new themanorContext())
+            {
+                int rt = 0;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        data.UserPageAction.Add(userPageAction);
+                        data.SaveChanges();
+                        rt = userPageAction.Id;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
             }
         }
     }

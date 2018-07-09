@@ -16,21 +16,71 @@ namespace ApiBase.Controllers
     public class AccountController : Controller
     {
         // GET: api/<controller>
+        // get login user profile
         [HttpGet, Authorize]
-        public UserInfo Get()
+        public IActionResult Get()
         {
             UserModels sv = new UserModels();
-
+            IActionResult response = null;
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
             var userInfor = sv.GetUserInforByEmail(userLogin);
+            if(userInfor != null)
+            {
+                response = Json(userInfor);
+            }
+            else
+            {
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }            
 
-            return userInfor;
+            return response;
+        }
+
+        // GET: api/<controller>/getUserDetail
+        [HttpGet("getUserDetail")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetUserDetail(string userName)
+        {
+            UserModels sv = new UserModels();
+            IActionResult response = null;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string type = "Admin";
+
+            string path = "/api/account/getUserDetail";
+
+            var action = sv.GetActionByActionName(CommonGlobal.View);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            {
+                var userDetail = sv.GetUserbyUserName(userName);
+                if (userDetail != null)
+                {
+                    response = Json(userDetail);
+                }
+                else
+                {
+                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+                }
+            }
+            else
+            {
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+            }
+
+            return response;
         }
 
         [HttpGet("listUser"), Authorize(Roles = "Admin")]
-        public IActionResult ListUser(string type, string lang, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
+        public IActionResult ListUser(string type, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -46,6 +96,8 @@ namespace ApiBase.Controllers
             var listUserView = new AdminListUserView();
             int total_record = 0;
             var isOk = true;
+
+            string lang = LanguageModels.ActiveLanguage().LangCultureName;
 
             type = type ?? string.Empty;
 
@@ -70,11 +122,6 @@ namespace ApiBase.Controllers
             {
                 pageIndex = 1;
             }            
-
-            if (string.IsNullOrEmpty(lang))
-            {
-                lang = LanguageModels.ActiveLanguage().LangCultureName;
-            }
 
             if (pageSize == null)
             {
@@ -247,6 +294,19 @@ namespace ApiBase.Controllers
             string rt = string.Empty;
             bool is_valid = true;
 
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string path = "/api/account";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            string type = string.Empty;
+
+
             if (!string.IsNullOrEmpty(userView.Username))
             {
                 user = userModels.GetUserbyUserName(userView.Username);
@@ -256,7 +316,7 @@ namespace ApiBase.Controllers
                     is_valid = false;
                     if (mess == string.Empty)
                     {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate });
+                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "Username" });
                     }
                 }                
             }
@@ -267,8 +327,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn phải nhập User Name";
-                    response = StatusCode(200, Json(new { code = 2, message = mess }));
+                    mess = Constant.MessageDataEmpty;
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Username" }));
                 }
             }
 
@@ -278,8 +338,8 @@ namespace ApiBase.Controllers
                 is_valid = false;
                 if (mess == string.Empty)
                 {
-                    mess = "Bạn không thể tạo Admin";
-                    response = StatusCode(200, Json(new { code = 3, message = mess }));
+                    mess = Constant.MessageNotValid;
+                    response = StatusCode(200, Json(new { code = Constant.Fail, message = mess, field = "Username" }));
                 }
             }
 
@@ -290,7 +350,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "Password" });
                 }
             }
 
@@ -300,7 +360,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "ConfirmPassword" });
                 }
             }
 
@@ -310,7 +370,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageConfirmPassword;
-                    response = Json(new { code = Constant.Fail, message = mess });
+                    response = Json(new { code = Constant.Fail, message = mess, field = "ConfirmPassword" });
                 }
             }
 
@@ -320,7 +380,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageNotExist;
-                    response = Json(new { code = Constant.NotExist, message = mess });
+                    response = Json(new { code = Constant.NotExist, message = mess, field = "Role" });
                 }
             }       
 
@@ -329,25 +389,33 @@ namespace ApiBase.Controllers
                 return response;
             }
 
-            user = new User();
-            user.Username = userView.Username;
-            user.Online = userView.Online;            
-            user.Role = user.Role;
-            user.Password = MD5Extend.EncodePassword(userView.Password);
-            user.Ip = userView.Ip;
-            user.Online = userView.Online;
-            user.LastLogin = null;
-
-            rt = userModels.AddUser(user);
-                       
-            if (rt.Length > 0)
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                userView.Username = rt;
-                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
+                user = new User
+                {
+                    Username = userView.Username,
+                    Online = userView.Online,
+                    Role = userView.Role,
+                    Password = MD5Extend.EncodePassword(userView.Password),
+                    Ip = userView.Ip,
+                    LastLogin = null
+                };
+
+                rt = userModels.AddUser(user);
+
+                if (rt.Length > 0)
+                {
+                    response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
+                }
+                else
+                {
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+                }
             }
             else
             {
-                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }
 
             return response;
@@ -355,6 +423,7 @@ namespace ApiBase.Controllers
 
         // PUT api/<controller>/email
         [HttpPut("{userName}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(string userName, [FromBody]AdminEditUserView userView)
         {
             IActionResult response = null;
@@ -388,7 +457,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "Username" });
                 }
             }
 
@@ -399,7 +468,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageNotValid;
-                    response = Json(new { code = Constant.NotValid, message = mess });
+                    response = Json(new { code = Constant.NotValid, message = mess, field = "Username" });
                 }
             }
 
@@ -441,6 +510,7 @@ namespace ApiBase.Controllers
 
         // DELETE api/<controller>/email
         [HttpDelete("{userName}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(string userName)
         {
             IActionResult response = null;
