@@ -40,9 +40,21 @@ namespace ApiBase.Controllers
             var expiresDate = DateTime.Now.AddHours(12);
             var now = DateTime.Now;
             if (userInfor != null)
-            {             
-                var tokenResource = BuildToken(userInfor, user, userRole, now, expiresDate);
-                response = Json(tokenResource); 
+            {   
+                if(!string.IsNullOrEmpty(user.Token) && user.Expire != null && user.Expire.Value > DateTime.Now)
+                {
+                    var tokenResource = new TokenResource
+                    {
+                        Token = user.Token,
+                        Expiry = user.Expire.Value
+                    };
+                    response = Json(tokenResource);
+                }
+                else
+                {
+                    var tokenResource = BuildToken(userInfor, user, userRole, now, expiresDate);
+                    response = Json(tokenResource);
+                }               
             }
             else
             {
@@ -70,8 +82,21 @@ namespace ApiBase.Controllers
                 var expiresDate = DateTime.Now.AddHours(12);
                 var now = DateTime.Now;
                 var userInfo = sv.GetUserInforByEmail(user.Username);
-                var tokenResource = BuildToken(userInfo, user, role, now, expiresDate);
-                response = Json(tokenResource); 
+
+                if (!string.IsNullOrEmpty(user.Token) && user.Expire != null && user.Expire.Value > DateTime.Now)
+                {
+                    var tokenResource = new TokenResource
+                    {
+                        Token = user.Token,
+                        Expiry = user.Expire.Value
+                    };
+                    response = Json(tokenResource);
+                }
+                else
+                {
+                    var tokenResource = BuildToken(userInfo, user, role, now, expiresDate);
+                    response = Json(tokenResource);
+                } 
             }
 
             return response;            
@@ -104,9 +129,11 @@ namespace ApiBase.Controllers
             user.Expire = expiresDate;
             sv.RefreshTokenUser(user);
 
-            var tokenResource = new TokenResource();
-            tokenResource.Token = tokenKey;
-            tokenResource.Expiry = expiresDate;
+            var tokenResource = new TokenResource
+            {
+                Token = tokenKey,
+                Expiry = expiresDate
+            };
 
             return tokenResource;
         }

@@ -4,13 +4,14 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [{
   path: '',
-  component: PagesComponent,
+  component: PagesComponent, canActivate: [AuthGuard],
   children: [{
     path: 'dashboard',
-    component: DashboardComponent,
+    component: DashboardComponent, canActivate: [AuthGuard]
   }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
@@ -41,7 +42,7 @@ const routes: Routes = [{
     pathMatch: 'full',
   }, {
     path: '**',
-    component: NotFoundComponent,
+    component: NotFoundComponent, canActivate: [AuthGuard]
   }],
 }];
 
