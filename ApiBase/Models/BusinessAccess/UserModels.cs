@@ -1042,20 +1042,30 @@
                 {
                     try
                     {
-                        var c_page = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
-                        if (c_page != null)
+                        var c_permission = data.UserPermission.Where(p => p.PageId == id);
+                        if (c_permission != null)
                         {
-                            data.UserPage.Remove(c_page);
+                            data.UserPermission.RemoveRange(c_permission);
                             data.SaveChanges();
-                            rt = true;
-                            dbContextTransaction.Commit();
+                            var c_page = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
+                            if (c_page != null)
+                            {
+                                data.UserPage.Remove(c_page);
+                                data.SaveChanges();
+                                rt = true;
+                                dbContextTransaction.Commit();
+                            }
+                            else
+                            {
+                                rt = false;
+                                dbContextTransaction.Rollback();
+                            }
                         }
                         else
                         {
                             rt = false;
                             dbContextTransaction.Rollback();
                         }
-
                     }
                     catch (Exception)
                     {

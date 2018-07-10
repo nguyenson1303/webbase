@@ -7,8 +7,6 @@ namespace ApiBase.Models.AdminViewModels
     /// </summary>
     public class AdminUserPageView
     {
-        public string Act { get; set; }
-        public string Ctrl { get; set; }
         public string Title { get; set; }
         public bool IsShow { get; set; }
         public string Tye { get; set; }

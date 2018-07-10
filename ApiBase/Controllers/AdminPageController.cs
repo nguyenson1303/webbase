@@ -73,7 +73,7 @@ namespace ApiBase.Controllers
 
             if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
             {
-                orderBy = "ActionName";
+                orderBy = "Title";
                 orderType = "asc";
             }
 
@@ -95,7 +95,6 @@ namespace ApiBase.Controllers
 
             return response;
         }
-
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
