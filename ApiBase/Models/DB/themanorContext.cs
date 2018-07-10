@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
 namespace ApiBase.Models.DB
@@ -756,6 +758,8 @@ namespace ApiBase.Models.DB
                     .HasColumnName("breadcrumb")
                     .HasMaxLength(500);
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Ctrl)
                     .HasColumnName("ctrl")
                     .HasMaxLength(50)
@@ -764,6 +768,8 @@ namespace ApiBase.Models.DB
                 entity.Property(e => e.Icon)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Path)
                     .HasColumnName("path")

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ApiBase.Models.AdminViewModels;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
@@ -13,11 +14,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiBase.Controllers
 {
     [Route("api/[controller]")]
-    public class AdminPageActionController : Controller
+    public class AdminPageController : Controller
     {
         // GET: api/<controller>/listUserPageAction
-        [HttpGet("listUserPageAction"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPageAction(string type, string search, int? pageId, int? pageIndex, int? pageSize, string orderBy, string orderType)
+        [HttpGet("listUserPage"), Authorize(Roles = "Admin")]
+        public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -30,7 +31,7 @@ namespace ApiBase.Controllers
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             var mess = string.Empty;
-            var listPageActionView = new AdminListPageActionView();
+            var listPageView = new AdminListPageView();
             int total_record = 0;
             var isOk = true;
 
@@ -38,11 +39,11 @@ namespace ApiBase.Controllers
 
             type = type ?? string.Empty;
 
-            string path = "/api/AdminPageAction/listUserPageAction";
+            string path = "/api/AdminPage/listUserPage";
 
-            if (pageId == null)
+            if (parentId == null)
             {
-                pageId = 0;
+                parentId = -1; // get all
             }
 
             var action = userModels.GetActionByActionName(CommonGlobal.View);
@@ -79,13 +80,13 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                listPageActionView.ListUserPageAction = userModels.AdminGetAllPageAction(type, lang, search, (int)pageId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-                listPageActionView.CateType = roleModels.GetRoleByRole(type);
-                listPageActionView.PageIndex = (int)pageIndex;
-                listPageActionView.PageSize = (int)pageSize;
-                listPageActionView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
+                listPageView.ListUserPage = userModels.AdminGetAllPage(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+                listPageView.CateType = roleModels.GetRoleByRole(type);
+                listPageView.PageIndex = (int)pageIndex;
+                listPageView.PageSize = (int)pageSize;
+                listPageView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
 
-                response = Json(listPageActionView);
+                response = Json(listPageView);
             }
             else
             {
@@ -95,49 +96,6 @@ namespace ApiBase.Controllers
             return response;
         }
 
-        // GET: api/<controller>/listUserPageAction
-        // get list action on page id (action for commond page and action for only page)
-        [HttpGet("ListUserPageActionByPageId"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPageActionByPageId(string type, int pageId)
-        {
-            IActionResult response = null;
-            BaseClass baseClass = new BaseClass();
-            UserModels userModels = new UserModels();
-            RoleModels roleModels = new RoleModels();
-            User cuser = new User();
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            var mess = string.Empty;
-            var isOk = true;
-
-            string lang = LanguageModels.ActiveLanguage().LangCultureName;
-
-            type = type ?? "Admin";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.View);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            if (type == string.Empty)
-            {
-                isOk = false;
-                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-            }
-
-            if (!isOk)
-            {
-                return response;
-            }
-
-            List<UserPageAction> listAllPageAction = userModels.AdminGetAllPageAction(type, lang, pageId);
-
-            response = Json(listAllPageAction);
-
-            return response;
-        }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
@@ -146,7 +104,7 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-            UserPageAction userPageAction = sv.GetUserPageActionbyId(id);
+            UserPage userPage = sv.GetUserPagebyId(id);
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -154,7 +112,7 @@ namespace ApiBase.Controllers
 
             string type = "Admin";
 
-            string path = "/api/AdminPageAction";
+            string path = "/api/AdminPage";
 
             var action = sv.GetActionByActionName(CommonGlobal.View);
 
@@ -163,9 +121,9 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                if (userPageAction != null)
+                if (userPage != null)
                 {
-                    response = Json(userPageAction);
+                    response = Json(userPage);
                 }
                 else
                 {
@@ -175,20 +133,19 @@ namespace ApiBase.Controllers
             else
             {
                 response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }            
+            }
 
             return response;
         }
 
         // POST api/<controller>
-        // create action detail
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Post([FromBody]AdminUserPageActionView userPageActionView)
+        public IActionResult Post([FromBody]AdminUserPageView userPageView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
-            UserPageAction userPageAction = null;
+            UserPage userPage = null;
             var mess = string.Empty;
             int rt = 0;
             bool is_valid = true;
@@ -197,50 +154,36 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
+            string path = "/api/AdminPage";
 
             var action = userModels.GetActionByActionName(CommonGlobal.Add);
 
             string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
-            string type = string.Empty;
-
-            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
-            {
-                userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
-
-                if (userPageAction != null)
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
-                    }
-                }
-            }
+            string type = string.Empty;           
 
             ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            if (string.IsNullOrEmpty(userPageView.Title))
             {
                 is_valid = false;
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionName" }));
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Title" }));
                 }
             }
 
             ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionDescription))
+            if (string.IsNullOrEmpty(userPageView.Path))
             {
                 is_valid = false;
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionDescription" }));
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Path" }));
                 }
             }
-            
+
             if (!is_valid)
             {
                 return response;
@@ -249,17 +192,22 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                userPageAction = new UserPageAction
+                userPage = new UserPage
                 {
-                    ActionName = userPageActionView.ActionName,
-                    ActionDescription = userPageActionView.ActionDescription,
-                    ActionStatus = userPageActionView.ActionStatus,
-                    CreateDate = DateTime.Now,
+                    Title = userPageView.Title,
+                    IsShow = userPageView.IsShow,
+                    Tye = userPageView.Tye,
+                    ParentId = userPageView.ParentId,
+                    OrderDisplay = userPageView.OrderDisplay,
+                    Icon = userPageView.Icon,
+                    Path = userPageView.Path,
+                    Breadcrumb = userPageView.Breadcrumb,
+                    TypeActionId = userPageView.TypeActionId,
                     ModifyDate = DateTime.Now,
-                    ActionPage = userPageActionView.ActionPage
+                    CreateDate = DateTime.Now
                 };
 
-                rt = userModels.AddUserPageAction(userPageAction);
+                rt = userModels.AddUserPage(userPage);
 
                 if (rt > 0)
                 {
@@ -281,11 +229,11 @@ namespace ApiBase.Controllers
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Put(int id, [FromBody]AdminUserPageActionView userPageActionView)
+        public IActionResult Put(int id, [FromBody]AdminUserPageView userPageView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
-            UserPageAction userPageAction = null;
+            UserPage userPage = null;
             var mess = string.Empty;
             int rt = 0;
             bool is_valid = true;
@@ -294,7 +242,7 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
+            string path = "/api/AdminPage";
 
             var action = userModels.GetActionByActionName(CommonGlobal.Edit);
 
@@ -302,39 +250,25 @@ namespace ApiBase.Controllers
 
             string type = string.Empty;
 
-            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
-            {
-                userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
-
-                if (userPageAction != null)
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
-                    }
-                }
-            }
-
             ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            if (string.IsNullOrEmpty(userPageView.Title))
             {
                 is_valid = false;
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionName" }));
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Title" }));
                 }
             }
 
             ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            if (string.IsNullOrEmpty(userPageView.Path))
             {
                 is_valid = false;
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionDescription" }));
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Path" }));
                 }
             }
 
@@ -346,17 +280,21 @@ namespace ApiBase.Controllers
             ////check permission update
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                userPageAction = new UserPageAction
+                userPage = new UserPage
                 {
-                    ActionName = userPageActionView.ActionName,
-                    ActionDescription = userPageActionView.ActionDescription,
-                    ActionStatus = userPageActionView.ActionStatus,
-                    CreateDate = DateTime.Now,
-                    ModifyDate = DateTime.Now,
-                    ActionPage = userPageActionView.ActionPage
+                    Title = userPageView.Title,
+                    IsShow = userPageView.IsShow,
+                    Tye = userPageView.Tye,
+                    ParentId = userPageView.ParentId,
+                    OrderDisplay = userPageView.OrderDisplay,
+                    Icon = userPageView.Icon,
+                    Path = userPageView.Path,
+                    Breadcrumb = userPageView.Breadcrumb,
+                    TypeActionId = userPageView.TypeActionId,
+                    ModifyDate = DateTime.Now
                 };
 
-                rt = userModels.UpdateUserPageAction(id, userPageAction);
+                rt = userModels.UpdateUserPage(id, userPage);
 
                 if (rt > 0)
                 {
@@ -388,7 +326,7 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
+            string path = "/api/AdminPage";
 
             var action = userModels.GetActionByActionName(CommonGlobal.Delete);
 
@@ -399,12 +337,11 @@ namespace ApiBase.Controllers
             ////check permission delete
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
-                UserPageAction userPageAction = userModels.GetUserPageActionbyId(id);
-                string[] listActionNameCanNotDelete = new string[] { CommonGlobal.View, CommonGlobal.Add, CommonGlobal.Delete, CommonGlobal.Edit };
-                if (userPageAction != null && !listActionNameCanNotDelete.Contains(userPageAction.ActionName))
+                UserPage userPage = userModels.GetUserPagebyId(id);                
+                if (userPage != null)
                 {
                     //// delete UserPageAction
-                    bool rt = userModels.DeleteUserPageAction(userPageAction.Id);
+                    bool rt = userModels.DeleteUserPage(userPage.Id);
                     if (rt)
                     {
                         response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });

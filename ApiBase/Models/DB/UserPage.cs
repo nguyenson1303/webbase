@@ -17,5 +17,7 @@ namespace ApiBase.Models.DB
         public string Path { get; set; }
         public string Breadcrumb { get; set; }
         public int? TypeActionId { get; set; }
+        public DateTime? ModifyDate { get; set; }
+        public DateTime? CreateDate { get; set; }
     }
 }

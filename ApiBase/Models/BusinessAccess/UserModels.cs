@@ -937,5 +937,197 @@
                 return rt;
             }
         }
+
+        /// <summary>
+        /// Gets Page detail
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Gets the name of the user by user</returns>
+        public UserPage GetUserPagebyId(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the user page.
+        /// </summary>
+        /// <param name="userPage">user object.</param>
+        /// <returns>Adds the user</returns>
+        public int AddUserPage(UserPage userPage)
+        {
+            using (var data = new themanorContext())
+            {
+                int rt = 0;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        data.UserPage.Add(userPage);
+                        data.SaveChanges();
+                        rt = userPage.Id;
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Adds the user page.
+        /// </summary>
+        /// <param name="userPageAction">user object.</param>
+        /// <returns>Adds the user</returns>
+        public int UpdateUserPage(int id, UserPage userPage)
+        {
+            using (var data = new themanorContext())
+            {
+                int rt = 0;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var c_gen = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
+                        c_gen.Title = userPage.Title;
+                        c_gen.IsShow = userPage.IsShow;
+                        c_gen.Tye = userPage.Tye;
+                        c_gen.ParentId = userPage.ParentId;
+                        c_gen.OrderDisplay = userPage.OrderDisplay;
+                        c_gen.Icon = userPage.Icon;
+                        c_gen.Path = userPage.Path;
+                        c_gen.Breadcrumb = userPage.Breadcrumb;
+                        c_gen.TypeActionId = userPage.TypeActionId;
+                        c_gen.ModifyDate = DateTime.Now;                        
+
+                        data.SaveChanges();
+                        rt = c_gen.Id;
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the UserPage.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Delete User</returns>
+        public bool DeleteUserPage(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                bool rt;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var c_page = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
+                        if (c_page != null)
+                        {
+                            data.UserPage.Remove(c_page);
+                            data.SaveChanges();
+                            rt = true;
+                            dbContextTransaction.Commit();
+                        }
+                        else
+                        {
+                            rt = false;
+                            dbContextTransaction.Rollback();
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        rt = false;
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Admins the get all page.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="lang">The language.</param>
+        /// <param name="search">The search.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="orderBy">The order by.</param>
+        /// <param name="orderType">Type of the order.</param>
+        /// <param name="total">The total.</param>
+        /// <returns>Admin Get All User</returns>
+        public List<UserPage> AdminGetAllPage(string type, string lang, string search, int parentId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    IQueryable<UserPage> c_gen = null;
+                    if (parentId != -1)
+                    {
+                        c_gen = (from p in data.UserPage
+                                 where p.ParentId == (int)parentId
+                                 select p).AsQueryable<UserPage>();
+                    }
+                    else
+                    {
+                        c_gen = (from p in data.UserPage
+                                 select p).AsQueryable<UserPage>();
+                    }
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        c_gen = c_gen.Where(p => p.Title.Contains(search)).AsQueryable<UserPage>();
+                    }
+
+                    total = c_gen.ToList().Count();
+
+                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
+                    {
+                        Type sortByPropType = typeof(UserPage).GetProperty(orderBy).PropertyType;
+                        ////calling the extension method using reflection
+                        c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPage), sortByPropType })
+                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<UserPage>;
+                    }
+                    else
+                    {
+                        ////if  orderBy null set default is ID
+                        c_gen = c_gen.OrderBy(p => p.Title);
+                    }
+
+                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                }
+                catch (Exception ex)
+                {
+                    total = 0;
+                    return null;
+                }
+            }
+        }
+
     }
 }
