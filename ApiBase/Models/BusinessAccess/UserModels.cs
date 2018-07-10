@@ -667,7 +667,6 @@
             }
         }
 
-
         public UserPageAction GetActionByActionName(string actionName)
         {
             using (var data = new themanorContext())
@@ -724,11 +723,11 @@
                         c_gen = c_gen.Where(p=>p.ActionName.Contains(search)).AsQueryable<UserPageAction>();
                     }
 
-                    total = c_gen.Count();
+                    total = c_gen.ToList().Count();
 
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
-                        Type sortByPropType = typeof(User).GetProperty(orderBy).PropertyType;
+                        Type sortByPropType = typeof(UserPageAction).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPageAction), sortByPropType })
                                 .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<UserPageAction>;
@@ -741,7 +740,7 @@
 
                     return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     total = 0;
                     return null;
@@ -852,9 +851,85 @@
                         data.UserPageAction.Add(userPageAction);
                         data.SaveChanges();
                         rt = userPageAction.Id;
+                        dbContextTransaction.Commit();
                     }
                     catch (Exception)
                     {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Adds the user.
+        /// </summary>
+        /// <param name="userPageAction">user object.</param>
+        /// <returns>Adds the user</returns>
+        public int UpdateUserPageAction(int id, UserPageAction userPageAction)
+        {
+            using (var data = new themanorContext())
+            {
+                int rt = 0;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var c_gen = data.UserPageAction.Where(p => p.Id == id).FirstOrDefault();
+                        c_gen.ActionName = userPageAction.ActionName;
+                        c_gen.ActionDescription = userPageAction.ActionDescription;
+                        c_gen.ActionStatus = userPageAction.ActionStatus;
+                        c_gen.ModifyDate = DateTime.Now;
+                        c_gen.ActionPage = userPageAction.ActionPage;
+
+                        data.SaveChanges();
+                        rt = c_gen.Id;
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the UserPageAction.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Delete User</returns>
+        public bool DeleteUserPageAction(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                bool rt;
+                using (var dbContextTransaction = data.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var c_pageAction = data.UserPageAction.Where(p => p.Id == id).FirstOrDefault();
+                        if (c_pageAction != null)
+                        {
+                            data.UserPageAction.Remove(c_pageAction);
+                            data.SaveChanges();
+                            rt = true;
+                            dbContextTransaction.Commit();
+                        }
+                        else
+                        {
+                            rt = false;
+                            dbContextTransaction.Rollback();
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        rt = false;
                         dbContextTransaction.Rollback();
                     }
                 }

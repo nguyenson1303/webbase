@@ -7,7 +7,7 @@ namespace ApiBase.Models.AdminViewModels
     /// </summary>
     public class AdminUserPageActionView
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string ActionName { get; set; }
         public string ActionDescription { get; set; }
         public int ActionStatus { get; set; }

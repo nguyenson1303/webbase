@@ -182,7 +182,7 @@ namespace ApiBase.Controllers
         }
 
         // POST api/<controller>
-        // save page action detail
+        // create action detail
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody]AdminUserPageActionView userPageActionView)
@@ -200,13 +200,13 @@ namespace ApiBase.Controllers
 
             string path = "/api/AdminPageAction";
 
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+            var action = userModels.GetActionByActionName(CommonGlobal.Add);
 
             string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             string type = string.Empty;
 
-            if (userPageActionView.Id != 0)
+            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
             {
                 userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
 
@@ -215,7 +215,7 @@ namespace ApiBase.Controllers
                     is_valid = false;
                     if (mess == string.Empty)
                     {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate });
+                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
                     }
                 }
             }
@@ -257,7 +257,7 @@ namespace ApiBase.Controllers
                     ActionStatus = userPageActionView.ActionStatus,
                     CreateDate = DateTime.Now,
                     ModifyDate = DateTime.Now,
-                    ActionPage = string.IsNullOrEmpty(userPageActionView.ActionPage) ? "0" : userPageActionView.ActionPage
+                    ActionPage = userPageActionView.ActionPage
                 };
 
                 rt = userModels.AddUserPageAction(userPageAction);
@@ -279,17 +279,153 @@ namespace ApiBase.Controllers
             return response;
         }
 
-        //// PUT api/<controller>/5
-        //[HttpPut("{id}")]
-        //[Authorize(Roles = "Admin")]
-        //public void Put(int id, [FromBody]]AdminUserPageActionView userPageActionView)
-        //{
-        //}
+        // PUT api/<controller>/5
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Put(int id, [FromBody]AdminUserPageActionView userPageActionView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            UserPageAction userPageAction = null;
+            var mess = string.Empty;
+            int rt = 0;
+            bool is_valid = true;
 
-        //// DELETE api/<controller>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string path = "/api/AdminPageAction";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            string type = string.Empty;
+
+            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
+            {
+                userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
+
+                if (userPageAction != null)
+                {
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
+                    }
+                }
+            }
+
+            ////validation server
+            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageDataEmpty;
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionName" }));
+                }
+            }
+
+            ////validation server
+            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageDataEmpty;
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionDescription" }));
+                }
+            }
+
+            if (!is_valid)
+            {
+                return response;
+            }
+
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            {
+                userPageAction = new UserPageAction
+                {
+                    ActionName = userPageActionView.ActionName,
+                    ActionDescription = userPageActionView.ActionDescription,
+                    ActionStatus = userPageActionView.ActionStatus,
+                    CreateDate = DateTime.Now,
+                    ModifyDate = DateTime.Now,
+                    ActionPage = userPageActionView.ActionPage
+                };
+
+                rt = userModels.UpdateUserPageAction(id, userPageAction);
+
+                if (rt > 0)
+                {
+                    response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
+                }
+                else
+                {
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
+                }
+            }
+            else
+            {
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+            }
+
+            return response;
+        }
+
+        // DELETE api/<controller>/5
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            IActionResult response = null;
+            string mess = string.Empty;
+            UserModels userModels = new UserModels();
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string path = "/api/AdminPageAction";
+
+            var action = userModels.GetActionByActionName(CommonGlobal.Delete);
+
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            string type = string.Empty;
+
+            ////check permission delete
+            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            {
+                UserPageAction userPageAction = userModels.GetUserPageActionbyId(id);
+                string[] listActionNameCanNotDelete = new string[] { "view", "add", "del", "edit" };
+                if (userPageAction != null && !listActionNameCanNotDelete.Contains(userPageAction.ActionName))
+                {
+                    //// delete UserPageAction
+                    bool rt = userModels.DeleteUserPageAction(userPageAction.Id);
+                    if (rt)
+                    {
+                        response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
+                    }
+                    else
+                    {
+                        response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
+                    }
+                }
+                else
+                {
+                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+                }
+            }
+            else
+            {
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+            }
+
+            return response;
+        }
     }
 }

@@ -300,7 +300,7 @@ namespace ApiBase.Controllers
 
             string path = "/api/account";
 
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
+            var action = userModels.GetActionByActionName(CommonGlobal.Add);
 
             string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
@@ -552,7 +552,6 @@ namespace ApiBase.Controllers
             }
             else
             {
-                mess = " Bạn không có quyền thực thi hành động xóa.";
                 response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
             }
 
