@@ -16,7 +16,7 @@ namespace ApiBase.Controllers
     [Route("api/[controller]")]
     public class AdminPageController : Controller
     {
-        // GET: api/<controller>/listUserPageAction
+        // GET: api/<controller>/listUserPage
         [HttpGet("listUserPage"), Authorize(Roles = "Admin")]
         public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
