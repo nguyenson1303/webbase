@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './@core/data/auth.service';
+import { AppConstant } from './config/appconstant';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+
+  private currentProfile = AppConstant.currentProfile;
 
   constructor(private router: Router, private authenService: AuthService) { }
 
@@ -13,17 +16,11 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.authenService.isLogIn().map(success => {
       if (success) {
-         this.authenService.getProfile().subscribe(data => {
-            //var currentUrl = window.location;
-            //var currentHost = window.location.host;
-            //var currentHostName = window.location.hostname;
-            //var currentOrigin = window.location.origin;
-            //var currentPathname = window.location.pathname;
-
-            //window.location.href = currentOrigin + currentPathname;
-
-           console.log(data);
-         });
+        this.authenService.getProfile().subscribe(data => {
+          if (data) {
+            localStorage.setItem(this.currentProfile, JSON.stringify(data));
+          }
+        });
         return true;
       } else {
         if (this.authenService.getSave()) {

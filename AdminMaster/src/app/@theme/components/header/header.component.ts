@@ -4,6 +4,9 @@ import { NbMenuService, NbSidebarService } from '@nebular/theme';
 import { UserService } from '../../../@core/data/users.service';
 import { AnalyticsService } from '../../../@core/utils/analytics.service';
 
+import { AuthService } from '../../../@core/data/auth.service';
+import { AppConstant } from '../../../config/appconstant';
+
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -18,15 +21,28 @@ export class HeaderComponent implements OnInit {
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
+  private currentProfile = AppConstant.currentProfile;
+
   constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-              private userService: UserService,
-              private analyticsService: AnalyticsService) {
+    private menuService: NbMenuService,
+    private userService: UserService,
+    private analyticsService: AnalyticsService,
+    private authenService: AuthService) {
   }
 
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
+    let profile = localStorage.getItem(this.currentProfile);
+    if (!profile) {
+      this.authenService.getProfile().subscribe(data => {
+        if (data) {
+          this.user = JSON.parse(data);
+          localStorage.setItem(this.currentProfile, JSON.stringify(data));
+        }
+      });
+    }
+    else {
+      this.user = JSON.parse(profile);
+    }
   }
 
   toggleSidebar(): boolean {

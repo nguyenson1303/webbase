@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../@core/data/auth.service';
 import { AppConfig } from '../../config/appconfig';
 import { AppConstant } from '../../config/appconstant';
 declare var $: any;
@@ -19,8 +19,8 @@ export class LoginComponent implements OnInit {
   private currentStorage = AppConstant.currentStorage;
 
   constructor(private router: Router,
-            private route: ActivatedRoute,
-            private authenService: AuthService) { }
+    private route: ActivatedRoute,
+    private authenService: AuthService) { }
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';

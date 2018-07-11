@@ -33,9 +33,7 @@ namespace ApiBase.Controllers
         public IActionResult CreateToken([FromBody]LoginView login)
         {
             IActionResult response = Unauthorized();
-            Role userRole = null;
-            User user = null;
-            var userInfor = Authenticate(login, out user, out userRole);
+            var userInfor = Authenticate(login, out User user, out Role userRole);
 
             var expiresDate = DateTime.Now.AddHours(12);
             var now = DateTime.Now;

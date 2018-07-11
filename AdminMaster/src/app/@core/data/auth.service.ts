@@ -2,23 +2,21 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response, URLSearchParams, QueryEncoder } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { AppConfig } from '../config/appconfig';
-import { AppConstant } from '../config/appconstant';
+import { AppConfig } from '../../config/appconfig';
+import { AppConstant } from '../../config/appconstant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private headers = new Headers();
   private loginObject: any;
   private authUrl = AppConfig.serverAPI + AppConstant.tokenApiUrl;
   private currentStorage = AppConstant.currentStorage;
 
   constructor(private http: Http, private Router: Router) {
-    this.headers = new Headers({'Content-Type': AppConstant.applicationJsonType});
-    // this.headers.append('Access-Control-Allow-Origin', '*');
-    // this.headers.append('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    // this.headers.append('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
+    this.headers = new Headers({ 'Content-Type': AppConstant.applicationJsonType });
   }
 
   login(userName: string, password: string, save: boolean): Observable<boolean> {
@@ -26,7 +24,6 @@ export class AuthService {
     return this.http.post(this.authUrl, JSON.stringify(this.loginObject), { headers: this.headers })
       .map((response: Response) => {
         if (response.json() && response.json().code) {
-          console.log(response.json().code);
           return false;
         }
         else {
@@ -108,7 +105,7 @@ export class AuthService {
 
   getUserName(): string {
     var currentUser = JSON.parse(localStorage.getItem(this.currentStorage));
-    var userName = currentUser && currentUser.user_name;
+    var userName = currentUser && currentUser.userName;
     return userName ? userName : "";
   }
 

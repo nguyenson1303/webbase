@@ -7,6 +7,7 @@ export class AppConstant {
   public static headerBearer: string = "Bearer ";
   public static applicationJsonType: string = "application/json";
   public static currentStorage: string = "CurrentStorage";
+  public static currentProfile: string = "CurrentProfile";
 
   // message const
   public static messErrorCommon: string = "Server Error !";
