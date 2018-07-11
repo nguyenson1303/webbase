@@ -13,15 +13,17 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.authenService.isLogIn().map(success => {
       if (success) {
-        this.authenService.getProfile().subscribe(data => {
-            var currentUrl = window.location;
-            var currentHost = window.location.host;
-            var currentHostName = window.location.hostname;
-            var currentOrigin = window.location.origin;
-            var currentPathname = window.location.pathname;
+         this.authenService.getProfile().subscribe(data => {
+            //var currentUrl = window.location;
+            //var currentHost = window.location.host;
+            //var currentHostName = window.location.hostname;
+            //var currentOrigin = window.location.origin;
+            //var currentPathname = window.location.pathname;
 
-            window.location.href = currentOrigin + currentPathname;
-        });
+            //window.location.href = currentOrigin + currentPathname;
+
+           console.log(data);
+         });
         return true;
       } else {
         if (this.authenService.getSave()) {

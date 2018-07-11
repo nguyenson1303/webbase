@@ -15,18 +15,27 @@ export class AuthService {
   private currentStorage = AppConstant.currentStorage;
 
   constructor(private http: Http, private Router: Router) {
-    this.headers = new Headers({ 'Content-Type': AppConstant.applicationJsonType });
+    this.headers = new Headers({'Content-Type': AppConstant.applicationJsonType});
+    // this.headers.append('Access-Control-Allow-Origin', '*');
+    // this.headers.append('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    // this.headers.append('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
   }
 
   login(userName: string, password: string, save: boolean): Observable<boolean> {
     this.loginObject = { Username: userName, Password: password }
     return this.http.post(this.authUrl, JSON.stringify(this.loginObject), { headers: this.headers })
       .map((response: Response) => {
-        let token = response.json() && response.json().token;
-        let expires = response.json() && response.json().expiry;
-        let currentUser = { token: token, expires: expires, userName: userName, password: password, save: save };
-        localStorage.setItem(this.currentStorage, JSON.stringify(currentUser));
-        return true;
+        if (response.json() && response.json().code) {
+          console.log(response.json().code);
+          return false;
+        }
+        else {
+          let token = response.json() && response.json().token;
+          let expires = response.json() && response.json().expiry;
+          let currentUser = { token: token, expires: expires, userName: userName, password: password, save: save };
+          localStorage.setItem(this.currentStorage, JSON.stringify(currentUser));
+          return true;
+        }
       }).catch((error: any) => Observable.throw(error.json() || { error_description: AppConstant.messErrorCommon }));
   }
 
