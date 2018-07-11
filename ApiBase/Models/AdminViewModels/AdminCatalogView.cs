@@ -142,48 +142,12 @@ namespace ApiBase.Models.AdminViewModels
         }
 
         /// <summary>
-        /// Gets or sets the list language.
-        /// </summary>
-        /// <value>
-        /// The list language.
-        /// </value>
-        public List<SelectListItem> List_language
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the list page size.
         /// </summary>
         /// <value>
         /// The list page size.
         /// </value>
         public List<SelectListItem> List_page_size
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the list parent.
-        /// </summary>
-        /// <value>
-        /// The list parent.
-        /// </value>
-        public List<SelectListItem> List_parent
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message
         {
             get;
             set;
