@@ -19,7 +19,11 @@ export class HeaderComponent implements OnInit {
 
   user: any;
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+  userMenu = [
+    { title: AppConstant.profileLabel, icon: 'ion-clipboard' },
+    { title: AppConstant.settingLabel, icon: 'ion-gear-a' },
+    { title: AppConstant.logoutLabel, icon: 'ion-log-out' }
+  ];
 
   private currentProfile = AppConstant.currentProfile;
 
@@ -28,6 +32,12 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private authenService: AuthService) {
+
+    this.menuService.onItemClick()
+      .subscribe((event) => {
+        this.onContecxtItemSelection(event.item.title);
+      });
+
   }
 
   ngOnInit() {
@@ -61,5 +71,15 @@ export class HeaderComponent implements OnInit {
 
   startSearch() {
     this.analyticsService.trackEvent('startSearch');
+  }
+
+  logout() {
+    this.authenService.logout();
+  }
+
+  onContecxtItemSelection(title) {
+    if (title === AppConstant.logoutLabel) {
+      this.logout();
+    }
   }
 }

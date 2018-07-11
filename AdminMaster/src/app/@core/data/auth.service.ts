@@ -72,9 +72,6 @@ export class AuthService {
   logout(): void {
     this.clearStorage();
     this.Router.navigate(['/auth/login']);
-    // setTimeout(function () {
-    //  window.location.reload();
-    // });
   }
 
   checkLogin(): boolean {
