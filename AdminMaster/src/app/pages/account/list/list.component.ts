@@ -27,38 +27,24 @@ export class ListComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-      },
-      firstName: {
-        title: 'First Name',
-        type: 'string',
-      },
-      lastName: {
-        title: 'Last Name',
-        type: 'string',
-      },
       username: {
-        title: 'Username',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      age: {
-        title: 'Age',
+        title: 'Email',
         type: 'number',
       },
+      role: {
+        title: 'Role',
+        type: 'string',
+      },
+      online: {
+        title: 'Active',
+        type: 'boolean',
+      }
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
   listUser: any;
-
-  paramMap: any;
 
   private params: string = "?";
   private type: string = "";
@@ -184,7 +170,6 @@ export class ListComponent implements OnInit {
   }
 
   getData(params: string) {
-    console.log(params);
     this.accountService.getListUser(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
