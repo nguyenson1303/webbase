@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using ApiBase.Model.AdminViewModels;
 using ApiBase.Models.BusinessAccess;
@@ -34,8 +35,10 @@ namespace ApiBase.Controllers
                     menuItem.title = parent.Title;
                     menuItem.icon = parent.Icon;
                     menuItem.link = parent.Path;
+                    menuItem.type = parent.Tye;
                     menuItem.home = parent.Path == "dashboard" ? true : false;
                     menuItem.group = false;
+                    menuItem.queryParams = string.Empty;
 
                     List<UserPage> lstChild = userModels.GetListUserPageByParrentID(parent.Id);
                     bool isChild = false;
@@ -47,13 +50,20 @@ namespace ApiBase.Controllers
                             var isShow = UserModels.CheckPermission(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), (child.TypeActionId != null ? child.TypeActionId.ToString() : string.Empty), child.Tye);
                             if (isShow)
                             {
+                                var path = string.Empty;
+                                if (!string.IsNullOrEmpty(child.Path))
+                                {
+                                    path = child.Path;                                    
+                                }
+
                                 AdminMenu menuItemChild = new AdminMenu();
                                 menuItemChild.title = child.Title;
                                 menuItemChild.icon = child.Icon;
-                                menuItemChild.link = string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path;
+                                menuItemChild.link = path;
+                                menuItemChild.type = child.Tye;
                                 menuItemChild.home = false;
-                                menuItem.group = false;
-
+                                menuItemChild.group = false;
+                                menuItemChild.queryParams = string.Empty;
                                 menuChild.Add(menuItemChild);
                                 isChild = true;
                             }

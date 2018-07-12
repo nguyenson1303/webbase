@@ -101,7 +101,7 @@ namespace ApiBase.Controllers
 
             type = type ?? string.Empty;
 
-            string path = "/api/account/listUser";
+            string path = "/pages/account/list";
 
             var action = userModels.GetActionByActionName(CommonGlobal.View);
 
@@ -134,7 +134,7 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            ////check permission update
+            //// check permission for display list account on path '/page/account/list'
             if (UserModels.CheckPermission(userLogin, path, typeAct, type))
             {
                 listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);

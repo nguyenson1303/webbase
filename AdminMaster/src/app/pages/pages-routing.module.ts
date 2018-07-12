@@ -13,6 +13,9 @@ const routes: Routes = [{
     path: 'dashboard',
     component: DashboardComponent, canActivate: [AuthGuard]
   }, {
+    path: 'account',
+      loadChildren: './account/account.module#AccountModule',
+  }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
   }, {

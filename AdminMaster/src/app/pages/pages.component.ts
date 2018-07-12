@@ -5,6 +5,7 @@ import { MENU_ITEMS } from './pages-menu';
 import { MenuService } from './../@core/data/menu.service';
 import { AppConstant } from './../config/appconstant';
 import { forEach } from '@angular/router/src/utils/collection';
+import { Jsonp } from '@angular/http';
 
 @Component({
   selector: 'ngx-pages',
@@ -17,24 +18,20 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class PagesComponent {
 
-  // menu = MENU_ITEMS;
   public menu: NbMenuItem[];
-  private currentMenu = AppConstant.currentMenu;
 
   constructor(private menuService: MenuService) {
-    let menuAdmin = localStorage.getItem(this.currentMenu);
     this.menu = MENU_ITEMS;
-    let allMenu = JSON.parse(menuAdmin);
-    allMenu.forEach(element => {
-      this.menu.push(element);
-    });
 
     this.menuService.getMenu().subscribe(data => {
       if (data) {
-        console.log('get menu lastest: ' + JSON.stringify(data));
-        this.menu = MENU_ITEMS;
-        let allMenu = JSON.parse(menuAdmin);
-        allMenu.forEach(element => {
+        data.forEach(element => {
+          element.children.forEach(child => {
+            if (child.type != undefined && child.type != null && child.type != "") {
+              // child.queryParams = { type: child.type };
+              child.link = child.link + "/" + child.type;
+            }
+          });
           this.menu.push(element);
         });
       }
