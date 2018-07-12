@@ -58,6 +58,8 @@ export class ListComponent implements OnInit {
 
   listUser: any;
 
+  paramMap: any;
+
   private params: string = "?";
   private type: string = "";
   private lang: string = "";
@@ -72,15 +74,15 @@ export class ListComponent implements OnInit {
     private router: Router,
     private accountService: AccountService) {
 
-    this.activatedRoute.params.forEach(params => {
+    // get param from query string ex: ?type=Admin
+    this.activatedRoute.queryParams.subscribe(params => {
       this.type = params['type'];
-      this.lang = params['lang'];
-      this.search = params['search'];
-      this.pageIndex = params['pageIndex'];
-      this.pageSize = params['pageSize'];
-      this.orderBy = params['orderBy'];
-      this.orderType = params['orderType'];
-    });
+    })
+
+    // get param from router ex: /:type
+    // this.activatedRoute.params.forEach(params => {
+    //  this.type = params['type'];
+    // });
 
     this.listUser = {
       username: "",
@@ -182,12 +184,13 @@ export class ListComponent implements OnInit {
   }
 
   getData(params: string) {
+    console.log(params);
     this.accountService.getListUser(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
           console.log('error code: ' + result.code);
           console.log('error message: ' + result.message);
-          return false;
+          this.source.load(this.listUser);
         }
         else {
           this.source.load(result.listUser);

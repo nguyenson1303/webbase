@@ -10,7 +10,7 @@ const routes: Routes = [{
   path: '',
   component: AccountComponent, canActivate: [AuthGuard],
   children: [{
-    path: 'list/:type',
+    path: 'list',
     component: ListComponent, canActivate: [AuthGuard]
   }],
 }];

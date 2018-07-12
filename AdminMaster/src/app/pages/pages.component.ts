@@ -28,8 +28,8 @@ export class PagesComponent {
         data.forEach(element => {
           element.children.forEach(child => {
             if (child.type != undefined && child.type != null && child.type != "") {
-              // child.queryParams = { type: child.type };
-              child.link = child.link + "/" + child.type;
+               child.queryParams = { type: child.type };
+              // child.link = child.link + "/" + child.type;
             }
           });
           this.menu.push(element);
