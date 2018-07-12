@@ -1,0 +1,36 @@
++ Cách chạy Admin Master ở local
+install nodejs
+chạy các lệnh sau ở cmd:
+
+	pushd 'path_folder_project'
+	npm install
+	ng build
+	ng serve --open (hoặc ng serve --open --port 9999)
+	
+===========================================
++ Tạo module quản lý account
+1: tạo module account có account routing
+
+	ng g m pages/account --routing
+	ng g c pages/account
+
+2: tạo component list 
+
+	ng g c pages/account/list
+
+3: tạo component detail
+
+	ng g c pages/account/detail
+
+4: tạo component edit (sử dụng cho cả add và update account)
+
+	ng g c pages/account/edit
+
+5: tạo component confirm (sử dụng để confirm sau add/update)
+
+	ng g c pages/account/confirm
+
++ Tạo class service(account.service.ts) cho module account. file service này phải nằm trong folder @core/data
+
+	ng g service @core/data/account
+
