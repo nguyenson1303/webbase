@@ -16,8 +16,8 @@ export class ListComponent implements OnInit {
   columns = [
     { key: 'username', title: 'Email' },
     { key: 'role', title: 'Role' },
-    { key: 'online', title: 'Active' }
-    { key: 'username', title: 'Action' }
+    { key: 'online', title: 'Active' },
+    { key: 'username', title: 'Action' },
   ];
   data;
   configuration;
