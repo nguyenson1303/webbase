@@ -41,3 +41,7 @@ https://stackblitz.com/edit/ngx-easy-table?file=app%2Fcomponents%2Fmodal%2Fmodal
 
 link githup:
 https://github.com/ssuperczynski/ngx-easy-table
+
++ Cài đặt:
+	npm install ngx-easy-table --save
+Copy: "@import '~ngx-easy-table/style.css';" vào file css của web
