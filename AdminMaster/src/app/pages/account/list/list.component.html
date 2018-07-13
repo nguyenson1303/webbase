@@ -3,13 +3,26 @@
     Danh sách Account
   </nb-card-header>
   <nb-card-body>
+    
+    <div class="row full-name-inputs">
+      <div class="col-sm-6 input-group input-group-border-only">
+        <input type="text" placeholder="Email" class="form-control" (input)="onEmailSearch($event.target.value)" />
+      </div>
+      <div class="col-sm-6 input-group">
+        <button class="btn btn-hero-primary btn-demo" (click)="reset()"> Reset search</button>
+      </div>
+    </div>
 
     <ngx-table [configuration]="configuration"
-               [data]="data"
+               [data]="rows"
                [columns]="columns"
                [pagination]="pagination"
                (event)="eventEmitted($event)">
       <ng-template let-row>
+        <td class="td-action">
+          <a class="button-action button-edit" (click)="editClick(row.username)"><i class="nb-edit"></i></a>
+          <a class="button-action button-delete" (click)="deleteClick(row.username)"><i class="nb-trash"></i></a>
+        </td>
         <td>
           <div class="font-small">{{row.username}}</div>
         </td>
@@ -17,10 +30,10 @@
           <span class="font-small">{{row.role}}</span>
         </td>
         <td>
-          <div class="circle" [style.color]="row.online? 'red' : 'green'"></div>
-        </td>
-        <td>
-          <button class="btn btn-primary btn-sm" (click)="editClick(row.username)">Edit</button>
+          <label class="switch">
+            <input type="checkbox" [checked]="row.online" (click)="changeActive(row.username, row.online)">
+            <span></span>
+          </label>
         </td>
       </ng-template>
     </ngx-table>

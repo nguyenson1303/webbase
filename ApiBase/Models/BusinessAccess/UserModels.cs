@@ -195,7 +195,7 @@
                         c_gen = (from p in data.User
                                  join i in data.UserInfo on p.Username equals i.Email
                                  join r in data.Role on p.Role equals r.Id
-                                 where r.Role1 == type && p.Username != "Admin" && p.Username.Contains(search)
+                                 where r.Role1 == type && p.Username != "Admin" && p.Username.ToLower().Contains(search)
                                  select p).OrderByDescending(p => p.Username).AsQueryable<User>();
                     }
                     else

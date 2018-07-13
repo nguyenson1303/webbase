@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
-import { Jsonp } from '@angular/http';
 
 @Component({
   selector: 'list-account',
@@ -14,12 +13,13 @@ import { Jsonp } from '@angular/http';
 export class ListComponent implements OnInit {
 
   columns = [
+    { key: 'username', title: 'Action' },
     { key: 'username', title: 'Email' },
     { key: 'role', title: 'Role' },
-    { key: 'online', title: 'Active' },
-    { key: 'username', title: 'Action' },
+    { key: 'online', title: 'Active' }
   ];
   data;
+  rows;
   configuration;
   pagination = {
     limit: AppConstant.pageSizeDefault,
@@ -72,10 +72,26 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filter();
+    this.filter(null);
   }
 
-  filter() {
+  // function filter data
+  filter(obj: EventObject) {
+    this.params = "?";
+
+    if (obj != null) {
+      this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
+      this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
+      this.pagination = { ...this.pagination };
+
+      this.pageIndex = this.pagination.offset / this.pagination.limit - 1;
+      this.pageSize = this.pagination.limit;
+
+      if (obj.event === 'onOrder') {
+        this.orderBy = obj.value.key;
+        this.orderType = obj.value.order;
+      }
+    }
 
     if (this.type != undefined && this.type.length > 0) {
       if (this.params.length > 1) {
@@ -140,7 +156,6 @@ export class ListComponent implements OnInit {
       }
     }
 
-    console.log(this.params);
     this.getData(this.params);
   }
 
@@ -154,11 +169,12 @@ export class ListComponent implements OnInit {
           console.log('error code: ' + result.code);
           console.log('error message: ' + result.message);
           this.data = this.listUser;
+          this.rows = this.data;
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUser;
-          console.log('data: ' + JSON.stringify(this.data));
+          this.rows = this.data;
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalPage;
           this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
@@ -171,27 +187,35 @@ export class ListComponent implements OnInit {
   }
 
   eventEmitted($event) {
-    this.parseEvent($event);
+    this.filter($event);
   }
 
   editClick(userName: string) {
     alert('Edit: ' + userName);
   }
 
-  private parseEvent(obj: EventObject) {
-    this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
-    this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
-    this.pagination = { ...this.pagination };
+  deleteClick(userName: string) {
+    alert('Delete: ' + userName);
+  }
 
-    this.pageIndex = this.pagination.offset / this.pagination.limit - 1;
-    this.pageSize = this.pagination.limit;
-
-    if (obj.event === 'onOrder') {
-      this.orderBy = obj.value.key;
-      this.orderType = obj.value.order;
+  changeActive(userName: string, value: boolean) {
+    alert('Active: ' + userName + '; Active old: ' + value);
+    let newStatus = false;
+    if (value) {
+      newStatus = false;
     }
+    else {
+      newStatus = true;
+    }
+  }
 
-    this.filter();
+  onEmailSearch(value): void {
+    this.search = value;
+    this.filter(null);
+  }
+
+  reset(): void {
+    this.filter(null);
   }
 }
 
