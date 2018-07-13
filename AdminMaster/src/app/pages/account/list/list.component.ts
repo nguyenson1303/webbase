@@ -7,25 +7,38 @@ import { AppConstant } from '../../../config/appconstant';
 @Component({
   selector: 'list-account',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
 
   settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+      custom: [
+        { name: 'Add', title: '<i class="nb-plus"></i>' },
+        { name: 'Edit', title: `<i  class="nb-edit"></i>` },
+        { name: 'Delete', title: '<i class="nb-trash"></i>' },
+        { name: 'Activate', title: `<i class="fa fa-toggle-on"></i>` },
+        { name: 'Deactivate', title: `<i  class="fa fa-toggle-off"></i>` }
+      ],
+      position: 'left',
     },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
+    // add: {
+    // addButtonContent: '<i class="nb-plus"></i>',
+    // createButtonContent: '<i class="nb-checkmark"></i>',
+    // cancelButtonContent: '<i class="nb-close"></i>',
+    // },
+    // edit: {
+    // editButtonContent: '<i class="nb-edit"></i>',
+    // saveButtonContent: '<i class="nb-checkmark"></i>',
+    // cancelButtonContent: '<i class="nb-close"></i>',
+    // },
+    // delete: {
+    // deleteButtonContent: '<i class="nb-trash"></i>',
+    // confirmDelete: true,
+    // },
     columns: {
       username: {
         title: 'Email',
@@ -100,6 +113,11 @@ export class ListComponent implements OnInit {
     } else {
       event.confirm.reject();
     }
+  }
+
+  onCustom(event) {
+    alert(`Custom event '${event.action}' fired on row №: ${event.data.id}`);
+
   }
 
   filter() {

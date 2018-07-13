@@ -173,14 +173,4 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
-  {
-    title: 'Auth2',
-    icon: 'nb-locked',
-    children: [
-      {
-        title: 'list account',
-        link: '/pages/account/list',
-      }
-    ],
-  },
 ];
