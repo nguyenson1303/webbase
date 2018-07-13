@@ -3,7 +3,27 @@
     Danh sách Account
   </nb-card-header>
   <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source"  (custom)="onCustom($event)">
-    </ng2-smart-table>
+
+    <ngx-table [configuration]="configuration"
+               [data]="data"
+               [columns]="columns"
+               [pagination]="pagination"
+               (event)="eventEmitted($event)">
+      <ng-template let-row>
+        <td>
+          <div class="font-small">{{row.username}}</div>
+        </td>
+        <td>
+          <span class="font-small">{{row.role}}</span>
+        </td>
+        <td>
+          <div class="circle" [style.color]="row.online? 'red' : 'green'"></div>
+        </td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="editClick(row.username)">Edit</button>
+        </td>
+      </ng-template>
+    </ngx-table>
+
   </nb-card-body>
 </nb-card>

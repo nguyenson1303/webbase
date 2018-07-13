@@ -34,3 +34,10 @@ chạy các lệnh sau ở cmd:
 
 	ng g service @core/data/account
 
+================================================
++ Sử dụng ngx-easy-table theo demo sau
+
+https://stackblitz.com/edit/ngx-easy-table?file=app%2Fcomponents%2Fmodal%2Fmodal.component.html
+
+link githup:
+https://github.com/ssuperczynski/ngx-easy-table

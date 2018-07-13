@@ -4,6 +4,7 @@
     using DBBase.EntitysObject;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     /// <summary>
@@ -210,10 +211,13 @@
 
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
-                        Type sortByPropType = typeof(User).GetProperty(orderBy).PropertyType;
+                        // First Char ToUpper
+                        string OrderBy = new CultureInfo("en-US").TextInfo.ToTitleCase(orderBy);
+
+                        Type sortByPropType = typeof(User).GetProperty(OrderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(User), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<User>;
+                                .Invoke(c_gen, new object[] { c_gen, OrderBy, orderType }) as IQueryable<User>;
                     }
                     else
                     {
