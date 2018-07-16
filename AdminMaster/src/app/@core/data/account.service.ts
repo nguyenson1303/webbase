@@ -41,6 +41,12 @@ export class AccountService {
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
+  deleteUser(userName): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.deleteUserApiUrl + "/" + userName;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.delete(url, this.options).map(this.extractData);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

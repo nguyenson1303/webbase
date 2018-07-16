@@ -27,9 +27,6 @@
           <div class="font-small">{{row.username}}</div>
         </td>
         <td>
-          <span class="font-small">{{row.role}}</span>
-        </td>
-        <td>
           <label class="switch">
             <input type="checkbox" [checked]="row.online" (click)="changeActive(row.username, row.online)">
             <span></span>

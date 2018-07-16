@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
@@ -15,7 +16,6 @@ export class ListComponent implements OnInit {
   columns = [
     { key: 'username', title: 'Action' },
     { key: 'username', title: 'Email' },
-    { key: 'role', title: 'Role' },
     { key: 'online', title: 'Active' }
   ];
   data;
@@ -56,7 +56,8 @@ export class ListComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private modalService: NgbModal) {
 
     // get param from query string ex: ?type=Admin
     this.activatedRoute.queryParams.subscribe(params => {
@@ -215,8 +216,8 @@ export class ListComponent implements OnInit {
   }
 
   editClick(userName: string) {
-    alert('Edit: ' + userName);
     // redirect to edit account page
+    this.router.navigate(['/pages/account/edit', userName]);
   }
 
   deleteClick(userName: string) {
@@ -229,11 +230,20 @@ export class ListComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           if (result.code === AppConstant.permissionDeniedCode) {
-            this.router.navigate(['/pages/miscellaneous/404']);
+            this.showModal(AppConstant.permissionDeniedTitle, result.message);
           }
           else if (result.code === AppConstant.permissionAccessCode) {
             // call api delete user
-            alert('Delete: ' + userName);
+            this.accountService.deleteUser(userName).subscribe(result => {
+              if (result) {
+                if (result && result.code) {
+                  if (result.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.message);
+                  }
+                }
+              }
+            });
+
           }
         }
       }
@@ -261,7 +271,7 @@ export class ListComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           if (result.code === AppConstant.permissionDeniedCode) {
-            this.router.navigate(['/pages/miscellaneous/404']);
+            this.showModal(AppConstant.permissionDeniedTitle, result.message);
           }
           else if (result.code === AppConstant.permissionAccessCode) {
             // call api delete user
@@ -283,6 +293,13 @@ export class ListComponent implements OnInit {
   reset(): void {
     this.search = "";
     this.filter(null);
+  }
+
+  showModal(title: string, mess: string) {
+    const activeModal = this.modalService.open(ListComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.modalHeader = title;
+    activeModal.componentInstance.modalContent = mess;
   }
 }
 
