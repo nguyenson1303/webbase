@@ -41,10 +41,17 @@ export class AccountService {
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
-  deleteUser(userName): Observable<any> {
+  deleteUser(userName: string): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.deleteUserApiUrl + "/" + userName;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.delete(url, this.options).map(this.extractData);
+  }
+
+  updateUser(userName: string, data: any): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.updateUserApiUrl + "/" + userName;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.put(url, body, this.options).map(this.extractData);
   }
 
   private extractData(res: Response) {

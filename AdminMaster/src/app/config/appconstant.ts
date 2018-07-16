@@ -6,6 +6,7 @@ export class AppConstant {
   public static listUserApiUrl: string = "/api/account/listuser";
   public static checkPermissionApiUrl: string = "/api/account/checkPermission";
   public static deleteUserApiUrl: string = "/api/account";
+  public static updateUserApiUrl: string = "/api/account";
 
   // const action on path
   public static viewAction: string = "view";

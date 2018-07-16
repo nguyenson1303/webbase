@@ -29,7 +29,10 @@ const routes: Routes = [{
       path: 'confirm',
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
-
+    {
+      path: 'add',
+      component: EditComponent, canActivate: [AuthGuard]
+    },
   ],
 }];
 

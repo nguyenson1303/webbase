@@ -216,6 +216,11 @@ export class ListComponent implements OnInit {
     this.filter($event);
   }
 
+  addUser() {
+    // redirect to add account page
+    this.router.navigate(['/pages/account/add']);
+  }
+
   editClick(userName: string) {
     // redirect to edit account page
     this.router.navigate(['/pages/account/edit', userName]);
@@ -256,7 +261,7 @@ export class ListComponent implements OnInit {
       };
   }
 
-  changeActive(userName: string, value: boolean) {
+  changeActive(userName: string, role: number, value: boolean) {
     let newStatus = false;
     if (value) {
       newStatus = false;
@@ -278,10 +283,21 @@ export class ListComponent implements OnInit {
           }
           else if (result.code === AppConstant.permissionAccessCode) {
             // call api change status user
-            alert('Active: ' + userName + '; Active old: ' + value);
-
-            // reload data
-            this.filter(null);
+            let userObj = {
+              username: userName,
+              ip: "",
+              online: newStatus,
+              role: role
+            };
+            this.accountService.updateUser(userName, userObj).subscribe(result => {
+              if (result) {
+                if (result && result.code) {
+                  if (result.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.message);
+                  }
+                }
+              }
+            });
           }
         }
       }
