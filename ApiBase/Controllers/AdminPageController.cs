@@ -39,8 +39,6 @@ namespace ApiBase.Controllers
 
             type = type ?? string.Empty;
 
-            string path = "/api/AdminPage/listUserPage";
-
             if (parentId == null)
             {
                 parentId = -1; // get all
@@ -76,22 +74,14 @@ namespace ApiBase.Controllers
                 orderBy = "Title";
                 orderType = "asc";
             }
+           
+            listPageView.ListUserPage = userModels.AdminGetAllPage(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+            listPageView.CateType = roleModels.GetRoleByRole(type);
+            listPageView.PageIndex = (int)pageIndex;
+            listPageView.PageSize = (int)pageSize;
+            listPageView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
-            {
-                listPageView.ListUserPage = userModels.AdminGetAllPage(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-                listPageView.CateType = roleModels.GetRoleByRole(type);
-                listPageView.PageIndex = (int)pageIndex;
-                listPageView.PageSize = (int)pageSize;
-                listPageView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
-
-                response = Json(listPageView);
-            }
-            else
-            {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }
+            response = Json(listPageView);
 
             return response;
         }
@@ -111,27 +101,18 @@ namespace ApiBase.Controllers
 
             string type = "Admin";
 
-            string path = "/api/AdminPage";
-
             var action = sv.GetActionByActionName(CommonGlobal.View);
 
             string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            if (userPage != null)
             {
-                if (userPage != null)
-                {
-                    response = Json(userPage);
-                }
-                else
-                {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-                }
+                response = Json(userPage);
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;
@@ -152,8 +133,6 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string path = "/api/AdminPage";
 
             var action = userModels.GetActionByActionName(CommonGlobal.Add);
 
@@ -189,37 +168,30 @@ namespace ApiBase.Controllers
             }
 
             ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            userPage = new UserPage
             {
-                userPage = new UserPage
-                {
-                    Title = userPageView.Title,
-                    IsShow = userPageView.IsShow,
-                    Tye = userPageView.Tye,
-                    ParentId = userPageView.ParentId,
-                    OrderDisplay = userPageView.OrderDisplay,
-                    Icon = userPageView.Icon,
-                    Path = userPageView.Path,
-                    Breadcrumb = userPageView.Breadcrumb,
-                    TypeActionId = userPageView.TypeActionId,
-                    ModifyDate = DateTime.Now,
-                    CreateDate = DateTime.Now
-                };
+                Title = userPageView.Title,
+                IsShow = userPageView.IsShow,
+                Tye = userPageView.Tye,
+                ParentId = userPageView.ParentId,
+                OrderDisplay = userPageView.OrderDisplay,
+                Icon = userPageView.Icon,
+                Path = userPageView.Path,
+                Breadcrumb = userPageView.Breadcrumb,
+                TypeActionId = userPageView.TypeActionId,
+                ModifyDate = DateTime.Now,
+                CreateDate = DateTime.Now
+            };
 
-                rt = userModels.AddUserPage(userPage);
+            rt = userModels.AddUserPage(userPage);
 
-                if (rt > 0)
-                {
-                    response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
-                }
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
             }
 
             return response;
@@ -240,8 +212,6 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string path = "/api/AdminPage";
 
             var action = userModels.GetActionByActionName(CommonGlobal.Edit);
 
@@ -277,36 +247,29 @@ namespace ApiBase.Controllers
             }
 
             ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            userPage = new UserPage
             {
-                userPage = new UserPage
-                {
-                    Title = userPageView.Title,
-                    IsShow = userPageView.IsShow,
-                    Tye = userPageView.Tye,
-                    ParentId = userPageView.ParentId,
-                    OrderDisplay = userPageView.OrderDisplay,
-                    Icon = userPageView.Icon,
-                    Path = userPageView.Path,
-                    Breadcrumb = userPageView.Breadcrumb,
-                    TypeActionId = userPageView.TypeActionId,
-                    ModifyDate = DateTime.Now
-                };
+                Title = userPageView.Title,
+                IsShow = userPageView.IsShow,
+                Tye = userPageView.Tye,
+                ParentId = userPageView.ParentId,
+                OrderDisplay = userPageView.OrderDisplay,
+                Icon = userPageView.Icon,
+                Path = userPageView.Path,
+                Breadcrumb = userPageView.Breadcrumb,
+                TypeActionId = userPageView.TypeActionId,
+                ModifyDate = DateTime.Now
+            };
 
-                rt = userModels.UpdateUserPage(id, userPage);
+            rt = userModels.UpdateUserPage(id, userPage);
 
-                if (rt > 0)
-                {
-                    response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
-                }
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
             }
 
             return response;
@@ -325,8 +288,6 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPage";
-
             var action = userModels.GetActionByActionName(CommonGlobal.Delete);
 
             string typeAct = action != null ? action.Id.ToString() : string.Empty;
@@ -334,30 +295,23 @@ namespace ApiBase.Controllers
             string type = string.Empty;
 
             ////check permission delete
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            UserPage userPage = userModels.GetUserPagebyId(id);
+            if (userPage != null)
             {
-                UserPage userPage = userModels.GetUserPagebyId(id);                
-                if (userPage != null)
+                //// delete UserPageAction
+                bool rt = userModels.DeleteUserPage(userPage.Id);
+                if (rt)
                 {
-                    //// delete UserPageAction
-                    bool rt = userModels.DeleteUserPage(userPage.Id);
-                    if (rt)
-                    {
-                        response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
-                    }
-                    else
-                    {
-                        response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
-                    }
+                    response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
                 }
                 else
                 {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
                 }
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;

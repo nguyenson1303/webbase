@@ -4,6 +4,7 @@ export class AppConstant {
   public static profileApiUrl: string = "/api/account";
   public static menuApiUrl: string = "/api/adminmenu";
   public static listUserApiUrl: string = "/api/account/listuser";
+  public static listAdminPageApiUrl: string = "/api/adminpage/listUserPage";
   public static checkPermissionApiUrl: string = "/api/account/checkPermission";
   public static deleteUserApiUrl: string = "/api/account";
   public static updateUserApiUrl: string = "/api/account";
