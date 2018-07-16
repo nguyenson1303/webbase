@@ -1,0 +1,106 @@
+ /*custom css for all site admin
+ sonnv*/
+
+.circle:before {
+  content: ' \25CF';
+  font-size: 30px;
+}
+
+.button-action {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 2rem !important;
+  color: #a4abb3;
+  cursor: pointer;
+}
+
+a.button-edit:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
+  color: green;
+  text-decoration: none;
+}
+
+a.button-delete:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
+  color: red;
+  text-decoration: none;
+}
+
+
+/*switch*/
+label.switch {
+  text-align: left;
+  width: 50px;
+  height: calc(50px / 2);
+  border-radius: 20px;
+  background-color: #4ed164;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+  label.switch > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  label.switch > input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+  }
+
+  label.switch > span:before, label.switch > span:after {
+    content: "";
+    cursor: pointer;
+    position: absolute;
+  }
+
+  label.switch > input[type="checkbox"]:focus ~ span {
+    box-shadow: 0 0 0 1px #43b556;
+  }
+
+  label.switch > input[type="checkbox"]:checked:focus ~ span {
+    box-shadow: 0 0 0 1px #fff;
+  }
+
+  label.switch > span {
+    border-radius: 20px;
+  }
+
+    label.switch > span:before {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      background-color: #f1f1f1;
+      border-radius: 20px;
+      transition: opacity .2s ease-out .1s, transform .2s ease-out .1s;
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    label.switch > span:after {
+      top: 50%;
+      z-index: 3;
+      transition: transform .4s cubic-bezier(0.44,-0.12, 0.07, 1.15);
+      width: calc(50px / 2);
+      height: calc(50px / 2);
+      transform: translate3d(0, -50%, 0);
+      background-color: #fff;
+      border-radius: 100%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+    }
+
+
+  label.switch > input[type="checkbox"]:checked ~ span:before {
+    transform: scale(0);
+    opacity: .7;
+  }
+
+  label.switch > input[type="checkbox"]:checked ~ span:after {
+    transform: translate3d(100%, -50%, 0);
+  }
+/*switch*/
