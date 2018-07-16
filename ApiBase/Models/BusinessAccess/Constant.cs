@@ -75,6 +75,11 @@
         /// </summary>
         public const string MessagePermissionAccess = "OK";
 
+        /// <summary>
+        /// Message Ok
+        /// </summary>
+        public const string MessageOk = "OK";
+
         #endregion
 
         #region Status Code

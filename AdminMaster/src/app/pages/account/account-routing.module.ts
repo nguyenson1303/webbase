@@ -26,7 +26,7 @@ const routes: Routes = [{
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'confirm/:type',
+      path: 'confirm/:type/:username',
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     {

@@ -80,10 +80,8 @@ export class EditComponent implements OnInit {
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
-        if (result && result.code) {
-          if (result.code === AppConstant.permissionDeniedCode) {
-            this.router.navigate(['/pages/miscellaneous/404']);
-          }
+        if (result.code === AppConstant.permissionDeniedCode) {
+          this.router.navigate(['/pages/miscellaneous/404']);
         }
       }
     }),
@@ -97,12 +95,10 @@ export class EditComponent implements OnInit {
     if (this.isCreate == false) {
       this.accountService.getUserDetail(this.username).subscribe(result => {
         if (result) {
-          if (result && result.code) {
-            this.showModal(AppConstant.errorTitle, result.message);
-          }
-          else {
-            this.userDetail = result;
-          }
+          this.showModal(AppConstant.errorTitle, result.value.message);
+        }
+        else {
+          this.userDetail = result;
         }
       }),
         error => {
@@ -111,12 +107,10 @@ export class EditComponent implements OnInit {
 
       this.accountService.getUserProfile().subscribe(result => {
         if (result) {
-          if (result && result.code) {
-            this.showModal(AppConstant.errorTitle, result.message);
-          }
-          else {
-            this.userProfile = result;
-          }
+          this.showModal(AppConstant.errorTitle, result.value.message);
+        }
+        else {
+          this.userProfile = result;
         }
       }),
         error => {
@@ -127,6 +121,50 @@ export class EditComponent implements OnInit {
 
   backclick() {
     this.router.navigate(['/pages/account/list', this.type]);
+  }
+
+  nextclick() {
+    // validate
+    let isValid = true;
+    let mess = "";
+    let createUserObj = {
+      username: this.userDetail.username,
+      password: this.userDetail.password,
+      confirmPassword: this.userDetail.confirmPassword,
+      ip: "",
+      online: this.userDetail.online,
+      role: this.type,
+      fname: this.userProfile.fname,
+      lname: this.userProfile.lname,
+      phone: this.userProfile.phone,
+      address: this.userProfile.address,
+      birthday: this.userProfile.birthday,
+      avatar: this.userProfile.avatar
+    }
+
+    // call api validate user
+    this.accountService.validateUser(createUserObj).subscribe(result => {
+      if (result) {
+        if (result.code === AppConstant.successCode) {
+          // save obj to locate
+          localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
+          if (this.isCreate) {
+            this.router.navigate(['/pages/account/confirm', this.type]);
+          }
+          else{
+            this.router.navigate(['/pages/account/confirm', this.type, this.username]);
+          }
+        }
+        else {
+          // focus to field error and show message
+
+          this.showModal(AppConstant.errorTitle, result.message);
+        }
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
   }
 
   showModal(title: string, mess: string) {

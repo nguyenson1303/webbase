@@ -9,6 +9,7 @@ export class AppConstant {
   public static updateUserApiUrl: string = "/api/account";
   public static getUserDetailApiUrl: string = "/api/account/getUserDetail";
   public static getUserProfileApiUrl: string = "/api/account";
+  public static validateUserApiUrl: string = "/api/account/validateUser";
 
   // const action on path
   public static viewAction: string = "view";
@@ -54,4 +55,7 @@ export class AppConstant {
   // const number
   public static pageIndexDefault: number = 1;
   public static pageSizeDefault: number = 30;
+
+  // const object
+  public static objectUser: string = "objectUser";
 }

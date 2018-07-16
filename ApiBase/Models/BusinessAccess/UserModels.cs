@@ -671,6 +671,22 @@
             }
         }
 
+        public Role GetRoleByName(string name)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.Role.Where(p => p.RoleName == name).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
         public UserPageAction GetActionByActionName(string actionName)
         {
             using (var data = new themanorContext())

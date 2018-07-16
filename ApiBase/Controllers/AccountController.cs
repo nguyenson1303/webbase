@@ -249,7 +249,6 @@ namespace ApiBase.Controllers
             User user = null;
             var mess = string.Empty;
             string rt = string.Empty;
-            bool is_valid = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -257,19 +256,61 @@ namespace ApiBase.Controllers
                         
             string type = string.Empty;
 
+            user = new User
+            {
+                Username = userView.Username,
+                Online = userView.Online,
+                Role = userModels.GetRoleByName(userView.Role).Id,
+                Password = MD5Extend.EncodePassword(userView.Password),
+                Ip = userView.Ip,
+                LastLogin = null
+            };
+
+            rt = userModels.AddUser(user);
+
+            if (rt.Length > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+            }
+
+            return response;
+        }
+
+        // POST api/<controller>
+        [HttpPost("validateUser")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ValidateUser([FromBody]AdminUserView userView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            User user = null;
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string type = string.Empty;
+
 
             if (!string.IsNullOrEmpty(userView.Username))
             {
                 user = userModels.GetUserbyUserName(userView.Username);
 
-                if(user != null)
+                if (user != null)
                 {
                     is_valid = false;
                     if (mess == string.Empty)
                     {
                         response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "Username" });
                     }
-                }                
+                }
             }
 
             ////validation server
@@ -325,7 +366,7 @@ namespace ApiBase.Controllers
                 }
             }
 
-            if(userModels.GetRolebyId(userView.Role) == null)
+            if (userModels.GetRoleByName(userView.Role) == null)
             {
                 is_valid = false;
                 if (mess == string.Empty)
@@ -333,32 +374,11 @@ namespace ApiBase.Controllers
                     mess = Constant.MessageNotExist;
                     response = Json(new { code = Constant.NotExist, message = mess, field = "Role" });
                 }
-            }       
-
-            if (!is_valid)
-            {
-                return response;
             }
 
-            user = new User
+            if (is_valid)
             {
-                Username = userView.Username,
-                Online = userView.Online,
-                Role = userView.Role,
-                Password = MD5Extend.EncodePassword(userView.Password),
-                Ip = userView.Ip,
-                LastLogin = null
-            };
-
-            rt = userModels.AddUser(user);
-
-            if (rt.Length > 0)
-            {
-                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
-            }
-            else
-            {
-                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
             }
 
             return response;

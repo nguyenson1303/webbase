@@ -1,4 +1,6 @@
-﻿namespace ApiBase.Models.AdminViewModels
+﻿using System;
+
+namespace ApiBase.Models.AdminViewModels
 {
     /// <summary>
     /// user view
@@ -71,10 +73,17 @@
         /// <value>
         /// The role.
         /// </value>
-        public int Role
+        public string Role
         {
             get;
             set;
-        }  
+        }
+
+        public string Fname { get; set; }
+        public string Lname { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string Birthday { get; set; }
+        public string Avatar { get; set; }
     }
 }

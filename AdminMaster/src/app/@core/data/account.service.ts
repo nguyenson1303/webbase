@@ -66,6 +66,13 @@ export class AccountService {
     return this.http.get(url, this.options).map(this.extractData);
   }
 
+  validateUser(data): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.validateUserApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.post(url, body, this.options).map(this.extractData);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

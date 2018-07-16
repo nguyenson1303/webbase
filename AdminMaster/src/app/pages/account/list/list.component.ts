@@ -235,17 +235,17 @@ export class ListComponent implements OnInit {
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
-        if (result && result.code) {
-          if (result.code === AppConstant.permissionDeniedCode) {
-            this.showModal(AppConstant.permissionDeniedTitle, result.message);
+        if (result && result.value.code) {
+          if (result.value.code === AppConstant.permissionDeniedCode) {
+            this.showModal(AppConstant.permissionDeniedTitle, result.value.message);
           }
-          else if (result.code === AppConstant.permissionAccessCode) {
+          else if (result.value.code === AppConstant.permissionAccessCode) {
             // call api delete user
             this.accountService.deleteUser(userName).subscribe(result => {
               if (result) {
-                if (result && result.code) {
-                  if (result.code === AppConstant.successCode) {
-                    this.showModal(AppConstant.successTitle, result.message);
+                if (result && result.value.code) {
+                  if (result.value.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.value.message);
                     // reload data
                     this.filter(null);
                   }
@@ -281,11 +281,11 @@ export class ListComponent implements OnInit {
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
-        if (result && result.code) {
-          if (result.code === AppConstant.permissionDeniedCode) {
-            this.showModal(AppConstant.permissionDeniedTitle, result.message);
+        if (result && result.value.code) {
+          if (result.value.code === AppConstant.permissionDeniedCode) {
+            this.showModal(AppConstant.permissionDeniedTitle, result.value.message);
           }
-          else if (result.code === AppConstant.permissionAccessCode) {
+          else if (result.value.code === AppConstant.permissionAccessCode) {
             // call api change status user
             let userObj = {
               username: userName,
@@ -295,9 +295,9 @@ export class ListComponent implements OnInit {
             };
             this.accountService.updateUser(userName, userObj).subscribe(result => {
               if (result) {
-                if (result && result.code) {
-                  if (result.code === AppConstant.successCode) {
-                    this.showModal(AppConstant.successTitle, result.message);
+                if (result && result.value.code) {
+                  if (result.value.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.value.message);
                   }
                 }
               }

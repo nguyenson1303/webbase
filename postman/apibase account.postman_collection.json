@@ -9,6 +9,7 @@
 		"44cca066-86f2-37f5-32d4-e2473abd6bd8",
 		"33c415b8-0918-3c6b-b6c9-1754352be834",
 		"d17e7225-9fd8-c059-9423-a853113d2da5",
+		"ad605b28-8791-f978-34e0-5386ed0e8431",
 		"3b8ce525-b42e-5259-8b91-724e951d0140",
 		"65fc6387-6a4a-be83-2103-3ed9d66e61da",
 		"d6d7a013-3325-a363-f63b-233586edd2ca",
@@ -100,12 +101,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531709275183,
+			"time": 1531739136903,
 			"name": "check permission",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
-			"rawModeData": "{\r\n  \"path\": \"/pages/account/list\",\r\n  \"typeAct\": \"view\",\r\n  \"type\": \"User\"\r\n}"
+			"rawModeData": "{\r\n  \"path\": \"/pages/account/add\",\r\n  \"typeAct\": \"add\",\r\n  \"type\": \"Admin\"\r\n}"
 		},
 		{
 			"id": "33c415b8-0918-3c6b-b6c9-1754352be834",
@@ -145,16 +146,16 @@
 		},
 		{
 			"id": "3b8ce525-b42e-5259-8b91-724e951d0140",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os",
 					"description": "",
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:56625/api/account",
+			"url": "http://apibase.local/api/account",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -165,7 +166,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531117030042,
+			"time": 1531727475974,
 			"name": "get account profile",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
@@ -424,25 +425,17 @@
 			"responses": []
 		},
 		{
-			"folder": null,
 			"id": "65fc6387-6a4a-be83-2103-3ed9d66e61da",
-			"name": "get account detail",
-			"dataMode": "params",
-			"data": null,
-			"auth": null,
-			"events": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": null,
-			"variables": null,
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://localhost:56625/api/account/getUserDetail?userName=nguyenson1303@gmail.com",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": null,
-			"helperAttributes": null,
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/account/getUserDetail?userName=nguyenson1303@gmail.com",
 			"queryParams": [
 				{
 					"key": "userName",
@@ -452,15 +445,18 @@
 					"enabled": true
 				}
 			],
-			"headerData": [
-				{
-					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjkxMmU1ZmQzLTM4YjItNGU1MS04MDkyLWVhOTQ4YzAyMTBhNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvOS8yMDE4IDExOjE2OjA2IFBNIiwiZXhwIjoxNTMxMTUyOTY2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.v85xsAmWvcoA5pa82JsWzt2sm1cllVAjNrGzfB7SAhw",
-					"description": "",
-					"enabled": true
-				}
-			],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1531727027137,
+			"name": "get account detail",
+			"description": null,
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002"
 		},
 		{
@@ -657,6 +653,42 @@
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
 			"rawModeData": "{\r\n  \"title\": \"tesssssssst\",\r\n  \"isShow\": false,\r\n  \"tye\": \"string\",\r\n  \"parentId\": 74,\r\n  \"orderDisplay\": 14,\r\n  \"icon\": \"\",\r\n  \"path\": \"/api/AdminPage\",\r\n  \"breadcrumb\": \"\",\r\n  \"typeActionId\": 1,\r\n  \"modifyDate\": \"2018-07-10T07:19:22.314Z\",\r\n  \"createDate\": \"2018-07-10T07:19:22.314Z\"\r\n}"
+		},
+		{
+			"id": "ad605b28-8791-f978-34e0-5386ed0e8431",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:56625/api/account/validateUser",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1531739538473,
+			"name": "validate account",
+			"description": "",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"responses": [],
+			"rawModeData": "{\r\n  \"username\": \"user1234@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\"\r\n}"
 		},
 		{
 			"id": "ae4a7436-1d70-49f1-12c9-18dfc1067fb0",
@@ -869,7 +901,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:56625/api/account",
+			"url": "http://apibase.local/api/account",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -881,12 +913,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1530864493632,
+			"time": 1531739117712,
 			"name": "create account",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
-			"rawModeData": "{\r\n  \"username\": \"test2@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": 2\r\n}"
+			"rawModeData": "{\r\n  \"username\": \"user1234@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\"\r\n}"
 		},
 		{
 			"id": "d6d7a013-3325-a363-f63b-233586edd2ca",
@@ -905,7 +937,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:56625/api/account",
+			"url": "http://apibase.local/api/account",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -916,12 +948,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1530860024826,
+			"time": 1531721875412,
 			"name": "update account",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
-			"rawModeData": "{\r\n  \"username\": \"string\",\r\n  \"password\": \"string\",\r\n  \"confirmPassword\": \"string\",\r\n  \"ip\": \"string\",\r\n  \"online\": true,\r\n  \"role\": 0\r\n}"
+			"rawModeData": "{\r\n  \"username\": \"string\",\r\n  \"ip\": \"string\",\r\n  \"online\": true,\r\n  \"role\": 0\r\n}"
 		},
 		{
 			"id": "e176545b-d6e8-4c08-d697-6fcefaf70bc4",
