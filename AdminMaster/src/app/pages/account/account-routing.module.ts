@@ -14,23 +14,23 @@ const routes: Routes = [{
   component: AccountComponent, canActivate: [AuthGuard],
   children: [
     {
-      path: 'list',
+      path: 'list/:type',
       component: ListComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'detail/:username',
+      path: 'detail/:type/:username',
       component: DetailComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'edit/:username',
+      path: 'edit/:type/:username',
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'confirm',
+      path: 'confirm/:type',
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'add',
+      path: 'add/:type',
       component: EditComponent, canActivate: [AuthGuard]
     },
   ],

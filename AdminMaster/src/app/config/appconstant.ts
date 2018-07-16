@@ -7,6 +7,8 @@ export class AppConstant {
   public static checkPermissionApiUrl: string = "/api/account/checkPermission";
   public static deleteUserApiUrl: string = "/api/account";
   public static updateUserApiUrl: string = "/api/account";
+  public static getUserDetailApiUrl: string = "/api/account/getUserDetail";
+  public static getUserProfileApiUrl: string = "/api/account";
 
   // const action on path
   public static viewAction: string = "view";
@@ -33,6 +35,7 @@ export class AppConstant {
   public static emptyTitle: string = "Data is empty";
   public static notValidTitle: string = "Data invalid";
   public static permissionAccessTitle: string = "OK";
+  public static errorTitle: string = "Server error";
 
   // const keyword
   public static headerBearer: string = "Bearer ";

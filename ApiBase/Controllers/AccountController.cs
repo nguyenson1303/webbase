@@ -49,12 +49,11 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string type = "Admin";
                        
             var userDetail = sv.GetUserbyUserName(userName);
             if (userDetail != null)
             {
+                userDetail.Password = "";
                 response = Json(userDetail);
             }
             else

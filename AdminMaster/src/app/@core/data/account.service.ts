@@ -54,6 +54,18 @@ export class AccountService {
     return this.http.put(url, body, this.options).map(this.extractData);
   }
 
+  getUserDetail(userName: string) {
+    let url = AppConfig.serverAPI + AppConstant.getUserDetailApiUrl + "/" + userName;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
+  getUserProfile() {
+    let url = AppConfig.serverAPI + AppConstant.getUserProfileApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

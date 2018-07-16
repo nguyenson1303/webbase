@@ -141,7 +141,7 @@ namespace ApiBase.Controllers
             UserModels sv = new UserModels();
             UserInfo iit = new UserInfo();
             user = sv.GetUserbyUserName(login.UserName);
-            if (user != null && MD5Extend.EncodePassword(login.Password) == user.Password)
+            if (user != null && MD5Extend.EncodePassword(login.Password) == user.Password && user.Online == true)
             {
                 role = sv.GetRolebyId(user.Role);
                 iit = sv.GetUserInforByEmail(user.Username);

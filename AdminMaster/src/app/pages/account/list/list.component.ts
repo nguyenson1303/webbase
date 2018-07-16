@@ -61,14 +61,14 @@ export class ListComponent implements OnInit {
     private modalService: NgbModal) {
 
     // get param from query string ex: ?type=Admin
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.type = params['type'];
-    })
+    // this.activatedRoute.queryParams.subscribe(params => {
+    //  this.type = params['type'];
+    // })
 
     // get param from router ex: /:type
-    // this.activatedRoute.params.forEach(params => {
-    //  this.type = params['type'];
-    // });
+     this.activatedRoute.params.forEach(params => {
+      this.type = params['type'];
+     });
 
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
@@ -79,7 +79,8 @@ export class ListComponent implements OnInit {
     }
 
     // check user is permission for view page
-    this.pathInfor.path = this.router.url.split('?')[0];
+    let lastPath = activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.viewAction;
 
@@ -93,7 +94,7 @@ export class ListComponent implements OnInit {
       }
     }),
       error => {
-        console.error('ERROR: ', error.message);
+        this.showModal(AppConstant.errorTitle, error.message);
       };
   }
 
@@ -208,7 +209,7 @@ export class ListComponent implements OnInit {
       }
     }),
       error => {
-        console.error('ERROR: ', error.message);
+        this.showModal(AppConstant.errorTitle, error.message);
       };
   }
 
@@ -218,7 +219,7 @@ export class ListComponent implements OnInit {
 
   addUser() {
     // redirect to add account page
-    this.router.navigate(['/pages/account/add']);
+    this.router.navigate(['/pages/account/add', this.type]);
   }
 
   editClick(userName: string) {
@@ -250,7 +251,10 @@ export class ListComponent implements OnInit {
                   }
                 }
               }
-            });
+            }),
+              error => {
+                this.showModal(AppConstant.errorTitle, error.message);
+              };
 
           }
         }
@@ -297,13 +301,16 @@ export class ListComponent implements OnInit {
                   }
                 }
               }
-            });
+            }),
+              error => {
+                this.showModal(AppConstant.errorTitle, error.message);
+              };
           }
         }
       }
     }),
       error => {
-        console.error('ERROR: ', error.message);
+        this.showModal(AppConstant.errorTitle, error.message);
       };
   }
 

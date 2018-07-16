@@ -1,3 +1,113 @@
-<p>
-  edit works!
-</p>
+<!--<form (ngSubmit)="createAccount()" #form="ngForm">-->
+
+  <div class="row">
+    <div class="col-md-6">
+      <nb-card>
+        <nb-card-header>User Information</nb-card-header>
+        <nb-card-body>
+
+          <div class="form-group row">
+            <label for="username" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input type="email" class="form-control" id="username" name="username" [(ngModel)]="userDetail.username" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="password" class="col-sm-3 col-form-label">password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control" id="password" name="password" placeholder="password">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="confirmPassword" class="col-sm-3 col-form-label">Confirm password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3">Active</label>
+            <div class="col-sm-9">
+              <label class="switch">
+                <input type="checkbox" [checked]="userDetail.online">
+                <span></span>
+              </label>
+            </div>
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-md-6">
+      <nb-card>
+        <nb-card-header>Other Infor</nb-card-header>
+        <nb-card-body>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" class="form-control" id="fname" name="fname" [(ngModel)]="userProfile.fname" placeholder="First Name">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="lname" name="lname" [(ngModel)]="userProfile.lname" placeholder="Last Name">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="userProfile.phone" placeholder="Phone">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" [(ngModel)]="userProfile.address" placeholder="Address">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="birthday">Birthday</label>
+                <input type="datetime" class="form-control" id="birthday" name="birthday" [(ngModel)]="userProfile.birthday" placeholder="Birthday">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="avatar">Avatar</label>
+                <input type="text" class="form-control" id="avatar" name="avatar" [(ngModel)]="userProfile.avatar" placeholder="Avatar">
+              </div>
+            </div>
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <nb-card class="inline-form-card">        
+        <nb-card-body>
+
+          <div class="form-inline">
+            <div class="form-group row">
+              <div class="offset-sm-3 col-sm-9 btn-group btn-divided-group">
+                <button type="button" class="btn btn-hero-primary btn-with-icon" (click)="backclick()"><i class="ion-arrow-left-c"></i> Back</button>
+                <button type="submit" class="btn btn-hero-success btn-with-icon" (click)="nextclick()">Save <i class="ion-arrow-right-c"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+
+<!--</form>-->

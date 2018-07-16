@@ -33,7 +33,7 @@ export class ConfigurationService {
       theme: 'light',
       borderless: false,
       hover: true,
-      striped: false,
+      striped: true,
     }
   };
 }

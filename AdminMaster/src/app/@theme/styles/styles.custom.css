@@ -115,4 +115,14 @@ label.switch {
   top: unset;
 }
 
+.ngx-table {
+  border: 1px solid #eee;
+  border-radius: 5px !important;
+}
+
+.ngx-table thead {
+  background: aliceblue;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
 /*ngx easy table*/
