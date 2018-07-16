@@ -1,0 +1,45 @@
+<nb-card>
+  <nb-card-header>
+    Danh sách Admin Pages
+  </nb-card-header>
+  <nb-card-body>
+
+    <div class="row full-name-inputs">
+      <div class="col-sm-6 input-group input-group-border-only">
+        <input type="text" placeholder="Đường dẫn" class="form-control" [(ngModel)]="search" (input)="onPathSearch($event.target.value)" />
+      </div>
+      <div class="col-sm-6 input-group">
+        <button class="btn btn-hero-primary btn-demo" (click)="reset()"> Reset search</button>
+      </div>
+    </div>
+
+    <ngx-table [configuration]="configuration"
+               [data]="rows"
+               [columns]="columns"
+               [pagination]="pagination"
+               (event)="eventEmitted($event)">
+      <ng-template let-row>
+        <td class="td-action">
+          <a class="button-action button-edit" (click)="editClick(row.title)"><i class="nb-edit"></i></a>
+          <a class="button-action button-delete" (click)="deleteClick(row.title)"><i class="nb-trash"></i></a>
+        </td>
+        <td>
+          <div class="font-small">{{row.title}}</div>
+        </td>
+        <td>
+          <div class="font-small">{{row.path}}</div>
+        </td>
+        <td>
+          <div class="font-small">{{row.tye}}</div>
+        </td>
+        <td>
+          <label class="switch">
+            <input type="checkbox" [checked]="row.title" (click)="changeActive(row.title, row.title)">
+            <span></span>
+          </label>
+        </td>
+      </ng-template>
+    </ngx-table>
+
+  </nb-card-body>
+</nb-card>
