@@ -6,7 +6,7 @@
     
     <div class="row full-name-inputs">
       <div class="col-sm-6 input-group input-group-border-only">
-        <input type="text" placeholder="Email" class="form-control" (input)="onEmailSearch($event.target.value)" />
+        <input type="text" placeholder="Email" class="form-control" [(ngModel)]="search" (input)="onEmailSearch($event.target.value)" />
       </div>
       <div class="col-sm-6 input-group">
         <button class="btn btn-hero-primary btn-demo" (click)="reset()"> Reset search</button>

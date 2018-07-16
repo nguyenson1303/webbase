@@ -38,10 +38,16 @@ export class ListComponent implements OnInit {
     expire: ""
   };
 
+  pathInfor = {
+    path: "",
+    typeAct: "",
+    type: ""
+  };
+
   private params: string = "?";
   private type: string = "";
   private lang: string = "";
-  private search: string = "";
+  public search: string = "";
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
@@ -69,6 +75,24 @@ export class ListComponent implements OnInit {
     if (this.pageSize === undefined || this.pageSize === null) {
       this.pageSize = AppConstant.pageSizeDefault;
     }
+
+    // check user is permission for view page
+    this.pathInfor.path = this.router.url.split('?')[0];
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.viewAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.router.navigate(['/pages/miscellaneous/404']);
+          }
+        }
+      }
+    }),
+      error => {
+        console.error('ERROR: ', error.message);
+      };
   }
 
   ngOnInit() {
@@ -192,14 +216,34 @@ export class ListComponent implements OnInit {
 
   editClick(userName: string) {
     alert('Edit: ' + userName);
+    // redirect to edit account page
   }
 
   deleteClick(userName: string) {
-    alert('Delete: ' + userName);
+    // check user is permission for view page
+    this.pathInfor.path = this.router.url.split('?')[0];
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.deleteAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.router.navigate(['/pages/miscellaneous/404']);
+          }
+          else if (result.code === AppConstant.permissionAccessCode) {
+            // call api delete user
+            alert('Delete: ' + userName);
+          }
+        }
+      }
+    }),
+      error => {
+        console.error('ERROR: ', error.message);
+      };
   }
 
   changeActive(userName: string, value: boolean) {
-    alert('Active: ' + userName + '; Active old: ' + value);
     let newStatus = false;
     if (value) {
       newStatus = false;
@@ -207,6 +251,28 @@ export class ListComponent implements OnInit {
     else {
       newStatus = true;
     }
+
+    // check user is permission for change status account (edit)
+    this.pathInfor.path = this.router.url.split('?')[0];
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.editAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.router.navigate(['/pages/miscellaneous/404']);
+          }
+          else if (result.code === AppConstant.permissionAccessCode) {
+            // call api delete user
+            alert('Active: ' + userName + '; Active old: ' + value);
+          }
+        }
+      }
+    }),
+      error => {
+        console.error('ERROR: ', error.message);
+      };
   }
 
   onEmailSearch(value): void {
@@ -215,6 +281,7 @@ export class ListComponent implements OnInit {
   }
 
   reset(): void {
+    this.search = "";
     this.filter(null);
   }
 }

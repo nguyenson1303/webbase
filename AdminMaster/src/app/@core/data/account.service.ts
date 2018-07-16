@@ -31,6 +31,18 @@ export class AccountService {
   getListUser(params: string) {
     let url = AppConfig.serverAPI + AppConstant.listUserApiUrl + params;
     this.options = new RequestOptions({ headers: this.headers });
-    return this.http.get(url, this.options).map((res: Response) => res.json());
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
+  checkPermission(data): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.checkPermissionApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.post(url, body, this.options).map(this.extractData);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || {};
   }
 }

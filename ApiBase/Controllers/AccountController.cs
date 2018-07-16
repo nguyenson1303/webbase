@@ -51,29 +51,15 @@ namespace ApiBase.Controllers
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             string type = "Admin";
-
-            string path = "/api/account/getUserDetail";
-
-            var action = sv.GetActionByActionName(CommonGlobal.View);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+                       
+            var userDetail = sv.GetUserbyUserName(userName);
+            if (userDetail != null)
             {
-                var userDetail = sv.GetUserbyUserName(userName);
-                if (userDetail != null)
-                {
-                    response = Json(userDetail);
-                }
-                else
-                {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-                }
+                response = Json(userDetail);
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;
@@ -100,12 +86,6 @@ namespace ApiBase.Controllers
             string lang = LanguageModels.ActiveLanguage().LangCultureName;
 
             type = type ?? string.Empty;
-
-            string path = "/pages/account/list";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.View);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             if (type == string.Empty)
             {
@@ -134,21 +114,13 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            //// check permission for display list account on path '/page/account/list'
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
-            {
-                listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-                listUserView.CateType = roleModels.GetRoleByRole(type);
-                listUserView.PageIndex = (int)pageIndex;
-                listUserView.PageSize = (int)pageSize;                
-                listUserView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
+            listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+            listUserView.CateType = roleModels.GetRoleByRole(type);
+            listUserView.PageIndex = (int)pageIndex;
+            listUserView.PageSize = (int)pageSize;
+            listUserView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
 
-                response = Json(listUserView);
-            }
-            else
-            {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }                        
+            response = Json(listUserView);
 
             return response;
         }
@@ -173,12 +145,6 @@ namespace ApiBase.Controllers
 
             type = type ?? string.Empty;
 
-            string path = "/api/account/listUserPermission";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
             if (type == string.Empty)
             {
                 isOk = false;
@@ -201,20 +167,12 @@ namespace ApiBase.Controllers
                 pageSize = 1000; 
             }
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
-            {
-                List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);
-                permissionView.ListPermission = lstPagePermission;
-                permissionView.PageIndex = (int)pageIndex;
-                permissionView.PageSize = (int)pageSize;
-                permissionView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
-                response = Json(permissionView);
-            }
-            else
-            {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }
+            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);
+            permissionView.ListPermission = lstPagePermission;
+            permissionView.PageIndex = (int)pageIndex;
+            permissionView.PageSize = (int)pageSize;
+            permissionView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
+            response = Json(permissionView);
 
             return response;
         }
@@ -297,13 +255,7 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string path = "/api/account";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Add);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
+                        
             string type = string.Empty;
 
 
@@ -389,33 +341,25 @@ namespace ApiBase.Controllers
                 return response;
             }
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            user = new User
             {
-                user = new User
-                {
-                    Username = userView.Username,
-                    Online = userView.Online,
-                    Role = userView.Role,
-                    Password = MD5Extend.EncodePassword(userView.Password),
-                    Ip = userView.Ip,
-                    LastLogin = null
-                };
+                Username = userView.Username,
+                Online = userView.Online,
+                Role = userView.Role,
+                Password = MD5Extend.EncodePassword(userView.Password),
+                Ip = userView.Ip,
+                LastLogin = null
+            };
 
-                rt = userModels.AddUser(user);
+            rt = userModels.AddUser(user);
 
-                if (rt.Length > 0)
-                {
-                    response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
-                }
+            if (rt.Length > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
             }
 
             return response;
@@ -436,13 +380,7 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string path = "/api/account";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
+                        
             string type = string.Empty;          
 
             if (!string.IsNullOrEmpty(userName))
@@ -477,32 +415,24 @@ namespace ApiBase.Controllers
                 return response;
             }
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            if (user != null)
             {
-                if (user != null)
-                {
-                    user.Username = userView.Username;
-                    user.Online = userView.Online;
-                    user.Role = userView.Role;
-                    user.Ip = userView.Ip;
+                user.Username = userView.Username;
+                user.Online = userView.Online;
+                user.Role = userView.Role;
+                user.Ip = userView.Ip;
 
-                    rt = userModels.UpdateUser(userName, user);
-                }
+                rt = userModels.UpdateUser(userName, user);
+            }
 
-                if (rt.Length > 0)
-                {
-                    userView.Username = rt;
-                    response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
-                }
+            if (rt.Length > 0)
+            {
+                userView.Username = rt;
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
             }
 
             return response;
@@ -519,40 +449,26 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string path = "/api/account";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Delete);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
+           
             string type = string.Empty;
 
-            ////check permission delete
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            User cuser = userModels.GetUserbyUserName(userName);
+            if (cuser != null)
             {
-                User cuser = userModels.GetUserbyUserName(userName);
-                if (cuser != null)
+                //// delete user
+                bool rt = userModels.DeleteUser(userName);
+                if (rt)
                 {
-                    //// delete user
-                    bool rt = userModels.DeleteUser(userName);
-                    if (rt)
-                    {
-                        response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
-                    }
-                    else
-                    {
-                        response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
-                    }
+                    response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
                 }
                 else
                 {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
                 }
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;
