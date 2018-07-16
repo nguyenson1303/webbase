@@ -34,3 +34,21 @@ Database name : soncoi_HXcF1350_apibase
 Database user name: apibase_sa
 password user:8plAk4*8
 ============================================
+============================================
+Config for web api on iis
+Raplce web.config : (Fix for allow put and delete)
+-------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <system.webServer>
+    <handlers>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
+      <remove name="WebDAV" />
+    </handlers>
+    <aspNetCore processPath="dotnet" arguments=".\ApiBase.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" />
+    <modules runAllManagedModulesForAllRequests="false">
+      <remove name="WebDAVModule" />
+    </modules>    
+  </system.webServer>
+</configuration>
+------------------------

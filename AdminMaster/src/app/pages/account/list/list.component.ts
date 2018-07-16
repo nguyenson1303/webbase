@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
+import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 
 @Component({
   selector: 'list-account',
@@ -239,6 +240,8 @@ export class ListComponent implements OnInit {
                 if (result && result.code) {
                   if (result.code === AppConstant.successCode) {
                     this.showModal(AppConstant.successTitle, result.message);
+                    // reload data
+                    this.filter(null);
                   }
                 }
               }
@@ -274,8 +277,11 @@ export class ListComponent implements OnInit {
             this.showModal(AppConstant.permissionDeniedTitle, result.message);
           }
           else if (result.code === AppConstant.permissionAccessCode) {
-            // call api delete user
+            // call api change status user
             alert('Active: ' + userName + '; Active old: ' + value);
+
+            // reload data
+            this.filter(null);
           }
         }
       }
@@ -296,7 +302,7 @@ export class ListComponent implements OnInit {
   }
 
   showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ListComponent, { size: 'lg', container: 'nb-layout' });
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;

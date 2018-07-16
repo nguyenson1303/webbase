@@ -13,6 +13,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
+import { ModalComponent } from '../ui-features/modals/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ConfigurationService } from '../account/list/configuration.service';
     Ng2SmartTableModule,
     TableModule
   ],
-  declarations: [AccountComponent, ListComponent, DetailComponent, EditComponent, ConfirmComponent],
+  declarations: [AccountComponent, ListComponent, DetailComponent, EditComponent, ConfirmComponent, ModalComponent],
+  entryComponents: [ModalComponent],
   providers: [
     AccountService,
     ConfigurationService
