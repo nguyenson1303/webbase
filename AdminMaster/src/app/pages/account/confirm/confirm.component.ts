@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppConstant } from '../../../config/appconstant';
 
 @Component({
@@ -25,7 +26,8 @@ export class ConfirmComponent implements OnInit {
 
   private objectUser: any;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute,
+    private router: Router) {
     // check localStorage exist
     this.objectUser = localStorage.getItem(AppConstant.objectUser);
     if (this.objectUser != null && this.objectUser != undefined) {
