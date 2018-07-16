@@ -70,6 +70,11 @@
         /// </summary>
         public const string MessageDataEmpty = "Dữ liệu không được để trống";
 
+        /// <summary>
+        /// Permission Access
+        /// </summary>
+        public const string MessagePermissionAccess = "OK";
+
         #endregion
 
         #region Status Code
@@ -108,6 +113,11 @@
         /// No Valid
         /// </summary>
         public const int NotValid = 7;
+
+        /// <summary>
+        /// Permission Access
+        /// </summary>
+        public const int PermissionAccessCode = 8;
 
         #endregion
 

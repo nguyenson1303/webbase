@@ -557,5 +557,35 @@ namespace ApiBase.Controllers
 
             return response;
         }
+
+        // POST api/<controller>
+        [HttpPost("checkPermission")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult CheckPermission([FromBody]AdminCheckPermissionView checkView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+             var action = userModels.GetActionByActionName(checkView.TypeAct);
+
+             string typeAct = action != null ? action.Id.ToString() : string.Empty;
+
+            ////check permission update
+            if (UserModels.CheckPermission(userLogin, checkView.Path, typeAct, checkView.Type))
+            {
+                response = Json(new { code = Constant.PermissionAccessCode, message = Constant.MessagePermissionAccess });
+            }
+            else
+            {
+                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+            }
+
+            return response;
+        }
+
     }
 }
