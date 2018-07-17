@@ -219,7 +219,7 @@ export class ListComponent implements OnInit {
 
   editClick(userName: string) {
     // redirect to edit account page
-    this.router.navigate(['/pages/account/edit', userName]);
+    this.router.navigate(['/pages/account/edit', this.type, userName]);
   }
 
   deleteClick(userName: string) {
@@ -261,15 +261,7 @@ export class ListComponent implements OnInit {
       };
   }
 
-  changeActive(userName: string, role: number, value: boolean) {
-    let newStatus = false;
-    if (value) {
-      newStatus = false;
-    }
-    else {
-      newStatus = true;
-    }
-
+  changeActive(userName: string, role: number, newStatus: boolean) {
     // check user is permission for change status account (edit)
     let lastPath = this.activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
@@ -328,15 +320,36 @@ export class ListComponent implements OnInit {
     activeModal.componentInstance.modalContent = mess;
   }
 
-  showConfirm(userName: string) {
+  showDeleteConfirm(userName: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
-    activeModal.componentInstance.confirmationMessage = AppConstant.confirmContent + ": " + userName;
+    activeModal.componentInstance.confirmationMessage = AppConstant.confirmDeleteContent + ": " + userName;
 
     activeModal.result.then((userResponse) => {
       if (userResponse === true) {
         this.deleteClick(userName);
+      }
+    });
+  }
+
+  showChangeActiveConfirm(userName: string, role: number, value: boolean) {
+    let newStatus = false;
+    if (value) {
+      newStatus = false;
+    }
+    else {
+      newStatus = true;
+    }
+    const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
+    activeModal.componentInstance.confirmationMessage =
+      AppConstant.confirmChangeContent + ": " + userName + " " + (newStatus == true ? "On" : "Off");
+
+    activeModal.result.then((userResponse) => {
+      if (userResponse === true) {
+        this.changeActive(userName, role, newStatus);
       }
     });
   }

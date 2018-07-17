@@ -94,10 +94,10 @@ export class EditComponent implements OnInit {
     if (this.isCreate == false) {
       this.accountService.getUserDetail(this.username).subscribe(result => {
         if (result) {
-          this.showModal(AppConstant.errorTitle, result.value.message);
+          this.userDetail = result;
         }
         else {
-          this.userDetail = result;
+          this.showModal(AppConstant.errorTitle, result.message);
         }
       }),
         error => {
@@ -106,10 +106,10 @@ export class EditComponent implements OnInit {
 
       this.accountService.getUserProfile().subscribe(result => {
         if (result) {
-          this.showModal(AppConstant.errorTitle, result.value.message);
+          this.userProfile = result;
         }
         else {
-          this.userProfile = result;
+          this.showModal(AppConstant.errorTitle, result.message);
         }
       }),
         error => {
