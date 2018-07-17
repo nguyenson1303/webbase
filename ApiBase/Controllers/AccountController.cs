@@ -321,7 +321,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "username" }));
+                    response = Json(new { code = Constant.Empty, message = mess, field = "username" });
                 }
             }
 
@@ -332,7 +332,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageNotValid;
-                    response = StatusCode(200, Json(new { code = Constant.Fail, message = mess, field = "username" }));
+                    response = Json(new { code = Constant.Fail, message = mess, field = "username" });
                 }
             }
 
