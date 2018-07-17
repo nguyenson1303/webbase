@@ -48,21 +48,17 @@ export class ListComponent implements OnInit {
   private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
   private orderType: string = "";
+
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private adminpageService: AdminpageService,
     private accountService: AccountService,
     private modalService: NgbModal) {
 
-    // get param from query string ex: ?type=Admin
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.type = params['type'];
-    })
-
     // get param from router ex: /:type
-    // this.activatedRoute.params.forEach(params => {
-    //  this.type = params['type'];
-    // });
+     this.activatedRoute.params.forEach(params => {
+      this.type = params['type'];
+     });
 
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
@@ -73,12 +69,8 @@ export class ListComponent implements OnInit {
     }
 
     // check user is permission for view page
-    this.pathInfor.path = this.router.url.split('?')[0];
-    this.pathInfor.type = this.type;
-    this.pathInfor.typeAct = AppConstant.viewAction;
-
-    // check user is permission for view page
-    this.pathInfor.path = this.router.url.split('?')[0];
+    let lastPath = activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.viewAction;
 
@@ -92,7 +84,7 @@ export class ListComponent implements OnInit {
       }
     }),
       error => {
-        console.error('ERROR: ', error.message);
+        this.showModal(AppConstant.errorTitle, error.message);
       };
   }
 
@@ -203,8 +195,6 @@ export class ListComponent implements OnInit {
     this.adminpageService.getListAdminPage(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
-          console.log('error code: ' + result.code);
-          console.log('error message: ' + result.message);
           this.data = this.listPageAdmin;
           this.rows = this.data;
           this.configuration.isLoading = false;
@@ -229,7 +219,7 @@ export class ListComponent implements OnInit {
 
   editClick(userName: string) {
     // redirect to edit account page
-    this.router.navigate(['/pages/account/edit', userName]);
+    // this.router.navigate(['/pages/account/edit', userName]);
   }
 
   deleteClick(userName: string) {

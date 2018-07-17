@@ -60,11 +60,6 @@ export class ListComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal) {
 
-    // get param from query string ex: ?type=Admin
-    // this.activatedRoute.queryParams.subscribe(params => {
-    //  this.type = params['type'];
-    // })
-
     // get param from router ex: /:type
      this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
@@ -193,8 +188,6 @@ export class ListComponent implements OnInit {
     this.accountService.getListUser(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
-          console.log('error code: ' + result.code);
-          console.log('error message: ' + result.message);
           this.data = this.listUser;
           this.rows = this.data;
           this.configuration.isLoading = false;
@@ -229,7 +222,8 @@ export class ListComponent implements OnInit {
 
   deleteClick(userName: string) {
     // check user is permission for view page
-    this.pathInfor.path = this.router.url.split('?')[0];
+    let lastPath = this.activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.deleteAction;
 
@@ -275,7 +269,8 @@ export class ListComponent implements OnInit {
     }
 
     // check user is permission for change status account (edit)
-    this.pathInfor.path = this.router.url.split('?')[0];
+    let lastPath = this.activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.editAction;
 
