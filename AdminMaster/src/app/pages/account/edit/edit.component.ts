@@ -96,6 +96,8 @@ export class EditComponent implements OnInit {
     if (localStorage.getItem(AppConstant.objectUser) != null) {
       this.objectUser = JSON.parse(localStorage.getItem(AppConstant.objectUser));
       this.userDetail.username = this.objectUser.username;
+      this.userDetail.online = this.objectUser.online;
+
       this.userProfile.fname = this.objectUser.fname;
       this.userProfile.lname = this.objectUser.lname;
       this.userProfile.address = this.objectUser.address;
