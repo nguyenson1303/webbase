@@ -76,8 +76,6 @@ export class EditComponent implements OnInit {
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = this.isCreate == true ? AppConstant.addAction : AppConstant.editAction;
 
-    console.log(this.router.url.split('/' + lastPath)[0] + '/' + lastPath);
-
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
         if (result.code === AppConstant.permissionDeniedCode) {
@@ -158,7 +156,7 @@ export class EditComponent implements OnInit {
         else {
           // focus to field error and show message
 
-          this.showModal(AppConstant.errorTitle, result.message);
+          this.showModal(AppConstant.errorTitle, result.value.message + ":" + result.value.field);
         }
       }
     }),

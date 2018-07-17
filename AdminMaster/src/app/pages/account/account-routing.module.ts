@@ -33,6 +33,10 @@ const routes: Routes = [{
       path: 'add/:type',
       component: EditComponent, canActivate: [AuthGuard]
     },
+    {
+      path: 'confirm/:type',
+      component: ConfirmComponent, canActivate: [AuthGuard]
+    },
   ],
 }];
 
