@@ -43,6 +43,11 @@ export class AppConstant {
   public static confirmDeleteContent: string = "Bạn muốn xóa ";
   public static confirmChangeContent: string = "Bạn muốn thay đổi ";
 
+  public static messcreateSuccess: string = "Tạo mới thành công ";
+  public static messupdateSuccess: string = "Cập nhật thành công ";
+  public static messCreateFail: string = "Tạo mới thất bại ";
+  public static messUpdateFail: string = "Cập nhật thất bại ";
+
   // const keyword
   public static headerBearer: string = "Bearer ";
   public static applicationJsonType: string = "application/json";

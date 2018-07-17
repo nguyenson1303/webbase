@@ -72,10 +72,11 @@ export class ConfirmComponent implements OnInit {
       this.accountService.createUser(JSON.parse(this.objectUser)).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
+            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
             this.router.navigate(['/pages/account/list', this.type]);
           }
           else {
-            // focus to field error and show message
+            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
           }
         }
       }),
@@ -86,13 +87,14 @@ export class ConfirmComponent implements OnInit {
     else
     {
       // call api edit user
-      this.accountService.updateUser(this.username, this.objectUser).subscribe(result => {
+      this.accountService.updateUser(this.username, JSON.parse(this.objectUser)).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
+            this.showModal(AppConstant.successTitle, AppConstant.messUpdateFail);
             this.router.navigate(['/pages/account/list', this.type]);
           }
           else {
-            // focus to field error and show message
+            this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
           }
         }
       }),
