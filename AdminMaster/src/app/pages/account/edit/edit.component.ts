@@ -50,6 +50,7 @@ export class EditComponent implements OnInit {
   public isCreate: boolean = true;
   private username: string = "";
   private type: string = "";
+  private errorMessage: string = "";
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -155,11 +156,20 @@ export class EditComponent implements OnInit {
         }
         else {
           // focus to field error and show message
-          let field = document.getElementById(result.value.field)
+          let field = document.getElementById(result.field);
+          let fieldValidate = document.getElementById(result.field + "-validate");
+          var validateField = document.querySelectorAll(".validateServer");
+          var i;
+          for (i = 0; i < validateField.length; i++) {
+            validateField[i].textContent = "";
+          }
           if (field) {
             field.focus();
           }
-          this.showModal(AppConstant.errorTitle, result.value.message + ":" + result.value.field);
+          if (fieldValidate)
+          {
+            fieldValidate.textContent = result.message;
+          }
         }
       }
     }),
