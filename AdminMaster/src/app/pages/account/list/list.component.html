@@ -28,14 +28,14 @@
       <ng-template let-row>
         <td class="td-action">
           <a class="button-action button-edit" (click)="editClick(row.username)"><i class="nb-edit"></i></a>
-          <a class="button-action button-delete" (click)="showConfirm(row.username)"><i class="nb-trash"></i></a>
+          <a class="button-action button-delete" (click)="showDeleteConfirm(row.username)"><i class="nb-trash"></i></a>
         </td>
         <td>
           <div class="font-small">{{row.username}}</div>
         </td>
         <td>
           <label class="switch">
-            <input type="checkbox" [checked]="row.online" (click)="changeActive(row.username, row.role, row.online)">
+            <input type="checkbox" [checked]="row.online" (click)="showChangeActiveConfirm(row.username, row.role, row.online)">
             <span></span>
           </label>
         </td>

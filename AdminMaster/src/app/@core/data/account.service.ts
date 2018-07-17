@@ -55,7 +55,7 @@ export class AccountService {
   }
 
   getUserDetail(userName: string) {
-    let url = AppConfig.serverAPI + AppConstant.getUserDetailApiUrl + "/" + userName;
+    let url = AppConfig.serverAPI + AppConstant.getUserDetailApiUrl + "?userName=" + userName;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.get(url, this.options).map(this.extractData);
   }

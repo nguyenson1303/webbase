@@ -39,7 +39,8 @@ export class AppConstant {
   public static permissionAccessTitle: string = "OK";
   public static errorTitle: string = "Server error";
   public static confirmTitle: string = "Confirmation";
-  public static confirmContent: string = "Bạn muốn xóa";
+  public static confirmDeleteContent: string = "Bạn muốn xóa ";
+  public static confirmChangeContent: string = "Bạn muốn thay đổi ";
 
   // const keyword
   public static headerBearer: string = "Bearer ";
