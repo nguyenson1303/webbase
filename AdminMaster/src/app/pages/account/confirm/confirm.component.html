@@ -1,3 +1,112 @@
-<p>
-  confirm works!
-</p>
+
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>User Information</nb-card-header>
+      <nb-card-body>
+
+        <div class="form-group row">
+          <label for="username" class="col-sm-3 col-form-label">Email (UserName)</label>
+          <div class="col-sm-9">
+            <label class="col-form-label">{{createUserObj.username}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="password" class="col-sm-3 col-form-label">password</label>
+          <div class="col-sm-9">
+            <label class="col-form-label">{{"*".repeat(createUserObj.password.length)}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="confirmPassword" class="col-sm-3 col-form-label">Confirm password</label>
+          <div class="col-sm-9">
+            <label class="col-form-label">{{"*".repeat(createUserObj.confirmPassword.length)}}</label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3">Active</label>
+          <div class="col-sm-9">
+            <label class="switch">
+              <input type="checkbox" disabled [checked]="createUserObj.online">
+              <span></span>
+            </label>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>Other Infor</nb-card-header>
+      <nb-card-body>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="fname">First Name : </label>
+              <label class="col-form-label">{{createUserObj.fname}}</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="inputLastName">Last Name : </label>
+              <label class="col-form-label">{{createUserObj.lname}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="phone">Phone : </label>
+              <label class="col-form-label">{{createUserObj.phone}}</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="address">Address : </label>
+              <label class="col-form-label">{{createUserObj.address}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="birthday">Birthday : </label>
+              <label class="col-form-label">{{createUserObj.birthday}}</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="avatar">Avatar : </label>
+              <label class="col-form-label">{{createUserObj.birthday}}</label>
+            </div>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-body>
+
+        <div class="form-inline">
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9 btn-group btn-divided-group">
+              <button type="button" class="btn btn-hero-primary btn-with-icon" (click)="backclick()"><i class="ion-arrow-left-c"></i> Back</button>
+              <button type="submit" class="btn btn-hero-success btn-with-icon" (click)="nextclick()">Save <i class="fa fa-save"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<!--</form>-->

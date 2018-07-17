@@ -214,11 +214,13 @@ export class ListComponent implements OnInit {
 
   addUser() {
     // redirect to add account page
+    localStorage.removeItem(AppConstant.objectUser);
     this.router.navigate(['/pages/account/add', this.type]);
   }
 
   editClick(userName: string) {
     // redirect to edit account page
+    localStorage.removeItem(AppConstant.objectUser);
     this.router.navigate(['/pages/account/edit', this.type, userName]);
   }
 

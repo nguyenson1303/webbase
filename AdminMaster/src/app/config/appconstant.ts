@@ -8,6 +8,7 @@ export class AppConstant {
   public static checkPermissionApiUrl: string = "/api/account/checkPermission";
   public static deleteUserApiUrl: string = "/api/account";
   public static updateUserApiUrl: string = "/api/account";
+  public static createUserApiUrl: string = "/api/account";
   public static getUserDetailApiUrl: string = "/api/account/getUserDetail";
   public static getUserProfileApiUrl: string = "/api/account";
   public static validateUserApiUrl: string = "/api/account/validateUser";
