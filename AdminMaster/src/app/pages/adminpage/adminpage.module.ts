@@ -4,13 +4,16 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TableModule } from 'ngx-easy-table';
 
-
 import { AdminpageRoutingModule } from './adminpage-routing.module';
 import { AdminpageComponent } from './adminpage.component';
 import { ListComponent } from './list/list.component';
 
 import { AdminpageService } from '../../@core/data/adminpage.service';
 import { ConfigurationService } from '../adminpage/list/configuration.service';
+import { DetailComponent } from './detail/detail.component';
+import { EditComponent } from './edit/edit.component';
+import { ConfirmComponent } from './confirm/confirm.component';
+import { ModalComponent } from '../ui-features/modals/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -20,7 +23,8 @@ import { ConfigurationService } from '../adminpage/list/configuration.service';
     Ng2SmartTableModule,
     TableModule
   ],
-  declarations: [AdminpageComponent, ListComponent],
+  declarations: [AdminpageComponent, ListComponent, DetailComponent, EditComponent, ConfirmComponent, ModalComponent],
+  entryComponents: [ModalComponent],
     providers: [
       AdminpageService,
       ConfigurationService
