@@ -308,7 +308,7 @@ namespace ApiBase.Controllers
                     is_valid = false;
                     if (mess == string.Empty)
                     {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "Username" });
+                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "username" });
                     }
                 }
             }
@@ -320,7 +320,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Username" }));
+                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "username" }));
                 }
             }
 
@@ -331,7 +331,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageNotValid;
-                    response = StatusCode(200, Json(new { code = Constant.Fail, message = mess, field = "Username" }));
+                    response = StatusCode(200, Json(new { code = Constant.Fail, message = mess, field = "username" }));
                 }
             }
 
@@ -342,7 +342,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "Password" });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "password" });
                 }
             }
 
@@ -352,7 +352,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "ConfirmPassword" });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "confirmPassword" });
                 }
             }
 
@@ -362,7 +362,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageConfirmPassword;
-                    response = Json(new { code = Constant.Fail, message = mess, field = "ConfirmPassword" });
+                    response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
                 }
             }
 
@@ -372,7 +372,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageNotExist;
-                    response = Json(new { code = Constant.NotExist, message = mess, field = "Role" });
+                    response = Json(new { code = Constant.NotExist, message = mess, field = "role" });
                 }
             }
 
