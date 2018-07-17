@@ -51,7 +51,7 @@ namespace ApiBase.Controllers
             var userDetail = sv.GetUserbyUserName(userName);
             if (userDetail != null)
             {
-                userDetail.Password = "";
+                userDetail.Password = string.Empty;
                 response = Json(userDetail);
             }
             else
@@ -420,7 +420,6 @@ namespace ApiBase.Controllers
             User user = null;
             var mess = string.Empty;
             string rt = string.Empty;
-            bool is_valid = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
@@ -433,38 +432,10 @@ namespace ApiBase.Controllers
                 user = userModels.GetUserbyUserName(userName);
             }
 
-            ////validation server
-            if (string.IsNullOrEmpty(userView.Username))
-            {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "Username" });
-                }
-            }
-
-            ////UserName duplicate Admin
-            if (userView.Username == "Admin")
-            {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageNotValid;
-                    response = Json(new { code = Constant.NotValid, message = mess, field = "Username" });
-                }
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
-
             if (user != null)
             {
-                user.Username = userView.Username;
                 user.Online = userView.Online;
-                user.Role = userView.Role;
+                user.Role = userModels.GetRoleByName(userView.Role).Id;
                 user.Ip = userView.Ip;
 
                 rt = userModels.UpdateUser(userName, user);
@@ -484,7 +455,7 @@ namespace ApiBase.Controllers
 
         // PUT api/<controller>/email
         [HttpPut("updateUserInfor/{userName}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult UpdateUserInfor(string userName, [FromBody]AdminEditUserInforView userView)
         {
             IActionResult response = null;

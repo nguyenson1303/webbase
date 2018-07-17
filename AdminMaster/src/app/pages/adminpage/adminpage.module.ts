@@ -13,8 +13,6 @@ import { ConfigurationService } from '../adminpage/list/configuration.service';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
-import { ModalComponent } from '../ui-features/modals/modal/modal.component';
-import { ConfirmModalComponent } from '../ui-features/modals/confirm/confirm.component';
 
 @NgModule({
   imports: [
@@ -29,11 +27,8 @@ import { ConfirmModalComponent } from '../ui-features/modals/confirm/confirm.com
     ListComponent,
     DetailComponent,
     EditComponent,
-    ConfirmComponent,
-    ModalComponent,
-    ConfirmModalComponent
+    ConfirmComponent
   ],
-  entryComponents: [ModalComponent, ConfirmModalComponent],
     providers: [
       AdminpageService,
       ConfigurationService

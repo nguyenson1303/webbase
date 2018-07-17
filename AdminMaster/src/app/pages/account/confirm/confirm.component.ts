@@ -74,7 +74,7 @@ export class ConfirmComponent implements OnInit {
     if (this.isCreate)
     {
       // call api create user
-      this.accountService.createUser(JSON.parse(this.objectUser)).subscribe(result => {
+      this.accountService.createUser(this.createUserObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
             this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
@@ -91,12 +91,41 @@ export class ConfirmComponent implements OnInit {
     }
     else
     {
+      let userAccount = {
+        ip: "",
+        online: this.createUserObj.online,
+        role: this.createUserObj.role
+      };
+
       // call api edit user
-      this.accountService.updateUser(this.username, JSON.parse(this.objectUser)).subscribe(result => {
+      this.accountService.updateUser(this.username, userAccount).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
-            this.showModal(AppConstant.successTitle, AppConstant.messUpdateFail);
-            this.router.navigate(['/pages/account/list', this.type]);
+
+            let userInfor = {
+              fname: this.createUserObj.fname,
+              lname: this.createUserObj.lname,
+              phone: this.createUserObj.phone,
+              address: this.createUserObj.address,
+              birthday: this.createUserObj.birthday,
+              avatar: this.createUserObj.avatar,
+              fullName: this.createUserObj.fname + " " + this.createUserObj.lname
+            };
+
+            this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
+              if (result) {
+                if (result.code === AppConstant.successCode) {
+                  this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                  this.router.navigate(['/pages/account/list', this.type]);
+                }
+                else {
+                  this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                }
+              }
+            }),
+              error => {
+                this.showModal(AppConstant.errorTitle, error.message);
+              };
           }
           else {
             this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
@@ -106,6 +135,8 @@ export class ConfirmComponent implements OnInit {
         error => {
           this.showModal(AppConstant.errorTitle, error.message);
         };
+
+
     }
   }
 

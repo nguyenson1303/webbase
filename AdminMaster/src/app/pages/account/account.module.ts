@@ -13,8 +13,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
-import { ModalComponent } from '../ui-features/modals/modal/modal.component';
-import { ConfirmModalComponent } from '../ui-features/modals/confirm/confirm.component';
+
 
 @NgModule({
   imports: [
@@ -29,13 +28,7 @@ import { ConfirmModalComponent } from '../ui-features/modals/confirm/confirm.com
     ListComponent,
     DetailComponent,
     EditComponent,
-    ConfirmComponent,
-    ModalComponent,
-    ConfirmModalComponent
-  ],
-  entryComponents: [
-    ModalComponent,
-    ConfirmModalComponent
+    ConfirmComponent
   ],
   providers: [
     AccountService,

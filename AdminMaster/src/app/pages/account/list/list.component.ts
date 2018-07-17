@@ -196,7 +196,7 @@ export class ListComponent implements OnInit {
         else {
           this.data = result.listUser;
           this.rows = this.data;
-          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalPage;
+          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
           this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
@@ -279,7 +279,6 @@ export class ListComponent implements OnInit {
           else if (result.code === AppConstant.permissionAccessCode) {
             // call api change status user
             let userObj = {
-              username: userName,
               ip: "",
               online: newStatus,
               role: role

@@ -6,18 +6,6 @@
     public class AdminEditUserView
     {
         /// <summary>
-        /// Gets or sets the username.
-        /// </summary>
-        /// <value>
-        /// The username.
-        /// </value>
-        public string Username
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the Internet Protocol address.
         /// </summary>
         /// <value>
@@ -47,7 +35,7 @@
         /// <value>
         /// The role.
         /// </value>
-        public int Role
+        public string Role
         {
             get;
             set;
