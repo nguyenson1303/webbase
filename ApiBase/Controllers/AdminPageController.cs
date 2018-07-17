@@ -80,6 +80,7 @@ namespace ApiBase.Controllers
             listPageView.PageIndex = (int)pageIndex;
             listPageView.PageSize = (int)pageSize;
             listPageView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
+            listPageView.TotalRecord = total_record;
 
             response = Json(listPageView);
 

@@ -118,6 +118,7 @@ namespace ApiBase.Controllers
             listUserView.PageIndex = (int)pageIndex;
             listUserView.PageSize = (int)pageSize;
             listUserView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
+            listUserView.TotalRecord = total_record;
 
             response = Json(listUserView);
 

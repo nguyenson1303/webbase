@@ -13,12 +13,13 @@ import { ConfigurationService } from './configuration.service';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+
   columns = [
-    { key: '', title: 'Action' },
+    { key: 'id', title: 'Action' },
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
-    { key: 'isShow', title: 'Hiển thị' },
+    { key: 'isShow', title: 'Hiển thị Menu' },
   ];
   data;
   rows;
@@ -101,11 +102,8 @@ export class ListComponent implements OnInit {
       this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
       this.pagination = { ...this.pagination };
 
-      // this.pageIndex = this.pagination.offset / this.pagination.limit - 1;
-      // this.pageSize = this.pagination.limit;
-
       this.pageIndex = this.pagination.offset;
-      this.pageSize = this.pageSize;
+      this.pageSize = this.pagination.limit;
 
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
@@ -196,13 +194,12 @@ export class ListComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           this.data = this.listPageAdmin;
-          this.rows = this.data;
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUserPage;
-          this.rows = this.data;
-          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalPage;
+          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
+          this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
         }
@@ -215,6 +212,10 @@ export class ListComponent implements OnInit {
 
   eventEmitted($event) {
     this.filter($event);
+  }
+
+  addPage() {
+
   }
 
   editClick(userName: string) {

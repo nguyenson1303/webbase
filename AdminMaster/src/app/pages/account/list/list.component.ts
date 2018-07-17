@@ -106,7 +106,7 @@ export class ListComponent implements OnInit {
       this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
       this.pagination = { ...this.pagination };
 
-      this.pageIndex = this.pagination.offset / this.pagination.limit - 1;
+      this.pageIndex = this.pagination.offset;
       this.pageSize = this.pagination.limit;
 
       if (obj.event === 'onOrder') {
@@ -196,6 +196,7 @@ export class ListComponent implements OnInit {
           this.data = result.listUser;
           this.rows = this.data;
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalPage;
+          this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
         }
@@ -276,11 +277,11 @@ export class ListComponent implements OnInit {
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
-        if (result && result.value.code) {
-          if (result.value.code === AppConstant.permissionDeniedCode) {
-            this.showModal(AppConstant.permissionDeniedTitle, result.value.message);
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.showModal(AppConstant.permissionDeniedTitle, result.message);
           }
-          else if (result.value.code === AppConstant.permissionAccessCode) {
+          else if (result.code === AppConstant.permissionAccessCode) {
             // call api change status user
             let userObj = {
               username: userName,
@@ -290,9 +291,9 @@ export class ListComponent implements OnInit {
             };
             this.accountService.updateUser(userName, userObj).subscribe(result => {
               if (result) {
-                if (result && result.value.code) {
-                  if (result.value.code === AppConstant.successCode) {
-                    this.showModal(AppConstant.successTitle, result.value.message);
+                if (result && result.code) {
+                  if (result.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.message);
                   }
                 }
               }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Config } from 'ngx-easy-table/src/app/ngx-easy-table/model/config';
+import { AppConstant } from '../../../config/appconstant';
 
 @Injectable()
 export class ConfigurationService {
@@ -14,7 +15,7 @@ export class ConfigurationService {
     selectRow: false,
     selectCol: false,
     selectCell: false,
-    rows: 10,
+    rows: AppConstant.pageSizeDefault,
     additionalActions: false,
     serverPagination: true,
     isLoading: false,

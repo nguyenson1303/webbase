@@ -92,5 +92,7 @@
             get;
             set;
         }
+
+        public int TotalRecord { get; set; }
     }
 }
