@@ -155,7 +155,6 @@ export class EditComponent implements OnInit {
         }
         else {
           // focus to field error and show message
-          console.log(result.value.field);          
           let field = document.getElementById(result.value.field)
           if (field) {
             field.focus();
