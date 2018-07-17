@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppConstant } from '../../../config/appconstant';
+import { AccountService } from '../../../@core/data/account.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
 
 @Component({
   selector: 'confirm',
@@ -30,7 +33,9 @@ export class ConfirmComponent implements OnInit {
   private type: string = "";
 
   constructor(private activatedRoute: ActivatedRoute,
-    private router: Router) {
+    private accountService: AccountService,
+    private router: Router,
+    private modalService: NgbModal) {
 
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
@@ -63,15 +68,50 @@ export class ConfirmComponent implements OnInit {
   nextclick() {
     if (this.isCreate)
     {
-
+      // call api create user
+      this.accountService.createUser(JSON.parse(this.objectUser)).subscribe(result => {
+        if (result) {
+          if (result.code === AppConstant.successCode) {
+            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+            this.router.navigate(['/pages/account/list', this.type]);
+          }
+          else {
+            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+          }
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
     }
     else
     {
-
+      // call api edit user
+      this.accountService.updateUser(this.username, JSON.parse(this.objectUser)).subscribe(result => {
+        if (result) {
+          if (result.code === AppConstant.successCode) {
+            this.showModal(AppConstant.successTitle, AppConstant.messUpdateFail);
+            this.router.navigate(['/pages/account/list', this.type]);
+          }
+          else {
+            this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+          }
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
     }
   }
 
   ngOnInit() {
   }
+  showModal(title: string, mess: string) {
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.modalHeader = title;
+    activeModal.componentInstance.modalContent = mess;
+  }
+
 
 }
