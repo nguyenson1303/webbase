@@ -51,6 +51,7 @@ export class EditComponent implements OnInit {
   private username: string = "";
   private type: string = "";
   private errorMessage: string = "";
+  private objectUser: any;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -91,31 +92,48 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.isCreate == false) {
-      this.accountService.getUserDetail(this.username).subscribe(result => {
-        if (result) {
-          this.showModal(AppConstant.errorTitle, result.value.message);
-        }
-        else {
-          this.userDetail = result;
-        }
-      }),
-        error => {
-          this.showModal(AppConstant.errorTitle, error.message);
-        };
 
-      this.accountService.getUserProfile().subscribe(result => {
-        if (result) {
-          this.showModal(AppConstant.errorTitle, result.value.message);
-        }
-        else {
-          this.userProfile = result;
-        }
-      }),
-        error => {
-          this.showModal(AppConstant.errorTitle, error.message);
-        };
+    // check localStorage exist
+    if (localStorage.getItem(AppConstant.objectUser) != null) {
+      this.objectUser = JSON.parse(localStorage.getItem(AppConstant.objectUser));
+      this.userDetail.username = this.objectUser.username;
+      this.userProfile.fname = this.objectUser.fname;
+      this.userProfile.lname = this.objectUser.lname;
+      this.userProfile.address = this.objectUser.address;
+      this.userProfile.phone = this.objectUser.phone;
+      this.userProfile.birthday = this.objectUser.birthday;
+      this.userProfile.avatar = this.objectUser.avatar;
     }
+    else
+    {
+      if (this.isCreate == false) {
+        this.accountService.getUserDetail(this.username).subscribe(result => {
+          if (result) {
+            this.showModal(AppConstant.errorTitle, result.value.message);
+          }
+          else {
+            this.userDetail = result;
+          }
+        }),
+          error => {
+            this.showModal(AppConstant.errorTitle, error.message);
+          };
+
+        this.accountService.getUserProfile().subscribe(result => {
+          if (result) {
+            this.showModal(AppConstant.errorTitle, result.value.message);
+          }
+          else {
+            this.userProfile = result;
+          }
+        }),
+          error => {
+            this.showModal(AppConstant.errorTitle, error.message);
+          };
+      }
+    }
+
+
   }
 
   backclick() {
