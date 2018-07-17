@@ -596,6 +596,44 @@
         }
 
         /// <summary>
+        /// Updates the user infor.
+        /// </summary>
+        /// <param name="userInfor">user object.</param>
+        /// <returns>Updates the user</returns>
+        public string UpdateUserInfor(string userName, UserInfo userInfor)
+        {
+            using (var data = new themanorContext())
+            {
+                string rt = string.Empty;
+                try
+                {
+                    var c_gen = data.UserInfo.Where(p => p.Email == userName).FirstOrDefault();
+                    c_gen.Fname = userInfor.Fname;
+                    c_gen.Lname = userInfor.Lname;
+                    c_gen.Phone = userInfor.Phone;
+                    c_gen.Address = userInfor.Address;
+                    c_gen.Birthday = userInfor.Birthday;
+                    c_gen.Location = userInfor.Location;
+                    c_gen.EventId = userInfor.EventId;
+                    c_gen.Note = userInfor.Note;
+                    c_gen.DateJoin = userInfor.DateJoin;
+                    c_gen.DateRegister = userInfor.DateRegister;
+                    c_gen.Avatar = userInfor.Avatar;
+                    c_gen.FullName = userInfor.FullName;
+
+                    data.SaveChanges();
+                    rt = userInfor.Email;
+                }
+                catch (Exception ex)
+                {
+                    rt = string.Empty;
+                }
+
+                return rt;
+            }
+        }
+
+        /// <summary>
         /// Updates the user.
         /// </summary>
         /// <param name="user">user object.</param>

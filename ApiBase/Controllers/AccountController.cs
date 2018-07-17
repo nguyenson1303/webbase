@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using ApiBase.Models.AdminViewModels;
@@ -25,6 +26,7 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
             var userInfor = sv.GetUserInforByEmail(userLogin);
             if(userInfor != null)
             {
@@ -45,16 +47,34 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
                        
             var userDetail = sv.GetUserbyUserName(userName);
             if (userDetail != null)
             {
                 userDetail.Password = "";
                 response = Json(userDetail);
+            }
+            else
+            {
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }
+
+            return response;
+        }
+
+        // GET: api/<controller>
+        // get login user profile
+        [HttpGet("getUserInforDetail")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult getUserInforDetail(string userName)
+        {
+            UserModels sv = new UserModels();
+            IActionResult response = null;
+        
+            var userInfor = sv.GetUserInforByEmail(userName);
+            if (userInfor != null)
+            {
+                response = Json(userInfor);
             }
             else
             {
@@ -299,17 +319,19 @@ namespace ApiBase.Controllers
 
             string type = string.Empty;
 
-
-            if (!string.IsNullOrEmpty(userView.Username))
+            if (userView.IsCreate)
             {
-                user = userModels.GetUserbyUserName(userView.Username);
-
-                if (user != null)
+                if (!string.IsNullOrEmpty(userView.Username))
                 {
-                    is_valid = false;
-                    if (mess == string.Empty)
+                    user = userModels.GetUserbyUserName(userView.Username);
+
+                    if (user != null)
                     {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "username" });
+                        is_valid = false;
+                        if (mess == string.Empty)
+                        {
+                            response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "username" });
+                        }
                     }
                 }
             }
@@ -336,36 +358,39 @@ namespace ApiBase.Controllers
                 }
             }
 
-            // validation password
-            if (string.IsNullOrEmpty(userView.Password))
+            if (userView.IsCreate)
             {
-                is_valid = false;
-                if (mess == string.Empty)
+                // validation password
+                if (string.IsNullOrEmpty(userView.Password))
                 {
-                    mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "password" });
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        mess = Constant.MessageDataEmpty;
+                        response = Json(new { code = Constant.Empty, message = mess, field = "password" });
+                    }
                 }
-            }
 
-            if (string.IsNullOrEmpty(userView.ConfirmPassword))
-            {
-                is_valid = false;
-                if (mess == string.Empty)
+                if (string.IsNullOrEmpty(userView.ConfirmPassword))
                 {
-                    mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "confirmPassword" });
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        mess = Constant.MessageDataEmpty;
+                        response = Json(new { code = Constant.Empty, message = mess, field = "confirmPassword" });
+                    }
                 }
-            }
 
-            if (userView.Password != userView.ConfirmPassword)
-            {
-                is_valid = false;
-                if (mess == string.Empty)
+                if (userView.Password != userView.ConfirmPassword)
                 {
-                    mess = Constant.MessageConfirmPassword;
-                    response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        mess = Constant.MessageConfirmPassword;
+                        response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
+                    }
                 }
-            }
+            }            
 
             if (userModels.GetRoleByName(userView.Role) == null)
             {
@@ -447,7 +472,62 @@ namespace ApiBase.Controllers
 
             if (rt.Length > 0)
             {
-                userView.Username = rt;
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
+            }
+
+            return response;
+        }
+
+        // PUT api/<controller>/email
+        [HttpPut("updateUserInfor/{userName}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateUserInfor(string userName, [FromBody]AdminEditUserInforView userView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            UserInfo infor = null;
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            string type = string.Empty;
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                infor = userModels.GetUserInforByEmail(userName);
+            }
+
+            if (!is_valid)
+            {
+                return response;
+            }
+
+            if (infor != null)
+            {
+                infor.Email = userName;
+                infor.Fname = userView.Fname;
+                infor.Lname = userView.Lname;
+                infor.Phone = userView.Phone;
+                infor.Address = userView.Address;
+                if (!string.IsNullOrEmpty(userView.Birthday)) {
+                    infor.Birthday = DateTime.Parse(userView.Birthday);
+                }                
+                infor.Avatar = userView.Avatar;
+                infor.FullName = userView.FullName;
+
+                rt = userModels.UpdateUserInfor(userName, infor);
+            }
+
+            if (rt.Length > 0)
+            {
                 response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
             }
             else

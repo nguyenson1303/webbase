@@ -12,7 +12,9 @@
 		"ad605b28-8791-f978-34e0-5386ed0e8431",
 		"3b8ce525-b42e-5259-8b91-724e951d0140",
 		"65fc6387-6a4a-be83-2103-3ed9d66e61da",
+		"0de1ece8-e1e8-9e8c-d0bc-1f9469c4f0b1",
 		"d6d7a013-3325-a363-f63b-233586edd2ca",
+		"18579a8d-6a70-0701-246d-645a431a6d46",
 		"e176545b-d6e8-4c08-d697-6fcefaf70bc4",
 		"c4165088-751a-e55c-c837-4ba04062f9bb",
 		"cb25e1b3-498a-ca85-816f-f956e5dd664a",
@@ -73,6 +75,41 @@
 			"rawModeData": "{\r\n  \"actionName\": \"check\",\r\n  \"actionDescription\": \"Action test check\",\r\n  \"actionStatus\": 1,\r\n  \"createDate\": \"2018-07-10T03:07:19.959Z\",\r\n  \"modifyDate\": \"2018-07-10T03:07:19.959Z\",\r\n  \"actionPage\": \"108\"\r\n}"
 		},
 		{
+			"id": "0de1ece8-e1e8-9e8c-d0bc-1f9469c4f0b1",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/account/getUserInforDetail?userName=nguyenson1303@gmail.com",
+			"queryParams": [
+				{
+					"key": "userName",
+					"value": "nguyenson1303@gmail.com",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1531822707978,
+			"name": "get account infor detail",
+			"description": null,
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002"
+		},
+		{
 			"id": "128ef301-54a1-3e57-2e77-d4dc85e91427",
 			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os\nContent-Type: application/json\n",
 			"headerData": [
@@ -107,6 +144,41 @@
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
 			"rawModeData": "{\r\n  \"path\": \"/pages/account/add\",\r\n  \"typeAct\": \"add\",\r\n  \"type\": \"Admin\"\r\n}"
+		},
+		{
+			"id": "18579a8d-6a70-0701-246d-645a431a6d46",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://apibase.local/api/account/updateUserInfor/nguyenson1303@gmail.com",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1531824636398,
+			"name": "update account infor",
+			"description": "",
+			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
+			"responses": [],
+			"rawModeData": "{\r\n  \"fname\": \"son\",\r\n  \"lname\": \"nguyen\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\",\r\n  \"fullName\": \"nguyen son\"\r\n}"
 		},
 		{
 			"id": "33c415b8-0918-3c6b-b6c9-1754352be834",
@@ -361,16 +433,16 @@
 		},
 		{
 			"id": "62f8d61b-b28f-4f8c-4e81-044ebf7c6db9",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjQzZTQ5MTYyLTdiNDUtNDg4MS04MGY0LTI5MzFjNjhmMWZkNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTAvMjAxOCA5OjQ4OjM2IFBNIiwiZXhwIjoxNTMxMjM0MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.rqrEf3PkVVQmHlDrVL5uinSSO6lIW8AM18w55RC1nVY\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjQzZTQ5MTYyLTdiNDUtNDg4MS04MGY0LTI5MzFjNjhmMWZkNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTAvMjAxOCA5OjQ4OjM2IFBNIiwiZXhwIjoxNTMxMjM0MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.rqrEf3PkVVQmHlDrVL5uinSSO6lIW8AM18w55RC1nVY",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA",
 					"description": "",
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:56625/api/AdminPage/listUserPage?type=Admin&search=&parentId=-1&pageIndex=1&pageSize=1000",
+			"url": "http://apibase.local/api/AdminPage/listUserPage?type=Admin&search=&parentId=-1&pageIndex=1&pageSize=30",
 			"queryParams": [
 				{
 					"key": "type",
@@ -402,7 +474,7 @@
 				},
 				{
 					"key": "pageSize",
-					"value": "1000",
+					"value": "30",
 					"equals": true,
 					"description": "",
 					"enabled": true
@@ -418,7 +490,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531206679474,
+			"time": 1531798069524,
 			"name": "get list page",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
@@ -426,11 +498,11 @@
 		},
 		{
 			"id": "65fc6387-6a4a-be83-2103-3ed9d66e61da",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6Ijg4NGRlYWE0LTRlYmUtNDNjOC1hM2ZhLWVjZGRkOWRiYzc0OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTYvMjAxOCA5OjA4OjM3IFBNIiwiZXhwIjoxNTMxNzUwMTE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.1X33P4a-SFainJA4py6icevGBAcm4kagsEFZsHsJ5os",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA",
 					"description": "",
 					"enabled": true
 				}
@@ -454,7 +526,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531727027137,
+			"time": 1531792243682,
 			"name": "get account detail",
 			"description": null,
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002"
@@ -886,11 +958,11 @@
 		},
 		{
 			"id": "d17e7225-9fd8-c059-9423-a853113d2da5",
-			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjIyYmM5NDM4LTRlYWUtNDEyMi1iN2Q0LWY1M2FlODk4YmE2ZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDI6MjQ6MTAgQU0iLCJleHAiOjE1MzA5MDUwNTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.jEhu20wcprcgGygC1yS1u_aeEWWMIxLxa27NHX7Eb-0\nContent-Type: application/json\n",
+			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA\nContent-Type: application/json\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6IjIyYmM5NDM4LTRlYWUtNDEyMi1iN2Q0LWY1M2FlODk4YmE2ZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvNy8yMDE4IDI6MjQ6MTAgQU0iLCJleHAiOjE1MzA5MDUwNTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.jEhu20wcprcgGygC1yS1u_aeEWWMIxLxa27NHX7Eb-0",
+					"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTb24gICIsIm5hbWVpZCI6IjYiLCJyb2xlcyI6IkFkbWluIiwiZW1haWwiOiJuZ3V5ZW5zb24xMzAzQGdtYWlsLmNvbSIsImJpcnRoZGF0ZSI6IiIsImp0aSI6ImZjMDJkZWEyLTY0NTMtNDYyYi1iYjEzLWEwNDUwM2JhOGZkZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJlZCI6IjcvMTcvMjAxOCA4OjQ1OjE2IFBNIiwiZXhwIjoxNTMxODM1MTE2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NjYyNSJ9.SSEMAk9PHL7X1SboQW1pQN0-S8tiuZuJeoinJaaWiyA",
 					"description": "",
 					"enabled": true
 				},
@@ -913,12 +985,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531739117712,
+			"time": 1531822124064,
 			"name": "create account",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
-			"rawModeData": "{\r\n  \"username\": \"user1234@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\"\r\n}"
+			"rawModeData": "{\r\n  \"username\": \"user1234567@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\",\r\n  \"isCreate\": true\r\n}"
 		},
 		{
 			"id": "d6d7a013-3325-a363-f63b-233586edd2ca",

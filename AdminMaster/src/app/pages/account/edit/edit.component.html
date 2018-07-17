@@ -9,21 +9,21 @@
           <div class="form-group row">
             <label for="username" class="col-sm-3 col-form-label">Email (UserName)</label>
             <div class="col-sm-9">
-              <input type="email" class="form-control" id="username" name="username" [(ngModel)]="userDetail.username" placeholder="Email">
+              <input type="email" class="form-control" id="username" name="username" [(ngModel)]="userDetail.username" [attr.disabled]="isCreate == false ? true : null" placeholder="Email">
               <label class="text-danger validateServer" id="username-validate"></label>
             </div>
           </div>
           <div class="form-group row">
             <label for="password" class="col-sm-3 col-form-label">password</label>          
             <div class="col-sm-9">
-              <input type="password" class="form-control" id="password" name="password" [(ngModel)]="userDetail.password" placeholder="password">
+              <input type="password" class="form-control" id="password" name="password" [(ngModel)]="userDetail.password" [attr.disabled]="isCreate == false ? true : null" placeholder="password">
               <label class="text-danger validateServer" id="password-validate"></label>
             </div>
           </div>
           <div class="form-group row">
             <label for="confirmPassword" class="col-sm-3 col-form-label">Confirm password</label>
             <div class="col-sm-9">
-              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" [(ngModel)]="userDetail.confirmPassword" placeholder="Confirm password">
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" [(ngModel)]="userDetail.confirmPassword" [attr.disabled]="isCreate == false ? true : null" placeholder="Confirm password">
               <label class="text-danger validateServer" id="confirmPassword-validate"></label>
             </div>
           </div>

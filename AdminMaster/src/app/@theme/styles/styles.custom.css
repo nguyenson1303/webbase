@@ -6,6 +6,11 @@
   font-size: 30px;
 }
 
+.form-control:disabled {
+  border-color: #dadfe6 !important;
+  background-color: #dadfe6 !important;
+}
+
 .btn{
   cursor: pointer !important;
 }

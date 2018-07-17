@@ -118,7 +118,7 @@ export class EditComponent implements OnInit {
             this.showModal(AppConstant.errorTitle, error.message);
           };
 
-        this.accountService.getUserProfile().subscribe(result => {
+        this.accountService.getUserInforDetail(this.username).subscribe(result => {
           if (result) {
             this.userProfile = result;
           }
@@ -153,7 +153,8 @@ export class EditComponent implements OnInit {
       phone: this.userProfile.phone,
       address: this.userProfile.address,
       birthday: this.userProfile.birthday,
-      avatar: this.userProfile.avatar
+      avatar: this.userProfile.avatar,
+      isCreate: this.isCreate
     }
 
     // call api validate user

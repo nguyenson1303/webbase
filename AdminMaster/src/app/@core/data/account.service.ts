@@ -67,6 +67,12 @@ export class AccountService {
     return this.http.get(url, this.options).map(this.extractData);
   }
 
+  getUserInforDetail(userName: string) {
+    let url = AppConfig.serverAPI + AppConstant.getUserInforDetailApiUrl + "?userName=" + userName;;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
   getUserProfile() {
     let url = AppConfig.serverAPI + AppConstant.getUserProfileApiUrl;
     this.options = new RequestOptions({ headers: this.headers });

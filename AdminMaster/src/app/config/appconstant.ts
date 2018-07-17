@@ -11,6 +11,7 @@ export class AppConstant {
   public static createUserApiUrl: string = "/api/account";
   public static getUserDetailApiUrl: string = "/api/account/getUserDetail";
   public static getUserProfileApiUrl: string = "/api/account";
+  public static getUserInforDetailApiUrl: string = "/api/account/getUserInforDetail";
   public static validateUserApiUrl: string = "/api/account/validateUser";
 
   // const action on path
