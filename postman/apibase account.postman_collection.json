@@ -755,12 +755,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1531739538473,
+			"time": 1531825241176,
 			"name": "validate account",
 			"description": "",
 			"collectionId": "48396ba5-2e81-a25a-0b70-f58536a94002",
 			"responses": [],
-			"rawModeData": "{\r\n  \"username\": \"user1234@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\"\r\n}"
+			"rawModeData": "{\r\n  \"username\": \"user1234@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmPassword\": \"123456\",\r\n  \"ip\": \"127.0.0.1\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\",\r\n  \"fname\": \"test\",\r\n  \"lname\": \"user\",\r\n  \"phone\": \"\",\r\n  \"address\": \"\",\r\n  \"birthday\": \"\",\r\n  \"avatar\": \"\",\r\n  \"isCreate\": true\r\n}"
 		},
 		{
 			"id": "ae4a7436-1d70-49f1-12c9-18dfc1067fb0",
