@@ -14,6 +14,7 @@ import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ModalComponent } from '../ui-features/modals/modal/modal.component';
+import { ConfirmModalComponent } from '../ui-features/modals/confirm/confirm.component';
 
 @NgModule({
   imports: [
@@ -23,8 +24,16 @@ import { ModalComponent } from '../ui-features/modals/modal/modal.component';
     Ng2SmartTableModule,
     TableModule
   ],
-  declarations: [AdminpageComponent, ListComponent, DetailComponent, EditComponent, ConfirmComponent, ModalComponent],
-  entryComponents: [ModalComponent],
+  declarations: [
+    AdminpageComponent,
+    ListComponent,
+    DetailComponent,
+    EditComponent,
+    ConfirmComponent,
+    ModalComponent,
+    ConfirmModalComponent
+  ],
+  entryComponents: [ModalComponent, ConfirmModalComponent],
     providers: [
       AdminpageService,
       ConfigurationService

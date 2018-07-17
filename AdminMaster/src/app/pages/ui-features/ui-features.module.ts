@@ -16,6 +16,7 @@ import {
   NgxPopoverCardComponent, NgxPopoverFormComponent,
   NgxPopoverTabsComponent,
 } from './popovers/popover-examples.component';
+import { ConfirmModalComponent } from './modals/confirm/confirm.component';
 
 const components = [
   UiFeaturesComponent,
@@ -32,6 +33,7 @@ const components = [
   NgxPopoverCardComponent,
   NgxPopoverFormComponent,
   NgxPopoverTabsComponent,
+  ConfirmModalComponent,
 ];
 
 @NgModule({

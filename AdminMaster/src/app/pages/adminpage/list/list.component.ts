@@ -5,7 +5,8 @@ import { AdminpageService } from '../../../@core/data/adminpage.service';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
-
+import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
+import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 
 @Component({
   selector: 'list-page',
@@ -257,12 +258,11 @@ export class ListComponent implements OnInit {
   }
 
   showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ListComponent, { size: 'lg', container: 'nb-layout' });
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-
 }
 
 interface EventObject {

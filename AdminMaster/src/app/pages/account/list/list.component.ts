@@ -5,6 +5,7 @@ import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
+import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 
 @Component({
   selector: 'list-account',
@@ -230,17 +231,17 @@ export class ListComponent implements OnInit {
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
-        if (result && result.value.code) {
-          if (result.value.code === AppConstant.permissionDeniedCode) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
             this.showModal(AppConstant.permissionDeniedTitle, result.value.message);
           }
-          else if (result.value.code === AppConstant.permissionAccessCode) {
+          else if (result.code === AppConstant.permissionAccessCode) {
             // call api delete user
             this.accountService.deleteUser(userName).subscribe(result => {
               if (result) {
-                if (result && result.value.code) {
-                  if (result.value.code === AppConstant.successCode) {
-                    this.showModal(AppConstant.successTitle, result.value.message);
+                if (result && result.code) {
+                  if (result.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.message);
                     // reload data
                     this.filter(null);
                   }
@@ -325,6 +326,19 @@ export class ListComponent implements OnInit {
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
+  }
+
+  showConfirm(userName: string) {
+    const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
+    activeModal.componentInstance.confirmationMessage = AppConstant.confirmContent + ": " + userName;
+
+    activeModal.result.then((userResponse) => {
+      if (userResponse === true) {
+        this.deleteClick(userName);
+      }
+    });
   }
 }
 

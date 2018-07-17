@@ -38,6 +38,8 @@ export class AppConstant {
   public static notValidTitle: string = "Data invalid";
   public static permissionAccessTitle: string = "OK";
   public static errorTitle: string = "Server error";
+  public static confirmTitle: string = "Confirmation";
+  public static confirmContent: string = "Bạn muốn xóa";
 
   // const keyword
   public static headerBearer: string = "Bearer ";
