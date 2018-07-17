@@ -62,7 +62,12 @@ export class ConfirmComponent implements OnInit {
   }
 
   backclick() {
-    this.router.navigate(['/pages/account/add', this.type]);
+    if (this.isCreate) {
+      this.router.navigate(['/pages/account/add', this.type]);
+    }
+    else {
+      this.router.navigate(['/pages/account/edit', this.type, this.username]);
+    }
   }
 
   nextclick() {
