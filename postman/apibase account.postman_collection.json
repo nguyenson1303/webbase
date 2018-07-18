@@ -806,7 +806,7 @@
 			"auth": null,
 			"events": null,
 			"folder": null,
-			"rawModeData": "{\r\n  \"ip\": \"\",\r\n  \"online\": true,\r\n  \"role\": \"Admin\"\r\n}",
+			"rawModeData": "{\r\n  \"ip\": \"\",\r\n  \"online\": true,\r\n  \"role\": 1\r\n}",
 			"headers": "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzb24gbmd1eWVuIiwibmFtZWlkIjoiNiIsInJvbGVzIjoiQWRtaW4iLCJlbWFpbCI6Im5ndXllbnNvbjEzMDNAZ21haWwuY29tIiwiYmlydGhkYXRlIjoiIiwianRpIjoiZTU5NTA0ZGYtMDMyZi00M2E1LWI2YmYtOWYxZjhjNmIxYzlmIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmVkIjoiNy8xOC8yMDE4IDg6NTA6MDMgUE0iLCJleHAiOjE1MzE5MjE4MDMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTY2MjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjU2NjI1In0.kUIitMOYe1sbMh-X1_dmDYQy-A7s37AovAGYF55kLVM\nContent-Type: application/json\n",
 			"pathVariables": {}
 		},
