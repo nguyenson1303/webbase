@@ -149,7 +149,7 @@ export class EditComponent implements OnInit {
       confirmPassword: this.userDetail.confirmPassword,
       ip: "",
       online: this.userDetail.online,
-      role: this.type,
+      role: this.userDetail.role,
       fname: this.userProfile.fname,
       lname: this.userProfile.lname,
       phone: this.userProfile.phone,

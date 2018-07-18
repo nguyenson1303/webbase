@@ -281,7 +281,7 @@ namespace ApiBase.Controllers
             {
                 Username = userView.Username,
                 Online = userView.Online,
-                Role = userModels.GetRoleByName(userView.Role).Id,
+                Role = userView.Role,
                 Password = MD5Extend.EncodePassword(userView.Password),
                 Ip = userView.Ip,
                 LastLogin = null
@@ -392,7 +392,7 @@ namespace ApiBase.Controllers
                 }
             }            
 
-            if (userModels.GetRoleByName(userView.Role) == null)
+            if (userModels.GetRolebyId(userView.Role) == null)
             {
                 is_valid = false;
                 if (mess == string.Empty)
@@ -435,7 +435,7 @@ namespace ApiBase.Controllers
             if (user != null)
             {
                 user.Online = userView.Online;
-                user.Role = userModels.GetRoleByName(userView.Role).Id;
+                user.Role = userView.Role;
                 user.Ip = userView.Ip;
 
                 rt = userModels.UpdateUser(userName, user);
