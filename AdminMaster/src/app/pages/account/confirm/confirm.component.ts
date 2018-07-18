@@ -4,6 +4,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { AccountService } from '../../../@core/data/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'confirm',
@@ -36,6 +37,15 @@ export class ConfirmComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private modalService: NgbModal) {
+
+    $(document).ready(() => {
+      let breadcrumb = $("#main_breadcrumb");
+      let child_breadcrumb = $("#child_breadcrumb");
+
+      if (breadcrumb.html() != null && breadcrumb.html() != undefined) {
+        child_breadcrumb.html(breadcrumb.html());
+      }
+    });
 
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
@@ -142,12 +152,11 @@ export class ConfirmComponent implements OnInit {
 
   ngOnInit() {
   }
+
   showModal(title: string, mess: string) {
     const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-
-
 }

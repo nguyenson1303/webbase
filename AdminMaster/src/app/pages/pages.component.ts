@@ -13,9 +13,7 @@ import { Jsonp } from '@angular/http';
     <ngx-sample-layout>
       <nb-menu [items]="menu"></nb-menu>
       <router-outlet></router-outlet>
-    </ngx-sample-layout>
-    <breadcrumb id="main_breadcrumb" [hidden]="true"></breadcrumb>
-  `,
+    </ngx-sample-layout>`,
 })
 export class PagesComponent {
 

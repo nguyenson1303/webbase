@@ -12,7 +12,6 @@ import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
-import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
 
 @NgModule({
   imports: [
@@ -21,7 +20,6 @@ import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
     AdminpageRoutingModule,
     Ng2SmartTableModule,
     TableModule,
-    BreadcrumbModule,
   ],
   declarations: [
     AdminpageComponent,

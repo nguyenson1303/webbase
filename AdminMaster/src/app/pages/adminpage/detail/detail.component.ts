@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'detail',
@@ -7,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    $(document).ready(() => {
+      let breadcrumb = $("#main_breadcrumb");
+      let child_breadcrumb = $("#child_breadcrumb");
+
+      if (breadcrumb.html() != null && breadcrumb.html() != undefined) {
+        child_breadcrumb.html(breadcrumb.html());
+      }
+    });
+  }
 
   ngOnInit() {
   }

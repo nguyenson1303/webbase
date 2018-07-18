@@ -7,7 +7,6 @@ import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ModalComponent } from './ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from './ui-features/modals/confirm/confirm.component';
-import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -21,7 +20,6 @@ const PAGES_COMPONENTS = [
     ThemeModule,
     DashboardModule,
     MiscellaneousModule,
-    BreadcrumbModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

@@ -13,7 +13,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
 
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
-import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
 
 @NgModule({
   imports: [
@@ -22,7 +21,6 @@ import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
     AccountRoutingModule,
     Ng2SmartTableModule,
     TableModule,
-    BreadcrumbModule,
   ],
   declarations: [
     AccountComponent,

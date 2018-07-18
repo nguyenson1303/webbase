@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthGuard } from './auth.guard';
 import { LoginComponent } from './auth/login/login.component';
+import { BreadcrumbsModule } from "ng2-breadcrumbs";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { LoginComponent } from './auth/login/login.component';
     HttpClientModule,
     AppRoutingModule,
     HttpModule,
+    BreadcrumbsModule,
 
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
