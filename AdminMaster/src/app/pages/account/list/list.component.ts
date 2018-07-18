@@ -92,6 +92,8 @@ export class ListComponent implements OnInit {
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.viewAction;
 
+    console.log(this.pathInfor.path);
+
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
         if (result && result.code) {
