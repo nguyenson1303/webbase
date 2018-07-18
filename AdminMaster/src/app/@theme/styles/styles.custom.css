@@ -131,3 +131,9 @@ label.switch {
   border-radius: 5px;
 }
 /*ngx easy table*/
+
+/*breadcrumb*/
+.breadcrumb {
+  margin-left: -80px;
+}
+/*breadcrumb*/

@@ -14,18 +14,12 @@
       </div>
     </div>
 
-  </nb-card-body>
-</nb-card>
-
-<nb-card>
-  <nb-card-body>
-
     <ngx-table [configuration]="configuration"
                [data]="rows"
                [columns]="columns"
                [pagination]="pagination"
                (event)="eventEmitted($event)">
-      <ng-template let-row>      
+      <ng-template let-row>
         <td>
           <div class="font-small">{{row.username}}</div>
         </td>

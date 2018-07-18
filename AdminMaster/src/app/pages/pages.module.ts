@@ -11,7 +11,7 @@ import { ConfirmModalComponent } from './ui-features/modals/confirm/confirm.comp
 const PAGES_COMPONENTS = [
   PagesComponent,
   ModalComponent,
-  ConfirmModalComponent
+  ConfirmModalComponent,
 ];
 
 @NgModule({
@@ -26,7 +26,7 @@ const PAGES_COMPONENTS = [
   ],
   entryComponents: [
     ModalComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
   ],
 })
 export class PagesModule {

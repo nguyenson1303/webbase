@@ -14,21 +14,20 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
 
-
 @NgModule({
   imports: [
     CommonModule,
     ThemeModule,
     AccountRoutingModule,
     Ng2SmartTableModule,
-    TableModule
+    TableModule,
   ],
   declarations: [
     AccountComponent,
     ListComponent,
     DetailComponent,
     EditComponent,
-    ConfirmComponent
+    ConfirmComponent,
   ],
   providers: [
     AccountService,

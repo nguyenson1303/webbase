@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'detail',
@@ -55,6 +55,15 @@ export class DetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private modalService: NgbModal) {
+
+    $(document).ready(() => {
+      let breadcrumb = $("#main_breadcrumb");
+      let child_breadcrumb = $("#child_breadcrumb");
+
+      if (breadcrumb.html() != null && breadcrumb.html() != undefined) {
+        child_breadcrumb.html(breadcrumb.html());
+      }
+    });
 
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
@@ -6,7 +6,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'list-account',
   templateUrl: './list.component.html',
@@ -64,6 +64,15 @@ export class ListComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private modalService: NgbModal) {
+
+    $(document).ready(() => {
+      let breadcrumb = $("#main_breadcrumb");
+      let child_breadcrumb = $("#child_breadcrumb");
+
+      if (breadcrumb.html() != null && breadcrumb.html() != undefined) {
+        child_breadcrumb.html(breadcrumb.html());
+      }
+    });
 
     // get param from router ex: /:type
      this.activatedRoute.params.forEach(params => {
