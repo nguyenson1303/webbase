@@ -8,11 +8,11 @@ import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [{
   path: '',
-  data: { breadcrumb: 'Admin' },
+  data: { breadcrumb: 'Dashboard' },
   component: PagesComponent, canActivate: [AuthGuard],
   children: [{
     path: 'dashboard',
-    data: { breadcrumb: 'dashboard' },
+    data: { breadcrumb: 'Dashboard' },
     component: DashboardComponent, canActivate: [AuthGuard]
   }, {
     path: 'account',
