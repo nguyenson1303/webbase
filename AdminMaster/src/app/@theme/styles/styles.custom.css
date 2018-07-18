@@ -1,9 +1,8 @@
  /*custom css for all site admin
  sonnv*/
 
-.circle:before {
-  content: ' \25CF';
-  font-size: 30px;
+.page75vh {
+  height: 75vh;
 }
 
 .form-control:disabled {

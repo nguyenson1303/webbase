@@ -128,6 +128,9 @@ export class EditComponent implements OnInit {
       this.objectUser = JSON.parse(localStorage.getItem(AppConstant.objectUser));
       this.userDetail.username = this.objectUser.username;
       this.userDetail.online = this.objectUser.online;
+      this.userDetail.role = this.objectUser.role;
+      this.userDetail.password = "******";
+      this.userDetail.confirmPassword = "******";
 
       this.userProfile.fname = this.objectUser.fname;
       this.userProfile.lname = this.objectUser.lname;
@@ -142,6 +145,9 @@ export class EditComponent implements OnInit {
         this.accountService.getUserDetail(this.username).subscribe(result => {
           if (result) {
             this.userDetail = result;
+
+            this.userDetail.password = "******";
+            this.userDetail.confirmPassword = "******";
           }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
