@@ -275,7 +275,7 @@ export class ListComponent implements OnInit {
   }
 
   // change user active
-  changeActive(userName: string, role: number, newStatus: boolean) {
+  changeActive(username: string, role: number, newStatus: boolean) {
     // check user is permission for change status account (edit)
     let lastPath = this.activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
@@ -295,7 +295,7 @@ export class ListComponent implements OnInit {
               online: newStatus,
               role: role
             };
-            this.accountService.updateUser(userName, userObj).subscribe(result => {
+            this.accountService.updateUser(username, userObj).subscribe(result => {
               if (result) {
                 if (result && result.code) {
                   if (result.code === AppConstant.successCode) {
@@ -351,7 +351,7 @@ export class ListComponent implements OnInit {
   }
 
   // show modal confirm active
-  showChangeActiveConfirm(userName: string, role: number, value: boolean) {
+  showChangeActiveConfirm(username: string, role: number, value: boolean) {
     let newStatus = false;
     if (value) {
       newStatus = false;
@@ -363,11 +363,11 @@ export class ListComponent implements OnInit {
 
     activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
     activeModal.componentInstance.confirmationMessage =
-      AppConstant.confirmChangeContent + ": " + userName + " " + (newStatus == true ? "On" : "Off");
+      AppConstant.confirmChangeContent + ": " + username + " " + (newStatus == true ? "On" : "Off");
 
     activeModal.result.then((userResponse) => {
       if (userResponse === true) {
-        this.changeActive(userName, role, newStatus);
+        this.changeActive(username, role, newStatus);
       }
     });
   }

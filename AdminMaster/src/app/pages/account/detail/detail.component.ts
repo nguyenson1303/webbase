@@ -124,4 +124,9 @@ export class DetailComponent implements OnInit {
     this.router.navigate(['/pages/account/list', this.type]);
   }
 
+  // navigate to edit user
+  editclick() {
+    this.router.navigate(['/pages/account/edit', this.type, this.username]);
+  }
+
 }

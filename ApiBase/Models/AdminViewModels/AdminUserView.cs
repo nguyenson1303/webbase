@@ -73,7 +73,7 @@ namespace ApiBase.Models.AdminViewModels
         /// <value>
         /// The role.
         /// </value>
-        public string Role
+        public int Role
         {
             get;
             set;

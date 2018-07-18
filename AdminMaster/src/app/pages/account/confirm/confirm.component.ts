@@ -18,7 +18,7 @@ export class ConfirmComponent implements OnInit {
     confirmPassword: "",
     ip: "",
     online: "",
-    role: "",
+    role: 0,
     fname: "",
     lname: "",
     phone: "",
