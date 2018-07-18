@@ -15,14 +15,18 @@ import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.
 
 export class ListComponent implements OnInit {
 
+  // use for setting column table
   columns = [
-    { key: 'username', title: 'Action' },
     { key: 'username', title: 'Email' },
-    { key: 'online', title: 'Active' }
+    { key: 'online', title: 'Active' },
+    { key: 'username', title: 'Action' },
   ];
+
   data;
   rows;
   configuration;
+
+  // use for setting paging
   pagination = {
     limit: AppConstant.pageSizeDefault,
     offset: (AppConstant.pageIndexDefault - 1),
@@ -182,6 +186,7 @@ export class ListComponent implements OnInit {
     this.getData(this.params);
   }
 
+  // call Api get list user
   getData(params: string) {
     this.configuration = ConfigurationService.config;
     this.configuration.isLoading = true;
@@ -212,18 +217,24 @@ export class ListComponent implements OnInit {
     this.filter($event);
   }
 
+  // redirect to add account page
   addUser() {
-    // redirect to add account page
     localStorage.removeItem(AppConstant.objectUser);
     this.router.navigate(['/pages/account/add', this.type]);
   }
 
+  // redirect to edit account page
   editClick(userName: string) {
-    // redirect to edit account page
     localStorage.removeItem(AppConstant.objectUser);
     this.router.navigate(['/pages/account/edit', this.type, userName]);
   }
 
+  // redirect to detail account page
+  viewClick(userName: string) {
+    this.router.navigate(['/pages/account/detail', this.type, userName]);
+  }
+
+  // delete user
   deleteClick(userName: string) {
     // check user is permission for view page
     let lastPath = this.activatedRoute.snapshot.url[0].path;
@@ -263,6 +274,7 @@ export class ListComponent implements OnInit {
       };
   }
 
+  // change user active
   changeActive(userName: string, role: number, newStatus: boolean) {
     // check user is permission for change status account (edit)
     let lastPath = this.activatedRoute.snapshot.url[0].path;
@@ -304,16 +316,19 @@ export class ListComponent implements OnInit {
       };
   }
 
+  // search by email
   onEmailSearch(value): void {
     this.search = value;
     this.filter(null);
   }
 
+  // resest search
   reset(): void {
     this.search = "";
     this.filter(null);
   }
 
+  // show modal by title and message
   showModal(title: string, mess: string) {
     const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
 
@@ -321,6 +336,7 @@ export class ListComponent implements OnInit {
     activeModal.componentInstance.modalContent = mess;
   }
 
+  // show modal delete
   showDeleteConfirm(userName: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
@@ -334,6 +350,7 @@ export class ListComponent implements OnInit {
     });
   }
 
+  // show modal confirm active
   showChangeActiveConfirm(userName: string, role: number, value: boolean) {
     let newStatus = false;
     if (value) {

@@ -25,11 +25,7 @@
                [columns]="columns"
                [pagination]="pagination"
                (event)="eventEmitted($event)">
-      <ng-template let-row>
-        <td class="td-action">
-          <a class="button-action button-edit" (click)="editClick(row.username)"><i class="nb-edit"></i></a>
-          <a class="button-action button-delete" (click)="showDeleteConfirm(row.username)"><i class="nb-trash"></i></a>
-        </td>
+      <ng-template let-row>      
         <td>
           <div class="font-small">{{row.username}}</div>
         </td>
@@ -38,6 +34,11 @@
             <input type="checkbox" [checked]="row.online" (click)="showChangeActiveConfirm(row.username, row.role, row.online)">
             <span></span>
           </label>
+        </td>
+        <td class="td-action">
+          <a class="button-action" (click)="editClick(row.username)"><i class="fa fa-edit"></i></a>
+          <a style="margin-left : 5px;" class="button-action" (click)="showDeleteConfirm(row.username)"><i class="fa fa-trash-o"></i></a>
+          <a style="margin-left : 5px;" class="button-action" (click)="viewClick(row.username)"><i class="fa fa-eye"></i></a>
         </td>
       </ng-template>
     </ngx-table>
