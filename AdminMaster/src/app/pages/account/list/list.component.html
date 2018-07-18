@@ -36,9 +36,9 @@
           </label>
         </td>
         <td class="td-action">
-          <a class="button-action" (click)="editClick(row.username)"><i class="fa fa-edit"></i></a>
-          <a style="margin-left : 5px;" class="button-action" (click)="showDeleteConfirm(row.username)"><i class="fa fa-trash-o"></i></a>
-          <a style="margin-left : 5px;" class="button-action" (click)="viewClick(row.username)"><i class="fa fa-eye"></i></a>
+          <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
+          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="deleteClick(row.id)"><i class="nb-trash"></i></a>
+          <a class="button-action" (click)="viewClick(row.username)"><i class="fa fa-eye"></i></a>
         </td>
       </ng-template>
     </ngx-table>
