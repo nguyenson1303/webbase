@@ -165,4 +165,7 @@ label.switch {
   border-radius: 0.375rem !important;
   width: 100% !important;
 }
+.ngx-datepicker-container .ngx-datepicker-calendar-container {
+  position: initial !important;
+}
 /*ngx-datepicker*/
