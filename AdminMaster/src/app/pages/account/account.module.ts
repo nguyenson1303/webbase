@@ -14,7 +14,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +27,7 @@ import { ConfigurationService } from '../account/list/configuration.service';
     ListComponent,
     DetailComponent,
     EditComponent,
-    ConfirmComponent
+    ConfirmComponent,
   ],
   providers: [
     AccountService,

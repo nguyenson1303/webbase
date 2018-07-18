@@ -17,6 +17,7 @@ import {
   NgxPopoverTabsComponent,
 } from './popovers/popover-examples.component';
 import { ConfirmModalComponent } from './modals/confirm/confirm.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 const components = [
   UiFeaturesComponent,
@@ -34,6 +35,7 @@ const components = [
   NgxPopoverFormComponent,
   NgxPopoverTabsComponent,
   ConfirmModalComponent,
+  BreadcrumbComponent,
 ];
 
 @NgModule({
@@ -42,6 +44,7 @@ const components = [
     UiFeaturesRoutingModule,
     ButtonsModule,
   ],
+  exports: [BreadcrumbComponent],
   declarations: [
     ...components,
   ],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
@@ -6,6 +6,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { BreadcrumbComponent } from '../../ui-features/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'list-account',
