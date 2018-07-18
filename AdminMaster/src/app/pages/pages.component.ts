@@ -14,6 +14,7 @@ import { Jsonp } from '@angular/http';
       <nb-menu [items]="menu"></nb-menu>
       <router-outlet></router-outlet>
     </ngx-sample-layout>
+    <breadcrumb id="main_breadcrumb" [hidden]="true"></breadcrumb>
   `,
 })
 export class PagesComponent {

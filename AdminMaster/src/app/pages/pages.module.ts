@@ -7,13 +7,12 @@ import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ModalComponent } from './ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from './ui-features/modals/confirm/confirm.component';
-import { BreadcrumbComponent } from './ui-features/breadcrumb/breadcrumb.component';
+import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
   ModalComponent,
   ConfirmModalComponent,
-  BreadcrumbComponent
 ];
 
 @NgModule({
@@ -22,6 +21,7 @@ const PAGES_COMPONENTS = [
     ThemeModule,
     DashboardModule,
     MiscellaneousModule,
+    BreadcrumbModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
@@ -29,7 +29,6 @@ const PAGES_COMPONENTS = [
   entryComponents: [
     ModalComponent,
     ConfirmModalComponent,
-    BreadcrumbComponent
   ],
 })
 export class PagesModule {
