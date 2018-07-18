@@ -4,8 +4,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
-import * as $ from 'jquery';
+import { DatepickerOptions } from 'ng2-datepicker';
+import * as enLocale from 'date-fns/locale/en';
 
+import * as $ from 'jquery';
 @Component({
   selector: 'edit',
   templateUrl: './edit.component.html',
@@ -46,6 +48,25 @@ export class EditComponent implements OnInit {
     path: "",
     typeAct: "",
     type: ""
+  };
+
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 9999,
+    displayFormat: 'YYYY/MM/DD',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    locale: enLocale,
+    // minDate: new Date(Date.now()), // Minimal selectable date
+    // maxDate: new Date(Date.now()),  // Maximal selectable date
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'birthday', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false,
+    // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown
   };
 
   public isCreate: boolean = true;

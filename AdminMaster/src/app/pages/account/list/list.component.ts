@@ -17,11 +17,10 @@ export class ListComponent implements OnInit {
 
   // use for setting column table
   columns = [
+    { key: 'username', title: 'Action' },
     { key: 'username', title: 'Email' },
     { key: 'online', title: 'Active' },
-    { key: 'username', title: 'Action' },
   ];
-
   data;
   rows;
   configuration;

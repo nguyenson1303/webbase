@@ -14,7 +14,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
       <p>{{confirmationMessage}}</p>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="activeModal.close(true)">Yes</button>
+      <button type="button" class="btn btn-hero-success" (click)="activeModal.close(true)">Yes</button>
       <button type="button" class="btn btn-secondary" (click)="activeModal.close(false)">No</button>
     </div>
   `

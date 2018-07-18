@@ -11,7 +11,7 @@
   background-color: #dadfe6 !important;
 }
 
-.btn{
+.btn {
   cursor: pointer !important;
 }
 
@@ -26,6 +26,7 @@
   font-size: 2rem !important;
   color: #a4abb3;
   cursor: pointer;
+  margin: 0px 5px !important;
 }
 
 a.button-edit:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
@@ -35,6 +36,11 @@ a.button-edit:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):f
 
 a.button-delete:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
   color: red;
+  text-decoration: none;
+}
+
+a.button-view:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
+  color: #b57fff;
   text-decoration: none;
 }
 
@@ -121,6 +127,7 @@ label.switch {
 }
 
 .ngx-table {
+  color: unset !important;
   border: 1px solid #eee;
   border-radius: 5px !important;
 }
@@ -133,7 +140,29 @@ label.switch {
 /*ngx easy table*/
 
 /*breadcrumb*/
-.breadcrumb {
+#child_breadcrumb .fluid-bread {
+  background-color: transparent !important;
+}
+#child_breadcrumb .breadcrumb {
+  background-color: transparent !important;
   margin-left: -80px;
 }
 /*breadcrumb*/
+
+/*modal*/
+.modal-header {
+  background-color: beige;
+}
+/*modal*/
+
+/*ngx-datepicker*/
+.ngx-datepicker-container .ngx-datepicker-input {
+  padding: 0.75rem 1.125rem !important;
+  color: #2a2a2a !important;
+  background-color: #ffffff !important;
+  border: 2px solid #dadfe6 !important;
+  font-family: Roboto !important;
+  border-radius: 0.375rem !important;
+  width: 100% !important;
+}
+/*ngx-datepicker*/

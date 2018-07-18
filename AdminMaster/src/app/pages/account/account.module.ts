@@ -13,6 +13,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 
 import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
+import { NgDatepickerModule } from 'ng2-datepicker';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigurationService } from '../account/list/configuration.service';
     AccountRoutingModule,
     Ng2SmartTableModule,
     TableModule,
+    NgDatepickerModule
   ],
   declarations: [
     AccountComponent,

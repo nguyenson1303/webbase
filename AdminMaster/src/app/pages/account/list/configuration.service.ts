@@ -34,7 +34,7 @@ export class ConfigurationService {
       theme: 'light',
       borderless: false,
       hover: true,
-      striped: true,
+      striped: false,
     }
   };
 }

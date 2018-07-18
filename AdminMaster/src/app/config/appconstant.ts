@@ -66,7 +66,7 @@ export class AppConstant {
 
   // const number
   public static pageIndexDefault: number = 1;
-  public static pageSizeDefault: number = 30;
+  public static pageSizeDefault: number = 25;
 
   // const object
   public static objectUser: string = "objectUser";
