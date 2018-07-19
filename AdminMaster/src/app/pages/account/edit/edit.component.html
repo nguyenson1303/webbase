@@ -81,8 +81,11 @@
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="avatar">Avatar</label>
-                <input type="text" class="form-control" id="avatar" name="avatar" [(ngModel)]="userProfile.avatar" placeholder="Avatar">
+                <!--<label for="avatar">Avatar</label>-->
+                <input type="hidden" class="form-control" id="avatar" name="avatar" [(ngModel)]="userProfile.avatar" placeholder="Avatar">
+                <input type="file" id="avatarFile" name="avatarFile" [hidden]="true" (change)="onFileChanged($event)" />
+                <img id="avatarImage" name="avatarImage" class="avatar_image" src="{{userProfile.avatar}}" onclick='document.getElementById("avatarFile").click();' />
+                <a id="avatarDelete" name="avatarDelete" class="button-action button-delete btn-icon" nbPopover="Xóa avatar" nbPopoverMode="hover" (click)="showDeleteAvatarConfirm()"><i class="nb-close"></i></a>
               </div>
             </div>
           </div>

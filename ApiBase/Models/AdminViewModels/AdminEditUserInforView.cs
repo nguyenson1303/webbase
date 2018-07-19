@@ -1,4 +1,6 @@
-﻿namespace ApiBase.Models.AdminViewModels
+﻿using Microsoft.AspNetCore.Http;
+
+namespace ApiBase.Models.AdminViewModels
 {
     /// <summary>
     /// user view
@@ -11,6 +13,7 @@
         public string Address { get; set; }
         public string Birthday { get; set; }
         public string Avatar { get; set; }
+        public IFormFile AvatarFile { get; set; }
         public string FullName { get; set; }
     }
 }

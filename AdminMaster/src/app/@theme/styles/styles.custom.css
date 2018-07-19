@@ -10,6 +10,7 @@
   background-color: #dadfe6 !important;
 }
 
+/*button*/
 .btn {
   cursor: pointer !important;
 }
@@ -46,7 +47,7 @@ a.button-view:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):f
 a.button-view {
   cursor : pointer;
 }
-
+/*button*/
 
 /*switch*/
 label.switch {
@@ -172,3 +173,11 @@ label.switch {
   position: initial !important;
 }
 /*ngx-datepicker*/
+
+/*avatar*/
+.avatar_image {
+  width: 160px;
+  height: auto;
+  cursor: pointer;
+}
+/*avatar*/

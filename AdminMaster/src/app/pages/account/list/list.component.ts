@@ -64,6 +64,7 @@ export class ListComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal) {
 
+    // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -91,8 +92,6 @@ export class ListComponent implements OnInit {
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.viewAction;
-
-    console.log(this.pathInfor.path);
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
@@ -346,7 +345,7 @@ export class ListComponent implements OnInit {
     activeModal.componentInstance.modalContent = mess;
   }
 
-  // show modal delete
+  // show modal confirm delete
   showDeleteConfirm(userName: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
