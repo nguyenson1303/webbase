@@ -25,7 +25,8 @@ export class ConfirmComponent implements OnInit {
     phone: "",
     address: "",
     birthday: "",
-    avatar: ""
+    avatar: "",
+    avatarFile: null
   }
 
   public isCreate: boolean = true;
@@ -65,6 +66,22 @@ export class ConfirmComponent implements OnInit {
     this.objectUser = localStorage.getItem(AppConstant.objectUser);
     if (this.objectUser != null && this.objectUser != undefined) {
       this.createUserObj = JSON.parse(this.objectUser);
+
+      if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
+        let file = this.createUserObj.avatarFile;
+        let fr = new FileReader();
+        fr.onload = (event: any) => {
+          let base64 = event.target.result;
+
+          this.createUserObj.avatar = base64;
+        }
+        fr.readAsDataURL(file);
+      }
+      else {
+        if ((this.createUserObj.avatar === null || this.createUserObj.avatar === "")) {
+          this.createUserObj.avatar = AppConstant.avatarDefault;
+        }
+      }
     }
     else {
       this.router.navigate(['/pages/miscellaneous/404']);
@@ -119,6 +136,7 @@ export class ConfirmComponent implements OnInit {
               address: this.createUserObj.address,
               birthday: this.createUserObj.birthday,
               avatar: this.createUserObj.avatar,
+              avatarFile: this.createUserObj.avatarFile,
               fullName: this.createUserObj.fname + " " + this.createUserObj.lname
             };
 

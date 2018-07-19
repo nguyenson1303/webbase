@@ -71,6 +71,11 @@
         public const string MessageDataEmpty = "Dữ liệu không được để trống";
 
         /// <summary>
+        /// Image not valid
+        /// </summary>
+        public const string MessageImageNotValid = "File ảnh không đúng định dạng";
+
+        /// <summary>
         /// Permission Access
         /// </summary>
         public const string MessagePermissionAccess = "OK";
@@ -123,6 +128,11 @@
         /// Permission Access
         /// </summary>
         public const int PermissionAccessCode = 8;
+
+        /// <summary>
+        /// Image No Valid
+        /// </summary>
+        public const int ImageNotValid = 9;
 
         #endregion
 

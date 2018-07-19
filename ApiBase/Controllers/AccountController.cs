@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using ApiBase.Models.AdminViewModels;
@@ -7,6 +8,7 @@ using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
 using DBBase.EntitysObject;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,7 +17,7 @@ namespace ApiBase.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
-    {
+    {       
         // GET: api/<controller>
         // get login user profile
         [HttpGet, Authorize]
@@ -308,14 +310,10 @@ namespace ApiBase.Controllers
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
-            User user = null;
+            User user = new User();
             var mess = string.Empty;
             string rt = string.Empty;
             bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             string type = string.Empty;
 
@@ -402,6 +400,19 @@ namespace ApiBase.Controllers
                 }
             }
 
+            if (userView.AvatarFile != null)
+            {
+                if (!BaseClass.IsImage(userView.AvatarFile))
+                {
+                    is_valid = false;
+                    if (mess == string.Empty)
+                    {
+                        mess = Constant.MessageImageNotValid;
+                        response = Json(new { code = Constant.ImageNotValid, message = mess, field = "avatar" });
+                    }
+                }
+            }
+
             if (is_valid)
             {
                 response = Json(new { code = Constant.Success, message = Constant.MessageOk });
@@ -460,6 +471,7 @@ namespace ApiBase.Controllers
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
+            BaseClass baseClass = new BaseClass();
             UserInfo infor = null;
             var mess = string.Empty;
             string rt = string.Empty;
@@ -490,8 +502,29 @@ namespace ApiBase.Controllers
                 infor.Address = userView.Address;
                 if (!string.IsNullOrEmpty(userView.Birthday)) {
                     infor.Birthday = DateTime.Parse(userView.Birthday);
+                }
+                if (userView.AvatarFile != null)
+                {
+                    var imgPathTemp = "/assets/images/uploads/avatar/" +
+                              DateTime.Now.Year.ToString() + "/" +
+                              DateTime.Now.Month.ToString() + "/";
+
+                    string imageSmall = imgPathTemp + "sc_small_" + "_" + BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
+                    string imageLager = imgPathTemp + "sc_full_" + "_" + BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
+
+                    // var uniqueFileName = BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
+                    // var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
+                    // var filePath = Path.Combine(uploads, uniqueFileName);
+                    // userView.AvatarFile.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                    baseClass.Savephoto(infor.Avatar, userView.AvatarFile, imgPathTemp, imageSmall, imageLager);
+
+                    infor.Avatar = imageSmall;
+                }
+                else
+                {
+                    infor.Avatar = userView.Avatar;
                 }                
-                infor.Avatar = userView.Avatar;
                 infor.FullName = userView.FullName;
 
                 rt = userModels.UpdateUserInfor(userName, infor);

@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
+import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
 
 import * as $ from 'jquery';
+import { strictEqual } from 'assert';
+import { getDate } from 'date-fns';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'edit',
   templateUrl: './edit.component.html',
@@ -41,6 +45,7 @@ export class EditComponent implements OnInit {
     dateJoin: null,
     dateRegister: null,
     avatar: "",
+    avatarFile: null,
     fullName: ""
   }
 
@@ -80,6 +85,7 @@ export class EditComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal) {
 
+    // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -138,6 +144,23 @@ export class EditComponent implements OnInit {
       this.userProfile.phone = this.objectUser.phone;
       this.userProfile.birthday = this.objectUser.birthday;
       this.userProfile.avatar = this.objectUser.avatar;
+      this.userProfile.avatarFile = this.objectUser.avatarFile;
+
+      if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
+        let file = this.userProfile.avatarFile;
+        let fr = new FileReader();
+        fr.onload = (event: any) => {
+          let base64 = event.target.result;
+
+          this.userProfile.avatar = base64;
+        }
+        fr.readAsDataURL(file);
+      }
+      else {
+        if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
+          this.userProfile.avatar = AppConstant.avatarDefault;
+        }
+      }
     }
     else
     {
@@ -160,6 +183,22 @@ export class EditComponent implements OnInit {
         this.accountService.getUserInforDetail(this.username).subscribe(result => {
           if (result) {
             this.userProfile = result;
+
+            if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
+              let file = this.userProfile.avatarFile;
+              let fr = new FileReader();
+              fr.onload = (event: any) => {
+                let base64 = event.target.result;
+
+                this.userProfile.avatar = base64;
+              }
+              fr.readAsDataURL(file);
+            }
+            else {
+              if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
+                 this.userProfile.avatar = AppConstant.avatarDefault;
+              }
+            }
           }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
@@ -192,9 +231,12 @@ export class EditComponent implements OnInit {
       phone: this.userProfile.phone,
       address: this.userProfile.address,
       birthday: this.userProfile.birthday,
-      avatar: this.userProfile.avatar,
+      avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
+      avatarFile: this.userProfile.avatarFile,
       isCreate: this.isCreate
     }
+
+    console.log(createUserObj);
 
     // call api validate user
     this.accountService.validateUser(createUserObj).subscribe(result => {
@@ -238,5 +280,55 @@ export class EditComponent implements OnInit {
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
+  }
+
+  // show modal confirm delete
+  showDeleteAvatarConfirm() {
+    const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
+    activeModal.componentInstance.confirmationMessage = AppConstant.confirmDeleteAvatarContent;
+
+    activeModal.result.then((userResponse) => {
+      if (userResponse === true) {
+        // this.deleteClick(userName);
+
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    $(document).ready(() => {
+      let avatarImage = $('#avatarImage').attr('src');
+      if (avatarImage === null
+        || avatarImage === undefined
+        || avatarImage === ""
+        || avatarImage === AppConstant.avatarDefault) {
+        $('#avatarDelete').hide();
+      }
+      else {
+        $('#avatarDelete').show();
+      }
+    });
+  }
+
+  onFileChanged(event) {
+    let preview = $('#avatarImage');
+    let inputHiden = $('#avatar');
+    let deleteAvatar = $('#avatarDelete');
+
+    if (event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+      let fr = new FileReader();
+      fr.onload = (event: any) => {
+        let base64 = event.target.result;
+
+        preview.attr('src', base64);
+        deleteAvatar.show();
+      }
+      fr.readAsDataURL(file);
+      console.log(file);
+      this.userProfile.avatarFile = file;
+    }
   }
 }
