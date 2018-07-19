@@ -4,8 +4,9 @@ export class AppConstant {
   public static profileApiUrl: string = "/api/account";
   public static menuApiUrl: string = "/api/adminmenu";
   public static listUserApiUrl: string = "/api/account/listuser";
-  public static listAdminPageApiUrl: string = "/api/adminpage/listUserPage";
   public static checkPermissionApiUrl: string = "/api/account/checkPermission";
+
+  // user api
   public static deleteUserApiUrl: string = "/api/account";
   public static updateUserApiUrl: string = "/api/account";
   public static updateUserInforApiUrl: string = "/api/account/updateUserInfor";
@@ -14,6 +15,18 @@ export class AppConstant {
   public static getUserProfileApiUrl: string = "/api/account";
   public static getUserInforDetailApiUrl: string = "/api/account/getUserInforDetail";
   public static validateUserApiUrl: string = "/api/account/validateUser";
+
+  // adminpage api
+  public static listAdminPageApiUrl: string = "/api/adminpage/listUserPage";
+  public static deleteAdminPageApiUrl: string = "/api/adminpage";
+  public static updateAdminPageApiUrl: string = "/api/adminpage";
+  public static createAdminPageApiUrl: string = "/api/adminpage";
+  public static getAdminPageApiUrlDetailApiUrl: string = "/api/adminpage";
+  public static validateAdminPageApiUrl: string = "/api/adminpage/validateAdminPage";
+  public static updateStatusAdminPageApiUrl: string = "/api/adminpage/updateStatusAdminPage";
+
+  // adminpageAction api
+  public static listUserPageActionByPageIdApiUrl: string = "/api/adminpageaction/listUserPageActionByPageId";
 
   // const action on path
   public static viewAction: string = "view";
@@ -70,4 +83,5 @@ export class AppConstant {
 
   // const object
   public static objectUser: string = "objectUser";
+  public static objectAdminPage: string = "objectAdminPage";
 }

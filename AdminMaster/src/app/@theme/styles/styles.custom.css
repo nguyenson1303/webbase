@@ -43,6 +43,10 @@ a.button-view:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):f
   text-decoration: none;
 }
 
+a.button-view {
+  cursor : pointer;
+}
+
 
 /*switch*/
 label.switch {

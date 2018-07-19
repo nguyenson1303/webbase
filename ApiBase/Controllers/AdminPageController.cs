@@ -26,10 +26,6 @@ namespace ApiBase.Controllers
             RoleModels roleModels = new RoleModels();
             User cuser = new User();
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             var mess = string.Empty;
             var listPageView = new AdminListPageView();
             int total_record = 0;
@@ -96,16 +92,6 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             UserPage userPage = sv.GetUserPagebyId(id);
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string type = "Admin";
-
-            var action = sv.GetActionByActionName(CommonGlobal.View);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
             ////check permission update
             if (userPage != null)
             {
@@ -129,44 +115,6 @@ namespace ApiBase.Controllers
             UserPage userPage = null;
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Add);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;           
-
-            ////validation server
-            if (string.IsNullOrEmpty(userPageView.Title))
-            {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Title" }));
-                }
-            }
-
-            ////validation server
-            if (string.IsNullOrEmpty(userPageView.Path))
-            {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Path" }));
-                }
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
 
             ////check permission update
             userPage = new UserPage
@@ -198,27 +146,16 @@ namespace ApiBase.Controllers
             return response;
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
+        // POST api/<controller>
+        [HttpPost("validateAdminPage")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Put(int id, [FromBody]AdminUserPageView userPageView)
+        public IActionResult ValidateUser([FromBody]AdminUserPageView userPageView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
-            UserPage userPage = null;
             var mess = string.Empty;
-            int rt = 0;
+            string rt = string.Empty;
             bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;
 
             ////validation server
             if (string.IsNullOrEmpty(userPageView.Title))
@@ -227,7 +164,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Title" }));
+                    response = Json(new { code = Constant.Empty, message = mess, field = "Title" });
                 }
             }
 
@@ -238,20 +175,76 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "Path" }));
+                    response = Json(new { code = Constant.Empty, message = mess, field = "Path" });
                 }
             }
 
-            if (!is_valid)
+            if (is_valid)
             {
-                return response;
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
             }
+
+            return response;
+        }
+
+        // PUT api/<controller>/5
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Put(int id, [FromBody]AdminUserPageView userPageView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            UserPage userPage = null;
+            var mess = string.Empty;
+            int rt = 0;
 
             ////check permission update
             userPage = new UserPage
             {
                 Title = userPageView.Title,
                 IsShow = userPageView.IsShow,
+                Tye = userPageView.Tye,
+                ParentId = userPageView.ParentId,
+                OrderDisplay = userPageView.OrderDisplay,
+                Icon = userPageView.Icon,
+                Path = userPageView.Path,
+                Breadcrumb = userPageView.Breadcrumb,
+                TypeActionId = userPageView.TypeActionId,
+                ModifyDate = DateTime.Now
+            };
+
+            rt = userModels.UpdateUserPage(id, userPage);
+
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
+            }
+
+            return response;
+        }
+
+        // updateStatusAdminPage api/<controller>/5
+        [HttpPut("updateStatusAdminPage/{id}/{isShow}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateStatus(int id, Boolean isShow)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            UserPage userPage = null;
+            var mess = string.Empty;
+            int rt = 0;
+            var userPageView = new UserPage();
+            userPageView = userModels.GetUserPagebyId(id);
+
+            ////check permission update
+            userPage = new UserPage
+            {
+                Title = userPageView.Title,
+                IsShow = isShow,
                 Tye = userPageView.Tye,
                 ParentId = userPageView.ParentId,
                 OrderDisplay = userPageView.OrderDisplay,

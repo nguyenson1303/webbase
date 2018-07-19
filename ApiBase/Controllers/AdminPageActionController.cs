@@ -97,7 +97,7 @@ namespace ApiBase.Controllers
 
         // GET: api/<controller>/listUserPageAction
         // get list action on page id (action for commond page and action for only page)
-        [HttpGet("ListUserPageActionByPageId"), Authorize(Roles = "Admin")]
+        [HttpGet("listUserPageActionByPageId"), Authorize(Roles = "Admin")]
         public IActionResult ListUserPageActionByPageId(string type, int pageId)
         {
             IActionResult response = null;

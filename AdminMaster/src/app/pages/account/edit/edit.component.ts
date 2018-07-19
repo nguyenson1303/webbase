@@ -80,6 +80,7 @@ export class EditComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal) {
 
+    // set breadcrumd
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -91,7 +92,7 @@ export class EditComponent implements OnInit {
 
     // get param from router ex: /:username
      this.activatedRoute.params.forEach(params => {
-       this.username = params['username'];
+       this.username = params['id'];
        this.type = params['type'];
      });
 
