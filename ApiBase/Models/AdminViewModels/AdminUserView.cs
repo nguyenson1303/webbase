@@ -85,7 +85,7 @@ namespace ApiBase.Models.AdminViewModels
         public string Phone { get; set; }
         public string Address { get; set; }
         public string Birthday { get; set; }
-        public string Avatar { get; set; }
+        public string Avatar { get; set; }        
         public bool IsCreate { get; set; }
     }
 }

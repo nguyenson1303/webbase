@@ -34,16 +34,6 @@ export class EditComponent implements OnInit {
     createDate: ""
   }
 
-  //adminPageAction = {
-  //  id: 0,
-  //  actionName: "",
-  //  actionDescription: "",
-  //  actionStatus: 0,
-  //  createDate: "",
-  //  modifyDate: "",
-  //  actionPage: ""
-  //}
-
   pathInfor = {
     path: "",
     typeAct: "",
@@ -173,6 +163,61 @@ export class EditComponent implements OnInit {
           };
       }
     }
+  }
+
+  nextclick() {
+    // validate
+    let isValid = true;
+    let mess = "";
+    let validateAdminPageObj = {
+      title: this.adminPageDetail.title,
+      isShow: this.adminPageDetail.isShow,
+      tye: this.adminPageDetail.tye,
+      parentId: this.adminPageDetail.parentId,
+      orderDisplay: this.adminPageDetail.orderDisplay,
+      icon: this.adminPageDetail.icon,
+      path: this.adminPageDetail.path,
+      breadcrumb: this.adminPageDetail.breadcrumb,
+      typeActionId: this.adminPageDetail.typeActionId,
+      modifyDate: this.adminPageDetail.modifyDate,
+      createDate: this.adminPageDetail.createDate
+    }
+
+    // call api validate adminpage
+    this.adminPageService.validateAdminPage(validateAdminPageObj).subscribe(result => {
+      if (result) {
+        if (result.code === AppConstant.successCode) {
+          // save obj to locate
+          localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail));
+          localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.adminPageActions));
+          if (this.isCreate) {
+            this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId]);
+          }
+          else {
+            this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId  , this.id]);
+          }
+        }
+        else {
+          // focus to field error and show message
+          let field = document.getElementById(result.field);
+          let fieldValidate = document.getElementById(result.field + "-validate");
+          var validateField = document.querySelectorAll(".validateServer");
+          var i;
+          for (i = 0; i < validateField.length; i++) {
+            validateField[i].textContent = "";
+          }
+          if (field) {
+            field.focus();
+          }
+          if (fieldValidate) {
+            fieldValidate.textContent = result.message;
+          }
+        }
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
   }
 
   backclick() {

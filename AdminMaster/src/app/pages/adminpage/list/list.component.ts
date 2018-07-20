@@ -254,10 +254,14 @@ export class ListComponent implements OnInit {
 
   addPage() {
 
+    localStorage.removeItem(AppConstant.objectAdminPage);
+    localStorage.removeItem(AppConstant.objectAdminPageAction);
   }
 
   editClick(id: number) {
     // redirect to edit admin page
+    localStorage.removeItem(AppConstant.objectAdminPage);
+    localStorage.removeItem(AppConstant.objectAdminPageAction);
     this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, id]);
   }
 
@@ -271,6 +275,18 @@ export class ListComponent implements OnInit {
     {
       this.router.navigate(['/pages/adminpage/list', this.type, parentId]);
     }
+  }
+
+  // search by title
+  onTitleSearch(value): void {
+    this.search = value;
+    this.filter(null);
+  }
+
+  // resest search
+  reset(): void {
+    this.search = "";
+    this.filter(null);
   }
 
   deleteClick(id: number) {
