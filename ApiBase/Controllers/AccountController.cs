@@ -96,10 +96,6 @@ namespace ApiBase.Controllers
             RoleModels roleModels = new RoleModels();
             User cuser = new User();
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             var mess = string.Empty;
             var listUserView = new AdminListUserView();
             int total_record = 0;
@@ -157,14 +153,14 @@ namespace ApiBase.Controllers
             RoleModels roleModels = new RoleModels();
             User cuser = new User();
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             var mess = string.Empty;
             var permissionView = new AdminListUserPermissionView();
             int totalRecord = 0;
             var isOk = true;
+
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             type = type ?? string.Empty;
 
@@ -206,10 +202,6 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             if(saveView.ListPermission.Count() > 0)
             {
@@ -274,12 +266,6 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             string rt = string.Empty;
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-                        
-            string type = string.Empty;
-
             user = new User
             {
                 Username = userView.Username,
@@ -315,9 +301,6 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             string rt = string.Empty;
             bool is_valid = true;
-
-            string type = string.Empty;
-
             if (userView.IsCreate)
             {
                 if (!string.IsNullOrEmpty(userView.Username))
@@ -418,13 +401,7 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             User user = null;
             var mess = string.Empty;
-            string rt = string.Empty;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-                        
-            string type = string.Empty;          
+            string rt = string.Empty;       
 
             if (!string.IsNullOrEmpty(userName))
             {
@@ -475,12 +452,6 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             string rt = string.Empty;
             bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            string type = string.Empty;
 
             if (!string.IsNullOrEmpty(userName))
             {
@@ -549,11 +520,6 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             string mess = string.Empty;
             UserModels userModels = new UserModels();
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-           
-            string type = string.Empty;
 
             User cuser = userModels.GetUserbyUserName(userName);
             if (cuser != null)

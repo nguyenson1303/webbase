@@ -17,7 +17,7 @@ import * as $ from 'jquery';
 export class ListComponent implements OnInit {
 
   columns = [
-    { key: 'id', title: 'Action' },
+    { key: '', title: 'Action' },
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
@@ -33,7 +33,20 @@ export class ListComponent implements OnInit {
   };
 
   listPageAdmin = {
+    id: 0,
+    act: "",
+    ctrl: "",
     title: "",
+    isShow: false,
+    tye: "",
+    parentId: 0,
+    orderDisplay: 0,
+    icon: "",
+    path: "",
+    breadcrumb: "",
+    typeActionId: 0,
+    modifyDate: "",
+    createDate: ""
   };
 
   pathInfor = {
@@ -46,11 +59,12 @@ export class ListComponent implements OnInit {
   private type: string = "";
   private lang: string = "";
   public search: string = "";
-  private parentId: number;
+  private parentId: number = 0;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
   private orderType: string = "";
+  public isShowBack: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -69,8 +83,19 @@ export class ListComponent implements OnInit {
 
     // get param from router ex: /:type
      this.activatedRoute.params.forEach(params => {
-      this.type = params['type'];
-     });
+       this.type = params['type'];
+       if (params['parentId'] != null && params['parentId'] != undefined)
+       {
+         this.parentId = params['parentId'];
+         this.isShowBack = true;
+       }
+       else
+       {
+         this.parentId = 0
+         this.isShowBack = false;
+       }
+    });
+
 
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
@@ -149,7 +174,7 @@ export class ListComponent implements OnInit {
       }
     }
 
-    if (this.parentId != undefined && this.parentId > 0) {
+    if (this.parentId != undefined && this.parentId >= 0) {
       if (this.params.length > 1) {
         this.params = this.params + "&parentId=" + this.parentId;
       }
@@ -205,10 +230,12 @@ export class ListComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           this.data = this.listPageAdmin;
+          this.rows = this.data;
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUserPage;
+          this.rows = this.data;
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
           this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
@@ -229,16 +256,85 @@ export class ListComponent implements OnInit {
 
   }
 
-  editClick(userName: string) {
-    // redirect to edit account page
-    // this.router.navigate(['/pages/account/edit', userName]);
+  editClick(id: number) {
+    // redirect to edit admin page
+    this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, id]);
   }
 
-  deleteClick(userName: string) {
+  ListChildClick(parentId: number) {
+    // redirect to list child admin page
+    if (parentId == 0)
+    {
+      this.router.navigate(['/pages/adminpage/list', this.type]);
+    }
+    else
+    {
+      this.router.navigate(['/pages/adminpage/list', this.type, parentId]);
+    }
+  }
+
+  deleteClick(id: number) {
     // check user is permission for view page
     this.pathInfor.path = this.router.url.split('?')[0];
     this.pathInfor.type = this.type;
     this.pathInfor.typeAct = AppConstant.deleteAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      //if (result) {
+      //  if (result && result.code) {
+      //    if (result.code === AppConstant.permissionDeniedCode) {
+      //      this.showModal(AppConstant.permissionDeniedTitle, result.message);
+      //    }
+      //    else if (result.code === AppConstant.permissionAccessCode) {
+      //      // call api delete user
+      //      this.accountService.deleteUser(id).subscribe(result => {
+      //        if (result) {
+      //          if (result && result.code) {
+      //            if (result.code === AppConstant.successCode) {
+      //              this.showModal(AppConstant.successTitle, result.message);
+      //            }
+      //          }
+      //        }
+      //      });
+
+      //    }
+      //  }
+      //}
+    }),
+      error => {
+        console.error('ERROR: ', error.message);
+      };
+  }
+
+  // show modal confirm active
+  showChangeActiveConfirm(id: number, value: boolean, title: string) {
+    let newStatus = false;
+    if (value) {
+      newStatus = false;
+    }
+    else {
+      newStatus = true;
+    }
+    const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
+    activeModal.componentInstance.confirmationMessage =
+      AppConstant.confirmChangeContent + ": " + title + " " + (newStatus == true ? "On" : "Off");
+
+    activeModal.result.then((userResponse) => {
+      if (userResponse === true) {
+        this.changeActive(id, newStatus);
+      }
+    });
+  }
+
+  // change adminpage active
+  changeActive(id: number, newStatus: boolean) {
+    // check user is permission for change status account (edit)
+    let lastPath = this.activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.editAction;
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
@@ -247,8 +343,8 @@ export class ListComponent implements OnInit {
             this.showModal(AppConstant.permissionDeniedTitle, result.message);
           }
           else if (result.code === AppConstant.permissionAccessCode) {
-            // call api delete user
-            this.accountService.deleteUser(userName).subscribe(result => {
+            // call api change status user
+            this.adminpageService.updateStatusAdminPage(id, newStatus).subscribe(result => {
               if (result) {
                 if (result && result.code) {
                   if (result.code === AppConstant.successCode) {
@@ -256,14 +352,16 @@ export class ListComponent implements OnInit {
                   }
                 }
               }
-            });
-
+            }),
+              error => {
+                this.showModal(AppConstant.errorTitle, error.message);
+              };
           }
         }
       }
     }),
       error => {
-        console.error('ERROR: ', error.message);
+        this.showModal(AppConstant.errorTitle, error.message);
       };
   }
 

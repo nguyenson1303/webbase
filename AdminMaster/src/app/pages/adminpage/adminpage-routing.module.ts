@@ -12,37 +12,41 @@ import { ConfirmComponent } from './confirm/confirm.component';
 
 const routes: Routes = [{
   path: '',
-  data: { breadcrumb: 'page managent' },
   component: AdminpageComponent, canActivate: [AuthGuard],
   children: [
     {
+      path: 'list/:type/:parentId',
+      data: { breadcrumb: 'Danh sách AdminPage' },
+      component: ListComponent, canActivate: [AuthGuard]
+    },
+    {
       path: 'list/:type',
-      data: { breadcrumb: 'list' },
+      data: { breadcrumb: 'Danh sách AdminPage' },
       component: ListComponent, canActivate: [AuthGuard]
     },
     {
       path: 'detail/:type/:id',
-      data: { breadcrumb: 'detail' },
+      data: { breadcrumb: 'Chi tiết AdminPage' },
       component: DetailComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'edit/:type/:id',
-      data: { breadcrumb: 'edit' },
+      path: 'edit/:type/:parentId/:id',
+      data: { breadcrumb: 'Chỉnh sửa AdminPage' },
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
       path: 'confirm/:type/:id',
-      data: { breadcrumb: 'confirm' },
+      data: { breadcrumb: 'Xác nhận sửa AdminPage' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     {
       path: 'add/:type',
-      data: { breadcrumb: 'add' },
+      data: { breadcrumb: 'Tạo mới AdminPage' },
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
       path: 'confirm/:type',
-      data: { breadcrumb: 'confirm' },
+      data: { breadcrumb: 'Xác nhận tạo AdminPage' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
   ],

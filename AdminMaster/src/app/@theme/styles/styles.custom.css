@@ -43,6 +43,10 @@ a.button-view:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):f
   color: #b57fff;
   text-decoration: none;
 }
+
+a.button-view {
+  cursor : pointer;
+}
 /*button*/
 
 /*switch*/

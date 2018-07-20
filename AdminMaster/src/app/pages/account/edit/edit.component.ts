@@ -97,7 +97,7 @@ export class EditComponent implements OnInit {
 
     // get param from router ex: /:username
      this.activatedRoute.params.forEach(params => {
-       this.username = params['username'];
+       this.username = params['id'];
        this.type = params['type'];
      });
 

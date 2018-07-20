@@ -32,7 +32,7 @@ const routes: Routes = [
     },
     {
       path: 'confirm/:type/:username',
-      data: { breadcrumb: 'Xác nhận account' },
+      data: { breadcrumb: 'Xác nhận sửa account' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     {
@@ -42,7 +42,7 @@ const routes: Routes = [
     },
     {
       path: 'confirm/:type',
-      data: { breadcrumb: 'Xác nhận account' },
+      data: { breadcrumb: 'Xác nhận tạo account' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     { path: '', redirectTo: 'list/:type', pathMatch: 'full' },

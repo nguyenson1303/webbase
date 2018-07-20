@@ -10,7 +10,8 @@
       </div>
       <div class="col-sm-6 btn-group btn-divided-group">
         <button class="btn btn-hero-primary btn-with-icon" (click)="reset()"><i class="ion-refresh"></i> Reset </button>
-        <button class="btn btn-hero-success btn-with-icon" (click)="addPage()"><i class="ion-plus-round"></i> Create Page</button>
+        <button class="btn btn-hero-success btn-with-icon" (click)="addPage()"><i class="ion-plus-round"></i> Tạo mới</button>
+        <button *ngIf="isShowBack" class="btn btn-hero-info btn-with-icon" (click)="ListChildClick(0)"><i class="ion-arrow-left-c"></i>Quay lại</button>
       </div>
     </div>
 
@@ -23,20 +24,19 @@
         <td class="td-action">
           <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.id)"><i class="ion-eye"></i></a>
           <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
-          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="deleteClick(row.id)"><i class="nb-trash"></i></a>
+          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id)"><i class="nb-trash"></i></a>
         </td>
+        <td *ngIf="row.parentId == 0"><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.id)">{{row.title}}</a> </td>
+        <td *ngIf="row.parentId != 0">{{row.title}} </td>
         <td>
-          <div class="font-small">{{row.title}}</div>
-        </td>
-        <td>
-          <div class="font-small">{{row.path}}</div>
+          <div class="font-small">{{row.path}}</div>  
         </td>
         <td>
           <div class="font-small">{{row.tye}}</div>
         </td>
         <td>
           <label class="switch">
-            <input type="checkbox" [checked]="row.isShow" (click)="changeActive(row.id, row.isShow)">
+            <input type="checkbox" [checked]="row.isShow" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
             <span></span>
           </label>
         </td>
