@@ -95,9 +95,18 @@ export class EditComponent implements OnInit {
       }
     });
 
+    // check reload from browser or move from process
+    let isInProcess = localStorage.getItem(AppConstant.isInProcess)
+    if (isInProcess != null && isInProcess != undefined) {
+      localStorage.removeItem(AppConstant.isInProcess);
+    }
+    else {
+      localStorage.removeItem(AppConstant.objectUser);
+    }
+
     // get param from router ex: /:username
      this.activatedRoute.params.forEach(params => {
-       this.username = params['id'];
+       this.username = params['username'];
        this.type = params['type'];
      });
 
@@ -246,6 +255,7 @@ export class EditComponent implements OnInit {
           }
 
           localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
+          localStorage.setItem(AppConstant.isInProcess, "true");
           if (this.isCreate) {
             this.router.navigate(['/pages/account/confirm', this.type]);
           }

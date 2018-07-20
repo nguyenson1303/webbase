@@ -35,7 +35,7 @@ const routes: Routes = [{
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'confirm/:type/:id',
+      path: 'confirm/:type/:parentId/:id',
       data: { breadcrumb: 'Xác nhận sửa AdminPage' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },

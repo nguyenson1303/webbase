@@ -6,7 +6,7 @@
 
     <div class="row full-name-inputs">
       <div class="col-sm-6 input-group input-group-border-only">
-        <input type="text" placeholder="Đường dẫn" class="form-control" [(ngModel)]="search" (input)="onPathSearch($event.target.value)" />
+        <input type="text" placeholder="Tiêu đề" class="form-control" [(ngModel)]="search" (input)="onTitleSearch($event.target.value)" />
       </div>
       <div class="col-sm-6 btn-group btn-divided-group">
         <button class="btn btn-hero-primary btn-with-icon" (click)="reset()"><i class="ion-refresh"></i> Reset </button>

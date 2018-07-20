@@ -50,6 +50,15 @@ export class ConfirmComponent implements OnInit {
       }
     });
 
+    // check reload from browser or move from process
+    let isInProcess = localStorage.getItem(AppConstant.isInProcess)
+    if (isInProcess != null && isInProcess != undefined) {
+      localStorage.removeItem(AppConstant.isInProcess);
+    }
+    else {
+      localStorage.removeItem(AppConstant.objectUser);
+    }
+
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
       this.username = params['username'];
@@ -87,6 +96,8 @@ export class ConfirmComponent implements OnInit {
   }
 
   backclick() {
+    localStorage.setItem(AppConstant.isInProcess, "true")
+    localStorage.setItem(AppConstant.objectUser, JSON.stringify(this.createUserObj))
     if (this.isCreate) {
       this.router.navigate(['/pages/account/add', this.type]);
     }
@@ -118,6 +129,7 @@ export class ConfirmComponent implements OnInit {
       this.accountService.createUser(this.createUserObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
+            localStorage.removeItem(AppConstant.objectUser);
             this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
             this.router.navigate(['/pages/account/list', this.type]);
           }
@@ -165,6 +177,7 @@ export class ConfirmComponent implements OnInit {
             this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
               if (result) {
                 if (result.code === AppConstant.successCode) {
+                  localStorage.removeItem(AppConstant.objectUser);
                   this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
                   this.router.navigate(['/pages/account/list', this.type]);
                 }

@@ -164,7 +164,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "Title" });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "title" });
                 }
             }
 
@@ -175,7 +175,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = Json(new { code = Constant.Empty, message = mess, field = "Path" });
+                    response = Json(new { code = Constant.Empty, message = mess, field = "path" });
                 }
             }
 
