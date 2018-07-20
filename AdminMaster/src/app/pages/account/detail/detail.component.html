@@ -71,7 +71,7 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <img id="avatarImage" name="avatarImage" class="avatar_image" src="{{userProfile.avatar}}" />
+              <img id="avatarImage" name="avatarImage" class="avatar_image" *ngIf="avatarUrl != ''" src="{{avatarUrl}}" />
             </div>
           </div>
         </div>

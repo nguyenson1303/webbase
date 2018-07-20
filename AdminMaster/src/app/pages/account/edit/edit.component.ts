@@ -76,6 +76,7 @@ export class EditComponent implements OnInit {
     // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown
   };
 
+  avatarUrl: string = "";
   public isCreate: boolean = true;
   private username: string = "";
   private type: string = "";
@@ -203,7 +204,8 @@ export class EditComponent implements OnInit {
                 let fr = new FileReader();
                 fr.onload = (event: any) => {
                   let base64 = event.target.result;
-                  this.userProfile.avatar = base64;
+                  // this.userProfile.avatar = base64;
+                  this.avatarUrl = base64;
                 }
                 fr.readAsDataURL(file);
 

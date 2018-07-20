@@ -86,7 +86,7 @@ export class ConfirmComponent implements OnInit {
     this.objectUser = localStorage.getItem(AppConstant.objectUser);
     if (this.objectUser != null && this.objectUser != undefined) {
       this.createUserObj = JSON.parse(this.objectUser);
-      console.log(this.createUserObj.avatarFile);
+
       if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
       }
       else {

@@ -53,6 +53,8 @@ export class DetailComponent implements OnInit {
     type: ""
   };
 
+  avatarUrl: string = "";
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -128,7 +130,8 @@ export class DetailComponent implements OnInit {
             let fr = new FileReader();
             fr.onload = (event: any) => {
               let base64 = event.target.result;
-              this.userProfile.avatar = base64;
+              // this.userProfile.avatar = base64;
+              this.avatarUrl = base64;
             }
             fr.readAsDataURL(file);
 
