@@ -6,6 +6,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import * as $ from 'jquery';
 import { AppConfig } from '../../../config/appconfig';
+import { BaseService } from '../../../@core/data/base.service';
 
 @Component({
   selector: 'detail',
@@ -52,10 +53,12 @@ export class DetailComponent implements OnInit {
     type: ""
   };
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private baseService: BaseService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -114,7 +117,22 @@ export class DetailComponent implements OnInit {
         if (this.userProfile.avatar !== null
           && this.userProfile.avatar !== undefined
           && this.userProfile.avatar !== "") {
-          this.userProfile.avatar = AppConfig.serverAPI + this.userProfile.avatar;
+
+          this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
+            let fileName = result.url.split('/').pop().toString();
+            let fileType = result.blob().type;
+
+            var blob = new Blob([result.blob()], { type: fileType });
+            let file = this.baseService.blobToFile(blob, fileName);
+
+            let fr = new FileReader();
+            fr.onload = (event: any) => {
+              let base64 = event.target.result;
+              this.userProfile.avatar = base64;
+            }
+            fr.readAsDataURL(file);
+
+          })
         }
       }
       else {
