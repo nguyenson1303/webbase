@@ -86,16 +86,15 @@ export class ConfirmComponent implements OnInit {
     this.objectUser = localStorage.getItem(AppConstant.objectUser);
     if (this.objectUser != null && this.objectUser != undefined) {
       this.createUserObj = JSON.parse(this.objectUser);
-
+      console.log(this.createUserObj.avatarFile);
       if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
-        // this.createUserObj.avatar = this.accountService.urltoFile(
-        //  this.createUserObj.avatarFile,
-        //  this.createUserObj.avatarFileName,
-        //  this.createUserObj.avatarFileType);
       }
       else {
         if ((this.createUserObj.avatar === null || this.createUserObj.avatar === "")) {
           this.createUserObj.avatarFile = AppConstant.avatarDefault;
+        }
+        else {
+          this.createUserObj.avatarFile = this.createUserObj.avatar;
         }
       }
     }

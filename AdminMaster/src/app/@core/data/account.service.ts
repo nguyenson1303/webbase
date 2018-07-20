@@ -18,7 +18,8 @@ export class AccountService {
   private authUrl = AppConfig.serverAPI + AppConstant.tokenApiUrl;
   private currentStorage = AppConstant.currentStorage;
 
-  constructor(private http: Http,
+  constructor(
+    private http: Http,
     private Router: Router,
     private authenService: AuthService) {
     this.headers = new Headers(
