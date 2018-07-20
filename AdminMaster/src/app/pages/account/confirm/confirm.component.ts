@@ -193,7 +193,7 @@ export class ConfirmComponent implements OnInit {
               }
               else if (event.type === HttpEventType.Response) {
                 userInfor.avatar = event.body.toString();
-                console.log(userInfor.avatar);
+
                 this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
                   if (result) {
                     if (result.code === AppConstant.successCode) {
