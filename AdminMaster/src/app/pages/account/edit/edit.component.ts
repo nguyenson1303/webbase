@@ -9,6 +9,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
 
 import * as $ from 'jquery';
+import { AppConfig } from '../../../config/appconfig';
 
 @Component({
   selector: 'edit',
@@ -21,7 +22,7 @@ export class EditComponent implements OnInit {
     username: "",
     password: "",
     confirmPassword: "",
-    role: 0,
+    role: 1,
     online: true,
     lastLogin: "",
     ip: "",
@@ -97,7 +98,7 @@ export class EditComponent implements OnInit {
 
     // get param from router ex: /:username
      this.activatedRoute.params.forEach(params => {
-       this.username = params['id'];
+       this.username = params['username'];
        this.type = params['type'];
      });
 
@@ -176,9 +177,14 @@ export class EditComponent implements OnInit {
         this.accountService.getUserInforDetail(this.username).subscribe(result => {
           if (result) {
             this.userProfile = result;
+            if (this.userProfile.avatar !== null
+              && this.userProfile.avatar !== undefined
+              && this.userProfile.avatar !== "") {
+              this.userProfile.avatar = AppConfig.serverAPI + this.userProfile.avatar;
+            }
 
             if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
-              this.userProfile.avatar = this.userProfile.avatarFile;
+              // this.userProfile.avatar = this.userProfile.avatarFile;
             }
             else {
               if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {

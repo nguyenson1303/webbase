@@ -93,13 +93,6 @@ export class AccountService {
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
-  urltoFile(url, filename, mimeType) {
-    return (fetch(url)
-      .then(function (res) { return res.arrayBuffer(); })
-      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
-  );
-}
-
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

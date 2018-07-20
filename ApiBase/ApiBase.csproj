@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\BusinessAccess\SkiaSharpImage.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DatabaseQuery\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -14,6 +18,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" />
+    <PackageReference Include="SkiaSharp" Version="1.60.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
   </ItemGroup>
 

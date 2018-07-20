@@ -5,6 +5,7 @@ import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import * as $ from 'jquery';
+import { AppConfig } from '../../../config/appconfig';
 
 @Component({
   selector: 'detail',
@@ -110,6 +111,11 @@ export class DetailComponent implements OnInit {
     this.accountService.getUserInforDetail(this.username).subscribe(result => {
       if (result) {
         this.userProfile = result;
+        if (this.userProfile.avatar !== null
+          && this.userProfile.avatar !== undefined
+          && this.userProfile.avatar !== "") {
+          this.userProfile.avatar = AppConfig.serverAPI + this.userProfile.avatar;
+        }
       }
       else {
         this.showModal(AppConstant.errorTitle, result.message);
