@@ -170,47 +170,74 @@ export class ConfirmComponent implements OnInit {
             }
 
             // process upload file avatar
-            var formData = new FormData();
-            var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
-            formData.append("Files", blob, this.createUserObj.avatarFileName);
-            formData.append("FilePath", "uploads\\avatar\\");
-            formData.append("FileOld", this.createUserObj.avatar);
+            if ((this.createUserObj.avatarFileName !== null
+              && this.createUserObj.avatarFileName !== undefined
+              && this.createUserObj.avatarFileName !== "") && (
+                this.createUserObj.avatarFile !== null
+                && this.createUserObj.avatarFile !== undefined
+                && this.createUserObj.avatarFile !== "")) {
 
-            let headers = new HttpHeaders({
-              'Authorization': AppConstant.headerBearer + this.authenService.getToken()
-            });
+              // upload new avatar and update infor
+              var formData = new FormData();
+              var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
+              formData.append("Files", blob, this.createUserObj.avatarFileName);
+              formData.append("FilePath", "uploads\\avatar\\");
+              formData.append("FileOld", this.createUserObj.avatar);
 
-            var uploadReq = new HttpRequest(
-              'POST',
-              AppConfig.serverAPI + AppConstant.uploadApiUrl,
-              formData,
-              { headers: headers, reportProgress: true }
-            );
+              let headers = new HttpHeaders({
+                'Authorization': AppConstant.headerBearer + this.authenService.getToken()
+              });
 
-            this.http.request(uploadReq).subscribe(event => {
-              if (event.type === HttpEventType.UploadProgress) {
-                this.progress = Math.round(100 * event.loaded / event.total);
-              }
-              else if (event.type === HttpEventType.Response) {
-                userInfor.avatar = event.body.toString();
+              var uploadReq = new HttpRequest(
+                'POST',
+                AppConfig.serverAPI + AppConstant.uploadApiUrl,
+                formData,
+                { headers: headers, reportProgress: true }
+              );
 
-                this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
-                  if (result) {
-                    if (result.code === AppConstant.successCode) {
-                      localStorage.removeItem(AppConstant.objectUser);
-                      this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
-                      this.router.navigate(['/pages/account/list', this.type]);
+              this.http.request(uploadReq).subscribe(event => {
+                if (event.type === HttpEventType.UploadProgress) {
+                  this.progress = Math.round(100 * event.loaded / event.total);
+                }
+                else if (event.type === HttpEventType.Response) {
+                  userInfor.avatar = event.body.toString();
+
+                  this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
+                    if (result) {
+                      if (result.code === AppConstant.successCode) {
+                        localStorage.removeItem(AppConstant.objectUser);
+                        this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                        this.router.navigate(['/pages/account/list', this.type]);
+                      }
+                      else {
+                        this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                      }
                     }
-                    else {
-                      this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
-                    }
+                  }),
+                    error => {
+                      this.showModal(AppConstant.errorTitle, error.message);
+                    };
+                }
+              });
+            }
+            else {
+              // only update infor
+              this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
+                if (result) {
+                  if (result.code === AppConstant.successCode) {
+                    localStorage.removeItem(AppConstant.objectUser);
+                    this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                    this.router.navigate(['/pages/account/list', this.type]);
                   }
-                }),
-                  error => {
-                    this.showModal(AppConstant.errorTitle, error.message);
-                  };
-              }
-            });
+                  else {
+                    this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                  }
+                }
+              }),
+                error => {
+                  this.showModal(AppConstant.errorTitle, error.message);
+                };
+            }
             // end process upload file
           }
           else {

@@ -116,10 +116,10 @@ export class DetailComponent implements OnInit {
     this.accountService.getUserInforDetail(this.username).subscribe(result => {
       if (result) {
         this.userProfile = result;
+
         if (this.userProfile.avatar !== null
           && this.userProfile.avatar !== undefined
           && this.userProfile.avatar !== "") {
-
           this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
             let fileName = result.url.split('/').pop().toString();
             let fileType = result.blob().type;
@@ -136,6 +136,9 @@ export class DetailComponent implements OnInit {
             fr.readAsDataURL(file);
 
           })
+        }
+        else {
+          this.avatarUrl = AppConstant.avatarDefault;
         }
       }
       else {

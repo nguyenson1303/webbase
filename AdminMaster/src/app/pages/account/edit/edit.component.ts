@@ -211,6 +211,9 @@ export class EditComponent implements OnInit {
 
               })
             }
+            else {
+              this.avatarUrl = AppConstant.avatarDefault;
+            }
 
             if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
               // this.userProfile.avatar = this.userProfile.avatarFile;
