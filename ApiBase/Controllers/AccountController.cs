@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ApiBase.Models.AdminViewModels;
 using ApiBase.Models.BusinessAccess;
 using ApiBase.Models.DB;
@@ -306,7 +307,7 @@ namespace ApiBase.Controllers
         // POST api/<controller>
         [HttpPost("validateUser")]
         [Authorize(Roles = "Admin")]
-        public IActionResult ValidateUser([FromBody]AdminUserView userView)
+        public IActionResult ValidateUser([FromBody]AdminUserValidateView userView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
@@ -400,19 +401,6 @@ namespace ApiBase.Controllers
                 }
             }
 
-            if (userView.AvatarFile != null)
-            {
-                if (!BaseClass.IsImage(userView.AvatarFile))
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        mess = Constant.MessageImageNotValid;
-                        response = Json(new { code = Constant.ImageNotValid, message = mess, field = "avatar" });
-                    }
-                }
-            }
-
             if (is_valid)
             {
                 response = Json(new { code = Constant.Success, message = Constant.MessageOk });
@@ -464,6 +452,17 @@ namespace ApiBase.Controllers
             return response;
         }
 
+        //[HttpPost("UploadMultipartUsingIFormFile")]
+        //public async Task<IActionResult> UploadMultipartUsingIFormFile(UploadMultipartModel model)
+        //{
+        //    var bufferSize = 32 * 1024;
+        //    var totalBytes = await BaseClass.ReadStream(model.File.OpenReadStream(), bufferSize);
+
+        //    return Ok();
+        //}
+
+        
+
         // PUT api/<controller>/email
         [HttpPut("updateUserInfor/{userName}")]
         [Authorize]
@@ -505,7 +504,7 @@ namespace ApiBase.Controllers
                 }
                 if (userView.AvatarFile != null)
                 {
-                    var imgPathTemp = "/assets/images/uploads/avatar/" +
+                    var imgPathTemp = "assets/images/uploads/avatar/" +
                               DateTime.Now.Year.ToString() + "/" +
                               DateTime.Now.Month.ToString() + "/";
 

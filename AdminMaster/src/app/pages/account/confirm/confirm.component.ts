@@ -25,8 +25,10 @@ export class ConfirmComponent implements OnInit {
     phone: "",
     address: "",
     birthday: "",
-    avatar: "",
-    avatarFile: null
+    avatar: null,
+    avatarFile: "",
+    avatarFileType: "",
+    avatarFileName: ""
   }
 
   public isCreate: boolean = true;
@@ -68,18 +70,14 @@ export class ConfirmComponent implements OnInit {
       this.createUserObj = JSON.parse(this.objectUser);
 
       if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
-        let file = this.createUserObj.avatarFile;
-        let fr = new FileReader();
-        fr.onload = (event: any) => {
-          let base64 = event.target.result;
-
-          this.createUserObj.avatar = base64;
-        }
-        fr.readAsDataURL(file);
+        this.createUserObj.avatar = this.accountService.urltoFile(
+          this.createUserObj.avatarFile,
+          this.createUserObj.avatarFileName,
+          this.createUserObj.avatarFileType);
       }
       else {
         if ((this.createUserObj.avatar === null || this.createUserObj.avatar === "")) {
-          this.createUserObj.avatar = AppConstant.avatarDefault;
+          this.createUserObj.avatarFile = AppConstant.avatarDefault;
         }
       }
     }
@@ -101,6 +99,22 @@ export class ConfirmComponent implements OnInit {
     if (this.isCreate)
     {
       // call api create user
+      let createUserObjNew = {
+        username: this.createUserObj.username,
+        password: this.createUserObj.password,
+        confirmPassword: this.createUserObj.confirmPassword,
+        ip: "",
+        online: this.createUserObj.online,
+        role: this.createUserObj.role,
+        fname: this.createUserObj.fname,
+        lname: this.createUserObj.lname,
+        phone: this.createUserObj.phone,
+        address: this.createUserObj.address,
+        birthday: this.createUserObj.birthday,
+        avatar: null,
+        avatarFile: this.createUserObj.avatar,
+        IsCreate: true
+      }
       this.accountService.createUser(this.createUserObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
@@ -129,16 +143,24 @@ export class ConfirmComponent implements OnInit {
         if (result) {
           if (result.code === AppConstant.successCode) {
 
-            let userInfor = {
-              fname: this.createUserObj.fname,
-              lname: this.createUserObj.lname,
-              phone: this.createUserObj.phone,
-              address: this.createUserObj.address,
-              birthday: this.createUserObj.birthday,
-              avatar: this.createUserObj.avatar,
-              avatarFile: this.createUserObj.avatarFile,
-              fullName: this.createUserObj.fname + " " + this.createUserObj.lname
-            };
+            let userInfor = new FormData();
+            userInfor.append("fname", this.createUserObj.fname);
+            userInfor.append("lname", this.createUserObj.lname);
+            userInfor.append("phone", this.createUserObj.phone);
+            userInfor.append("address", this.createUserObj.address);
+            userInfor.append("birthday", this.createUserObj.birthday);
+            userInfor.append("avatar", this.createUserObj.avatarFile != "" ? this.createUserObj.avatar : "");
+            userInfor.append("fullName", this.createUserObj.fname + " " + this.createUserObj.lname);
+            if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
+              userInfor.append("avatarFile", this.createUserObj.avatar);
+            }
+            else {
+              userInfor.append("avatarFile", null);
+            }
+
+            // for (let i = 0; i < files.length; i++) {
+            //  formData.append("files", files[i]);
+            // }
 
             this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
               if (result) {

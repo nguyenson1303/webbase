@@ -9,9 +9,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
 
 import * as $ from 'jquery';
-import { strictEqual } from 'assert';
-import { getDate } from 'date-fns';
-import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'edit',
   templateUrl: './edit.component.html',
@@ -46,6 +44,8 @@ export class EditComponent implements OnInit {
     dateRegister: null,
     avatar: "",
     avatarFile: null,
+    avatarFileType: "",
+    avatarFileName: "",
     fullName: ""
   }
 
@@ -147,14 +147,7 @@ export class EditComponent implements OnInit {
       this.userProfile.avatarFile = this.objectUser.avatarFile;
 
       if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
-        let file = this.userProfile.avatarFile;
-        let fr = new FileReader();
-        fr.onload = (event: any) => {
-          let base64 = event.target.result;
-
-          this.userProfile.avatar = base64;
-        }
-        fr.readAsDataURL(file);
+        this.userProfile.avatar = this.userProfile.avatarFile;
       }
       else {
         if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
@@ -185,14 +178,7 @@ export class EditComponent implements OnInit {
             this.userProfile = result;
 
             if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
-              let file = this.userProfile.avatarFile;
-              let fr = new FileReader();
-              fr.onload = (event: any) => {
-                let base64 = event.target.result;
-
-                this.userProfile.avatar = base64;
-              }
-              fr.readAsDataURL(file);
+              this.userProfile.avatar = this.userProfile.avatarFile;
             }
             else {
               if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
@@ -219,7 +205,7 @@ export class EditComponent implements OnInit {
     // validate
     let isValid = true;
     let mess = "";
-    let createUserObj = {
+    let createUserValidateObj = {
       username: this.userDetail.username,
       password: this.userDetail.password,
       confirmPassword: this.userDetail.confirmPassword,
@@ -232,17 +218,33 @@ export class EditComponent implements OnInit {
       address: this.userProfile.address,
       birthday: this.userProfile.birthday,
       avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
-      avatarFile: this.userProfile.avatarFile,
       isCreate: this.isCreate
     }
 
-    console.log(createUserObj);
-
     // call api validate user
-    this.accountService.validateUser(createUserObj).subscribe(result => {
+    this.accountService.validateUser(createUserValidateObj).subscribe(result => {
       if (result) {
         if (result.code === AppConstant.successCode) {
           // save obj to locate
+          let createUserObj = {
+            username: this.userDetail.username,
+            password: this.userDetail.password,
+            confirmPassword: this.userDetail.confirmPassword,
+            ip: "",
+            online: this.userDetail.online,
+            role: this.userDetail.role,
+            fname: this.userProfile.fname,
+            lname: this.userProfile.lname,
+            phone: this.userProfile.phone,
+            address: this.userProfile.address,
+            birthday: this.userProfile.birthday,
+            avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
+            avatarFile: this.userProfile.avatarFile,
+            avatarFileType: this.userProfile.avatarFileType,
+            avatarFileName: this.userProfile.avatarFileName,
+            isCreate: this.isCreate
+          }
+
           localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
           if (this.isCreate) {
             this.router.navigate(['/pages/account/confirm', this.type]);
@@ -322,13 +324,15 @@ export class EditComponent implements OnInit {
       let fr = new FileReader();
       fr.onload = (event: any) => {
         let base64 = event.target.result;
-
+        this.userProfile.avatarFile = base64;
         preview.attr('src', base64);
         deleteAvatar.show();
       }
       fr.readAsDataURL(file);
       console.log(file);
-      this.userProfile.avatarFile = file;
+
+      this.userProfile.avatarFileType = file.type;
+      this.userProfile.avatarFileName = file.name;
     }
   }
 }

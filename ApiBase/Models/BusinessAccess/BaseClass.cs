@@ -151,5 +151,20 @@ namespace ApiBase.Models.BusinessAccess
                 Directory.CreateDirectory(uploads);
             }
         }
+
+        public static async Task<int> ReadStream(Stream stream, int bufferSize)
+        {
+            var buffer = new byte[bufferSize];
+
+            int bytesRead;
+            int totalBytes = 0;
+
+            do
+            {
+                bytesRead = await stream.ReadAsync(buffer, 0, bufferSize);
+                totalBytes += bytesRead;
+            } while (bytesRead > 0);
+            return totalBytes;
+        }
     }
 }
