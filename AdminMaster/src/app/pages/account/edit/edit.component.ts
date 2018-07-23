@@ -220,7 +220,7 @@ export class EditComponent implements OnInit {
             }
             else {
               if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
-                 this.userProfile.avatar = AppConstant.avatarDefault;
+                this.userProfile.avatar = AppConstant.avatarDefault;
               }
             }
           }
@@ -231,6 +231,9 @@ export class EditComponent implements OnInit {
           error => {
             this.showModal(AppConstant.errorTitle, error.message);
           };
+      }
+      else {
+        this.avatarUrl = AppConstant.avatarDefault;
       }
     }
   }
@@ -370,7 +373,6 @@ export class EditComponent implements OnInit {
         deleteAvatar.show();
       }
       fr.readAsDataURL(file);
-      console.log(file);
 
       this.userProfile.avatarFileType = file.type;
       this.userProfile.avatarFileName = file.name;
