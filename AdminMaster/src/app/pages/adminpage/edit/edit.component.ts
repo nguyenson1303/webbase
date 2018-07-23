@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminpageService } from '../../../@core/data/adminpage.service';
@@ -175,6 +175,16 @@ export class EditComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    // $('#tree1').jstree(); // creates an instance
+    // $('#tree2').jstree({ plugins: [] }); // create an instance with some options
+    // $('#tree1').jstree('open_node', '#branch_1');
+    // call a method on an existing instance, passing additional arguments
+    // $('#tree2').jstree(); // get an existing instance (or create an instance)
+    // $('#tree2').jstree(true); // get an existing instance (will not create new instance)
+    // $('#branch_1').jstree().select_node('#branch_1'); // get an instance (using a nested element and call a method)
+  }
+
   nextclick() {
     // validate
     let isValid = true;
@@ -248,7 +258,6 @@ export class EditComponent implements OnInit {
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-
 }
 
 
