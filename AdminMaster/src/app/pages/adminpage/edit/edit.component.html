@@ -41,6 +41,7 @@
           <label for="icon" class="col-sm-2 col-form-label">Kiểu Action</label>
           <div class="col-sm-3">
             <select [(ngModel)]="adminPageDetail.typeActionId" class="form-control" id="typeActionId" name="typeActionId" >
+              <option  [value]=""></option>
               <option *ngFor="let x of adminPageActions" [value]="x.id" [selected]="x.id == adminPageDetail.typeActionId">{{x.actionName}}</option>
             </select>
           </div>

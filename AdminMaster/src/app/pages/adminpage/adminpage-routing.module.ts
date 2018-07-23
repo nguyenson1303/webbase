@@ -40,12 +40,12 @@ const routes: Routes = [{
       component: ConfirmComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'add/:type',
+      path: 'add/:type/:parentId',
       data: { breadcrumb: 'Tạo mới AdminPage' },
       component: EditComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'confirm/:type',
+      path: 'confirm/:type/:parentId',
       data: { breadcrumb: 'Xác nhận tạo AdminPage' },
       component: ConfirmComponent, canActivate: [AuthGuard]
     },

@@ -98,6 +98,7 @@ export class ConfirmComponent implements OnInit {
   backclick() {
     localStorage.setItem(AppConstant.isInProcess, "true")
     localStorage.setItem(AppConstant.objectUser, JSON.stringify(this.createUserObj))
+
     if (this.isCreate) {
       this.router.navigate(['/pages/account/add', this.type]);
     }
