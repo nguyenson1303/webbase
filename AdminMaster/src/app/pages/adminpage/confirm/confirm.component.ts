@@ -6,7 +6,7 @@ import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-import * as $ from 'jquery';
+declare var $: any;
 
 @Component({
   selector: 'confirm',

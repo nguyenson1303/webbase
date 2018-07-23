@@ -7,9 +7,8 @@ import { AppConstant } from '../../../config/appconstant';
 import { AccountService } from '../../../@core/data/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
-import * as $ from 'jquery';
-import { RequestOptions } from '@angular/http';
-import { AuthService } from '../../../@core/data/auth.service';
+
+declare var $: any;
 
 @Component({
   selector: 'confirm',

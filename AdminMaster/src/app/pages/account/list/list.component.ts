@@ -6,7 +6,8 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-import * as $ from 'jquery';
+declare var $: any;
+
 @Component({
   selector: 'list-account',
   templateUrl: './list.component.html',

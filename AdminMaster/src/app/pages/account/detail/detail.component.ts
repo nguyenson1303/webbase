@@ -7,7 +7,7 @@ import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { AccountService } from '../../../@core/data/account.service';
 import { BaseService } from '../../../@core/data/base.service';
 
-import * as $ from 'jquery';
+declare var $: any;
 
 @Component({
   selector: 'detail',

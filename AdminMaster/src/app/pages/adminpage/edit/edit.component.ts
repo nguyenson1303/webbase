@@ -6,7 +6,7 @@ import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-import * as $ from 'jquery';
+declare var $: any;
 
 @Component({
   selector: 'edit',
@@ -190,7 +190,7 @@ export class EditComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    $('#html1').jstree(); // creates an instance
+    $('#jstree').jstree(); // creates an instance
     // $('#tree2').jstree({ plugins: [] }); // create an instance with some options
     // $('#tree1').jstree('open_node', '#branch_1');
     // call a method on an existing instance, passing additional arguments

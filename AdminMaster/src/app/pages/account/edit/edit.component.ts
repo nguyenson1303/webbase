@@ -2,15 +2,15 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
+import { BaseService } from '../../../@core/data/base.service';
+import { AppConfig } from '../../../config/appconfig';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
 
-import * as $ from 'jquery';
-import { AppConfig } from '../../../config/appconfig';
-import { BaseService } from '../../../@core/data/base.service';
+declare var $: any;
 
 @Component({
   selector: 'edit',
