@@ -337,8 +337,19 @@ export class EditComponent implements OnInit {
 
     activeModal.result.then((userResponse) => {
       if (userResponse === true) {
-        // this.deleteClick(userName);
+        if (this.isCreate) {
+          this.avatarUrl = AppConstant.avatarDefault;
+        }
+        else {
+          this.avatarUrl = this.userProfile.avatar;
+        }
 
+        this.userProfile.avatarFile = null;
+        this.userProfile.avatarFileType = null;
+        this.userProfile.avatarFileName = null;
+
+        $('#avatarImage').attr('src', this.avatarUrl);
+        $('#avatarDelete').hide();
       }
     });
   }

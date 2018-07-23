@@ -145,6 +145,7 @@ export class ConfirmComponent implements OnInit {
         formData.append(AppConstant.fileKey, blob, this.createUserObj.avatarFileName);
         formData.append(AppConstant.filePath, AppConstant.avatarUploadFolder);
         formData.append(AppConstant.fileOld, this.createUserObj.avatar);
+        formData.append(AppConstant.thumbnailSizeKey, AppConstant.thumbnailSizeValue.toString());
 
         this.baseService.uploadFile(formData).subscribe(event => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -227,6 +228,7 @@ export class ConfirmComponent implements OnInit {
               formData.append(AppConstant.fileKey, blob, this.createUserObj.avatarFileName);
               formData.append(AppConstant.filePath, AppConstant.avatarUploadFolder);
               formData.append(AppConstant.fileOld, this.createUserObj.avatar);
+              formData.append(AppConstant.thumbnailSizeKey, AppConstant.thumbnailSizeValue.toString());
 
               this.baseService.uploadFile(formData).subscribe(event => {
                 if (event.type === HttpEventType.UploadProgress) {

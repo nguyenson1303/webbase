@@ -8,6 +8,7 @@ using ApiBase.Models.BusinessAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using SkiaSharp;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,13 +31,20 @@ namespace ApiBase.Controllers
         {
             try
             {
-                string fullPathSmall = string.Empty;
+                string smallPath = string.Empty;
                 string imageSmall = string.Empty;
                 string imageLager = string.Empty;
+
+                int thumbnailSize = 150;
+                int quality = 100;
 
                 var file = Request.Form.Files[0];
                 string folderName = Request.Form["FilePath"] + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.Month.ToString();
                 string fileOld = Request.Form["FileOld"];
+                string thumbnailSizeStr = Request.Form["ThumbnailSize"];
+                if (!string.IsNullOrEmpty(thumbnailSizeStr)) {
+                    thumbnailSize = int.Parse(thumbnailSizeStr);
+                }
 
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
@@ -46,9 +54,8 @@ namespace ApiBase.Controllers
                 }
                 if (file.Length > 0)
                 {
-                   // string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    imageSmall =  "sc_small_" + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    imageLager =  "sc_full_" + "_" + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    imageSmall =  "sc_small_" + BaseClass.GetUniqueFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
+                    imageLager =  "sc_full_" + BaseClass.GetUniqueFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
 
                     if (!string.IsNullOrEmpty(fileOld))
                     {
@@ -65,24 +72,51 @@ namespace ApiBase.Controllers
                         }
                     }
 
-                    fullPathSmall = Path.Combine(newPath, imageSmall);
-                    using (var stream = new FileStream(fullPathSmall, FileMode.Create))
+                    smallPath = Path.Combine(newPath, imageSmall);
+
+                    // save image full size
+                    string fullPath = Path.Combine(newPath, imageLager);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
 
-                    //string fullPathFull = Path.Combine(newPath, imageLager);
-                    //using (var stream = new FileStream(fullPathFull, FileMode.Create))
-                    //{
-                    //    file.CopyTo(stream);
-                    //}
+                    // save image Resize
+                    var fileType = Path.GetExtension(fullPath);
+
+                    using (var input = System.IO.File.OpenRead(fullPath))
+                    {
+                        using (var inputStream = new SKManagedStream(input))
+                        {
+                            using (var original = SKBitmap.Decode(inputStream))
+                            {
+                                var scaled = LoadResizeSave.ScaledSize(original.Width, original.Height, thumbnailSize);
+                                using (var resized = original.Resize(new SKImageInfo(scaled.width, scaled.height), SKBitmapResizeMethod.Lanczos3))
+                                {
+                                    if (resized != null)
+                                    {
+                                        using (var image = SKImage.FromBitmap(resized))
+                                        {
+                                            using (var output = System.IO.File.OpenWrite(smallPath))
+                                            {
+                                                image.Encode(LoadResizeSave.GetSkiaTypeImage(fileType), quality)
+                                                    .SaveTo(output);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
+                // return path thumbnail image
                 string returnPath = (folderName + "\\" + imageSmall).Replace("\\", "/");
                 return Json(returnPath);
             }
             catch (System.Exception ex)
             {
-                return Json("Upload Failed: " + ex.Message);
+                return Json(string.Empty);
             }
         }
 

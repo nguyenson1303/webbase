@@ -429,15 +429,6 @@ namespace ApiBase.Controllers
 
             return response;
         }
-
-        //[HttpPost("UploadMultipartUsingIFormFile")]
-        //public async Task<IActionResult> UploadMultipartUsingIFormFile(UploadMultipartModel model)
-        //{
-        //    var bufferSize = 32 * 1024;
-        //    var totalBytes = await BaseClass.ReadStream(model.File.OpenReadStream(), bufferSize);
-
-        //    return Ok();
-        //}
         
         // PUT api/<controller>/email
         [HttpPut("updateUserInfor/{userName}")]

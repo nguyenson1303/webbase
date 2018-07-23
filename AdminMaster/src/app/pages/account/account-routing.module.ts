@@ -8,6 +8,7 @@ import { ListComponent } from '../account/list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
       path: 'confirm/:type',
       data: { breadcrumb: 'Xác nhận tạo account' },
       component: ConfirmComponent, canActivate: [AuthGuard]
+    },
+    {
+      path: 'profile/:username',
+      data: { breadcrumb: 'Hồ sơ' },
+      component: ProfileComponent, canActivate: [AuthGuard]
     },
     { path: '', redirectTo: 'list/:type', pathMatch: 'full' },
     { path: '**', redirectTo: 'list/:type' },
