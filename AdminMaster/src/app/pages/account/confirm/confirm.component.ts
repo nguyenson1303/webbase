@@ -46,9 +46,7 @@ export class ConfirmComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private modalService: NgbModal,
-    private baseService: BaseService,
-    private http: HttpClient,
-    private authenService: AuthService) {
+    private baseService: BaseService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -129,23 +127,69 @@ export class ConfirmComponent implements OnInit {
         phone: this.createUserObj.phone,
         address: this.createUserObj.address,
         birthday: this.createUserObj.birthday,
+        avatar: "",
         IsCreate: true
       }
-      this.accountService.createUser(createUserObjNew).subscribe(result => {
-        if (result) {
-          if (result.code === AppConstant.successCode) {
-            localStorage.removeItem(AppConstant.objectUser);
-            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
-            this.router.navigate(['/pages/account/list', this.type]);
+
+      // process upload file avatar
+      if ((this.createUserObj.avatarFileName !== null
+        && this.createUserObj.avatarFileName !== undefined
+        && this.createUserObj.avatarFileName !== "") && (
+          this.createUserObj.avatarFile !== null
+          && this.createUserObj.avatarFile !== undefined
+          && this.createUserObj.avatarFile !== "")) {
+
+        // upload new avatar and create account
+        var formData = new FormData();
+        var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
+        formData.append(AppConstant.fileKey, blob, this.createUserObj.avatarFileName);
+        formData.append(AppConstant.filePath, AppConstant.avatarUploadFolder);
+        formData.append(AppConstant.fileOld, this.createUserObj.avatar);
+
+        this.baseService.uploadFile(formData).subscribe(event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round(100 * event.loaded / event.total);
           }
-          else {
-            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+          else if (event.type === HttpEventType.Response) {
+            createUserObjNew.avatar = event.body.toString();
+
+            this.accountService.createUser(createUserObjNew).subscribe(result => {
+              if (result) {
+                if (result.code === AppConstant.successCode) {
+                  localStorage.removeItem(AppConstant.objectUser);
+                  this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+                  this.router.navigate(['/pages/account/list', this.type]);
+                }
+                else {
+                  this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+                }
+              }
+            }),
+              error => {
+                this.showModal(AppConstant.errorTitle, error.message);
+              };
           }
-        }
-      }),
-        error => {
-          this.showModal(AppConstant.errorTitle, error.message);
-        };
+        });
+      }
+      else {
+        // create new account without avatar
+        this.accountService.createUser(createUserObjNew).subscribe(result => {
+          if (result) {
+            if (result.code === AppConstant.successCode) {
+              localStorage.removeItem(AppConstant.objectUser);
+              this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+              this.router.navigate(['/pages/account/list', this.type]);
+            }
+            else {
+              this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+            }
+          }
+        }),
+          error => {
+            this.showModal(AppConstant.errorTitle, error.message);
+          };
+      }
+
     }
     else {
       let userAccount = {
@@ -180,22 +224,11 @@ export class ConfirmComponent implements OnInit {
               // upload new avatar and update infor
               var formData = new FormData();
               var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
-              formData.append("Files", blob, this.createUserObj.avatarFileName);
-              formData.append("FilePath", "uploads\\avatar\\");
-              formData.append("FileOld", this.createUserObj.avatar);
+              formData.append(AppConstant.fileKey, blob, this.createUserObj.avatarFileName);
+              formData.append(AppConstant.filePath, AppConstant.avatarUploadFolder);
+              formData.append(AppConstant.fileOld, this.createUserObj.avatar);
 
-              let headers = new HttpHeaders({
-                'Authorization': AppConstant.headerBearer + this.authenService.getToken()
-              });
-
-              var uploadReq = new HttpRequest(
-                'POST',
-                AppConfig.serverAPI + AppConstant.uploadApiUrl,
-                formData,
-                { headers: headers, reportProgress: true }
-              );
-
-              this.http.request(uploadReq).subscribe(event => {
+              this.baseService.uploadFile(formData).subscribe(event => {
                 if (event.type === HttpEventType.UploadProgress) {
                   this.progress = Math.round(100 * event.loaded / event.total);
                 }

@@ -277,7 +277,7 @@ namespace ApiBase.Controllers
                 LastLogin = null
             };
 
-            rt = userModels.AddUser(user);
+            rt = userModels.AddUser(user, userView);
 
             if (rt.Length > 0)
             {
@@ -438,9 +438,7 @@ namespace ApiBase.Controllers
 
         //    return Ok();
         //}
-
         
-
         // PUT api/<controller>/email
         [HttpPut("updateUserInfor/{userName}")]
         [Authorize]

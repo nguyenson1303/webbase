@@ -1,5 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions, URLSearchParams, QueryEncoder, ResponseContentType } from '@angular/http';
+import {
+  Http,
+  Headers,
+  Response,
+  RequestOptions,
+  URLSearchParams,
+  QueryEncoder,
+  ResponseContentType
+} from '@angular/http';
+import {
+  HttpClient,
+  HttpRequest,
+  HttpEventType,
+  HttpResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../config/appconfig';
@@ -18,6 +33,7 @@ export class BaseService {
 
   constructor(
     private http: Http,
+    private httpClient: HttpClient,
     private Router: Router,
     private authenService: AuthService) {
     this.headers = new Headers(
@@ -68,5 +84,20 @@ export class BaseService {
     let url = AppConfig.serverAPI + AppConstant.downloadApiUrl + "?filename=" + filename;
     this.options = new RequestOptions({ headers: this.headers, responseType: ResponseContentType.Blob });
     return this.http.get(url, this.options);
+  }
+
+  uploadFile(formData: any): Observable<any> {
+    let headers = new HttpHeaders({
+      'Authorization': AppConstant.headerBearer + this.authenService.getToken()
+    });
+
+    var uploadReq = new HttpRequest(
+      'POST',
+      AppConfig.serverAPI + AppConstant.uploadApiUrl,
+      formData,
+      { headers: headers, reportProgress: true }
+    );
+
+    return this.httpClient.request(uploadReq);
   }
 }

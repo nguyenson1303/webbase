@@ -1,5 +1,6 @@
 ﻿namespace ApiBase.Models.BusinessAccess
 {
+    using ApiBase.Models.AdminViewModels;
     using ApiBase.Models.DB;
     using DBBase.EntitysObject;
     using System;
@@ -99,7 +100,7 @@
         /// </summary>
         /// <param name="user">user object.</param>
         /// <returns>Adds the user</returns>
-        public string AddUser(User user)
+        public string AddUser(User user, AdminUserView userView)
         {
             using (var data = new themanorContext())
             {
@@ -116,6 +117,15 @@
                         {
                             UserInfo uf = new UserInfo();
                             uf.Email = user.Username;
+                            uf.Fname = userView.Fname;
+                            uf.Lname = userView.Lname;
+                            uf.Phone = userView.Phone;
+                            uf.Address = userView.Address;
+                            if (!string.IsNullOrEmpty(userView.Birthday))
+                            {
+                                uf.Birthday = DateTime.Parse(userView.Birthday);
+                            }
+                            uf.Avatar = userView.Avatar;
                             uf.DateRegister = DateTime.Now;
 
                             data.UserInfo.Add(uf);
