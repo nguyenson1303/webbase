@@ -47,7 +47,7 @@ namespace ApiBase.Controllers
                     {
                         foreach (var child in lstChild)
                         {                           
-                            var isShow = UserModels.CheckPermission(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), (child.TypeActionId != null ? child.TypeActionId.ToString() : string.Empty), child.Tye);
+                            var isShow = UserModels.CheckPermissionMenu(userLogin, (string.IsNullOrEmpty(child.Path) ? string.Empty : child.Path), child.Tye);
                             if (isShow)
                             {
                                 var path = string.Empty;

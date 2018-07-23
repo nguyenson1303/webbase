@@ -16,23 +16,7 @@ namespace ApiBase.Models.DB
         public string Icon { get; set; }
         public string Path { get; set; }
         public string Breadcrumb { get; set; }
-        public int? TypeActionId { get; set; }
         public DateTime? ModifyDate { get; set; }
         public DateTime? CreateDate { get; set; }
-    }
-
-    public class UserPageTree
-    {
-        public string Id { get; set; }
-        public string Parent { get; set; }
-        public string Text { get; set; }
-        public UserPageTreeOption State { get; set; }
-    }
-
-    public class UserPageTreeOption
-    {
-        public Boolean Opened { get; set; }
-        public Boolean Selected { get; set; }
-        public Boolean Disabled { get; set; }
     }
 }

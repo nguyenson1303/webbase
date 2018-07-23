@@ -83,6 +83,70 @@
         }
 
         /// <summary>
+        /// Checks the permission.
+        /// </summary>
+        /// <param name="user_name">Name of the user.</param>
+        /// <param name="path">The act.</param>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="type_action">The type action.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>Checks the permission</returns>
+        public static bool CheckPermissionMenu(string user_name, string path, string type)
+        {
+            try
+            {
+                using (var data = new themanorContext())
+                {
+                    UserPage objUserPage = new UserPage();
+                    if (string.IsNullOrEmpty(type))
+                    {
+                        objUserPage = data.UserPage.Where(c => c.Path.ToLower() == path.ToLower()).FirstOrDefault();
+                    }
+                    else
+                    {
+                        objUserPage = data.UserPage.Where(c => c.Path.ToLower() == path.ToLower() && c.Tye == type).FirstOrDefault();
+                    }
+
+                    if (objUserPage != null)
+                    {
+                        UserPermission objUserPermission = data.UserPermission.Where(p => p.PageId == objUserPage.Id && p.User == user_name).FirstOrDefault();
+                        if (objUserPermission != null)
+                        {
+                            bool isOK = false;
+                            var listActionID = objUserPermission.TypeActionId;
+                            List<string> listAction = new List<string>();
+
+                            if (!string.IsNullOrEmpty(listActionID))
+                            {
+                                listAction = listActionID.Split(',').ToList();
+
+                                // exist permission on page
+                                if(listAction.Count > 0)
+                                {
+                                    isOK = true;
+                                }
+                            }
+
+                            return isOK;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Gets the list user page by parent identifier.
         /// </summary>
         /// <param name="parentID">The parent identifier.</param>
@@ -1079,7 +1143,7 @@
                         c_gen.Icon = userPage.Icon;
                         c_gen.Path = userPage.Path;
                         c_gen.Breadcrumb = userPage.Breadcrumb;
-                        c_gen.TypeActionId = userPage.TypeActionId;
+                        // c_gen.TypeActionId = userPage.TypeActionId;
                         c_gen.ModifyDate = DateTime.Now;                        
 
                         data.SaveChanges();
