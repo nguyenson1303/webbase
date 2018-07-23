@@ -20,6 +20,7 @@ export class AppConstant {
 
   // adminpage api
   public static listAdminPageApiUrl: string = "/api/adminpage/listUserPage";
+  public static listAdminPageTreeApiUrl: string = "/api/adminpage/listUserPageTree";
   public static deleteAdminPageApiUrl: string = "/api/adminpage";
   public static updateAdminPageApiUrl: string = "/api/adminpage";
   public static createAdminPageApiUrl: string = "/api/adminpage";
