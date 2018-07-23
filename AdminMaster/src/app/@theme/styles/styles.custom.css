@@ -149,7 +149,6 @@ label.switch {
 }
 #child_breadcrumb .breadcrumb {
   background-color: transparent !important;
-  margin-left: -80px;
 }
 /*breadcrumb*/
 
