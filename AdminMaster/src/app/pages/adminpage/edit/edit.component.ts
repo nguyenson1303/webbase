@@ -190,7 +190,7 @@ export class EditComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // $('#tree1').jstree(); // creates an instance
+    $('#html1').jstree(); // creates an instance
     // $('#tree2').jstree({ plugins: [] }); // create an instance with some options
     // $('#tree1').jstree('open_node', '#branch_1');
     // call a method on an existing instance, passing additional arguments
