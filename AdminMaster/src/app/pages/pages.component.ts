@@ -5,7 +5,6 @@ import { MENU_ITEMS } from './pages-menu';
 import { MenuService } from './../@core/data/menu.service';
 import { AppConstant } from './../config/appconstant';
 import { forEach } from '@angular/router/src/utils/collection';
-import { Jsonp } from '@angular/http';
 
 @Component({
   selector: 'ngx-pages',

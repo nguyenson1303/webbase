@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApiBase.Models.AdminViewModels;
@@ -18,7 +19,7 @@ namespace ApiBase.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
-    {       
+    {        
         // GET: api/<controller>
         // get login user profile
         [HttpGet, Authorize]
@@ -473,28 +474,7 @@ namespace ApiBase.Controllers
                 if (!string.IsNullOrEmpty(userView.Birthday)) {
                     infor.Birthday = DateTime.Parse(userView.Birthday);
                 }
-                if (userView.AvatarFile != null)
-                {
-                    var imgPathTemp = "assets/images/uploads/avatar/" +
-                              DateTime.Now.Year.ToString() + "/" +
-                              DateTime.Now.Month.ToString() + "/";
-
-                    string imageSmall = imgPathTemp + "sc_small_" + "_" + BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
-                    string imageLager = imgPathTemp + "sc_full_" + "_" + BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
-
-                    // var uniqueFileName = BaseClass.GetUniqueFileName(userView.AvatarFile.FileName);
-                    // var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
-                    // var filePath = Path.Combine(uploads, uniqueFileName);
-                    // userView.AvatarFile.CopyTo(new FileStream(filePath, FileMode.Create));
-
-                    baseClass.Savephoto(infor.Avatar, userView.AvatarFile, imgPathTemp, imageSmall, imageLager);
-
-                    infor.Avatar = imageSmall;
-                }
-                else
-                {
-                    infor.Avatar = userView.Avatar;
-                }                
+                infor.Avatar = userView.Avatar.ToString();
                 infor.FullName = userView.FullName;
 
                 rt = userModels.UpdateUserInfor(userName, infor);

@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BaseService } from '../../../@core/data/base.service';
+import { AppConfig } from '../../../config/appconfig';
 import { AppConstant } from '../../../config/appconstant';
 import { AccountService } from '../../../@core/data/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
 import * as $ from 'jquery';
+import { RequestOptions } from '@angular/http';
+import { AuthService } from '../../../@core/data/auth.service';
 
 @Component({
   selector: 'confirm',
@@ -31,6 +36,7 @@ export class ConfirmComponent implements OnInit {
     avatarFileName: ""
   }
 
+  public progress: number;
   public isCreate: boolean = true;
   private username: string = "";
   private objectUser: any;
@@ -39,7 +45,10 @@ export class ConfirmComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
     private accountService: AccountService,
     private router: Router,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private baseService: BaseService,
+    private http: HttpClient,
+    private authenService: AuthService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -79,14 +88,13 @@ export class ConfirmComponent implements OnInit {
       this.createUserObj = JSON.parse(this.objectUser);
 
       if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
-        this.createUserObj.avatar = this.accountService.urltoFile(
-          this.createUserObj.avatarFile,
-          this.createUserObj.avatarFileName,
-          this.createUserObj.avatarFileType);
       }
       else {
         if ((this.createUserObj.avatar === null || this.createUserObj.avatar === "")) {
           this.createUserObj.avatarFile = AppConstant.avatarDefault;
+        }
+        else {
+          this.createUserObj.avatarFile = this.createUserObj.avatar;
         }
       }
     }
@@ -108,8 +116,7 @@ export class ConfirmComponent implements OnInit {
   }
 
   nextclick() {
-    if (this.isCreate)
-    {
+    if (this.isCreate) {
       // call api create user
       let createUserObjNew = {
         username: this.createUserObj.username,
@@ -123,11 +130,9 @@ export class ConfirmComponent implements OnInit {
         phone: this.createUserObj.phone,
         address: this.createUserObj.address,
         birthday: this.createUserObj.birthday,
-        avatar: null,
-        avatarFile: this.createUserObj.avatar,
         IsCreate: true
       }
-      this.accountService.createUser(this.createUserObj).subscribe(result => {
+      this.accountService.createUser(createUserObjNew).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectUser);
@@ -143,8 +148,7 @@ export class ConfirmComponent implements OnInit {
           this.showModal(AppConstant.errorTitle, error.message);
         };
     }
-    else
-    {
+    else {
       let userAccount = {
         ip: "",
         online: this.createUserObj.online,
@@ -156,40 +160,86 @@ export class ConfirmComponent implements OnInit {
         if (result) {
           if (result.code === AppConstant.successCode) {
 
-            let userInfor = new FormData();
-            userInfor.append("fname", this.createUserObj.fname);
-            userInfor.append("lname", this.createUserObj.lname);
-            userInfor.append("phone", this.createUserObj.phone);
-            userInfor.append("address", this.createUserObj.address);
-            userInfor.append("birthday", this.createUserObj.birthday);
-            userInfor.append("avatar", this.createUserObj.avatarFile != "" ? this.createUserObj.avatar : "");
-            userInfor.append("fullName", this.createUserObj.fname + " " + this.createUserObj.lname);
-            if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
-              userInfor.append("avatarFile", this.createUserObj.avatar);
+            let userInfor = {
+              fname: this.createUserObj.fname,
+              lname: this.createUserObj.lname,
+              phone: this.createUserObj.phone,
+              address: this.createUserObj.address,
+              birthday: this.createUserObj.birthday,
+              avatar: "",
+              fullName: this.createUserObj.fname + " " + this.createUserObj.lname
+            }
+
+            // process upload file avatar
+            if ((this.createUserObj.avatarFileName !== null
+              && this.createUserObj.avatarFileName !== undefined
+              && this.createUserObj.avatarFileName !== "") && (
+                this.createUserObj.avatarFile !== null
+                && this.createUserObj.avatarFile !== undefined
+                && this.createUserObj.avatarFile !== "")) {
+
+              // upload new avatar and update infor
+              var formData = new FormData();
+              var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
+              formData.append("Files", blob, this.createUserObj.avatarFileName);
+              formData.append("FilePath", "uploads\\avatar\\");
+              formData.append("FileOld", this.createUserObj.avatar);
+
+              let headers = new HttpHeaders({
+                'Authorization': AppConstant.headerBearer + this.authenService.getToken()
+              });
+
+              var uploadReq = new HttpRequest(
+                'POST',
+                AppConfig.serverAPI + AppConstant.uploadApiUrl,
+                formData,
+                { headers: headers, reportProgress: true }
+              );
+
+              this.http.request(uploadReq).subscribe(event => {
+                if (event.type === HttpEventType.UploadProgress) {
+                  this.progress = Math.round(100 * event.loaded / event.total);
+                }
+                else if (event.type === HttpEventType.Response) {
+                  userInfor.avatar = event.body.toString();
+
+                  this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
+                    if (result) {
+                      if (result.code === AppConstant.successCode) {
+                        localStorage.removeItem(AppConstant.objectUser);
+                        this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                        this.router.navigate(['/pages/account/list', this.type]);
+                      }
+                      else {
+                        this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                      }
+                    }
+                  }),
+                    error => {
+                      this.showModal(AppConstant.errorTitle, error.message);
+                    };
+                }
+              });
             }
             else {
-              userInfor.append("avatarFile", null);
+              // only update infor
+              this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
+                if (result) {
+                  if (result.code === AppConstant.successCode) {
+                    localStorage.removeItem(AppConstant.objectUser);
+                    this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                    this.router.navigate(['/pages/account/list', this.type]);
+                  }
+                  else {
+                    this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                  }
+                }
+              }),
+                error => {
+                  this.showModal(AppConstant.errorTitle, error.message);
+                };
             }
-
-            // for (let i = 0; i < files.length; i++) {
-            //  formData.append("files", files[i]);
-            // }
-
-            this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
-              if (result) {
-                if (result.code === AppConstant.successCode) {
-                  localStorage.removeItem(AppConstant.objectUser);
-                  this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
-                  this.router.navigate(['/pages/account/list', this.type]);
-                }
-                else {
-                  this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
-                }
-              }
-            }),
-              error => {
-                this.showModal(AppConstant.errorTitle, error.message);
-              };
+            // end process upload file
           }
           else {
             this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
@@ -199,8 +249,6 @@ export class ConfirmComponent implements OnInit {
         error => {
           this.showModal(AppConstant.errorTitle, error.message);
         };
-
-
     }
   }
 

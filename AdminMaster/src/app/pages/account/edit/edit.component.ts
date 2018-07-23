@@ -9,6 +9,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
 
 import * as $ from 'jquery';
+import { AppConfig } from '../../../config/appconfig';
+import { BaseService } from '../../../@core/data/base.service';
 
 @Component({
   selector: 'edit',
@@ -21,7 +23,7 @@ export class EditComponent implements OnInit {
     username: "",
     password: "",
     confirmPassword: "",
-    role: 0,
+    role: 1,
     online: true,
     lastLogin: "",
     ip: "",
@@ -65,8 +67,8 @@ export class EditComponent implements OnInit {
     locale: enLocale,
     // minDate: new Date(Date.now()), // Minimal selectable date
     // maxDate: new Date(Date.now()),  // Maximal selectable date
-    barTitleIfEmpty: 'Click to select a date',
-    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    barTitleIfEmpty: 'Click to select a Birthday',
+    placeholder: 'Birthday', // HTML input placeholder attribute (default: '')
     addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
     addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'birthday', // ID to assign to the input field. Defaults to datepicker-<counter>
@@ -74,16 +76,19 @@ export class EditComponent implements OnInit {
     // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown
   };
 
+  avatarUrl: string = "";
   public isCreate: boolean = true;
   private username: string = "";
   private type: string = "";
   private errorMessage: string = "";
   private objectUser: any;
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private baseService: BaseService) {
 
     // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
@@ -185,9 +190,33 @@ export class EditComponent implements OnInit {
         this.accountService.getUserInforDetail(this.username).subscribe(result => {
           if (result) {
             this.userProfile = result;
+            if (this.userProfile.avatar !== null
+              && this.userProfile.avatar !== undefined
+              && this.userProfile.avatar !== "") {
+
+              this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
+                let fileName = result.url.split('/').pop().toString();
+                let fileType = result.blob().type;
+
+                var blob = new Blob([result.blob()], { type: fileType });
+                let file = this.baseService.blobToFile(blob, fileName);
+
+                let fr = new FileReader();
+                fr.onload = (event: any) => {
+                  let base64 = event.target.result;
+                  this.userProfile.avatar = base64;
+                  this.avatarUrl = base64;
+                }
+                fr.readAsDataURL(file);
+
+              })
+            }
+            else {
+              this.avatarUrl = AppConstant.avatarDefault;
+            }
 
             if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
-              this.userProfile.avatar = this.userProfile.avatarFile;
+              // this.userProfile.avatar = this.userProfile.avatarFile;
             }
             else {
               if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {

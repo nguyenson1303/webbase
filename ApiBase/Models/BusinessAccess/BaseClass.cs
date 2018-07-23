@@ -95,63 +95,6 @@ namespace ApiBase.Models.BusinessAccess
                       + Path.GetExtension(fileName);
         }
 
-        /// <summary>
-        /// Save photo the specified old image.
-        /// </summary>
-        /// <param name="old_img">The old image.</param>
-        /// <param name="control">The control.</param>
-        /// <param name="imgPathTemp">The image path temporary.</param>
-        /// <param name="imagePath">The image path.</param>
-        /// <param name="imageFullPath">The image full path.</param>
-        public void Savephoto(string old_img, IFormFile control, string imgPathTemp, string imagePath, string imageFullPath)
-        {
-            // ImagesLibrary imglib = new ImagesLibrary();
-            // var thumb_type = Util.GetConfigValue("ThumbType", "both");
-            // var thumb_width = int.Parse(Util.GetConfigValue("WidthImageThumb", "270"));
-            // var thumb_height = int.Parse(Util.GetConfigValue("HeightImageThumb", "400"));
-            // var larger_width = int.Parse(Util.GetConfigValue("WidthImageLarger", "540"));
-            // var larger_height = int.Parse(Util.GetConfigValue("HeightImageLarger", "800"));         
-
-            if (!string.IsNullOrEmpty(old_img))
-            {
-                // string strImg = old_img;
-                // strImg = "~" + strImg;
-                string fileDelete = Path.Combine(old_img);
-                if (System.IO.File.Exists(fileDelete))
-                {
-                    System.IO.File.Delete(fileDelete);
-                }
-
-                string fileDelete2 = Path.Combine(old_img.Replace("sc_small_", "sc_full_"));
-                if (System.IO.File.Exists(fileDelete2))
-                {
-                    System.IO.File.Delete(fileDelete2);
-                }
-            }
-
-            var uploads = Path.Combine(hostingEnvironment.WebRootPath, imgPathTemp);
-
-            if (!Directory.Exists(uploads))
-            {
-                Directory.CreateDirectory(uploads);
-            }
-
-            var filePathSmall = Path.Combine(uploads, imagePath);
-            control.CopyTo(new FileStream(filePathSmall, FileMode.Create));
-
-            var filePathFull = Path.Combine(uploads, imageFullPath);
-            control.CopyTo(new FileStream(filePathFull, FileMode.Create));
-
-            // string imageGoc = imgPathTemp + control.FileName;
-            // string realFile = Request.PhysicalApplicationPath + imageGoc.Replace("/", "\\");
-            // string virtualFolder = "~/" + imageGoc.Substring(0, imageGoc.LastIndexOf('/') + 1);
-            // string folder = Path.Combine(virtualFolder);
-            if (!Directory.Exists(uploads))
-            {
-                Directory.CreateDirectory(uploads);
-            }
-        }
-
         public static async Task<int> ReadStream(Stream stream, int bufferSize)
         {
             var buffer = new byte[bufferSize];
@@ -165,6 +108,31 @@ namespace ApiBase.Models.BusinessAccess
                 totalBytes += bytesRead;
             } while (bytesRead > 0);
             return totalBytes;
+        }
+
+        public string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet"},  
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
         }
     }
 }

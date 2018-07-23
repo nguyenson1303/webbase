@@ -18,7 +18,8 @@ export class AccountService {
   private authUrl = AppConfig.serverAPI + AppConstant.tokenApiUrl;
   private currentStorage = AppConstant.currentStorage;
 
-  constructor(private http: Http,
+  constructor(
+    private http: Http,
     private Router: Router,
     private authenService: AuthService) {
     this.headers = new Headers(
@@ -92,13 +93,6 @@ export class AccountService {
     let body = JSON.stringify(data);
     return this.http.post(url, body, this.options).map(this.extractData);
   }
-
-  urltoFile(url, filename, mimeType) {
-    return (fetch(url)
-      .then(function (res) { return res.arrayBuffer(); })
-      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
-  );
-}
 
   private extractData(res: Response) {
     let body = res.json();
