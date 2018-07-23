@@ -56,14 +56,16 @@ namespace ApiBase.Controllers
                                     path = child.Path;                                    
                                 }
 
-                                AdminMenu menuItemChild = new AdminMenu();
-                                menuItemChild.title = child.Title;
-                                menuItemChild.icon = child.Icon;
-                                menuItemChild.link = path;
-                                menuItemChild.type = child.Tye;
-                                menuItemChild.home = false;
-                                menuItemChild.group = false;
-                                menuItemChild.queryParams = string.Empty;
+                                AdminMenu menuItemChild = new AdminMenu
+                                {
+                                    title = child.Title,
+                                    icon = child.Icon,
+                                    link = path,
+                                    type = child.Tye,
+                                    home = false,
+                                    group = false,
+                                    queryParams = string.Empty
+                                };
                                 menuChild.Add(menuItemChild);
                                 isChild = true;
                             }
@@ -73,10 +75,8 @@ namespace ApiBase.Controllers
                     if (isChild)
                     {
                         menuItem.children = menuChild;
-                    }
-
-
-                    adminMenu.Add(menuItem);
+                        adminMenu.Add(menuItem);
+                    }                    
                 }
             }
 
