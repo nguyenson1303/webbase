@@ -132,7 +132,7 @@ export class EditComponent implements OnInit {
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
         if (result.code === AppConstant.permissionDeniedCode) {
-          this.router.navigate(['/pages/miscellaneous/404']);
+          this.router.navigate(['/pages/miscellaneous/denied']);
         }
       }
     }),
