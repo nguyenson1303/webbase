@@ -15,6 +15,8 @@ import * as $ from 'jquery';
 })
 export class EditComponent implements OnInit {
 
+  adminPages: any;
+
   adminPageActions: any;
 
   adminPageDetail = {
@@ -131,6 +133,18 @@ export class EditComponent implements OnInit {
     this.adminPageService.getListAdminPageAction(this.params).subscribe(result => {
       if (result) {
         this.adminPageActions = result;
+      }
+      else {
+        this.showModal(AppConstant.errorTitle, result.message);
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
+
+    this.adminPageService.getListAdminPage(this.params).subscribe(result => {
+      if (result) {
+        this.adminPages = result;
       }
       else {
         this.showModal(AppConstant.errorTitle, result.message);
