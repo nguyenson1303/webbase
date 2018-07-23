@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Profile Account</nb-card-header>
+      <nb-card-body>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" class="form-control" id="fname" name="fname" [(ngModel)]="userProfile.fname" placeholder="First Name">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="inputLastName">Last Name</label>
+              <input type="text" class="form-control" id="lname" name="lname" [(ngModel)]="userProfile.lname" placeholder="Last Name">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="userProfile.phone" placeholder="Phone">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address" name="address" [(ngModel)]="userProfile.address" placeholder="Address">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="birthday">Birthday</label>
+              <ng-datepicker id="birthday" name="birthday" [(ngModel)]="userProfile.birthday" [options]="options"></ng-datepicker>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <input type="hidden" class="form-control" id="avatar" name="avatar" [(ngModel)]="userProfile.avatar" placeholder="Avatar">
+              <input type="file" id="avatarFile" name="avatarFile" [hidden]="true" (change)="onFileChanged($event)" />
+              <img id="avatarImage" name="avatarImage" class="avatar_image" *ngIf="avatarUrl != ''" src="{{avatarUrl}}" onclick='document.getElementById("avatarFile").click();' nbPopover="Click here to change avatar" nbPopoverMode="hover" />
+              <a id="avatarDelete" name="avatarDelete" class="button-action button-delete btn-icon" nbPopover="Xóa avatar" nbPopoverMode="hover" (click)="showDeleteAvatarConfirm()"><i class="nb-close"></i></a>
+              <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+                {{progress}}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-body>
+
+        <div class="form-inline">
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9 btn-group btn-divided-group">
+              <button type="button" class="btn btn-hero-primary btn-with-icon" (click)="backclick()"><i class="ion-arrow-left-c"></i> Back</button>
+              <button type="submit" class="btn btn-hero-success btn-with-icon" (click)="nextclick()">Save <i class="ion-arrow-right-c"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
