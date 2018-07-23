@@ -207,7 +207,6 @@ namespace ApiBase.Controllers
                 Icon = userPageView.Icon,
                 Path = userPageView.Path,
                 Breadcrumb = userPageView.Breadcrumb,
-                TypeActionId = userPageView.TypeActionId,
                 ModifyDate = DateTime.Now,
                 CreateDate = DateTime.Now
             };
@@ -289,7 +288,6 @@ namespace ApiBase.Controllers
                 Icon = userPageView.Icon,
                 Path = userPageView.Path,
                 Breadcrumb = userPageView.Breadcrumb,
-                TypeActionId = userPageView.TypeActionId,
                 ModifyDate = DateTime.Now
             };
 
@@ -331,7 +329,6 @@ namespace ApiBase.Controllers
                 Icon = userPageView.Icon,
                 Path = userPageView.Path,
                 Breadcrumb = userPageView.Breadcrumb,
-                TypeActionId = userPageView.TypeActionId,
                 ModifyDate = DateTime.Now
             };
 
