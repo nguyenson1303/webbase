@@ -42,7 +42,7 @@ export class EditComponent implements OnInit {
 
   public isCreate: boolean = true;
   private id: number;
-  private parentId: string = "";
+  private parentId: number = 0;
   private type: string = "";
   private errorMessage: string = "";
   private params: string = "?";
@@ -63,6 +63,16 @@ export class EditComponent implements OnInit {
         child_breadcrumb.html(breadcrumb.html());
       }
     });
+
+    // check reload from browser or move from process
+    let isInProcess = localStorage.getItem(AppConstant.isInProcess)
+    if (isInProcess != null && isInProcess != undefined) {
+      localStorage.removeItem(AppConstant.isInProcess);
+    }
+    else {
+      localStorage.removeItem(AppConstant.objectAdminPage);
+      localStorage.removeItem(AppConstant.objectAdminPageAction);
+    }
 
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
@@ -187,9 +197,12 @@ export class EditComponent implements OnInit {
     this.adminPageService.validateAdminPage(validateAdminPageObj).subscribe(result => {
       if (result) {
         if (result.code === AppConstant.successCode) {
+
           // save obj to locate
           localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail));
           localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.adminPageActions));
+
+          localStorage.setItem(AppConstant.isInProcess, "true");
           if (this.isCreate) {
             this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId]);
           }
@@ -221,7 +234,13 @@ export class EditComponent implements OnInit {
   }
 
   backclick() {
-    this.router.navigate(['/pages/adminpage/list', this.type, this.parentId]);
+    if (this.parentId == 0)
+    {
+      this.router.navigate(['/pages/adminpage/list', this.type]);
+    }
+    else {
+      this.router.navigate(['/pages/adminpage/list', this.type, this.parentId]);
+    }
   }
 
   showModal(title: string, mess: string) {

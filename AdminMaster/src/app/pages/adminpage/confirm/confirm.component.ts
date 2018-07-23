@@ -54,6 +54,16 @@ export class ConfirmComponent implements OnInit {
       }
     });
 
+    // check reload from browser or move from process
+    let isInProcess = localStorage.getItem(AppConstant.isInProcess)
+    if (isInProcess != null && isInProcess != undefined) {
+      localStorage.removeItem(AppConstant.isInProcess);
+    }
+    else {
+      localStorage.removeItem(AppConstant.objectAdminPage);
+      localStorage.removeItem(AppConstant.objectAdminPageAction);
+    }
+
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
       this.id = params['id'];
@@ -94,13 +104,82 @@ export class ConfirmComponent implements OnInit {
   ngOnInit() {
   }
 
+  nextclick() {
+
+    let createAdminPageObj = {
+      title: this.adminPageDetail.title,
+      isShow: this.adminPageDetail.isShow,
+      tye: this.adminPageDetail.tye,
+      parentId: this.adminPageDetail.parentId,
+      orderDisplay: this.adminPageDetail.orderDisplay,
+      icon: this.adminPageDetail.icon,
+      path: this.adminPageDetail.path,
+      breadcrumb: this.adminPageDetail.breadcrumb,
+      typeActionId: this.adminPageDetail.typeActionId,
+      modifyDate: this.adminPageDetail.modifyDate,
+      createDate: this.adminPageDetail.createDate
+    }
+
+    if (this.isCreate) {
+      // call api create adminpage
+      this.adminPageService.createAdminPage(createAdminPageObj).subscribe(result => {
+        if (result) {
+          if (result.code === AppConstant.successCode) {
+            localStorage.removeItem(AppConstant.objectAdminPage);
+            localStorage.removeItem(AppConstant.objectAdminPageAction);
+            localStorage.removeItem(AppConstant.isInProcess);
+            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+            this.router.navigate(['/pages/adminpage/list', this.type]);
+          }
+          else {
+            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+          }
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+    else {
+       // call api update adminpage
+      this.adminPageService.updateAdminPage(this.id, createAdminPageObj).subscribe(result => {
+        if (result) {
+          if (result.code === AppConstant.successCode) {
+            localStorage.removeItem(AppConstant.objectAdminPage);
+            localStorage.removeItem(AppConstant.objectAdminPageAction);
+            localStorage.removeItem(AppConstant.isInProcess);
+            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+            this.router.navigate(['/pages/adminpage/list', this.type]);
+          }
+          else {
+            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+          }
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+  }
+
   backclick() {
+    localStorage.setItem(AppConstant.isInProcess, "true")
+    localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail))
+    localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.objectAdminPageActions))
+
     if (this.isCreate) {
       this.router.navigate(['/pages/adminpage/add', this.type]);
     }
     else {
       this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, this.id]);
     }
+  }
+
+  showModal(title: string, mess: string) {
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.modalHeader = title;
+    activeModal.componentInstance.modalContent = mess;
   }
 
 }

@@ -283,8 +283,10 @@ export class EditComponent implements OnInit {
             isCreate: this.isCreate
           }
 
+          // set localStorage to confirm page
           localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
           localStorage.setItem(AppConstant.isInProcess, "true");
+
           if (this.isCreate) {
             this.router.navigate(['/pages/account/confirm', this.type]);
           }
