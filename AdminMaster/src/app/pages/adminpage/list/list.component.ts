@@ -293,6 +293,7 @@ export class ListComponent implements OnInit {
     else
     {
       this.router.navigate(['pages/adminpage/list', this.type, node, parentId]);
+      this.router.navigate(['/pages/adminpage/list', this.type, node, parentId]);
       this.node = node;
       this.parentId = parentId;
 

@@ -27,7 +27,7 @@
           <label class="col-sm-3">Active</label>
           <div class="col-sm-9">
             <label class="switch">
-              <input type="checkbox" disabled [checked]="createUserObj.online">
+              <input type="checkbox" disabled="disabled" [checked]="createUserObj.online" [(ngModel)]="createUserObj.online">
               <span></span>
             </label>
           </div>
