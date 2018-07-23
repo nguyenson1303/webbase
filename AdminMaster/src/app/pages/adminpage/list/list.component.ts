@@ -115,7 +115,7 @@ export class ListComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           if (result.code === AppConstant.permissionDeniedCode) {
-            this.router.navigate(['/pages/miscellaneous/404']);
+            this.router.navigate(['/pages/miscellaneous/denied']);
           }
         }
       }

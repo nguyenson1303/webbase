@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MiscellaneousComponent } from './miscellaneous.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PermissionDeniedComponent } from './permission-denied/permission-denied.component';
 
 const routes: Routes = [{
   path: '',
@@ -10,6 +11,10 @@ const routes: Routes = [{
   children: [{
     path: '404',
     component: NotFoundComponent,
+  },
+  {
+    path: 'denied',
+    component: PermissionDeniedComponent,
   }],
 }];
 
