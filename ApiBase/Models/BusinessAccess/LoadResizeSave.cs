@@ -11,11 +11,6 @@ namespace ApiBase.Models.BusinessAccess
     {
         const int ThumbnailSize = 150;
         const int Quality = 75;
-        //const string ImageSharp = nameof(ImageSharp);
-        //const string SystemDrawing = nameof(SystemDrawing);
-        //const string MagickNET = nameof(MagickNET);
-        //const string FreeImage = nameof(FreeImage);
-        //const string MagicScaler = nameof(MagicScaler);
         const string SkiaSharpCanvas = nameof(SkiaSharpCanvas);
         const string SkiaSharpBitmap = nameof(SkiaSharpBitmap);
 
@@ -24,25 +19,25 @@ namespace ApiBase.Models.BusinessAccess
 
         public LoadResizeSave()
         {
-            // Find the closest images directory
-            var imageDirectory = Path.GetFullPath(".");
-            while (!Directory.Exists(Path.Combine(imageDirectory, "images")))
-            {
-                imageDirectory = Path.GetDirectoryName(imageDirectory);
-                if (imageDirectory == null)
-                {
-                    throw new FileNotFoundException("Could not find an image directory.");
-                }
-            }
-            imageDirectory = Path.Combine(imageDirectory, "images");
-            // Get at most 20 images from there
-            _images = Directory.EnumerateFiles(imageDirectory).Take(20);
-            // Create the output directory next to the images directory
-            _outputDirectory = Path.Combine(Path.GetDirectoryName(imageDirectory), "output");
-            if (!Directory.Exists(_outputDirectory))
-            {
-                Directory.CreateDirectory(_outputDirectory);
-            }
+            //// Find the closest images directory
+            //var imageDirectory = Path.GetFullPath(".");
+            //while (!Directory.Exists(Path.Combine(imageDirectory, "images")))
+            //{
+            //    imageDirectory = Path.GetDirectoryName(imageDirectory);
+            //    if (imageDirectory == null)
+            //    {
+            //        throw new FileNotFoundException("Could not find an image directory.");
+            //    }
+            //}
+            //imageDirectory = Path.Combine(imageDirectory, "images");
+            //// Get at most 20 images from there
+            //_images = Directory.EnumerateFiles(imageDirectory).Take(20);
+            //// Create the output directory next to the images directory
+            //_outputDirectory = Path.Combine(Path.GetDirectoryName(imageDirectory), "output");
+            //if (!Directory.Exists(_outputDirectory))
+            //{
+            //    Directory.CreateDirectory(_outputDirectory);
+            //}
         }
 
         static string OutputPath(string inputPath, string outputDirectory, string postfix)
@@ -54,7 +49,7 @@ namespace ApiBase.Models.BusinessAccess
                 + Path.GetExtension(inputPath));
         }
 
-        static (int width, int height) ScaledSize(int inWidth, int inHeight, int outSize)
+        public static (int width, int height) ScaledSize(int inWidth, int inHeight, int outSize)
         {
             int width, height;
             if (inWidth > inHeight)
@@ -69,6 +64,56 @@ namespace ApiBase.Models.BusinessAccess
             }
 
             return (width, height);
+        }
+
+        public static SKEncodedImageFormat GetSkiaTypeImage(string fileType)
+        {
+
+            SKEncodedImageFormat fileTypeEnCode = 0;
+            switch (fileType.ToLower())
+            {
+                case ".bmp":
+                    fileTypeEnCode = SKEncodedImageFormat.Bmp;
+                    break;
+                case ".gif":
+                    fileTypeEnCode = SKEncodedImageFormat.Gif;
+                    break;
+                case ".ico":
+                    fileTypeEnCode = SKEncodedImageFormat.Ico;
+                    break;
+                case ".wbmp":
+                    fileTypeEnCode = SKEncodedImageFormat.Wbmp;
+                    break;
+                case ".webp":
+                    fileTypeEnCode = SKEncodedImageFormat.Webp;
+                    break;
+                case ".pkm":
+                    fileTypeEnCode = SKEncodedImageFormat.Pkm;
+                    break;
+                case ".Ktx":
+                    fileTypeEnCode = SKEncodedImageFormat.Ktx;
+                    break;
+                case ".astc":
+                    fileTypeEnCode = SKEncodedImageFormat.Astc;
+                    break;
+                case ".jpg":
+                    fileTypeEnCode = SKEncodedImageFormat.Jpeg;
+                    break;
+                case ".jpeg":
+                    fileTypeEnCode = SKEncodedImageFormat.Jpeg;
+                    break;
+                case ".png":
+                    fileTypeEnCode = SKEncodedImageFormat.Png;
+                    break;
+                case ".dng":
+                    fileTypeEnCode = SKEncodedImageFormat.Dng;
+                    break;
+                default:
+                    fileTypeEnCode = 0;
+                    break;
+            }
+
+            return fileTypeEnCode;
         }
 
         // [Benchmark(Description = "SkiaSharp Canvas Load, Resize, Save")]
@@ -148,43 +193,34 @@ namespace ApiBase.Models.BusinessAccess
             }
         }
 
-        //public void ResizeImage(string inputPath) {
-        //    using (var input = File.OpenRead(inputPath))
-        //    {
-        //        using (var inputStream = new SKManagedStream(input))
-        //        {
-        //            using (var original = SKBitmap.Decode(inputStream))
-        //            {
-        //                int width, height;
-        //                if (original.Width > original.Height)
-        //                {
-        //                    width = size;
-        //                    height = original.Height * size / original.Width;
-        //                }
-        //                else
-        //                {
-        //                    width = original.Width * size / original.Height;
-        //                    height = size;
-        //                }
+        internal static void SkiaBitmapResize(string path, int size)
+        {
+            using (var input = File.OpenRead(path))
+            {
+                using (var inputStream = new SKManagedStream(input))
+                {
+                    using (var original = SKBitmap.Decode(inputStream))
+                    {
+                        var scaled = ScaledSize(original.Width, original.Height, size);
+                        using (var resized = original.Resize(new SKImageInfo(scaled.width, scaled.height), SKBitmapResizeMethod.Lanczos3))
+                        {
+                            if (resized == null)
+                                return;
 
-        //                using (var resized = original
-        //                       .Resize(new SKImageInfo(width, height), SKBitmapResizeMethod.Lanczos3))
-        //                {
-        //                    if (resized == null) return;
+                            using (var image = SKImage.FromBitmap(resized))
+                            {
+                                using (var output = File.OpenWrite(path))
+                                {
+                                    image.Encode(SKEncodedImageFormat.Jpeg, Quality)
+                                        .SaveTo(output);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        //                    using (var image = SKImage.FromBitmap(resized))
-        //                    {
-        //                        using (var output =
-        //                               File.OpenWrite(OutputPath(path, outputDirectory, SkiaSharpBitmap)))
-        //                        {
-        //                            image.Encode(SKEncodedImageFormat.Jpeg, quality)
-        //                                .SaveTo(output);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        
     }
 }

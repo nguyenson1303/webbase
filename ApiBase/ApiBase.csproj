@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\BusinessAccess\SkiaSharpImage.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="DatabaseQuery\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

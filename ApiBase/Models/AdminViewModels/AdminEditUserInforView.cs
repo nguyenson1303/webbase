@@ -13,7 +13,6 @@ namespace ApiBase.Models.AdminViewModels
         public string Address { get; set; }
         public string Birthday { get; set; }
         public string Avatar { get; set; }
-        //public IFormFile AvatarFile { get; set; }
         public string FullName { get; set; }
     }
 }

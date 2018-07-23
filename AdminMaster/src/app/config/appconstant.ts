@@ -95,6 +95,8 @@ export class AppConstant {
   public static fileKey: string = "Files";
   public static filePath: string = "FilePath";
   public static fileOld: string = "FileOld";
+  public static thumbnailSizeKey: string = "ThumbnailSize";
+  public static thumbnailSizeValue: number = 150;
 
   // avatar default
   public static avatarDefault: string
