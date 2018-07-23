@@ -181,3 +181,13 @@ label.switch {
   cursor: pointer;
 }
 /*avatar*/
+
+/*jstree*/
+.jstree-default .jstree-clicked {
+  color: unset !important;
+}
+
+.jstree-default .jstree-disabled {
+  color: unset !important;
+}
+/*jstree*/

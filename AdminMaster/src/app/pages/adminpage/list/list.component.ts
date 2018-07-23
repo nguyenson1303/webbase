@@ -59,12 +59,15 @@ export class ListComponent implements OnInit {
   private type: string = "";
   private lang: string = "";
   public search: string = "";
+  private node: number = 0;
+  private oldNode: number = 0;
   private parentId: number = 0;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
   private orderType: string = "";
   public isShowBack: boolean = false;
+  public parentName: string = "";
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -81,9 +84,29 @@ export class ListComponent implements OnInit {
       }
     });
 
+    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+      this.adminpageService.getAdminPageDetail(this.parentId).subscribe(result => {
+        if (result) {
+          this.parentName = "con của " + result.title;
+          this.oldNode = result.parentId;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+
     // get param from router ex: /:type
      this.activatedRoute.params.forEach(params => {
        this.type = params['type'];
+
+       if (params['node'] != null && params['node'] != undefined) {
+         this.node = params['node'];
+       }
+       else {
+         this.node = 0;
+       }
+
        if (params['parentId'] != null && params['parentId'] != undefined)
        {
          this.parentId = params['parentId'];
@@ -94,8 +117,7 @@ export class ListComponent implements OnInit {
          this.parentId = 0
          this.isShowBack = false;
        }
-    });
-
+    })
 
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
@@ -262,7 +284,7 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, id]);
   }
 
-  ListChildClick(parentId: number) {
+  ListChildClick(node: number, parentId: number) {
     // redirect to list child admin page
     if (parentId == 0)
     {
@@ -270,7 +292,7 @@ export class ListComponent implements OnInit {
     }
     else
     {
-      this.router.navigate(['/pages/adminpage/list', this.type, parentId]);
+      this.router.navigate(['/pages/adminpage/list', this.type, node, parentId]);
     }
   }
 

@@ -83,6 +83,86 @@ namespace ApiBase.Controllers
             return response;
         }
 
+        // GET: api/<controller>/listUserPageTree
+        [HttpGet("listUserPageTree"), Authorize(Roles = "Admin")]
+        public IActionResult ListUserPageTree(string type, int parentId, int id)
+        {
+            IActionResult response = null;
+            BaseClass baseClass = new BaseClass();
+            UserModels userModels = new UserModels();
+            RoleModels roleModels = new RoleModels();
+            User cuser = new User();
+            List<UserPageTree> userPageTrees = new List<UserPageTree>();
+
+            var mess = string.Empty;
+            List<UserPage> listUserPage = new List<UserPage>();
+            int total_record = 0;
+            var isOk = true;
+
+            string lang = LanguageModels.ActiveLanguage().LangCultureName;
+
+            type = type ?? string.Empty;
+
+            if (type == string.Empty)
+            {
+                isOk = false;
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }
+
+            if (!isOk)
+            {
+                return response;
+            }
+
+
+            listUserPage = userModels.AdminGetAllPage(type, lang, "", -1, 1, 10000, "", "", out total_record);
+
+            // create root
+            UserPageTree userPageTree;
+            if (parentId == 0)
+            {
+                userPageTree = new UserPageTree { Id = "0", Parent = "#", Text = "Page cha", State = new UserPageTreeOption { Selected = true, Opened = true , Disabled = false} };
+            }
+            else
+            {
+                userPageTree = new UserPageTree { Id = "0", Parent = "#", Text = "Page cha", State = new UserPageTreeOption { Selected = false, Opened = true, Disabled = false } };
+            }
+            
+            userPageTrees.Add(userPageTree);
+
+            // create child
+            foreach (var item in listUserPage)
+            {
+                var idChild = "";
+                var parent = "";
+                parent = item.ParentId.ToString();
+                idChild = item.Id.ToString();
+                UserPageTree userPTree;
+                var disabled = false;
+
+                if (item.Id == id)
+                {
+                    disabled = true;
+
+                }
+
+                if (item.Id == parentId)
+                {
+                    userPTree = new UserPageTree { Id = idChild, Parent = parent, Text = item.Title, State = new UserPageTreeOption { Selected = true, Opened = true, Disabled = disabled } };
+                }
+                else
+                {
+                    userPTree = new UserPageTree { Id = idChild, Parent = parent, Text = item.Title, State = new UserPageTreeOption { Selected = false, Opened = false, Disabled = disabled } };
+                }
+
+                userPageTrees.Add(userPTree);
+            }
+
+            response = Json(userPageTrees);
+
+            return response;
+        }
+
         // GET api/<controller>/5
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]

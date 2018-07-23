@@ -93,6 +93,41 @@ export class ConfirmComponent implements OnInit {
       this.objectAdminPageActions = localStorage.getItem(AppConstant.objectAdminPageAction);
       if (this.objectAdminPageActions != null && this.objectAdminPageActions != undefined) {
         this.objectAdminPageActions = JSON.parse(this.objectAdminPageActions);
+        let paramGetTree: string = "?";
+        // create dropdown list AdminPageAction
+        if (this.type != undefined && this.type.length > 0) {
+          if (paramGetTree.length > 1) {
+            paramGetTree = paramGetTree + "&type=" + this.type;
+          }
+          else {
+            paramGetTree = paramGetTree + "type=" + this.type;
+          }
+        }
+
+        if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
+          if (paramGetTree.length > 1) {
+            paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
+          }
+          else {
+            paramGetTree = paramGetTree + "parentId=" + this.adminPageDetail.parentId;
+          }
+        }
+
+        this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
+          if (result) {
+            $('#jstree').jstree({
+              'core': {
+                'data': result
+              }
+            });
+          }
+          else {
+            this.showModal(AppConstant.errorTitle, result.message);
+          }
+        }),
+          error => {
+            this.showModal(AppConstant.errorTitle, error.message);
+          };
 
       }
     }
@@ -168,7 +203,7 @@ export class ConfirmComponent implements OnInit {
     localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.objectAdminPageActions))
 
     if (this.isCreate) {
-      this.router.navigate(['/pages/adminpage/add', this.type]);
+      this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
     }
     else {
       this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, this.id]);

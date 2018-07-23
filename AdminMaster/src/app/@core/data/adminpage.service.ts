@@ -35,6 +35,12 @@ export class AdminpageService {
     return this.http.get(url, this.options).map(this.extractData);
   }
 
+  getListAdminPageTree(params: string) {
+    let url = AppConfig.serverAPI + AppConstant.listAdminPageTreeApiUrl + params;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
   deleteAdminPage(id: number): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.deleteAdminPageApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });

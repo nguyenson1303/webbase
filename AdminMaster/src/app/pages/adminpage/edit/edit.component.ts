@@ -111,26 +111,27 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {
 
+    let paramGetAction: string = "?";
     // create dropdown list AdminPageAction
     if (this.type != undefined && this.type.length > 0) {
-      if (this.params.length > 1) {
-        this.params = this.params + "&type=" + this.type;
+      if (paramGetAction.length > 1) {
+        paramGetAction = paramGetAction + "&type=" + this.type;
       }
       else {
-        this.params = this.params + "type=" + this.type;
+        paramGetAction = paramGetAction + "type=" + this.type;
       }
     }
 
     if (this.id != undefined && this.id > 0) {
-      if (this.params.length > 1) {
-        this.params = this.params + "&pageId=" + this.id;
+      if (paramGetAction.length > 1) {
+        paramGetAction = paramGetAction + "&pageId=" + this.id;
       }
       else {
-        this.params = this.params + "pageId=" + this.id;
+        paramGetAction = paramGetAction + "pageId=" + this.id;
       }
     }
 
-    this.adminPageService.getListAdminPageAction(this.params).subscribe(result => {
+    this.adminPageService.getListAdminPageAction(paramGetAction).subscribe(result => {
       if (result) {
         this.adminPageActions = result;
       }
@@ -142,17 +143,7 @@ export class EditComponent implements OnInit {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
-    this.adminPageService.getListAdminPage(this.params).subscribe(result => {
-      if (result) {
-        this.adminPages = result;
-      }
-      else {
-        this.showModal(AppConstant.errorTitle, result.message);
-      }
-    }),
-      error => {
-        this.showModal(AppConstant.errorTitle, error.message);
-      };
+    let parentIdTree: number;
 
     // check localStorage exist
     if (localStorage.getItem(AppConstant.objectAdminPage) != null) {
@@ -163,7 +154,8 @@ export class EditComponent implements OnInit {
       this.adminPageDetail.title = this.objectAdminPage.title;
       this.adminPageDetail.isShow = this.objectAdminPage.isShow;
       this.adminPageDetail.tye = this.objectAdminPage.tye;
-      this.adminPageDetail.parentId = this.objectAdminPage.parentId;
+      this.adminPageDetail.parentId = this.parentId;
+      parentIdTree = this.objectAdminPage.parentId;
       this.adminPageDetail.orderDisplay = this.objectAdminPage.orderDisplay;
       this.adminPageDetail.icon = this.objectAdminPage.icon;
       this.adminPageDetail.path = this.objectAdminPage.path;
@@ -173,11 +165,11 @@ export class EditComponent implements OnInit {
       this.adminPageDetail.createDate = this.objectAdminPage.createDate;
     }
     else {
+      parentIdTree = this.parentId
       if (this.isCreate == false) {
         this.adminPageService.getAdminPageDetail(this.id).subscribe(result => {
           if (result) {
-            this.adminPageDetail = result;
-          }
+            this.adminPageDetail = result;          }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
           }
@@ -187,27 +179,81 @@ export class EditComponent implements OnInit {
           };
       }
     }
+
+    let paramGetTree: string = "?";
+    // create tree list AdminPage
+    if (this.type != undefined && this.type.length > 0) {
+      if (paramGetTree.length > 1) {
+        paramGetTree = paramGetTree + "&type=" + this.type;
+      }
+      else {
+        paramGetTree = paramGetTree + "type=" + this.type;
+      }
+    }
+
+    if (parentIdTree != undefined && parentIdTree > 0) {
+      if (paramGetTree.length > 1) {
+        paramGetTree = paramGetTree + "&parentId=" + parentIdTree;
+      }
+      else {
+        paramGetTree = paramGetTree + "parentId=" + parentIdTree;
+      }
+    }
+
+    if (this.id != undefined && this.id > 0) {
+      if (paramGetTree.length > 1) {
+        paramGetTree = paramGetTree + "&id=" + this.id;
+      }
+      else {
+        paramGetTree = paramGetTree + "id=" + this.id;
+      }
+    }
+
+    this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
+      if (result) {
+        $('#jstree').jstree({
+          'core': {
+            'data': result
+          }
+        });
+      }
+      else {
+        this.showModal(AppConstant.errorTitle, result.message);
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
   }
 
-  ngAfterViewInit() {
-    $('#jstree').jstree(); // creates an instance
-    // $('#tree2').jstree({ plugins: [] }); // create an instance with some options
-    // $('#tree1').jstree('open_node', '#branch_1');
-    // call a method on an existing instance, passing additional arguments
-    // $('#tree2').jstree(); // get an existing instance (or create an instance)
-    // $('#tree2').jstree(true); // get an existing instance (will not create new instance)
-    // $('#branch_1').jstree().select_node('#branch_1'); // get an instance (using a nested element and call a method)
-  }
 
   nextclick() {
     // validate
     let isValid = true;
     let mess = "";
+    let treeParentId: string = $(".jstree-clicked").attr('id').replace("_anchor", "");
     let validateAdminPageObj = {
       title: this.adminPageDetail.title,
       isShow: this.adminPageDetail.isShow,
       tye: this.adminPageDetail.tye,
-      parentId: this.adminPageDetail.parentId,
+      parentId: treeParentId,
+      orderDisplay: this.adminPageDetail.orderDisplay,
+      icon: this.adminPageDetail.icon,
+      path: this.adminPageDetail.path,
+      breadcrumb: this.adminPageDetail.breadcrumb,
+      typeActionId: this.adminPageDetail.typeActionId,
+      modifyDate: this.adminPageDetail.modifyDate,
+      createDate: this.adminPageDetail.createDate
+    }
+
+    let createAdminPageObj = {
+      id: this.adminPageDetail.id,
+      act: this.adminPageDetail.act,
+      ctrl: this.adminPageDetail.ctrl,
+      title: this.adminPageDetail.title,
+      isShow: this.adminPageDetail.isShow,
+      tye: this.adminPageDetail.tye,
+      parentId: treeParentId,
       orderDisplay: this.adminPageDetail.orderDisplay,
       icon: this.adminPageDetail.icon,
       path: this.adminPageDetail.path,
@@ -223,7 +269,7 @@ export class EditComponent implements OnInit {
         if (result.code === AppConstant.successCode) {
 
           // save obj to locate
-          localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail));
+          localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(createAdminPageObj));
           localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.adminPageActions));
 
           localStorage.setItem(AppConstant.isInProcess, "true");

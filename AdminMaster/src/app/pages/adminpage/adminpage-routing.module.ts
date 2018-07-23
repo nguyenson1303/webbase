@@ -15,7 +15,7 @@ const routes: Routes = [{
   component: AdminpageComponent, canActivate: [AuthGuard],
   children: [
     {
-      path: 'list/:type/:parentId',
+      path: 'list/:type/:node/:parentId',
       data: { breadcrumb: 'Danh sách AdminPage' },
       component: ListComponent, canActivate: [AuthGuard]
     },
