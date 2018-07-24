@@ -99,7 +99,6 @@ namespace ApiBase.Controllers
 
             var mess = string.Empty;
             var listUserView = new AdminListUserView();
-            int total_record = 0;
             var isOk = true;
 
             string lang = LanguageModels.ActiveLanguage().LangCultureName;
@@ -133,7 +132,7 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+            listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int total_record);
             listUserView.CateType = roleModels.GetRoleByRole(type);
             listUserView.PageIndex = (int)pageIndex;
             listUserView.PageSize = (int)pageSize;

@@ -1,5 +1,6 @@
 ﻿namespace ApiBase.Models.BusinessAccess
 {
+    using ApiBase.Model.AdminViewModels;
     using ApiBase.Models.AdminViewModels;
     using ApiBase.Models.DB;
     using DBBase.EntitysObject;
@@ -54,13 +55,14 @@
                             var listActionID = objUserPermission.TypeActionId;
                             List<string> listAction = new List<string>();
 
-                            if (!string.IsNullOrEmpty(listActionID)) {
+                            if (!string.IsNullOrEmpty(listActionID))
+                            {
                                 listAction = listActionID.Split(',').ToList();
 
                                 if (listAction.Contains(type_action))
                                 {
                                     isOK = true;
-                                }                                
+                                }
                             }
 
                             return isOK;
@@ -121,7 +123,7 @@
                                 listAction = listActionID.Split(',').ToList();
 
                                 // exist permission on page
-                                if(listAction.Count > 0)
+                                if (listAction.Count > 0)
                                 {
                                     isOK = true;
                                 }
@@ -157,8 +159,8 @@
             {
                 return data.UserPage.Where(p => p.ParentId == parentID && p.IsShow == true).OrderBy(p => p.OrderDisplay).ToList();
             }
-        }        
-       
+        }
+
         /// <summary>
         /// Adds the user.
         /// </summary>
@@ -299,7 +301,7 @@
                         c_gen = c_gen.OrderBy(p => p.Username);
                     }
 
-                    return c_gen.Skip((pageIndex-1) * pageSize).Take(pageSize).ToList();
+                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 }
                 catch (Exception)
                 {
@@ -364,12 +366,13 @@
                     try
                     {
                         var c_infor = data.UserInfo.Where(p => p.Email == userName).FirstOrDefault();
-                        if(c_infor != null)
+                        if (c_infor != null)
                         {
                             data.UserInfo.Remove(c_infor);
                             data.SaveChanges();
                             var c_gen = data.User.Where(p => p.Username == userName).FirstOrDefault();
-                            if (c_gen != null) {
+                            if (c_gen != null)
+                            {
                                 data.User.Remove(c_gen);
                                 data.SaveChanges();
                                 rt = true;
@@ -386,7 +389,7 @@
                             rt = false;
                             dbContextTransaction.Rollback();
                         }
-                        
+
                     }
                     catch (Exception)
                     {
@@ -426,14 +429,19 @@
                             join p in data.UserPage on u.PageId equals p.Id
                             where u.User == userName
                             select new
-                {
-                    u.User, u.PageId, p.Title, p.ParentId, p.OrderDisplay, u.TypeActionId
-                };
+                            {
+                                u.User,
+                                u.PageId,
+                                p.Title,
+                                p.ParentId,
+                                p.OrderDisplay,
+                                u.TypeActionId
+                            };
                 if (query.Any())
                 {
                     foreach (var obj in query)
                     {
-                        
+
                         PagePermission page = new PagePermission();
                         page.PageId = (int)obj.PageId;
                         page.UserName = obj.User;
@@ -446,8 +454,8 @@
 
                     List<UserPermission> lstUserPermission = data.UserPermission.Where(u => u.User == userName).ToList();
                     List<int> lstPageID = (from c in data.UserPermission
-                                where c.User == userName
-                                select (int)c.PageId).ToList<int>();
+                                           where c.User == userName
+                                           select (int)c.PageId).ToList<int>();
 
                     List<UserPage> lstUserPage = data.UserPage.Where(c => !lstPageID.Contains(c.Id) && c.ParentId > 0).ToList();
                     if (lstUserPage.Any())
@@ -660,7 +668,7 @@
                     data.SaveChanges();
                     rt = user.Username;
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     rt = string.Empty;
                 }
@@ -852,7 +860,7 @@
 
                     if (!string.IsNullOrEmpty(search))
                     {
-                        c_gen = c_gen.Where(p=>p.ActionName.Contains(search)).AsQueryable<UserPageAction>();
+                        c_gen = c_gen.Where(p => p.ActionName.Contains(search)).AsQueryable<UserPageAction>();
                     }
 
                     total = c_gen.ToList().Count();
@@ -1144,7 +1152,7 @@
                         c_gen.Path = userPage.Path;
                         c_gen.Breadcrumb = userPage.Breadcrumb;
                         // c_gen.TypeActionId = userPage.TypeActionId;
-                        c_gen.ModifyDate = DateTime.Now;                        
+                        c_gen.ModifyDate = DateTime.Now;
 
                         data.SaveChanges();
                         rt = c_gen.Id;
@@ -1250,10 +1258,13 @@
 
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
-                        Type sortByPropType = typeof(UserPage).GetProperty(orderBy).PropertyType;
+                        // First Char ToUpper
+                        string OrderBy = new CultureInfo("en-US").TextInfo.ToTitleCase(orderBy);
+
+                        Type sortByPropType = typeof(UserPage).GetProperty(OrderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPage), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<UserPage>;
+                                .Invoke(c_gen, new object[] { c_gen, OrderBy, orderType }) as IQueryable<UserPage>;
                     }
                     else
                     {
@@ -1271,5 +1282,108 @@
             }
         }
 
+        public List<AdminListUserPage> AdminGetAllPageFullTree(string type, string lang, string search, int parentId)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    List<AdminListUserPage> result = new List<AdminListUserPage>();
+                    IQueryable<UserPage> c_gen = null;
+                    if (parentId != -1)
+                    {
+                        c_gen = (from p in data.UserPage
+                                 where p.ParentId == (int)parentId
+                                 select p).AsQueryable<UserPage>();
+                    }
+                    else
+                    {
+                        c_gen = (from p in data.UserPage
+                                 select p).AsQueryable<UserPage>();
+                    }
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        c_gen = c_gen.Where(p => p.Title.Contains(search)).AsQueryable<UserPage>();
+                    }
+
+                    foreach (var item in c_gen)
+                    {
+                        AdminListUserPage alug = new AdminListUserPage
+                        {
+                            Id = item.Id,
+                            Act = item.Act,
+                            Ctrl = item.Ctrl,
+                            Title = item.Title,
+                            IsShow = item.IsShow,
+                            Tye = item.Tye,
+                            ParentId = item.ParentId,
+                            OrderDisplay = item.OrderDisplay,
+                            Icon = item.Icon,
+                            Path = item.Path,
+                            Breadcrumb = item.Breadcrumb,
+                            ModifyDate = item.ModifyDate,
+                            CreateDate = item.CreateDate
+                        };
+
+                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
+
+                        result.Add(alug);
+                    }
+
+                    return result;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public List<AdminListUserPage> AdminGetAllPageFullTreeChild(int parentId)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    List<AdminListUserPage> result = new List<AdminListUserPage>();
+                    IQueryable<UserPage> c_gen = null;
+                    c_gen = (from p in data.UserPage
+                             where p.ParentId == (int)parentId
+                             select p).AsQueryable<UserPage>();
+                                        
+                    foreach (var item in c_gen)
+                    {
+                        AdminListUserPage alug = new AdminListUserPage
+                        {
+                            Id = item.Id,
+                            Act = item.Act,
+                            Ctrl = item.Ctrl,
+                            Title = item.Title,
+                            IsShow = item.IsShow,
+                            Tye = item.Tye,
+                            ParentId = item.ParentId,
+                            OrderDisplay = item.OrderDisplay,
+                            Icon = item.Icon,
+                            Path = item.Path,
+                            Breadcrumb = item.Breadcrumb,
+                            ModifyDate = item.ModifyDate,
+                            CreateDate = item.CreateDate
+                        };
+
+                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
+
+                        result.Add(alug);
+                    }
+
+                    return result;
+
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

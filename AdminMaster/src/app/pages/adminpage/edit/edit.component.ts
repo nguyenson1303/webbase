@@ -226,7 +226,6 @@ export class EditComponent implements OnInit {
       };
   }
 
-
   nextclick() {
     // validate
     let isValid = true;

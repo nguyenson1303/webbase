@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminpageService } from '../../../@core/data/adminpage.service';
@@ -8,6 +8,8 @@ import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import * as $ from 'jquery';
+import { Row } from 'ng2-smart-table/lib/data-set/row';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'list-page',
@@ -16,21 +18,7 @@ import * as $ from 'jquery';
 })
 export class ListComponent implements OnInit {
 
-  columns = [
-    { key: '', title: 'Action' },
-    { key: 'title', title: 'Tiêu đề' },
-    { key: 'path', title: 'Đường dẫn' },
-    { key: 'tye', title: 'Kiểu' },
-    { key: 'isShow', title: 'Hiển thị Menu' },
-  ];
-  data;
-  rows;
-  configuration;
-  pagination = {
-    limit: AppConstant.pageSizeDefault,
-    offset: (AppConstant.pageIndexDefault - 1),
-    count: null,
-  };
+  @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
 
   listPageAdmin = {
     id: 0,
@@ -49,6 +37,22 @@ export class ListComponent implements OnInit {
     createDate: ""
   };
 
+  columns = [
+    { key: 'parentId', title: 'Action' },
+    { key: 'title', title: 'Tiêu đề' },
+    { key: 'path', title: 'Đường dẫn' },
+    { key: 'tye', title: 'Kiểu' },
+    { key: 'isShow', title: 'Menu' },
+  ];
+
+  data = [];
+  configuration;
+  pagination = {
+    limit: AppConstant.pageSizeDefault,
+    offset: (AppConstant.pageIndexDefault - 1),
+    count: null,
+  };
+
   pathInfor = {
     path: "",
     typeAct: "",
@@ -62,8 +66,6 @@ export class ListComponent implements OnInit {
   private node: number = 0;
   private oldNode: number = 0;
   private parentId: number = 0;
-  private pageIndex: number = AppConstant.pageIndexDefault;
-  private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
   private orderType: string = "";
   public isShowBack: boolean = false;
@@ -97,35 +99,25 @@ export class ListComponent implements OnInit {
     }
 
     // get param from router ex: /:type
-     this.activatedRoute.params.forEach(params => {
-       this.type = params['type'];
+    this.activatedRoute.params.forEach(params => {
+      this.type = params['type'];
 
-       if (params['node'] != null && params['node'] != undefined) {
-         this.node = params['node'];
-       }
-       else {
-         this.node = 0;
-       }
+      if (params['node'] != null && params['node'] != undefined) {
+        this.node = params['node'];
+      }
+      else {
+        this.node = 0;
+      }
 
-       if (params['parentId'] != null && params['parentId'] != undefined)
-       {
-         this.parentId = params['parentId'];
-         this.isShowBack = true;
-       }
-       else
-       {
-         this.parentId = 0
-         this.isShowBack = false;
-       }
+      if (params['parentId'] != null && params['parentId'] != undefined) {
+        this.parentId = params['parentId'];
+        this.isShowBack = true;
+      }
+      else {
+        this.parentId = 0;  // get all page parent root
+        this.isShowBack = false;
+      }
     })
-
-    if (this.pageIndex === undefined || this.pageIndex === null) {
-      this.pageIndex = AppConstant.pageIndexDefault;
-    }
-
-    if (this.pageSize === undefined || this.pageSize === null) {
-      this.pageSize = AppConstant.pageSizeDefault;
-    }
 
     // check user is permission for view page
     let lastPath = activatedRoute.snapshot.url[0].path;
@@ -156,13 +148,6 @@ export class ListComponent implements OnInit {
     this.params = "?";
 
     if (obj != null) {
-      this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
-      this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
-      this.pagination = { ...this.pagination };
-
-      this.pageIndex = this.pagination.offset;
-      this.pageSize = this.pagination.limit;
-
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
         this.orderType = obj.value.order;
@@ -196,30 +181,12 @@ export class ListComponent implements OnInit {
       }
     }
 
-    if (this.parentId != undefined && this.parentId >= 0) {
+    if (this.parentId != undefined && this.parentId != null) {
       if (this.params.length > 1) {
         this.params = this.params + "&parentId=" + this.parentId;
       }
       else {
         this.params = this.params + "parentId=" + this.parentId;
-      }
-    }
-
-    if (this.pageIndex != undefined && this.pageIndex > 0) {
-      if (this.params.length > 1) {
-        this.params = this.params + "&pageIndex=" + this.pageIndex;
-      }
-      else {
-        this.params = this.params + "pageIndex=" + this.pageIndex;
-      }
-    }
-
-    if (this.pageSize != undefined && this.pageSize > 0) {
-      if (this.params.length > 1) {
-        this.params = this.params + "&pageSize=" + this.pageSize;
-      }
-      else {
-        this.params = this.params + "pageSize=" + this.pageSize;
       }
     }
 
@@ -251,16 +218,11 @@ export class ListComponent implements OnInit {
     this.adminpageService.getListAdminPage(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
-          this.data = this.listPageAdmin;
-          this.rows = this.data;
+          this.data = [];
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUserPage;
-          this.rows = this.data;
-          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
-          this.pagination.limit = this.pageSize;
-          this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
         }
       }
@@ -274,8 +236,7 @@ export class ListComponent implements OnInit {
     this.filter($event);
   }
 
-  addClick()
-  {
+  addClick() {
     this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
   }
 
@@ -286,12 +247,10 @@ export class ListComponent implements OnInit {
 
   ListChildClick(node: number, parentId: number) {
     // redirect to list child admin page
-    if (parentId == 0)
-    {
+    if (parentId == 0) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
     }
-    else
-    {
+    else {
       this.router.navigate(['pages/adminpage/list', this.type, node, parentId]);
       this.router.navigate(['/pages/adminpage/list', this.type, node, parentId]);
       this.node = node;
@@ -314,7 +273,7 @@ export class ListComponent implements OnInit {
   }
 
   // show modal confirm delete
-  showDeleteConfirm(id: number, title : string) {
+  showDeleteConfirm(id: number, title: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;

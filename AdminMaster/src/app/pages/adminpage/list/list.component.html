@@ -19,29 +19,62 @@
                [data]="data"
                [columns]="columns"
                [pagination]="pagination"
+               [detailsTemplate]="detailsTemplateRef"
                (event)="eventEmitted($event)">
       <ng-template let-row>
+
         <td class="td-action">
           <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.id)"><i class="ion-eye"></i></a>
           <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
           <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
         </td>
-        <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.title}}</a> </td>
-        <td *ngIf="row.parentId != 0">{{row.title}} </td>
+        <td *ngIf="row.parentId == 0"><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.title}}</a> </td>
+        <td *ngIf="row.parentId > 0">{{row.title}} </td>
         <td>
-          <div class="font-small">{{row.path}}</div>  
+          <div class="font-small">{{row.path}}</div>
         </td>
         <td>
           <div class="font-small">{{row.tye}}</div>
         </td>
         <td>
+          
           <label class="switch">
             <input type="checkbox" [checked]="row.isShow" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
             <span></span>
           </label>
         </td>
+
       </ng-template>
     </ngx-table>
+    <ng-template #detailsTemplate let-row>
+      <table class="ngx-table">
+        <tbody>
+          <tr *ngFor="let child of row.children">
 
+            <td class="td-action">
+              <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(child.id)"><i class="ion-eye"></i></a>
+              <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(child.id)"><i class="nb-edit"></i></a>
+              <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(child.id, child.title)"><i class="nb-trash"></i></a>
+            </td>
+            <td *ngIf="child.parentId == 0"><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{row.title}}</a> </td>
+            <td *ngIf="child.parentId > 0">{{child.title}} </td>
+            <td>
+              <div class="font-small">{{child.path}}</div>
+            </td>
+            <td>
+              <div class="font-small">{{child.tye}}</div>
+            </td>
+            <td>
+
+              <label class="switch">
+                <input type="checkbox" [checked]="child.isShow" (click)="showChangeActiveConfirm(child.id, child.isShow, child.title)">
+                <span></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="row.children.length == 0"> Not found child</div>
+    </ng-template>
   </nb-card-body>
 </nb-card>

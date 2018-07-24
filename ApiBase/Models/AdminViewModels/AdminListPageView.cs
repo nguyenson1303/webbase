@@ -1,5 +1,6 @@
 ﻿namespace ApiBase.Models.AdminViewModels
 {
+    using ApiBase.Model.AdminViewModels;
     using ApiBase.Models.DB;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
@@ -32,38 +33,14 @@
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the page.
-        /// </summary>
-        /// <value>
-        /// The page.
-        /// </value>
-        public int PageIndex
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the page size.
-        /// </summary>
-        /// <value>
-        /// The page size.
-        /// </value>
-        public int PageSize
-        {
-            get;
-            set;
-        }
-
+      
         /// <summary>
         /// Gets or sets the page list user.
         /// </summary>
         /// <value>
         /// The page list user.
         /// </value>
-        public List<UserPage> ListUserPage
+        public List<AdminListUserPage> ListUserPage
         {
             get;
             set;
@@ -80,19 +57,5 @@
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the total record.
-        /// </summary>
-        /// <value>
-        /// The total record.
-        /// </value>
-        public int TotalPage
-        {
-            get;
-            set;
-        }
-
-        public int TotalRecord { get; set; }
     }
 }

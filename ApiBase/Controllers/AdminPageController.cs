@@ -18,7 +18,7 @@ namespace ApiBase.Controllers
     {
         // GET: api/<controller>/listUserPage
         [HttpGet("listUserPage"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize, string orderBy, string orderType)
+        public IActionResult ListUserPage(string type, string search, int? parentId, string orderBy, string orderType)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -28,7 +28,6 @@ namespace ApiBase.Controllers
 
             var mess = string.Empty;
             var listPageView = new AdminListPageView();
-            int total_record = 0;
             var isOk = true;
 
             string lang = LanguageModels.ActiveLanguage().LangCultureName;
@@ -53,30 +52,16 @@ namespace ApiBase.Controllers
             if (!isOk)
             {
                 return response;
-            }
-
-            if (pageIndex == null || pageIndex == 0)
-            {
-                pageIndex = 1;
-            }
-
-            if (pageSize == null)
-            {
-                pageSize = 30;
-            }
+            }           
 
             if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
             {
                 orderBy = "Title";
                 orderType = "asc";
             }
-           
-            listPageView.ListUserPage = userModels.AdminGetAllPage(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-            listPageView.CateType = roleModels.GetRoleByRole(type);
-            listPageView.PageIndex = (int)pageIndex;
-            listPageView.PageSize = (int)pageSize;
-            listPageView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
-            listPageView.TotalRecord = total_record;
+
+            listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId);
+            listPageView.CateType = roleModels.GetRoleByRole(type);           
 
             response = Json(listPageView);
 
