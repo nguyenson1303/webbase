@@ -189,4 +189,8 @@ label.switch {
 .jstree-default .jstree-disabled {
   color: unset !important;
 }
+
+.disablediv {
+  pointer-events: none;
+}
 /*jstree*/

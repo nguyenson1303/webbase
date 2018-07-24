@@ -1181,11 +1181,19 @@
                             data.SaveChanges();
                             var c_page = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
                             if (c_page != null)
-                            {
-                                data.UserPage.Remove(c_page);
-                                data.SaveChanges();
-                                rt = true;
-                                dbContextTransaction.Commit();
+                            {                            
+                                if (deleteAllUserPageChild(data, id))
+                                {
+                                    data.UserPage.Remove(c_page);
+                                    data.SaveChanges();
+                                    rt = true;
+                                    dbContextTransaction.Commit();
+                                }
+                                else
+                                {
+                                    rt = false;
+                                    dbContextTransaction.Rollback();
+                                }
                             }
                             else
                             {
@@ -1208,6 +1216,38 @@
 
                 return rt;
             }
+        }
+
+        public bool deleteAllUserPageChild(themanorContext data, int id)
+        {
+            bool rt = true;
+            var listUserPageChild = GetListUserPageByParrentID(id);
+            foreach(var item in listUserPageChild)
+            {
+                var c_permission = data.UserPermission.Where(p => p.PageId == item.Id);
+                if (c_permission != null)
+                {
+                    data.UserPermission.RemoveRange(c_permission);
+                    var c_page = data.UserPage.Where(p => p.Id == item.Id).FirstOrDefault();
+                    if (c_page != null)
+                    {
+                        var listChild = GetListUserPageByParrentID(item.Id);
+                        foreach (var child in listChild)
+                        {
+                            deleteAllUserPageChild(data, child.Id);
+                            data.UserPage.Remove(child);
+                        }
+                        data.UserPage.Remove(c_page);
+                    }
+                    else
+                    {
+                        rt = false;
+                    }
+                }
+            }
+
+            return rt;
+            
         }
 
         /// <summary>

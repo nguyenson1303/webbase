@@ -59,13 +59,13 @@ export class ListComponent implements OnInit {
   private type: string = "";
   private lang: string = "";
   public search: string = "";
-  private node: number = 0;
-  private oldNode: number = 0;
   private parentId: number = 0;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
   private orderBy: string = "";
   private orderType: string = "";
+  private node: number = 0;
+  private oldNode: number = 0;
   public isShowBack: boolean = false;
   public parentName: string = "";
 
@@ -83,18 +83,6 @@ export class ListComponent implements OnInit {
         child_breadcrumb.html(breadcrumb.html());
       }
     });
-
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
-      this.adminpageService.getAdminPageDetail(this.parentId).subscribe(result => {
-        if (result) {
-          this.parentName = "con của " + result.title;
-          this.oldNode = result.parentId;
-        }
-      }),
-        error => {
-          this.showModal(AppConstant.errorTitle, error.message);
-        };
-    }
 
     // get param from router ex: /:type
      this.activatedRoute.params.forEach(params => {
@@ -268,14 +256,40 @@ export class ListComponent implements OnInit {
       error => {
         console.error('ERROR: ', error.message);
       };
+
+    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+      this.adminpageService.getAdminPageDetail(this.parentId).subscribe(result => {
+        if (result) {
+          this.parentName = "con của " + result.title;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+
+    if (this.node != null && this.node > 0 && this.node != undefined) {
+      this.adminpageService.getAdminPageDetail(this.node).subscribe(result => {
+        if (result) {
+          this.oldNode = result.parentId;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
   }
 
   eventEmitted($event) {
     this.filter($event);
   }
 
-  addClick()
+  viewClick(id : number)
   {
+    this.router.navigate(['/pages/adminpage/detail', this.type, this.parentId, id]);
+  }
+
+  addClick() {
     this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
   }
 

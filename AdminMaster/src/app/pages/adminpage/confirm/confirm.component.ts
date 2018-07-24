@@ -61,7 +61,6 @@ export class ConfirmComponent implements OnInit {
     }
     else {
       localStorage.removeItem(AppConstant.objectAdminPage);
-      localStorage.removeItem(AppConstant.objectAdminPageAction);
     }
 
     // get param from router ex: /:username
@@ -90,11 +89,7 @@ export class ConfirmComponent implements OnInit {
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
     if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
       this.adminPageDetail = JSON.parse(this.objectAdminPage);
-      this.objectAdminPageActions = localStorage.getItem(AppConstant.objectAdminPageAction);
-      if (this.objectAdminPageActions != null && this.objectAdminPageActions != undefined) {
-        this.objectAdminPageActions = JSON.parse(this.objectAdminPageActions);
         let paramGetTree: string = "?";
-        // create dropdown list AdminPageAction
         if (this.type != undefined && this.type.length > 0) {
           if (paramGetTree.length > 1) {
             paramGetTree = paramGetTree + "&type=" + this.type;
@@ -120,6 +115,10 @@ export class ConfirmComponent implements OnInit {
                 'data': result
               }
             });
+
+            $('#jstree li').each(function () {
+              $("#jstree").jstree().disable_node(this.id);
+            })
           }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
@@ -129,7 +128,6 @@ export class ConfirmComponent implements OnInit {
             this.showModal(AppConstant.errorTitle, error.message);
           };
 
-      }
     }
     else {
       this.router.navigate(['/pages/miscellaneous/404']);
@@ -161,7 +159,6 @@ export class ConfirmComponent implements OnInit {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectAdminPage);
-            localStorage.removeItem(AppConstant.objectAdminPageAction);
             localStorage.removeItem(AppConstant.isInProcess);
             this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
             this.router.navigate(['/pages/adminpage/list', this.type]);
@@ -181,7 +178,6 @@ export class ConfirmComponent implements OnInit {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectAdminPage);
-            localStorage.removeItem(AppConstant.objectAdminPageAction);
             localStorage.removeItem(AppConstant.isInProcess);
             this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
             this.router.navigate(['/pages/adminpage/list', this.type]);
@@ -200,7 +196,6 @@ export class ConfirmComponent implements OnInit {
   backclick() {
     localStorage.setItem(AppConstant.isInProcess, "true")
     localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail))
-    localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.objectAdminPageActions))
 
     if (this.isCreate) {
       this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);

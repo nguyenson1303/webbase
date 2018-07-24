@@ -84,7 +84,7 @@ namespace ApiBase.Controllers
                 listPageActionView.PageIndex = (int)pageIndex;
                 listPageActionView.PageSize = (int)pageSize;
                 listPageActionView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
-
+                listPageActionView.TotalRecord = total_record;
                 response = Json(listPageActionView);
             }
             else
@@ -152,30 +152,14 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string type = "Admin";
-
-            string path = "/api/AdminPageAction";
-
-            var action = sv.GetActionByActionName(CommonGlobal.View);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            if (userPageAction != null)
             {
-                if (userPageAction != null)
-                {
-                    response = Json(userPageAction);
-                }
-                else
-                {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-                }
+                response = Json(userPageAction);
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }            
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }          
 
             return response;
         }

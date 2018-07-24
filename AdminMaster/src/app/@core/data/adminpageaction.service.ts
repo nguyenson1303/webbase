@@ -10,7 +10,7 @@ import { AuthService } from '../../@core/data/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminpageService {
+export class AdminpageactionService {
 
   private headers = new Headers();
   private options: RequestOptions;
@@ -28,53 +28,41 @@ export class AdminpageService {
       });
   }
 
-
-  getListAdminPage(params: string) {
-    let url = AppConfig.serverAPI + AppConstant.listAdminPageApiUrl + params;
+  getListAdminPageAction(params: string) {
+    let url = AppConfig.serverAPI + AppConstant.listUserPageActionByPageIdApiUrl + params;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.get(url, this.options).map(this.extractData);
   }
 
-  getListAdminPageTree(params: string) {
-    let url = AppConfig.serverAPI + AppConstant.listAdminPageTreeApiUrl + params;
-    this.options = new RequestOptions({ headers: this.headers });
-    return this.http.get(url, this.options).map(this.extractData);
-  }
 
-  deleteAdminPage(id: number): Observable<any> {
+  deleteAdminPageAction(id: number): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.deleteAdminPageApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.delete(url, this.options).map(this.extractData);
   }
 
-  updateAdminPage(id: number, data: any): Observable<any> {
+  updateAdminPageAction(id: number, data: any): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.updateAdminPageApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
     return this.http.put(url, body, this.options).map(this.extractData);
   }
 
-  updateStatusAdminPage(id: number, isShow: Boolean): Observable<any> {
-    let url = AppConfig.serverAPI + AppConstant.updateStatusAdminPageApiUrl + "/" + id + "/" + isShow;
-    this.options = new RequestOptions({ headers: this.headers });
-    let body = JSON.stringify("");
-    return this.http.put(url, body, this.options).map(this.extractData);
-  }
 
-  createAdminPage(data: any): Observable<any> {
+  createAdminPageAction(data: any): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.createAdminPageApiUrl;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
-  getAdminPageDetail(id: number) {
+  getAdminPageActionDetail(id: number) {
     let url = AppConfig.serverAPI + AppConstant.getAdminPageApiUrlDetailApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.get(url, this.options).map(this.extractData);
   }
 
-  validateAdminPage(data): Observable<any> {
+  validateAdminPageAction(data): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.validateAdminPageApiUrl;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
@@ -85,5 +73,4 @@ export class AdminpageService {
     let body = res.json();
     return body || {};
   }
-
 }

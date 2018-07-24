@@ -27,7 +27,6 @@
           <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
         </td>
         <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.title}}</a> </td>
-        <td *ngIf="row.parentId != 0">{{row.title}} </td>
         <td>
           <div class="font-small">{{row.path}}</div>  
         </td>
