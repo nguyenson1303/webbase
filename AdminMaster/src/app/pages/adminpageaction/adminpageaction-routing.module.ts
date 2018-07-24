@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../../auth.guard';
 
 import { AdminpageactionComponent } from '../adminpageaction/adminpageaction.component';
-import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 
@@ -14,11 +13,6 @@ const routes: Routes = [
     // data: { breadcrumb: 'Account' },
     component: AdminpageactionComponent, canActivate: [AuthGuard],
     children: [
-      {
-        path: 'detail/:type/:pageId/id',
-        data: { breadcrumb: 'Chi tiết action' },
-        component: DetailComponent, canActivate: [AuthGuard]
-      },
       {
         path: 'edit/:type/:pageId/:id',
         data: { breadcrumb: 'Cập nhật action' },

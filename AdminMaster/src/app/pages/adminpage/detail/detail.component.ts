@@ -318,6 +318,10 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  addClick() {
+    this.router.navigate(['/pages/adminpageaction/add', this.type, this.id]);
+  }
+
   editclick() {
       this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, this.id]);
   }

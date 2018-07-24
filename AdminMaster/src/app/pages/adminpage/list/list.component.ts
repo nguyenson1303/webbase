@@ -7,9 +7,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-import * as $ from 'jquery';
-import { Row } from 'ng2-smart-table/lib/data-set/row';
-import { setTimeout } from 'timers';
+declare var $: any;
 
 @Component({
   selector: 'list-page',

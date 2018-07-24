@@ -66,17 +66,6 @@ export class EditComponent implements OnInit {
       }
     });
 
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
-      this.adminPageService.getAdminPageDetail(this.parentId).subscribe(result => {
-        if (result) {
-          this.node = result.parentId;
-        }
-      }),
-        error => {
-          this.showModal(AppConstant.errorTitle, error.message);
-        };
-    }
-
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
     if (isInProcess != null && isInProcess != undefined) {
@@ -120,6 +109,18 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+      this.adminPageService.getAdminPageDetail(this.parentId).subscribe(result => {
+        if (result) {
+          this.node = result.parentId;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+
     let parentIdTree: number;
 
     // check localStorage exist
