@@ -66,12 +66,12 @@ namespace ApiBase.Controllers
 
             if (pageSize == null)
             {
-                pageSize = 30;
+                pageSize = 25;
             }
 
             if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
             {
-                orderBy = "ActionName";
+                orderBy = "actionName";
                 orderType = "asc";
             }
 

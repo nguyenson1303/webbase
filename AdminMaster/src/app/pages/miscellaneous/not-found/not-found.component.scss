@@ -1,6 +1,12 @@
 .flex-centered {
   margin: auto;
 }
+
+.flex-centered img {
+  display: block;
+  margin: 30px auto;
+}
+
 nb-card-body {
   display: flex;
 }

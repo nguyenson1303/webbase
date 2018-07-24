@@ -45,6 +45,7 @@ export class ConfirmComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private modalService: NgbModal) {
+
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -67,12 +68,10 @@ export class ConfirmComponent implements OnInit {
     this.activatedRoute.params.forEach(params => {
       this.id = params['id'];
       this.type = params['type'];
-      if (params['parentId'] == null || params['parentId'] == undefined)
-      {
+      if (params['parentId'] == null || params['parentId'] == undefined) {
         this.parentId = 0;
       }
-      else
-      {
+      else {
         this.parentId = params['parentId'];
       }
     });
@@ -172,7 +171,7 @@ export class ConfirmComponent implements OnInit {
         };
     }
     else {
-       // call api update adminpage
+      // call api update adminpage
       this.adminPageService.updateAdminPage(this.id, createAdminPageObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {

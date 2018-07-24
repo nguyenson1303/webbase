@@ -1,5 +1,6 @@
 import { NbMenuService } from '@nebular/theme';
 import { Component } from '@angular/core';
+import { AppConstant } from '../../../config/appconstant';
 
 @Component({
   selector: 'ngx-not-found',
@@ -8,7 +9,10 @@ import { Component } from '@angular/core';
 })
 export class NotFoundComponent {
 
+  image: string;
+
   constructor(private menuService: NbMenuService) {
+    this.image = AppConstant.avatarDefault;
   }
 
   goToHome() {

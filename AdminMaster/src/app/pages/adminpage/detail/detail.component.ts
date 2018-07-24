@@ -18,9 +18,6 @@ declare var $: any;
 export class DetailComponent implements OnInit {
 
   adminPages: any;
-
-
-
   data;
   rows;
   configuration;
@@ -82,6 +79,7 @@ export class DetailComponent implements OnInit {
     private adminPageActionService: AdminpageactionService,
     private accountService: AccountService,
     private modalService: NgbModal) {
+
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -90,6 +88,23 @@ export class DetailComponent implements OnInit {
         child_breadcrumb.html(breadcrumb.html());
       }
     });
+
+    // check user is permission for view page
+    let lastPath = activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.viewAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result.code === AppConstant.permissionDeniedCode) {
+          this.router.navigate(['/pages/miscellaneous/denied']);
+        }
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
 
     // get param from router ex: /:username
     this.activatedRoute.params.forEach(params => {
@@ -112,23 +127,6 @@ export class DetailComponent implements OnInit {
     if (this.type == null || this.type == "") {
       this.type = "";
     }
-
-    // check user is permission for view page
-    let lastPath = activatedRoute.snapshot.url[0].path;
-    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
-    this.pathInfor.type = this.type;
-    this.pathInfor.typeAct = AppConstant.viewAction;
-
-    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
-      if (result) {
-        if (result.code === AppConstant.permissionDeniedCode) {
-          this.router.navigate(['/pages/miscellaneous/denied']);
-        }
-      }
-    }),
-      error => {
-        this.showModal(AppConstant.errorTitle, error.message);
-      };
   }
 
   ngOnInit() {
@@ -142,6 +140,7 @@ export class DetailComponent implements OnInit {
       };
 
     let paramGetTree: string = "?";
+
     // create tree list AdminPage
     if (this.type != undefined && this.type.length > 0) {
       if (paramGetTree.length > 1) {
@@ -186,7 +185,7 @@ export class DetailComponent implements OnInit {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
-      this.filter(null);
+    this.filter(null);
   }
 
   // function filter data

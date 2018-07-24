@@ -1,4 +1,6 @@
+import { NbMenuService } from '@nebular/theme';
 import { Component, OnInit } from '@angular/core';
+import { AppConstant } from '../../../config/appconstant';
 
 @Component({
   selector: 'permission-denied',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PermissionDeniedComponent implements OnInit {
 
-  constructor() { }
+  image: string;
+
+  constructor(private menuService: NbMenuService) {
+    this.image = AppConstant.avatarDefault;
+  }
 
   ngOnInit() {
   }
 
+  goToHome() {
+    this.menuService.navigateHome();
+  }
 }
