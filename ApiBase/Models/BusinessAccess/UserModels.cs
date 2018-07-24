@@ -853,17 +853,17 @@
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).AsQueryable<UserPageAction>();
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();                        
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).Union
-                                 (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
-                                  select p).AsQueryable<UserPageAction>();
-                    }
+                                 select p).AsQueryable<UserPageAction>();
+                    }                    
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -928,16 +928,16 @@
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).AsQueryable<UserPageAction>();
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).Union
-                                 (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
-                                  select p).AsQueryable<UserPageAction>();
+                                 select p).AsQueryable<UserPageAction>();
                     }
 
                     return c_gen.ToList();

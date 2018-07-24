@@ -83,7 +83,9 @@ export class ConfirmComponent implements OnInit {
     if (this.type == null || this.type == "") {
       this.type = "";
     }
+  }
 
+  ngOnInit() {
     // check localStorage exist
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
     if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
@@ -131,9 +133,6 @@ export class ConfirmComponent implements OnInit {
     else {
       this.router.navigate(['/pages/miscellaneous/404']);
     }
-  }
-
-  ngOnInit() {
   }
 
   nextclick() {

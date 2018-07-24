@@ -38,7 +38,6 @@ namespace ApiBase.Controllers
 
             type = type ?? string.Empty;
 
-            string path = "/api/AdminPageAction/listUserPageAction";
 
             if (pageId == null)
             {
@@ -76,21 +75,13 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
-            {
-                listPageActionView.ListUserPageAction = userModels.AdminGetAllPageAction(type, lang, search, (int)pageId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
-                listPageActionView.CateType = roleModels.GetRoleByRole(type);
-                listPageActionView.PageIndex = (int)pageIndex;
-                listPageActionView.PageSize = (int)pageSize;
-                listPageActionView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
-                listPageActionView.TotalRecord = total_record;
-                response = Json(listPageActionView);
-            }
-            else
-            {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
-            }
+            listPageActionView.ListUserPageAction = userModels.AdminGetAllPageAction(type, lang, search, (int)pageId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+            listPageActionView.CateType = roleModels.GetRoleByRole(type);
+            listPageActionView.PageIndex = (int)pageIndex;
+            listPageActionView.PageSize = (int)pageSize;
+            listPageActionView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
+            listPageActionView.TotalRecord = total_record;
+            response = Json(listPageActionView);
 
             return response;
         }
@@ -159,7 +150,7 @@ namespace ApiBase.Controllers
             else
             {
                 response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-            }          
+            }
 
             return response;
         }
@@ -175,33 +166,64 @@ namespace ApiBase.Controllers
             UserPageAction userPageAction = null;
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Add);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;
-
-            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
+            userPageAction = new UserPageAction
             {
-                userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
+                ActionName = userPageActionView.ActionName,
+                ActionDescription = userPageActionView.ActionDescription,
+                ActionStatus = userPageActionView.ActionStatus,
+                CreateDate = DateTime.Now,
+                ModifyDate = DateTime.Now,
+                ActionPage = userPageActionView.ActionPage
+            };
 
-                if (userPageAction != null)
+            rt = userModels.AddUserPageAction(userPageAction);
+
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+            }
+
+            return response;
+        }
+
+        // POST api/<controller>
+        [HttpPost("validateAdminPageAction")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ValidateAdminPageAction([FromBody]AdminUserPageActionView userPageActionView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;
+            UserPageAction userPageAction = null;
+
+            if(userPageActionView.isCreate)
+            {
+                if (!string.IsNullOrEmpty(userPageActionView.ActionName))
                 {
-                    is_valid = false;
-                    if (mess == string.Empty)
+                    userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
+
+                    if (userPageAction != null)
                     {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
+                        is_valid = false;
+                        if (mess == string.Empty)
+                        {
+                            response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "actionName" });
+                        }
                     }
                 }
             }
+
 
             ////validation server
             if (string.IsNullOrEmpty(userPageActionView.ActionName))
@@ -210,7 +232,7 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionName" }));
+                    response = Json(new { code = Constant.Empty, message = Constant.MessageDataEmpty, field = "actionName" });
                 }
             }
 
@@ -221,42 +243,13 @@ namespace ApiBase.Controllers
                 if (mess == string.Empty)
                 {
                     mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionDescription" }));
+                    response = Json(new { code = Constant.Empty, message = Constant.MessageDataEmpty, field = "actionDescription" });
                 }
             }
-            
-            if (!is_valid)
-            {
-                return response;
-            }
 
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            if (is_valid)
             {
-                userPageAction = new UserPageAction
-                {
-                    ActionName = userPageActionView.ActionName,
-                    ActionDescription = userPageActionView.ActionDescription,
-                    ActionStatus = userPageActionView.ActionStatus,
-                    CreateDate = DateTime.Now,
-                    ModifyDate = DateTime.Now,
-                    ActionPage = userPageActionView.ActionPage
-                };
-
-                rt = userModels.AddUserPageAction(userPageAction);
-
-                if (rt > 0)
-                {
-                    response = Json(new { code = Constant.Success, message = Constant.MessageCreateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
-                }
-            }
-            else
-            {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
             }
 
             return response;
@@ -272,88 +265,31 @@ namespace ApiBase.Controllers
             UserPageAction userPageAction = null;
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
 
-            var action = userModels.GetActionByActionName(CommonGlobal.Edit);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;
-
-            if (!string.IsNullOrEmpty(userPageActionView.ActionName))
+            userPageAction = new UserPageAction
             {
-                userPageAction = userModels.GetUserPageActionbyActionName(userPageActionView.ActionName);
+                ActionName = userPageActionView.ActionName,
+                ActionDescription = userPageActionView.ActionDescription,
+                ActionStatus = userPageActionView.ActionStatus,
+                CreateDate = DateTime.Now,
+                ModifyDate = DateTime.Now,
+                ActionPage = userPageActionView.ActionPage
+            };
 
-                if (userPageAction != null)
-                {
-                    is_valid = false;
-                    if (mess == string.Empty)
-                    {
-                        response = Json(new { code = Constant.Duplicate, message = Constant.MessageDuplicate, field = "ActionName" });
-                    }
-                }
-            }
+            rt = userModels.UpdateUserPageAction(id, userPageAction);
 
-            ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionName))
+            if (rt > 0)
             {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionName" }));
-                }
-            }
-
-            ////validation server
-            if (string.IsNullOrEmpty(userPageActionView.ActionName))
-            {
-                is_valid = false;
-                if (mess == string.Empty)
-                {
-                    mess = Constant.MessageDataEmpty;
-                    response = StatusCode(200, Json(new { code = Constant.Empty, message = mess, field = "ActionDescription" }));
-                }
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
-
-            ////check permission update
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
-            {
-                userPageAction = new UserPageAction
-                {
-                    ActionName = userPageActionView.ActionName,
-                    ActionDescription = userPageActionView.ActionDescription,
-                    ActionStatus = userPageActionView.ActionStatus,
-                    CreateDate = DateTime.Now,
-                    ModifyDate = DateTime.Now,
-                    ActionPage = userPageActionView.ActionPage
-                };
-
-                rt = userModels.UpdateUserPageAction(id, userPageAction);
-
-                if (rt > 0)
-                {
-                    response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
-                }
-                else
-                {
-                    response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
-                }
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
             }
 
             return response;
@@ -372,40 +308,24 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            string path = "/api/AdminPageAction";
-
-            var action = userModels.GetActionByActionName(CommonGlobal.Delete);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;
-
-            ////check permission delete
-            if (UserModels.CheckPermission(userLogin, path, typeAct, type))
+            UserPageAction userPageAction = userModels.GetUserPageActionbyId(id);
+            string[] listActionNameCanNotDelete = new string[] { CommonGlobal.View, CommonGlobal.Add, CommonGlobal.Delete, CommonGlobal.Edit };
+            if (userPageAction != null && !listActionNameCanNotDelete.Contains(userPageAction.ActionName))
             {
-                UserPageAction userPageAction = userModels.GetUserPageActionbyId(id);
-                string[] listActionNameCanNotDelete = new string[] { CommonGlobal.View, CommonGlobal.Add, CommonGlobal.Delete, CommonGlobal.Edit };
-                if (userPageAction != null && !listActionNameCanNotDelete.Contains(userPageAction.ActionName))
+                //// delete UserPageAction
+                bool rt = userModels.DeleteUserPageAction(userPageAction.Id);
+                if (rt)
                 {
-                    //// delete UserPageAction
-                    bool rt = userModels.DeleteUserPageAction(userPageAction.Id);
-                    if (rt)
-                    {
-                        response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
-                    }
-                    else
-                    {
-                        response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
-                    }
+                    response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
                 }
                 else
                 {
-                    response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+                    response = Json(new { code = Constant.Fail, message = Constant.MessageDeleteUncompleted });
                 }
             }
             else
             {
-                response = Json(new { code = Constant.PermissionDeniedCode, message = Constant.MessagePermissionDenied });
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
             }
 
             return response;

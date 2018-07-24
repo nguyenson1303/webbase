@@ -36,13 +36,13 @@ export class AdminpageactionService {
 
 
   deleteAdminPageAction(id: number): Observable<any> {
-    let url = AppConfig.serverAPI + AppConstant.deleteAdminPageApiUrl + "/" + id;
+    let url = AppConfig.serverAPI + AppConstant.deleteAdminPageActionApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.delete(url, this.options).map(this.extractData);
   }
 
   updateAdminPageAction(id: number, data: any): Observable<any> {
-    let url = AppConfig.serverAPI + AppConstant.updateAdminPageApiUrl + "/" + id;
+    let url = AppConfig.serverAPI + AppConstant.updateAdminPageActionApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
     return this.http.put(url, body, this.options).map(this.extractData);
@@ -50,20 +50,20 @@ export class AdminpageactionService {
 
 
   createAdminPageAction(data: any): Observable<any> {
-    let url = AppConfig.serverAPI + AppConstant.createAdminPageApiUrl;
+    let url = AppConfig.serverAPI + AppConstant.createAdminPageActionApiUrl;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
   getAdminPageActionDetail(id: number) {
-    let url = AppConfig.serverAPI + AppConstant.getAdminPageApiUrlDetailApiUrl + "/" + id;
+    let url = AppConfig.serverAPI + AppConstant.getAdminPageActionDetailApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.get(url, this.options).map(this.extractData);
   }
 
   validateAdminPageAction(data): Observable<any> {
-    let url = AppConfig.serverAPI + AppConstant.validateAdminPageApiUrl;
+    let url = AppConfig.serverAPI + AppConstant.validateAdminPageActionApiUrl;
     this.options = new RequestOptions({ headers: this.headers });
     let body = JSON.stringify(data);
     return this.http.post(url, body, this.options).map(this.extractData);

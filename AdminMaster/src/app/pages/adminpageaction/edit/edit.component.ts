@@ -24,6 +24,7 @@ export class EditComponent implements OnInit {
     createDate: "",
     modifyDate: "",
     actionPage: "",
+    isCreate: false,
   }
 
   pathInfor = {
@@ -64,7 +65,7 @@ export class EditComponent implements OnInit {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
-      localStorage.removeItem(AppConstant.objectAdminPage);
+      localStorage.removeItem(AppConstant.objectAdminPageAction);
     }
 
     // get param from router ex: /:username
@@ -112,12 +113,14 @@ export class EditComponent implements OnInit {
       this.adminPageActionDetail.actionStatus = this.objectAdminPageAction.actionStatus;
       this.adminPageActionDetail.modifyDate = this.objectAdminPageAction.modifyDate;
       this.adminPageActionDetail.createDate = this.objectAdminPageAction.createDate;
+      this.adminPageActionDetail.isCreate = this.objectAdminPageAction.isCreate;
     }
     else {
       if (this.isCreate == false) {
         this.adminPageActionService.getAdminPageActionDetail(this.id).subscribe(result => {
           if (result) {
             this.adminPageActionDetail = result;
+            this.adminPageActionDetail.isCreate = this.isCreate;
           }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
@@ -126,6 +129,10 @@ export class EditComponent implements OnInit {
           error => {
             this.showModal(AppConstant.errorTitle, error.message);
           };
+      }
+      else
+      {
+        this.adminPageActionDetail.actionPage = this.pageId.toString();
       }
     }
   }
@@ -137,10 +144,11 @@ export class EditComponent implements OnInit {
     let validateAdminPageActionObj = {
       actionName: this.adminPageActionDetail.actionName,
       actionDescription: this.adminPageActionDetail.actionDescription,
-      actionPage: this.adminPageActionDetail.actionPage,
-      actionStatus: this.adminPageActionDetail.actionStatus,
-      modifyDate: this.adminPageActionDetail.modifyDate,
-      createDate: this.adminPageActionDetail.createDate,
+      actionPage: this.pageId,
+      actionStatus: 1,
+      modifyDate: "",
+      createDate: "",
+      isCreate : this.adminPageActionDetail.isCreate
     }
 
     let createAdminPageActionObj = {
@@ -151,6 +159,7 @@ export class EditComponent implements OnInit {
       actionStatus: this.adminPageActionDetail.actionStatus,
       modifyDate: this.adminPageActionDetail.modifyDate,
       createDate: this.adminPageActionDetail.createDate,
+      isCreate: this.adminPageActionDetail.isCreate,
     }
 
     // call api validate adminpage

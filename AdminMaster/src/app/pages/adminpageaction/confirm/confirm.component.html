@@ -1,3 +1,43 @@
-<p>
-  confirm works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Thông tin Action</nb-card-header>
+      <nb-card-body>
+
+        <div class="form-group row">
+          <label for="actionName" class="col-sm-2 col-form-label">Tên action</label>
+          <div class="col-sm-6">
+          
+            <label class="col-form-label">{{adminPageActionDetail.actionName}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="actionDescription" class="col-sm-2 col-form-label">Mô tả</label>
+          <div class="col-sm-6">
+            <label class="col-form-label">{{adminPageActionDetail.actionDescription}}</label>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-body>
+
+        <div class="form-inline">
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9 btn-group btn-divided-group">
+              <button type="button" class="btn btn-hero-primary btn-with-icon" (click)="backclick()"><i class="ion-arrow-left-c"></i> Back</button>
+              <button type="submit" class="btn btn-hero-success btn-with-icon" (click)="nextclick()">Next <i class="ion-arrow-right-c"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+

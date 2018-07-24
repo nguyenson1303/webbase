@@ -24,7 +24,7 @@ export class AppConstant {
   public static deleteAdminPageApiUrl: string = "/api/adminpage";
   public static updateAdminPageApiUrl: string = "/api/adminpage";
   public static createAdminPageApiUrl: string = "/api/adminpage";
-  public static getAdminPageApiUrlDetailApiUrl: string = "/api/adminpage";
+  public static getAdminPageDetailApiUrl: string = "/api/adminpage";
   public static validateAdminPageApiUrl: string = "/api/adminpage/validateAdminPage";
   public static updateStatusAdminPageApiUrl: string = "/api/adminpage/updateStatusAdminPage";
 
@@ -33,8 +33,8 @@ export class AppConstant {
   public static deleteAdminPageActionApiUrl: string = "/api/adminpageaction";
   public static updateAdminPageActionApiUrl: string = "/api/adminpageaction";
   public static createAdminPageActionApiUrl: string = "/api/adminpageaction";
-  public static getAdminPageActionApiUrlDetailApiUrl: string = "/api/adminpageaction";
-  public static validateAdminPageActionApiUrl: string = "/api/adminpage/validateAdminPage";
+  public static getAdminPageActionDetailApiUrl: string = "/api/adminpageaction";
+  public static validateAdminPageActionApiUrl: string = "/api/adminpageaction/validateAdminPageAction";
 
   // const action on path
   public static viewAction: string = "view";
