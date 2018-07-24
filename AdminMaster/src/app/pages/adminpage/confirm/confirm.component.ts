@@ -84,57 +84,56 @@ export class ConfirmComponent implements OnInit {
     if (this.type == null || this.type == "") {
       this.type = "";
     }
+  }
 
+  ngOnInit() {
     // check localStorage exist
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
     if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
       this.adminPageDetail = JSON.parse(this.objectAdminPage);
-        let paramGetTree: string = "?";
-        if (this.type != undefined && this.type.length > 0) {
-          if (paramGetTree.length > 1) {
-            paramGetTree = paramGetTree + "&type=" + this.type;
-          }
-          else {
-            paramGetTree = paramGetTree + "type=" + this.type;
-          }
+      let paramGetTree: string = "?";
+      if (this.type != undefined && this.type.length > 0) {
+        if (paramGetTree.length > 1) {
+          paramGetTree = paramGetTree + "&type=" + this.type;
         }
-
-        if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
-          if (paramGetTree.length > 1) {
-            paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
-          }
-          else {
-            paramGetTree = paramGetTree + "parentId=" + this.adminPageDetail.parentId;
-          }
+        else {
+          paramGetTree = paramGetTree + "type=" + this.type;
         }
+      }
 
-        this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
-          if (result) {
-            $('#jstree').jstree({
-              'core': {
-                'data': result
-              }
-            });
+      if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
+        if (paramGetTree.length > 1) {
+          paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
+        }
+        else {
+          paramGetTree = paramGetTree + "parentId=" + this.adminPageDetail.parentId;
+        }
+      }
 
-            $('#jstree li').each(function () {
-              $("#jstree").jstree().disable_node(this.id);
-            })
-          }
-          else {
-            this.showModal(AppConstant.errorTitle, result.message);
-          }
-        }),
-          error => {
-            this.showModal(AppConstant.errorTitle, error.message);
-          };
+      this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
+        if (result) {
+          $('#jstree').jstree({
+            'core': {
+              'data': result
+            }
+          });
+
+          $('#jstree li').each(function () {
+            $("#jstree").jstree().disable_node(this.id);
+          })
+        }
+        else {
+          this.showModal(AppConstant.errorTitle, result.message);
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
 
     }
     else {
       this.router.navigate(['/pages/miscellaneous/404']);
     }
-  }
-
-  ngOnInit() {
   }
 
   nextclick() {

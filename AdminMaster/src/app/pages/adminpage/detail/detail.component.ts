@@ -32,7 +32,7 @@ export class DetailComponent implements OnInit {
 
   columns = [
     { key: '', title: 'Action' },
-    { key: 'actionName', title: 'Tiêu đề' },
+    { key: 'actionName', title: 'Tên action' },
     { key: 'actionDescription', title: 'Mô tả' },
     // { key: 'actionStatus', title: 'Active' },
   ];
@@ -225,12 +225,12 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.pageId != undefined && this.pageId >= 0) {
+    if (this.id != undefined && this.id >= 0) {
       if (this.params.length > 1) {
-        this.params = this.params + "&pageId=" + this.pageId;
+        this.params = this.params + "&pageId=" + this.id;
       }
       else {
-        this.params = this.params + "pageId=" + this.pageId;
+        this.params = this.params + "pageId=" + this.id;
       }
     }
 
@@ -322,14 +322,64 @@ export class DetailComponent implements OnInit {
     this.router.navigate(['/pages/adminpageaction/add', this.type, this.id]);
   }
 
-  editclick() {
-      this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, this.id]);
+  editclick(id : number) {
+    this.router.navigate(['/pages/adminpageaction/edit', this.type, this.id, id]);
   }
 
   showModal(title: string, mess: string) {
     const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
+  }
+
+  // show modal confirm delete
+  showDeleteConfirm(id: number, actionName: string) {
+    const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
+    activeModal.componentInstance.confirmationMessage = AppConstant.confirmDeleteContent + ": " + actionName;
+
+    activeModal.result.then((userResponse) => {
+      if (userResponse === true) {
+        this.deleteClick(id);
+      }
+    });
+  }
+
+  deleteClick(id: number) {
+    // check user is permission for view page
+    let lastPath = this.activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.deleteAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.showModal(AppConstant.permissionDeniedTitle, result.message);
+          }
+          else if (result.code === AppConstant.permissionAccessCode) {
+            // call api delete user
+            this.adminPageActionService.deleteAdminPageAction(id).subscribe(result => {
+              if (result) {
+                if (result && result.code) {
+                  if (result.code === AppConstant.successCode) {
+                    this.showModal(AppConstant.successTitle, result.message);
+                    // reload data
+                    this.filter(null);
+                  }
+                }
+              }
+            });
+
+          }
+        }
+      }
+    }),
+      error => {
+        console.error('ERROR: ', error.message);
+      };
   }
 }
 

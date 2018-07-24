@@ -21,6 +21,9 @@ const routes: Routes = [{
       path: 'adminpage',
       loadChildren: './adminpage/adminpage.module#AdminpageModule',
   }, {
+    path: 'adminpageaction',
+    loadChildren: './adminpageaction/adminpageaction.module#AdminpageactionModule',
+  }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
   }, {

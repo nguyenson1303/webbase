@@ -213,7 +213,7 @@ namespace ApiBase.Controllers
         // POST api/<controller>
         [HttpPost("validateAdminPage")]
         [Authorize(Roles = "Admin")]
-        public IActionResult ValidateUser([FromBody]AdminUserPageView userPageView)
+        public IActionResult ValidateAdminPage([FromBody]AdminUserPageView userPageView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();

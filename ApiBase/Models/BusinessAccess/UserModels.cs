@@ -846,17 +846,17 @@
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).AsQueryable<UserPageAction>();
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();                        
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).Union
-                                 (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
-                                  select p).AsQueryable<UserPageAction>();
-                    }
+                                 select p).AsQueryable<UserPageAction>();
+                    }                    
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -867,6 +867,15 @@
 
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
+                        if (orderBy.Length > 1)
+                        {
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else
+                        {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }
+
                         Type sortByPropType = typeof(UserPageAction).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPageAction), sortByPropType })
@@ -911,16 +920,16 @@
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).AsQueryable<UserPageAction>();
+                                 select p).Union
+                                 (from p in data.UserPageAction
+                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  select p).AsQueryable<UserPageAction>();
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == "0"
-                                 select p).Union
-                                 (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
-                                  select p).AsQueryable<UserPageAction>();
+                                 select p).AsQueryable<UserPageAction>();
                     }
 
                     return c_gen.ToList();

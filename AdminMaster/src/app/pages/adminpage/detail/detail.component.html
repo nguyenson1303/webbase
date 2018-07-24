@@ -82,8 +82,8 @@
                    (event)="eventEmitted($event)">
           <ng-template let-row>
             <td class="td-action">
-              <a *ngIf="row.actionPage != 0" class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
-              <a *ngIf="row.actionPage != 0" class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
+              <a *ngIf="row.actionPage != 0" class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editclick(row.id)"><i class="nb-edit"></i></a>
+              <a *ngIf="row.actionPage != 0" class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.actionName)"><i class="nb-trash"></i></a>
             </td>
             <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.actionName}}</a> </td>
             <td>
