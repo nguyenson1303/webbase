@@ -17,8 +17,6 @@ export class EditComponent implements OnInit {
 
   adminPages: any;
 
-  adminPageActions: any;
-
   adminPageDetail = {
     id: 0,
     act: "",
@@ -49,6 +47,8 @@ export class EditComponent implements OnInit {
   private errorMessage: string = "";
   private params: string = "?";
   private objectAdminPage: any;
+  private node: number = 0;
+
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -66,6 +66,17 @@ export class EditComponent implements OnInit {
       }
     });
 
+    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+      this.adminPageService.getAdminPageDetail(this.parentId).subscribe(result => {
+        if (result) {
+          this.node = result.parentId;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
+    }
+
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
     if (isInProcess != null && isInProcess != undefined) {
@@ -73,7 +84,6 @@ export class EditComponent implements OnInit {
     }
     else {
       localStorage.removeItem(AppConstant.objectAdminPage);
-      localStorage.removeItem(AppConstant.objectAdminPageAction);
     }
 
     // get param from router ex: /:username
@@ -110,39 +120,6 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    let paramGetAction: string = "?";
-    // create dropdown list AdminPageAction
-    if (this.type != undefined && this.type.length > 0) {
-      if (paramGetAction.length > 1) {
-        paramGetAction = paramGetAction + "&type=" + this.type;
-      }
-      else {
-        paramGetAction = paramGetAction + "type=" + this.type;
-      }
-    }
-
-    if (this.id != undefined && this.id > 0) {
-      if (paramGetAction.length > 1) {
-        paramGetAction = paramGetAction + "&pageId=" + this.id;
-      }
-      else {
-        paramGetAction = paramGetAction + "pageId=" + this.id;
-      }
-    }
-
-    this.adminPageService.getListAdminPageAction(paramGetAction).subscribe(result => {
-      if (result) {
-        this.adminPageActions = result;
-      }
-      else {
-        this.showModal(AppConstant.errorTitle, result.message);
-      }
-    }),
-      error => {
-        this.showModal(AppConstant.errorTitle, error.message);
-      };
-
     let parentIdTree: number;
 
     // check localStorage exist
@@ -169,7 +146,8 @@ export class EditComponent implements OnInit {
       if (this.isCreate == false) {
         this.adminPageService.getAdminPageDetail(this.id).subscribe(result => {
           if (result) {
-            this.adminPageDetail = result;          }
+            this.adminPageDetail = result;
+          }
           else {
             this.showModal(AppConstant.errorTitle, result.message);
           }
@@ -211,11 +189,18 @@ export class EditComponent implements OnInit {
 
     this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
       if (result) {
-        $('#jstree').jstree({
-          'core': {
-            'data': result
-          }
-        });
+
+        if (result) {
+          $('#jstree').jstree({
+            'core': {
+              'data': result
+            }
+          });
+        }
+        else {
+          console.log(result);
+        }
+
       }
       else {
         this.showModal(AppConstant.errorTitle, result.message);
@@ -269,14 +254,13 @@ export class EditComponent implements OnInit {
 
           // save obj to locate
           localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(createAdminPageObj));
-          localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(this.adminPageActions));
 
           localStorage.setItem(AppConstant.isInProcess, "true");
           if (this.isCreate) {
             this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId]);
           }
           else {
-            this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId  , this.id]);
+            this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId, this.id]);
           }
         }
         else {
@@ -303,12 +287,11 @@ export class EditComponent implements OnInit {
   }
 
   backclick() {
-    if (this.parentId == 0)
-    {
+    if (this.parentId == 0) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
     }
     else {
-      this.router.navigate(['/pages/adminpage/list', this.type, this.parentId]);
+      this.router.navigate(['/pages/adminpage/list', this.type, this.node, this.parentId]);
     }
   }
 

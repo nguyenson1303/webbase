@@ -344,12 +344,6 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            var action = userModels.GetActionByActionName(CommonGlobal.Delete);
-
-            string typeAct = action != null ? action.Id.ToString() : string.Empty;
-
-            string type = string.Empty;
-
             ////check permission delete
             UserPage userPage = userModels.GetUserPagebyId(id);
             if (userPage != null)

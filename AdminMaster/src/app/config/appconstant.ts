@@ -29,7 +29,12 @@ export class AppConstant {
   public static updateStatusAdminPageApiUrl: string = "/api/adminpage/updateStatusAdminPage";
 
   // adminpageAction api
-  public static listUserPageActionByPageIdApiUrl: string = "/api/adminpageaction/listUserPageActionByPageId";
+  public static listUserPageActionByPageIdApiUrl: string = "/api/adminpageaction/listUserPageAction";
+  public static deleteAdminPageActionApiUrl: string = "/api/adminpageaction";
+  public static updateAdminPageActionApiUrl: string = "/api/adminpageaction";
+  public static createAdminPageActionApiUrl: string = "/api/adminpageaction";
+  public static getAdminPageActionApiUrlDetailApiUrl: string = "/api/adminpageaction";
+  public static validateAdminPageActionApiUrl: string = "/api/adminpage/validateAdminPage";
 
   // const action on path
   public static viewAction: string = "view";
@@ -88,7 +93,6 @@ export class AppConstant {
   // const object local Storage
   public static objectUser: string = "objectUser";
   public static objectAdminPage: string = "objectAdminPage";
-  public static objectAdminPageAction: string = "objectAdminPageAction";
   public static isInProcess: string = "isInProcess";
 
   // const upload

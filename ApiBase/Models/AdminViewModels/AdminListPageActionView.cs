@@ -92,5 +92,17 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the total record.
+        /// </summary>
+        /// <value>
+        /// The total record.
+        /// </value>
+        public int TotalRecord
+        {
+            get;
+            set;
+        }
     }
 }

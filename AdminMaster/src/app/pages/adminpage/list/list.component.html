@@ -28,8 +28,7 @@
           <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
           <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
         </td>
-        <td *ngIf="row.parentId == 0"><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.title}}</a> </td>
-        <td *ngIf="row.parentId > 0">{{row.title}} </td>
+        <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.title}}</a> </td>
         <td>
           <div class="font-small">{{row.path}}</div>
         </td>
@@ -56,8 +55,7 @@
               <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(child.id)"><i class="nb-edit"></i></a>
               <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(child.id, child.title)"><i class="nb-trash"></i></a>
             </td>
-            <td *ngIf="child.parentId == 0"><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{row.title}}</a> </td>
-            <td *ngIf="child.parentId > 0">{{child.title}} </td>
+            <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{row.title}}</a> </td>
             <td>
               <div class="font-small">{{child.path}}</div>
             </td>
@@ -65,7 +63,6 @@
               <div class="font-small">{{child.tye}}</div>
             </td>
             <td>
-
               <label class="switch">
                 <input type="checkbox" [checked]="child.isShow" (click)="showChangeActiveConfirm(child.id, child.isShow, child.title)">
                 <span></span>

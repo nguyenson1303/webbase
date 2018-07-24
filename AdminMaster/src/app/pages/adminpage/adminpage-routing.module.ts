@@ -25,7 +25,7 @@ const routes: Routes = [{
       component: ListComponent, canActivate: [AuthGuard]
     },
     {
-      path: 'detail/:type/:id',
+      path: 'detail/:type/:parentId/:id',
       data: { breadcrumb: 'Chi tiết AdminPage' },
       component: DetailComponent, canActivate: [AuthGuard]
     },

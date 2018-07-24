@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>
+      <div class="row">
+        <div class="col-sm-12">Thông tin AdminPage          
+          <button style="float:right" type="button" class="btn btn-hero-primary btn-with-icon" (click)="backclick()"><i class="ion-arrow-left-c"></i> Back</button>
+          <button style="float:right; margin-right : 10px" type="button" class="btn btn-hero-success btn-with-icon" (click)="editclick()"><i class="ion-edit"></i> Edit</button>
+        </div>
+      </div>
+      </nb-card-header>
+      <nb-card-body>
+
+        <div class="form-group row">
+          <label for="title" class="col-sm-2 col-form-label">Tiêu đề</label>
+          <div class="col-sm-6">
+            <label class="col-form-label">{{adminPageDetail.title}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="path" class="col-sm-2 col-form-label">Đường dẫn</label>
+          <div class="col-sm-6">
+            <label class="col-form-label">{{adminPageDetail.path}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="tye" class="col-sm-2 col-form-label">Kiểu</label>
+          <div class="col-sm-3">
+            <label class="col-form-label">{{adminPageDetail.tye}}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="orderDisplay" class="col-sm-2 col-form-label">Thứ tự hiển thị</label>
+          <div class="col-sm-1">
+            <label class="col-form-label">{{adminPageDetail.orderDisplay}}</label>
+          </div>
+        </div>
+        <div class="form-group row disablediv">
+          <label for="orderDisplay" class="col-sm-2 col-form-label">Page cha</label>
+          <div id="jstree" class="col-sm-3" style="margin-left : -25px">
+            <!-- in this example the tree is populated from inline HTML -->
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+          <div class="col-sm-3">
+            <i class="{{adminPageDetail.icon}}" style="font-size:2rem !important"></i>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2">Active</label>
+          <div class="col-sm-6">
+            <label class="switch">
+              <input type="checkbox" disabled [checked]="adminPageDetail.isShow" [(ngModel)]="adminPageDetail.isShow">
+              <span></span>
+            </label>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>
+        Danh sách actions của {{adminPageDetail.title}}
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row full-name-inputs">
+          <div class="col-sm-6 input-group input-group-border-only">
+            <input type="text" placeholder="Tiêu đề" class="form-control" [(ngModel)]="search" (input)="onNameSearch($event.target.value)" />
+          </div>
+          <div class="col-sm-6 btn-group btn-divided-group">
+            <button class="btn btn-hero-primary btn-with-icon" (click)="reset()"><i class="ion-refresh"></i> Reset </button>
+            <button class="btn btn-hero-success btn-with-icon" (click)="addClick()"><i class="ion-plus-round"></i> Tạo mới</button>
+          </div>
+        </div>
+
+        <ngx-table [configuration]="configuration"
+                   [data]="data"
+                   [columns]="columns"
+                   [pagination]="pagination"
+                   (event)="eventEmitted($event)">
+          <ng-template let-row>
+            <td class="td-action">
+              <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.id)"><i class="ion-eye"></i></a>
+              <a *ngIf="row.actionPage != 0" class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(row.id)"><i class="nb-edit"></i></a>
+              <a *ngIf="row.actionPage != 0" class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
+            </td>
+            <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(row.parentId, row.id)">{{row.actionName}}</a> </td>
+            <td>
+              <span class="font-small">{{row.actionDescription}}</span>
+            </td>
+            <!--<td>
+            <label class="switch">
+              <input type="checkbox" [checked]="row.actionStatus" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
+              <span></span>
+            </label>
+          </td>-->
+          </ng-template>
+        </ngx-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
