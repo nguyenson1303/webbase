@@ -93,6 +93,7 @@ export class AppConstant {
   // const object local Storage
   public static objectUser: string = "objectUser";
   public static objectAdminPage: string = "objectAdminPage";
+  public static objectAdminPageAction: string = "objectAdminPageAction";
   public static isInProcess: string = "isInProcess";
 
   // const upload

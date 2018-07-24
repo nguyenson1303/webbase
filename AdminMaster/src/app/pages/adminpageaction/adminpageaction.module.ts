@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { AdminpageactionRoutingModule } from './adminpageaction-routing.module';
 import { AdminpageactionComponent } from './adminpageaction.component';
-import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 
@@ -12,6 +11,6 @@ import { ConfirmComponent } from './confirm/confirm.component';
     CommonModule,
     AdminpageactionRoutingModule
   ],
-  declarations: [AdminpageactionComponent, DetailComponent, EditComponent, ConfirmComponent]
+  declarations: [AdminpageactionComponent, EditComponent, ConfirmComponent]
 })
 export class AdminpageactionModule { }
