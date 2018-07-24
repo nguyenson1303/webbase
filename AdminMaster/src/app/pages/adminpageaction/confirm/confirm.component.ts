@@ -152,7 +152,7 @@ export class ConfirmComponent implements OnInit {
     }
     else {
       // call api update adminpage
-      this.adminPageService.updateAdminPage(this.id, createAdminPageActionObj).subscribe(result => {
+      this.adminPageActionService.updateAdminPageAction(this.id, createAdminPageActionObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectAdminPageAction);
