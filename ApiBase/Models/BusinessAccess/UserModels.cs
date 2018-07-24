@@ -288,12 +288,19 @@
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
                         // First Char ToUpper
-                        string OrderBy = new CultureInfo("en-US").TextInfo.ToTitleCase(orderBy);
+                        if (orderBy.Length > 1)
+                        {
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else
+                        {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }
 
-                        Type sortByPropType = typeof(User).GetProperty(OrderBy).PropertyType;
+                        Type sortByPropType = typeof(User).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(User), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_gen, OrderBy, orderType }) as IQueryable<User>;
+                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<User>;
                     }
                     else
                     {
@@ -867,6 +874,16 @@
 
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
+                        // First Char ToUpper
+                        if (orderBy.Length > 1)
+                        {
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else
+                        {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }
+
                         Type sortByPropType = typeof(UserPageAction).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPageAction), sortByPropType })
@@ -1299,12 +1316,18 @@
                     if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
                         // First Char ToUpper
-                        string OrderBy = new CultureInfo("en-US").TextInfo.ToTitleCase(orderBy);
+                        if (orderBy.Length > 1)
+                        {
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }                        
 
-                        Type sortByPropType = typeof(UserPage).GetProperty(OrderBy).PropertyType;
+                        Type sortByPropType = typeof(UserPage).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
                         c_gen = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(UserPage), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_gen, OrderBy, orderType }) as IQueryable<UserPage>;
+                                .Invoke(c_gen, new object[] { c_gen, orderBy, orderType }) as IQueryable<UserPage>;
                     }
                     else
                     {

@@ -45,6 +45,7 @@ export class ConfirmComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private modalService: NgbModal) {
+
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
       let child_breadcrumb = $("#child_breadcrumb");
@@ -67,12 +68,10 @@ export class ConfirmComponent implements OnInit {
     this.activatedRoute.params.forEach(params => {
       this.id = params['id'];
       this.type = params['type'];
-      if (params['parentId'] == null || params['parentId'] == undefined)
-      {
+      if (params['parentId'] == null || params['parentId'] == undefined) {
         this.parentId = 0;
       }
-      else
-      {
+      else {
         this.parentId = params['parentId'];
       }
     });
@@ -89,44 +88,44 @@ export class ConfirmComponent implements OnInit {
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
     if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
       this.adminPageDetail = JSON.parse(this.objectAdminPage);
-        let paramGetTree: string = "?";
-        if (this.type != undefined && this.type.length > 0) {
-          if (paramGetTree.length > 1) {
-            paramGetTree = paramGetTree + "&type=" + this.type;
-          }
-          else {
-            paramGetTree = paramGetTree + "type=" + this.type;
-          }
+      let paramGetTree: string = "?";
+      if (this.type != undefined && this.type.length > 0) {
+        if (paramGetTree.length > 1) {
+          paramGetTree = paramGetTree + "&type=" + this.type;
         }
-
-        if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
-          if (paramGetTree.length > 1) {
-            paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
-          }
-          else {
-            paramGetTree = paramGetTree + "parentId=" + this.adminPageDetail.parentId;
-          }
+        else {
+          paramGetTree = paramGetTree + "type=" + this.type;
         }
+      }
 
-        this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
-          if (result) {
-            $('#jstree').jstree({
-              'core': {
-                'data': result
-              }
-            });
+      if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
+        if (paramGetTree.length > 1) {
+          paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
+        }
+        else {
+          paramGetTree = paramGetTree + "parentId=" + this.adminPageDetail.parentId;
+        }
+      }
 
-            $('#jstree li').each(function () {
-              $("#jstree").jstree().disable_node(this.id);
-            })
-          }
-          else {
-            this.showModal(AppConstant.errorTitle, result.message);
-          }
-        }),
-          error => {
-            this.showModal(AppConstant.errorTitle, error.message);
-          };
+      this.adminPageService.getListAdminPageTree(paramGetTree).subscribe(result => {
+        if (result) {
+          $('#jstree').jstree({
+            'core': {
+              'data': result
+            }
+          });
+
+          $('#jstree li').each(function () {
+            $("#jstree").jstree().disable_node(this.id);
+          })
+        }
+        else {
+          this.showModal(AppConstant.errorTitle, result.message);
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
 
     }
     else {
@@ -173,7 +172,7 @@ export class ConfirmComponent implements OnInit {
         };
     }
     else {
-       // call api update adminpage
+      // call api update adminpage
       this.adminPageService.updateAdminPage(this.id, createAdminPageObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {

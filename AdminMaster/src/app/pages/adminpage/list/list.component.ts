@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminpageService } from '../../../@core/data/adminpage.service';
@@ -14,7 +14,7 @@ declare var $: any;
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
 
   @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
 
@@ -84,6 +84,25 @@ export class ListComponent implements OnInit {
       }
     });
 
+    // check user is permission for view page
+    let lastPath = activatedRoute.snapshot.url[0].path;
+    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
+    this.pathInfor.type = this.type;
+    this.pathInfor.typeAct = AppConstant.viewAction;
+
+    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
+      if (result) {
+        if (result && result.code) {
+          if (result.code === AppConstant.permissionDeniedCode) {
+            this.router.navigate(['/pages/miscellaneous/denied']);
+          }
+        }
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
+
     // get param from router ex: /:type
     this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
@@ -103,30 +122,9 @@ export class ListComponent implements OnInit {
         this.parentId = 0;  // get all page parent root
         this.isShowBack = false;
       }
+
+      this.filter(null);
     })
-
-    // check user is permission for view page
-    let lastPath = activatedRoute.snapshot.url[0].path;
-    this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
-    this.pathInfor.type = this.type;
-    this.pathInfor.typeAct = AppConstant.viewAction;
-
-    this.accountService.checkPermission(this.pathInfor).subscribe(result => {
-      if (result) {
-        if (result && result.code) {
-          if (result.code === AppConstant.permissionDeniedCode) {
-            this.router.navigate(['/pages/miscellaneous/denied']);
-          }
-        }
-      }
-    }),
-      error => {
-        this.showModal(AppConstant.errorTitle, error.message);
-      };
-  }
-
-  ngOnInit() {
-    this.filter(null);
   }
 
   // function filter data
@@ -251,11 +249,6 @@ export class ListComponent implements OnInit {
 
   addClick() {
     this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
-  }
-
-  editClick(id: number) {
-    // redirect to edit admin page
-    this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, id]);
   }
 
   ListChildClick(node: number, parentId: number) {
