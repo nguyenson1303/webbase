@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
@@ -14,7 +14,7 @@ declare var $: any;
   styleUrls: ['./list.component.scss']
 })
 
-export class ListComponent implements OnInit {
+export class ListComponent {
 
   // use for setting column table
   columns = [
@@ -75,19 +75,6 @@ export class ListComponent implements OnInit {
       }
     });
 
-    // get param from router ex: /:type
-     this.activatedRoute.params.forEach(params => {
-      this.type = params['type'];
-     });
-
-    if (this.pageIndex === undefined || this.pageIndex === null) {
-      this.pageIndex = AppConstant.pageIndexDefault;
-    }
-
-    if (this.pageSize === undefined || this.pageSize === null) {
-      this.pageSize = AppConstant.pageSizeDefault;
-    }
-
     // check user is permission for view page
     let lastPath = activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
@@ -106,10 +93,21 @@ export class ListComponent implements OnInit {
       error => {
         this.showModal(AppConstant.errorTitle, error.message);
       };
-  }
 
-  ngOnInit() {
-    this.filter(null);
+
+    if (this.pageIndex === undefined || this.pageIndex === null) {
+      this.pageIndex = AppConstant.pageIndexDefault;
+    }
+
+    if (this.pageSize === undefined || this.pageSize === null) {
+      this.pageSize = AppConstant.pageSizeDefault;
+    }
+
+    // get param from router ex: /:type
+    this.activatedRoute.params.forEach(params => {
+      this.type = params['type'];
+      this.filter(null);
+    });
   }
 
   // function filter data
