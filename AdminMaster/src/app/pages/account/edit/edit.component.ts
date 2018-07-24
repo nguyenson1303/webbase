@@ -45,6 +45,7 @@ export class EditComponent implements OnInit {
     dateJoin: null,
     dateRegister: null,
     avatar: "",
+    avatarOld: "",
     avatarFile: null,
     avatarFileType: "",
     avatarFileName: "",
@@ -194,6 +195,8 @@ export class EditComponent implements OnInit {
               && this.userProfile.avatar !== undefined
               && this.userProfile.avatar !== "") {
 
+              this.userProfile.avatarOld = this.userProfile.avatar;
+
               this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
                 let fileName = result.url.split('/').pop().toString();
                 let fileType = result.blob().type;
@@ -280,6 +283,7 @@ export class EditComponent implements OnInit {
             address: this.userProfile.address,
             birthday: this.userProfile.birthday,
             avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
+            avatarOld: this.userProfile.avatarOld,
             avatarFile: this.userProfile.avatarFile,
             avatarFileType: this.userProfile.avatarFileType,
             avatarFileName: this.userProfile.avatarFileName,

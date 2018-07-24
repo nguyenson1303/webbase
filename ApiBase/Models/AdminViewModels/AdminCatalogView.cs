@@ -9,24 +9,12 @@ namespace ApiBase.Models.AdminViewModels
     public class AdminCatalogView
     {
         /// <summary>
-        /// Gets or sets the Path.
-        /// </summary>
-        /// <value>
-        /// The Path.
-        /// </value>
-        public string Path
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the name of the category.
         /// </summary>
         /// <value>
         /// The name of the category.
         /// </value>
-        public string Category_name
+        public string CategoryName
         {
             get;
             set;
@@ -38,19 +26,7 @@ namespace ApiBase.Models.AdminViewModels
         /// <value>
         /// The cate identifier.
         /// </value>
-        public int Cate_id
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type of the cate.
-        /// </summary>
-        /// <value>
-        /// The type of the cate.
-        /// </value>
-        public string Cate_type
+        public int CatalogId
         {
             get;
             set;
@@ -67,7 +43,6 @@ namespace ApiBase.Models.AdminViewModels
             get;
             set;
         }
-
 
         /// <summary>
         /// Gets or sets the image path.
@@ -118,36 +93,12 @@ namespace ApiBase.Models.AdminViewModels
         }
 
         /// <summary>
-        /// Gets or sets the label image.
-        /// </summary>
-        /// <value>
-        /// The label image.
-        /// </value>
-        public string Label_image
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the link.
         /// </summary>
         /// <value>
         /// The link.
         /// </value>
         public string Link
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the list page size.
-        /// </summary>
-        /// <value>
-        /// The list page size.
-        /// </value>
-        public List<SelectListItem> List_page_size
         {
             get;
             set;
@@ -190,48 +141,12 @@ namespace ApiBase.Models.AdminViewModels
         }
 
         /// <summary>
-        /// Gets or sets the search.
-        /// </summary>
-        /// <value>
-        /// The search.
-        /// </value>
-        public string Search
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Catalog_view"/> is show.
         /// </summary>
         /// <value>
         ///   <c>true</c> if show; otherwise, <c>false</c>.
         /// </value>
         public bool Show
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the show text.
-        /// </summary>
-        /// <value>
-        /// The show text.
-        /// </value>
-        public string Show_text
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the text search result.
-        /// </summary>
-        /// <value>
-        /// The text search result.
-        /// </value>
-        public string Text_search_result
         {
             get;
             set;
@@ -256,18 +171,6 @@ namespace ApiBase.Models.AdminViewModels
         /// The type.
         /// </value>
         public string Type
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the type act.
-        /// </summary>
-        /// <value>
-        /// The type act.
-        /// </value>
-        public string Type_act
         {
             get;
             set;
