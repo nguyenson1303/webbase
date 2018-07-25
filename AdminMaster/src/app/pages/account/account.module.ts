@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeModule } from '../../@theme/theme.module';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TableModule } from 'ngx-easy-table';
 
 import { AccountRoutingModule } from './account-routing.module';
@@ -21,7 +20,6 @@ import { ProfileComponent } from './profile/profile.component';
     CommonModule,
     ThemeModule,
     AccountRoutingModule,
-    Ng2SmartTableModule,
     TableModule,
     NgDatepickerModule
   ],
