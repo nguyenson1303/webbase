@@ -147,7 +147,7 @@ namespace ApiBase.Controllers
         }
 
         [HttpGet("listUserPermission"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPermission(string type, int? pageIndex, int? pageSize)
+        public IActionResult ListUserPermission()
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -156,28 +156,12 @@ namespace ApiBase.Controllers
             User cuser = new User();
 
             var mess = string.Empty;
-            var isOk = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            type = type ?? string.Empty;
-
-            if (type == string.Empty)
-            {
-                isOk = false;
-                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-            }
-
-            if (!isOk)
-            {
-                return response;
-            }
-
           
-
-            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);
+            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin);
 
             response = Json(lstPagePermission);
 
@@ -199,7 +183,7 @@ namespace ApiBase.Controllers
                     {
                         PageId = item.PageId,
                         User = item.UserName,
-                        TypeActionId = item.ListActionId
+                        // TypeActionId = item.ListActionId
                     };
                     sv.UpdatePermission(up);
                 }

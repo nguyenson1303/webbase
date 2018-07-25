@@ -69,6 +69,6 @@ namespace DBBase.EntitysObject
             set;
         }
 
-        public AdminUserPageActionFullView ListUserPageAction { get; set; }
+        public List<AdminUserPageActionFullView> ListUserPageAction { get; set; }
     }
 }
