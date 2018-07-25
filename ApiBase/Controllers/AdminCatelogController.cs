@@ -25,11 +25,7 @@ namespace ApiBase.Controllers
         [HttpGet, Authorize(Roles = "Admin")]
         public IActionResult Get(int? parent, int? cateId, string type, string lang, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
-            IActionResult response = null;
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
+            IActionResult response = null;           
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
             StringBuilder sb = new StringBuilder();
@@ -104,11 +100,7 @@ namespace ApiBase.Controllers
         public IActionResult Get(int? cateId, int? parent, string type, string lang)
         {
             IActionResult response = null;
-            UserModels sv = new UserModels();
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
+            UserModels userModels = new UserModels();            
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
             StringBuilder sb = new StringBuilder();
@@ -138,6 +130,8 @@ namespace ApiBase.Controllers
             catalogView.Link = cate.Link;
             catalogView.Parent = cate.ParentId ?? 0;
             catalogView.Show = cate.Show ?? false;
+            catalogView.CreateDate = cate.CreateDate.Value;
+            catalogView.ModifyDate = cate.ModifyDate.Value;
             catalogView.OrderDisplay = (int)cate.OrderDisplay;
             catalogView.Type = type;
 
@@ -158,30 +152,10 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-            
+           
             string type = string.Empty;
 
             List<SelectListItem> listSelectCatalog = new List<SelectListItem>();
-
-            ////validation server
-            if (string.IsNullOrEmpty(adminCatalogView.CategoryName))
-            {
-                is_valid = false;
-                mess = Constant.MessageDataEmpty;
-                response = Json(new { code = Constant.Empty, message = mess, field = "category" });
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
-
             cate.CategoryName = adminCatalogView.CategoryName;
             cate.Description = string.IsNullOrEmpty(adminCatalogView.Description) == false ? adminCatalogView.Description : string.Empty;
             cate.Keyword = string.IsNullOrEmpty(adminCatalogView.Keyword) == false ? adminCatalogView.Keyword : string.Empty;
@@ -204,6 +178,8 @@ namespace ApiBase.Controllers
             cate.Link = CommonGlobal.CompleteLink(adminCatalogView.CategoryName);
             cate.Type = adminCatalogView.Type;
             cate.ImagePath = adminCatalogView.ImagePath;
+            cate.ModifyDate = DateTime.Now;
+            cate.CreateDate = DateTime.Now;
 
             rt = cateModels.Add(cate);
 
@@ -214,6 +190,34 @@ namespace ApiBase.Controllers
             else
             {
                 response = Json(new { code = Constant.Fail, message = Constant.MessageCreateUncompleted });
+            }
+
+            return response;
+        }
+
+        // POST api/<controller>
+        [HttpPost("validateCatelog")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ValidateCatelog([FromBody]AdminCatalogView adminCatalogView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            User user = new User();
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;            
+
+            ////validation server
+            if (string.IsNullOrEmpty(adminCatalogView.CategoryName))
+            {
+                is_valid = false;
+                mess = Constant.MessageDataEmpty;
+                response = Json(new { code = Constant.Empty, message = mess, field = "category" });
+            }            
+
+            if (is_valid)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
             }
 
             return response;
@@ -231,12 +235,7 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-           
+            bool is_valid = true;           
             string type = string.Empty;
 
             ////validation server
@@ -274,6 +273,7 @@ namespace ApiBase.Controllers
             cate.Link = CommonGlobal.CompleteLink(adminCatalogView.CategoryName);
             cate.Type = adminCatalogView.Type;
             cate.ImagePath = adminCatalogView.ImagePath;
+            cate.ModifyDate = DateTime.Now;
                        
             rt = cateModels.Edit(cate);
 
@@ -296,11 +296,6 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             string mess = string.Empty;
             UserModels userModels = new UserModels();
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
 

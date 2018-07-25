@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace ApiBase.Models.AdminViewModels
@@ -171,6 +172,18 @@ namespace ApiBase.Models.AdminViewModels
         /// The type.
         /// </value>
         public string Type
+        {
+            get;
+            set;
+        }
+
+        public DateTime CreateDate
+        {
+            get;
+            set;
+        }
+
+        public DateTime ModifyDate
         {
             get;
             set;

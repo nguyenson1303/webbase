@@ -169,6 +169,8 @@ export class EditComponent implements OnInit {
           this.userProfile.avatar = AppConstant.avatarDefault;
         }
       }
+
+      this.avatarUrl = this.userProfile.avatar;
     }
     else
     {
