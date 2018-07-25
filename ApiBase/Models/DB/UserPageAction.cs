@@ -11,6 +11,6 @@ namespace ApiBase.Models.DB
         public int? ActionStatus { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModifyDate { get; set; }
-        public string ActionPage { get; set; }
+        public int? ActionPage { get; set; }
     }
 }

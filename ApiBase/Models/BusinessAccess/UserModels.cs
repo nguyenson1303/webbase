@@ -796,16 +796,16 @@
                     if (pageId != 0)
                     {
                         c_gen = (from p in data.UserPageAction
-                                 where p.ActionPage == "0"
+                                 where p.ActionPage == 0
                                  select p).Union
                                  (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  where p.ActionPage != 0 && p.ActionPage > 0 && p.ActionPage == pageId
                                   select p).AsQueryable<UserPageAction>();                        
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
-                                 where p.ActionPage == "0"
+                                 where p.ActionPage == 0
                                  select p).AsQueryable<UserPageAction>();
                     }                    
 
@@ -871,16 +871,16 @@
                     if (pageId != 0)
                     {
                         c_gen = (from p in data.UserPageAction
-                                 where p.ActionPage == "0"
+                                 where p.ActionPage == 0
                                  select p).Union
                                  (from p in data.UserPageAction
-                                  where p.ActionPage != "0" && p.ActionPage.Length > 0 && p.ActionPage.Contains(pageId.ToString())
+                                  where p.ActionPage != 0 && p.ActionPage > 0 && p.ActionPage == pageId
                                   select p).AsQueryable<UserPageAction>();
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
-                                 where p.ActionPage == "0"
+                                 where p.ActionPage == 0
                                  select p).AsQueryable<UserPageAction>();
                     }
 

@@ -23,13 +23,9 @@ namespace ApiBase.Controllers
 
         // GET: api/values
         [HttpGet, Authorize(Roles = "Admin")]
-        public IActionResult Get(int? parent, int? cateId, string type, string lang, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
+        public IActionResult Get(int? parent, string type, string lang, string search, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
-            IActionResult response = null;
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
+            IActionResult response = null;           
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
             StringBuilder sb = new StringBuilder();
@@ -100,15 +96,11 @@ namespace ApiBase.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{cateId}"), Authorize(Roles = "Admin")]
-        public IActionResult Get(int? cateId, int? parent, string type, string lang)
+        [HttpGet("{id}"), Authorize(Roles = "Admin")]
+        public IActionResult Get(int? id, string lang)
         {
             IActionResult response = null;
-            UserModels sv = new UserModels();
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
+            UserModels userModels = new UserModels();            
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
             StringBuilder sb = new StringBuilder();
@@ -116,16 +108,14 @@ namespace ApiBase.Controllers
             BaseClass baseClass = new BaseClass();
             var catalogView = new AdminCatalogView();
 
-            type = type ?? CommonGlobal.CateProduct;
-
-            cateId = cateId ?? 0;
+            id = id ?? 0;
 
             if (string.IsNullOrEmpty(lang))
             {
                 lang = LanguageModels.ActiveLanguage().LangCultureName;
             }
 
-            cate = cateModels.GetbyID((int)cateId);
+            cate = cateModels.GetbyID((int)id);
             catalogView.Lang = cate.Lang ?? lang;
             catalogView.CatalogId = cate.CatalogId;
             catalogView.CategoryName = cate.CategoryName;
@@ -138,8 +128,10 @@ namespace ApiBase.Controllers
             catalogView.Link = cate.Link;
             catalogView.Parent = cate.ParentId ?? 0;
             catalogView.Show = cate.Show ?? false;
+            catalogView.CreateDate = cate.CreateDate.Value;
+            catalogView.ModifyDate = cate.ModifyDate.Value;
             catalogView.OrderDisplay = (int)cate.OrderDisplay;
-            catalogView.Type = type;
+            catalogView.Type = cate.Type;
 
             response = Json(catalogView);
 
@@ -148,7 +140,7 @@ namespace ApiBase.Controllers
 
         // POST api/values
         [HttpPost, Authorize(Roles = "Admin")]
-        public IActionResult Post([FromBody]AdminCatalogView adminCatalogView)
+        public IActionResult Post([FromBody]AdminCatalogEditView adminCatalogView)
         {
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
@@ -158,30 +150,10 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;
-            bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-            
+           
             string type = string.Empty;
 
             List<SelectListItem> listSelectCatalog = new List<SelectListItem>();
-
-            ////validation server
-            if (string.IsNullOrEmpty(adminCatalogView.CategoryName))
-            {
-                is_valid = false;
-                mess = Constant.MessageDataEmpty;
-                response = Json(new { code = Constant.Empty, message = mess, field = "category" });
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
-
             cate.CategoryName = adminCatalogView.CategoryName;
             cate.Description = string.IsNullOrEmpty(adminCatalogView.Description) == false ? adminCatalogView.Description : string.Empty;
             cate.Keyword = string.IsNullOrEmpty(adminCatalogView.Keyword) == false ? adminCatalogView.Keyword : string.Empty;
@@ -204,6 +176,8 @@ namespace ApiBase.Controllers
             cate.Link = CommonGlobal.CompleteLink(adminCatalogView.CategoryName);
             cate.Type = adminCatalogView.Type;
             cate.ImagePath = adminCatalogView.ImagePath;
+            cate.ModifyDate = DateTime.Now;
+            cate.CreateDate = DateTime.Now;
 
             rt = cateModels.Add(cate);
 
@@ -219,9 +193,37 @@ namespace ApiBase.Controllers
             return response;
         }
 
+        // POST api/<controller>
+        [HttpPost("validateCatelog")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ValidateCatelog([FromBody]AdminCatalogEditView adminCatalogView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            User user = new User();
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;            
+
+            ////validation server
+            if (string.IsNullOrEmpty(adminCatalogView.CategoryName))
+            {
+                is_valid = false;
+                mess = Constant.MessageDataEmpty;
+                response = Json(new { code = Constant.Empty, message = mess, field = "categoryName" });
+            }            
+
+            if (is_valid)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
+            }
+
+            return response;
+        }
+
         // Put api/values
         [HttpPut("{id}"), Authorize(Roles = "Admin")]
-        public IActionResult Put(int id, [FromBody]AdminCatalogView adminCatalogView)
+        public IActionResult Put(int id, [FromBody]AdminCatalogEditView adminCatalogView)
         {
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
@@ -230,27 +232,8 @@ namespace ApiBase.Controllers
             BaseClass baseClass = new BaseClass();
             UserModels userModels = new UserModels();
             var mess = string.Empty;
-            int rt = 0;
-            bool is_valid = true;
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-           
+            int rt = 0;          
             string type = string.Empty;
-
-            ////validation server
-            if (string.IsNullOrEmpty(adminCatalogView.CategoryName))
-            {
-                is_valid = false;
-                mess = Constant.MessageDataEmpty;
-                response = Json(new { code = Constant.Empty, message = mess, field = "category" });
-            }
-
-            if (!is_valid)
-            {
-                return response;
-            }
 
             cate.CatalogId = id;
             cate.CategoryName = adminCatalogView.CategoryName;
@@ -274,6 +257,7 @@ namespace ApiBase.Controllers
             cate.Link = CommonGlobal.CompleteLink(adminCatalogView.CategoryName);
             cate.Type = adminCatalogView.Type;
             cate.ImagePath = adminCatalogView.ImagePath;
+            cate.ModifyDate = DateTime.Now;
                        
             rt = cateModels.Edit(cate);
 
@@ -290,30 +274,25 @@ namespace ApiBase.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{cateId}"), Authorize(Roles = "Admin")]
-        public IActionResult Delete(int? cateId)
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+        public IActionResult Delete(int? id)
         {
             IActionResult response = null;
             string mess = string.Empty;
             UserModels userModels = new UserModels();
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
 
-            cate = cateModels.GetbyID((int)cateId);
+            cate = cateModels.GetbyID((int)id);
             if (cate != null)
             {                
                 ////delete category
-                bool rt = cateModels.Delete((int)cateId);
+                bool rt = cateModels.Delete((int)id);
 
                 if (rt)
                 {
                     //// delete image category
-                    if (!string.IsNullOrEmpty(cate.ImagePath))
+                    if (!string.IsNullOrEmpty(cate.ImagePath) && cate.ImagePath.Contains("/"))
                     {
                         string webRootPath = _hostingEnvironment.WebRootPath;
                         string fileDelete = Path.Combine(webRootPath, cate.ImagePath.Replace("/", "\\"));

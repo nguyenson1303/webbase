@@ -18,11 +18,14 @@ const routes: Routes = [{
     path: 'account',
     loadChildren: './account/account.module#AccountModule',
   }, {
-      path: 'adminpage',
-      loadChildren: './adminpage/adminpage.module#AdminpageModule',
+    path: 'adminpage',
+    loadChildren: './adminpage/adminpage.module#AdminpageModule',
   }, {
     path: 'adminpageaction',
     loadChildren: './adminpageaction/adminpageaction.module#AdminpageactionModule',
+  }, {
+    path: 'catalog',
+    loadChildren: './catalog/catalog.module#CatalogModule',
   }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',

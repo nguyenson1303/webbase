@@ -13,7 +13,7 @@ namespace ApiBase.Models.AdminViewModels
         public int ActionStatus { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModifyDate { get; set; }
-        public string ActionPage { get; set; }
+        public int? ActionPage { get; set; }
         public Boolean isCreate { get; set; }
     }
 

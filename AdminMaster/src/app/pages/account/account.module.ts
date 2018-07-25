@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeModule } from '../../@theme/theme.module';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TableModule } from 'ngx-easy-table';
 
 import { AccountRoutingModule } from './account-routing.module';
@@ -15,13 +14,13 @@ import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ProfileComponent } from './profile/profile.component';
+import { SettingComponent } from './setting/setting.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ThemeModule,
     AccountRoutingModule,
-    Ng2SmartTableModule,
     TableModule,
     NgDatepickerModule
   ],
@@ -32,6 +31,7 @@ import { ProfileComponent } from './profile/profile.component';
     EditComponent,
     ConfirmComponent,
     ProfileComponent,
+    SettingComponent,
   ],
   providers: [
     AccountService,

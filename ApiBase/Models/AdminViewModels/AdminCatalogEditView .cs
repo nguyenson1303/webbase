@@ -7,7 +7,7 @@ namespace ApiBase.Models.AdminViewModels
     /// <summary>
     /// Catalog view
     /// </summary>
-    public class AdminCatalogView
+    public class AdminCatalogEditView
     {
         /// <summary>
         /// Gets or sets the name of the category.
@@ -16,18 +16,6 @@ namespace ApiBase.Models.AdminViewModels
         /// The name of the category.
         /// </value>
         public string CategoryName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the cate identifier.
-        /// </summary>
-        /// <value>
-        /// The cate identifier.
-        /// </value>
-        public int CatalogId
         {
             get;
             set;
@@ -172,18 +160,6 @@ namespace ApiBase.Models.AdminViewModels
         /// The type.
         /// </value>
         public string Type
-        {
-            get;
-            set;
-        }
-
-        public DateTime CreateDate
-        {
-            get;
-            set;
-        }
-
-        public DateTime ModifyDate
         {
             get;
             set;
