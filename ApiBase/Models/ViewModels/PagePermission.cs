@@ -1,4 +1,5 @@
-﻿using ApiBase.Models.DB;
+﻿using ApiBase.Models.AdminViewModels;
+using ApiBase.Models.DB;
 using System.Collections.Generic;
 
 namespace DBBase.EntitysObject
@@ -9,10 +10,10 @@ namespace DBBase.EntitysObject
     public partial class PagePermission
     {
         /// <summary>
-        /// Gets or sets the order display.
+        /// Gets or sets the OrderDisplay.
         /// </summary>
         /// <value>
-        /// The order display.
+        /// The OrderDisplay.
         /// </value>
         public int OrderDisplay
         {
@@ -68,6 +69,6 @@ namespace DBBase.EntitysObject
             set;
         }
 
-        public string ListActionId { get; set; }
+        public AdminUserPageActionFullView ListUserPageAction { get; set; }
     }
 }

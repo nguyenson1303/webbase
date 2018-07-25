@@ -16,4 +16,13 @@ namespace ApiBase.Models.AdminViewModels
         public string ActionPage { get; set; }
         public Boolean isCreate { get; set; }
     }
+
+    public class AdminUserPageActionFullView
+    {
+        public int Id { get; set; }
+        public string ActionName { get; set; }
+        public string ActionDescription { get; set; }
+        public string ActionPage { get; set; }
+        public bool Active { get; set; }
+    }
 }

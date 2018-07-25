@@ -426,7 +426,7 @@
         /// </summary>
         /// <param name="userName">The username.</param>
         /// <returns>Get List permission By User</returns>
-        public List<PagePermission> GetListPermissionByUser(string userName, int pageIndex, int pageSize, out int total)
+        public List<PagePermission> GetListPermissionByUser(string userName)
         {
             List<PagePermission> lstPagePermission = new List<PagePermission>();
             List<PagePermission> lstData = new List<PagePermission>();
@@ -458,66 +458,10 @@
                         page.ListActionId = obj.TypeActionId;
                         lstPagePermission.Add(page);
                     }
-
-                    List<UserPermission> lstUserPermission = data.UserPermission.Where(u => u.User == userName).ToList();
-                    List<int> lstPageID = (from c in data.UserPermission
-                                           where c.User == userName
-                                           select (int)c.PageId).ToList<int>();
-
-                    List<UserPage> lstUserPage = data.UserPage.Where(c => !lstPageID.Contains(c.Id) && c.ParentId > 0).ToList();
-                    if (lstUserPage.Any())
-                    {
-                        foreach (var obj in lstUserPage)
-                        {
-                            PagePermission page = new PagePermission();
-                            page.PageId = obj.Id;
-                            page.UserName = userName;
-                            page.Title = obj.Title;
-                            page.ParentId = (int)obj.ParentId;
-                            page.OrderDisplay = (int)obj.OrderDisplay;
-                            page.ListActionId = string.Empty;
-                            lstPagePermission.Add(page);
-                        }
-                    }
-                }
-                else
-                {
-                    List<UserPage> lstUserPage = data.UserPage.Where(p => p.ParentId > 0).ToList();
-                    if (lstUserPage.Any())
-                    {
-                        foreach (var obj in lstUserPage)
-                        {
-                            PagePermission page = new PagePermission();
-                            page.PageId = obj.Id;
-                            page.UserName = userName;
-                            page.Title = obj.Title;
-                            page.ParentId = (int)obj.ParentId;
-                            page.OrderDisplay = (int)obj.OrderDisplay;
-                            page.ListActionId = string.Empty;
-                            lstPagePermission.Add(page);
-                        }
-                    }
-                }
-
-                List<UserPage> lstUserPageParent = data.UserPage.Where(p => p.ParentId == 0).OrderBy(p => p.OrderDisplay).ToList();
-                foreach (var parent in lstUserPageParent)
-                {
-                    PagePermission page = new PagePermission();
-                    page.PageId = parent.Id;
-                    page.UserName = userName;
-                    page.Title = parent.Title;
-                    page.ParentId = (int)parent.ParentId;
-                    page.OrderDisplay = (int)parent.OrderDisplay;
-                    page.ListActionId = string.Empty;
-                    lstData.Add(page);
-                    lstData.AddRange(lstPagePermission.Where(p => p.ParentId == parent.Id).OrderBy(p => p.OrderDisplay));
-                }
-
-                total = lstData.Count();
             }
-
-            return lstData.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
+
+
 
         /// <summary>
         /// Gets the user by role.
