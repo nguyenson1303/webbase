@@ -77,7 +77,7 @@ namespace ApiBase.Controllers
 
             if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
             {
-                orderBy = "OrderDisplay";
+                orderBy = "ModifyDate";
                 orderType = "asc";
             }
 
@@ -316,13 +316,13 @@ namespace ApiBase.Controllers
                     if (!string.IsNullOrEmpty(cate.ImagePath))
                     {
                         string webRootPath = _hostingEnvironment.WebRootPath;
-                        string fileDelete = Path.Combine(webRootPath, cate.ImagePath);
+                        string fileDelete = Path.Combine(webRootPath, cate.ImagePath.Replace("/", "\\"));
                         if (System.IO.File.Exists(fileDelete))
                         {
                             System.IO.File.Delete(fileDelete);
                         }
 
-                        string fileDelete2 = Path.Combine(webRootPath, cate.ImagePath.Replace("sc_small_", "sc_full_"));
+                        string fileDelete2 = Path.Combine(webRootPath, cate.ImagePath.Replace("/", "\\").Replace("sc_small_", "sc_full_"));
                         if (System.IO.File.Exists(fileDelete2))
                         {
                             System.IO.File.Delete(fileDelete2);

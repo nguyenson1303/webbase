@@ -54,7 +54,7 @@
               <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(child.id)"><i class="nb-edit"></i></a>
               <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(child.id, child.title)"><i class="nb-trash"></i></a>
             </td>
-            <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{row.title}}</a> </td>
+            <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{child.title}}</a> </td>
             <td>
               <div class="font-small">{{child.path}}</div>
             </td>

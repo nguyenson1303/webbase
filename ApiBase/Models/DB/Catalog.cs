@@ -19,5 +19,7 @@ namespace ApiBase.Models.DB
         public string Title { get; set; }
         public string Type { get; set; }
         public int? OrderDisplay { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ModifyDate { get; set; }
     }
 }

@@ -71,6 +71,8 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.CategoryName).HasMaxLength(100);
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(500);
 
                 entity.Property(e => e.ImagePath).HasMaxLength(200);
@@ -80,6 +82,8 @@ namespace ApiBase.Models.DB
                 entity.Property(e => e.Lang).HasMaxLength(10);
 
                 entity.Property(e => e.Link).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ParentId).HasColumnName("ParentID");
 
