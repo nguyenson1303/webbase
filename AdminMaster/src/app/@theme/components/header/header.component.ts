@@ -135,5 +135,8 @@ export class HeaderComponent implements OnInit {
     if (title === AppConstant.profileLabel) {
       this.router.navigate(['/pages/account/profile', this.user.email]);
     }
+    if (title === AppConstant.settingLabel) {
+      this.router.navigate(['/pages/account/setting', this.user.email]);
+    }
   }
 }

@@ -15,9 +15,6 @@ namespace ApiBase.Models.AdminViewModels
         public string Icon { get; set; }
         public string Path { get; set; }
         public string Breadcrumb { get; set; }
-        public int? TypeActionId { get; set; }
-        public DateTime? ModifyDate { get; set; }
-        public DateTime? CreateDate { get; set; }
     }
 
     public class UserPageTree

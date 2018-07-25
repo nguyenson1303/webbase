@@ -22,16 +22,13 @@ export class EditComponent implements OnInit {
     act: "",
     ctrl: "",
     title: "",
-    isShow: true,
+    isShow: false,
     tye: "",
     parentId: 0,
     orderDisplay: 0,
     icon: "",
     path: "",
-    breadcrumb: "",
-    typeActionId: 0,
-    modifyDate: "",
-    createDate: ""
+    breadcrumb: ""
   }
 
   pathInfor = {
@@ -138,9 +135,6 @@ export class EditComponent implements OnInit {
       this.adminPageDetail.icon = this.objectAdminPage.icon;
       this.adminPageDetail.path = this.objectAdminPage.path;
       this.adminPageDetail.breadcrumb = this.objectAdminPage.breadcrumb;
-      this.adminPageDetail.typeActionId = this.objectAdminPage.typeActionId;
-      this.adminPageDetail.modifyDate = this.objectAdminPage.modifyDate;
-      this.adminPageDetail.createDate = this.objectAdminPage.createDate;
     }
     else {
       parentIdTree = this.parentId
@@ -225,10 +219,7 @@ export class EditComponent implements OnInit {
       orderDisplay: this.adminPageDetail.orderDisplay,
       icon: this.adminPageDetail.icon,
       path: this.adminPageDetail.path,
-      breadcrumb: this.adminPageDetail.breadcrumb,
-      typeActionId: this.adminPageDetail.typeActionId,
-      modifyDate: this.adminPageDetail.modifyDate,
-      createDate: this.adminPageDetail.createDate
+      breadcrumb: this.adminPageDetail.breadcrumb
     }
 
     let createAdminPageObj = {
@@ -242,10 +233,7 @@ export class EditComponent implements OnInit {
       orderDisplay: this.adminPageDetail.orderDisplay,
       icon: this.adminPageDetail.icon,
       path: this.adminPageDetail.path,
-      breadcrumb: this.adminPageDetail.breadcrumb,
-      typeActionId: this.adminPageDetail.typeActionId,
-      modifyDate: this.adminPageDetail.modifyDate,
-      createDate: this.adminPageDetail.createDate
+      breadcrumb: this.adminPageDetail.breadcrumb
     }
 
     // call api validate adminpage

@@ -45,10 +45,7 @@ export class DetailComponent implements OnInit {
     orderDisplay: 0,
     icon: "",
     path: "",
-    breadcrumb: "",
-    typeActionId: 0,
-    modifyDate: "",
-    createDate: ""
+    breadcrumb: ""
   }
 
   pathInfor = {
