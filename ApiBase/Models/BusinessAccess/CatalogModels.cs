@@ -124,23 +124,23 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <param name="search">The search.</param>
-        /// <param name="page_index">The page index.</param>
-        /// <param name="page_size">The page size.</param>
-        /// <param name="order_by">The order by.</param>
-        /// <param name="order_type">Type of the order.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="orderBy">The order by.</param>
+        /// <param name="orderType">Type of the order.</param>
         /// <param name="total">The total.</param>
         /// <returns>get All Catalog By ParentID</returns>
-        public List<Catalog> GetAllCatalogByParentID(int parent, string type, string lang, string search, int page_index, int page_size, string order_by, string order_type, out int total)
+        public List<Catalog> GetAllCatalogByParentID(int parent, string type, string lang, string search, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     int level = 0;
-                    List<Catalog> list_select_catalog = new List<Catalog>();
-                    this.List_catalog_parent_width_parent_name(0, level, (int)parent, type, lang, ref list_select_catalog);
+                    List<Catalog> listSelectCatalog = new List<Catalog>();
+                    this.ListCatalogParentWidthParentName(0, level, (int)parent, type, lang, ref listSelectCatalog);
 
-                    IQueryable<Catalog> c_gen = list_select_catalog.AsQueryable<Catalog>();
+                    IQueryable<Catalog> c_gen = listSelectCatalog.AsQueryable<Catalog>();
                     if (!string.IsNullOrEmpty(search))
                     {
                         c_gen = c_gen.Where(p => p.CategoryName.Contains(search) || p.Link.Contains(search)).AsQueryable<Catalog>();
@@ -148,7 +148,7 @@
 
                     total = c_gen.Count();
 
-                    return c_gen.Skip(page_index * page_size).Take(page_size).ToList<Catalog>(); 
+                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<Catalog>();
                 }
                 catch (Exception)
                 {
@@ -510,8 +510,8 @@
         /// <param name="selected">The selected.</param>
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
-        /// <param name="list_select_catalog">The list select catalog.</param>
-        public void List_catalog_parent_width_parent_name(int parent, int level, int selected, string type, string lang, ref List<Catalog> list_select_catalog)
+        /// <param name="listSelectCatalog">The list select catalog.</param>
+        public void ListCatalogParentWidthParentName(int parent, int level, int selected, string type, string lang, ref List<Catalog> listSelectCatalog)
         {
             ////CatalogModels cateModels = new CatalogModels();
             if(selected != 0)
@@ -531,7 +531,7 @@
             {
                 if (parent == 0)
                 {
-                    list_select_catalog.Add(cata);
+                    listSelectCatalog.Add(cata);
                     ////list_select_catalog.Add(new SelectListItem { Selected = (selected == cata.CatalogID ? true : false), Text = cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
                 }
                 else
@@ -539,11 +539,11 @@
                     ////get parent category
                     var pa = GetbyID((int)cata.ParentId);
                     cata.CategoryName = pa.CategoryName + " > " + cata.CategoryName.ToString();
-                    list_select_catalog.Add(cata);
+                    listSelectCatalog.Add(cata);
                     ////list_select_catalog.Add(new SelectListItem { Selected = (selected == cata.CatalogID ? true : false), Text = pa.CategoryName + " > " + cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
                 }
 
-                this.List_catalog_parent_width_parent_name(cata.CatalogId, level, cata.CatalogId, type, lang, ref list_select_catalog);
+                this.ListCatalogParentWidthParentName(cata.CatalogId, level, cata.CatalogId, type, lang, ref listSelectCatalog);
             }
         }
 

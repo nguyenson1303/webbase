@@ -795,10 +795,6 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.ActionName).HasMaxLength(100);
 
-                entity.Property(e => e.ActionPage)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");

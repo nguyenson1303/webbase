@@ -58,7 +58,7 @@ namespace ApiBase.Controllers
                     imageSmall =  "sc_small_" + uniqueName;
                     imageLager =  "sc_full_" + uniqueName;
 
-                    if (!string.IsNullOrEmpty(fileOld))
+                    if (!string.IsNullOrEmpty(fileOld) && fileOld.Contains("/"))
                     {
                         string fileDelete = Path.Combine(webRootPath, fileOld.Replace("/", "\\"));
                         if (System.IO.File.Exists(fileDelete))

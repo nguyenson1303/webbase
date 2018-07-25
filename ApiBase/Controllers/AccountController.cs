@@ -502,7 +502,7 @@ namespace ApiBase.Controllers
                 if (rt)
                 {
                     //// delete avatar file
-                    if (!string.IsNullOrEmpty(userInfo.Avatar))
+                    if (!string.IsNullOrEmpty(userInfo.Avatar) && userInfo.Avatar.Contains("/"))
                     {
                         string webRootPath = _hostingEnvironment.WebRootPath;
                         string fileDelete = Path.Combine(webRootPath, userInfo.Avatar.Replace("/", "\\"));

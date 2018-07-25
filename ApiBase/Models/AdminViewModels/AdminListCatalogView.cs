@@ -104,17 +104,5 @@ namespace ApiBase.Models.AdminViewModels
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public string Type
-        {
-            get;
-            set;
-        }
     }
 }
