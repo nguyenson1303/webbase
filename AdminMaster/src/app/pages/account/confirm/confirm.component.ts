@@ -30,6 +30,7 @@ export class ConfirmComponent implements OnInit {
     address: "",
     birthday: "",
     avatar: null,
+    avatarOld: "",
     avatarFile: "",
     avatarFileType: "",
     avatarFileName: ""
@@ -227,7 +228,7 @@ export class ConfirmComponent implements OnInit {
               var blob = this.baseService.dataURItoBlob(this.createUserObj.avatarFile);
               formData.append(AppConstant.fileKey, blob, this.createUserObj.avatarFileName);
               formData.append(AppConstant.filePath, AppConstant.avatarUploadFolder);
-              formData.append(AppConstant.fileOld, this.createUserObj.avatar);
+              formData.append(AppConstant.fileOld, this.createUserObj.avatarOld);
               formData.append(AppConstant.thumbnailSizeKey, AppConstant.thumbnailSizeValue.toString());
 
               this.baseService.uploadFile(formData).subscribe(event => {

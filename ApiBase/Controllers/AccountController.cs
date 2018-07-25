@@ -19,7 +19,9 @@ namespace ApiBase.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
-    {        
+    {
+        private IHostingEnvironment _hostingEnvironment;
+
         // GET: api/<controller>
         // get login user profile
         [HttpGet, Authorize]
@@ -123,7 +125,7 @@ namespace ApiBase.Controllers
 
             if (pageSize == null)
             {
-                pageSize = 30;
+                pageSize = 25;
             }
 
             if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
@@ -462,7 +464,7 @@ namespace ApiBase.Controllers
                 if (!string.IsNullOrEmpty(userView.Birthday)) {
                     infor.Birthday = DateTime.Parse(userView.Birthday);
                 }
-                infor.Avatar = userView.Avatar.ToString();
+                infor.Avatar = userView.Avatar;
                 infor.FullName = userView.FullName;
 
                 rt = userModels.UpdateUserInfor(userName, infor);
@@ -490,12 +492,32 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
 
             User cuser = userModels.GetUserbyUserName(userName);
+            UserInfo userInfo = userModels.GetUserInforByEmail(userName);
+
             if (cuser != null)
             {
                 //// delete user
-                bool rt = userModels.DeleteUser(userName);
+                bool rt = userModels.DeleteUser(userName);                
+
                 if (rt)
                 {
+                    //// delete avatar file
+                    if (!string.IsNullOrEmpty(userInfo.Avatar))
+                    {
+                        string webRootPath = _hostingEnvironment.WebRootPath;
+                        string fileDelete = Path.Combine(webRootPath, userInfo.Avatar.Replace("/", "\\"));
+                        if (System.IO.File.Exists(fileDelete))
+                        {
+                            System.IO.File.Delete(fileDelete);
+                        }
+
+                        string fileDelete2 = Path.Combine(webRootPath, userInfo.Avatar.Replace("/", "\\").Replace("sc_small_", "sc_full_"));
+                        if (System.IO.File.Exists(fileDelete2))
+                        {
+                            System.IO.File.Delete(fileDelete2);
+                        }
+                    }
+
                     response = Json(new { code = Constant.Success, message = Constant.MessageDeleteCompleted });
                 }
                 else

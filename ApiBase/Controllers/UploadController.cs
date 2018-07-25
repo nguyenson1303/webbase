@@ -54,18 +54,19 @@ namespace ApiBase.Controllers
                 }
                 if (file.Length > 0)
                 {
-                    imageSmall =  "sc_small_" + BaseClass.GetUniqueFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
-                    imageLager =  "sc_full_" + BaseClass.GetUniqueFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
+                    var uniqueName = BaseClass.GetUniqueFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
+                    imageSmall =  "sc_small_" + uniqueName;
+                    imageLager =  "sc_full_" + uniqueName;
 
                     if (!string.IsNullOrEmpty(fileOld))
                     {
-                        string fileDelete = Path.Combine(fileOld);
+                        string fileDelete = Path.Combine(webRootPath, fileOld.Replace("/", "\\"));
                         if (System.IO.File.Exists(fileDelete))
                         {
                             System.IO.File.Delete(fileDelete);
                         }
 
-                        string fileDelete2 = Path.Combine(fileOld.Replace("sc_small_", "sc_full_"));
+                        string fileDelete2 = Path.Combine(webRootPath, fileOld.Replace("/", "\\").Replace("sc_small_", "sc_full_"));
                         if (System.IO.File.Exists(fileDelete2))
                         {
                             System.IO.File.Delete(fileDelete2);
