@@ -1008,7 +1008,15 @@
                         data.UserPageAction.Add(userPageAction);
                         data.SaveChanges();
                         rt = userPageAction.Id;
-                        dbContextTransaction.Commit();
+
+                        if(rt > 0)
+                        {
+                            dbContextTransaction.Commit();
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                        }                        
                     }
                     catch (Exception)
                     {
@@ -1121,7 +1129,7 @@
         /// </summary>
         /// <param name="userPage">user object.</param>
         /// <returns>Adds the user</returns>
-        public int AddUserPage(UserPage userPage)
+        public int AddUserPage(UserPage userPage, string userName)
         {
             using (var data = new themanorContext())
             {
@@ -1133,7 +1141,31 @@
                         data.UserPage.Add(userPage);
                         data.SaveChanges();
                         rt = userPage.Id;
-                        dbContextTransaction.Commit();
+
+                        if (rt > 0 && !string.IsNullOrEmpty(userName))
+                        {
+                            // set full permission commont for user on new page
+                            UserPermission userPermission = new UserPermission();
+                            userPermission.PageId = rt;
+                            userPermission.User = userName;
+                            userPermission.TypeActionId = "1,2,3,4";  //// default is add, del, view, edit action
+
+                            data.UserPermission.Add(userPermission);
+                            data.SaveChanges();
+                            int up = userPermission.Id;
+                            if (up > 0)
+                            {
+                                dbContextTransaction.Commit();
+                            }
+                            else
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                        }
                     }
                     catch (Exception)
                     {

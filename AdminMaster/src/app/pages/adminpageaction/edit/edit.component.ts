@@ -21,8 +21,6 @@ export class EditComponent implements OnInit {
     actionName: "",
     actionDescription: "",
     actionStatus: 0,
-    createDate: "",
-    modifyDate: "",
     actionPage: "",
     isCreate: false,
   }
@@ -111,8 +109,6 @@ export class EditComponent implements OnInit {
       this.adminPageActionDetail.actionDescription = this.objectAdminPageAction.actionDescription;
       this.adminPageActionDetail.actionPage = this.objectAdminPageAction.actionPage;
       this.adminPageActionDetail.actionStatus = this.objectAdminPageAction.actionStatus;
-      this.adminPageActionDetail.modifyDate = this.objectAdminPageAction.modifyDate;
-      this.adminPageActionDetail.createDate = this.objectAdminPageAction.createDate;
       this.adminPageActionDetail.isCreate = this.objectAdminPageAction.isCreate;
     }
     else {
@@ -157,8 +153,6 @@ export class EditComponent implements OnInit {
       actionDescription: this.adminPageActionDetail.actionDescription,
       actionPage: this.adminPageActionDetail.actionPage,
       actionStatus: this.adminPageActionDetail.actionStatus,
-      modifyDate: this.adminPageActionDetail.modifyDate,
-      createDate: this.adminPageActionDetail.createDate,
       isCreate: this.adminPageActionDetail.isCreate,
     }
 

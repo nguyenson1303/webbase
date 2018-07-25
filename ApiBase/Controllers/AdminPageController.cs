@@ -181,6 +181,10 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             int rt = 0;
 
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
             ////check permission update
             userPage = new UserPage
             {
@@ -196,7 +200,7 @@ namespace ApiBase.Controllers
                 CreateDate = DateTime.Now
             };
 
-            rt = userModels.AddUserPage(userPage);
+            rt = userModels.AddUserPage(userPage, userLogin);
 
             if (rt > 0)
             {

@@ -21,8 +21,6 @@ export class ConfirmComponent implements OnInit {
     actionName: "",
     actionDescription: "",
     actionStatus: 0,
-    createDate: "",
-    modifyDate: "",
     actionPage: "",
     isCreate: false,
   }
@@ -106,8 +104,6 @@ export class ConfirmComponent implements OnInit {
       actionDescription: this.adminPageActionDetail.actionDescription,
       actionPage: this.adminPageActionDetail.actionPage,
       actionStatus: this.adminPageActionDetail.actionStatus,
-      modifyDate: this.adminPageActionDetail.modifyDate,
-      createDate: this.adminPageActionDetail.createDate,
       isCreate : this.adminPageActionDetail.isCreate,
     }
 
@@ -208,6 +204,4 @@ export class ConfirmComponent implements OnInit {
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-
-
 }

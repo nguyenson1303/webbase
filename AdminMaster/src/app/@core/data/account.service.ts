@@ -94,6 +94,20 @@ export class AccountService {
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
+  changePassword(data): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.changePasswordApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.post(url, body, this.options).map(this.extractData);
+  }
+
+  validateChangePassword(data): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.validateChangePasswordApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.post(url, body, this.options).map(this.extractData);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

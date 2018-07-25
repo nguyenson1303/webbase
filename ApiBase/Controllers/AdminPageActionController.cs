@@ -25,13 +25,8 @@ namespace ApiBase.Controllers
             RoleModels roleModels = new RoleModels();
             User cuser = new User();
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
             var mess = string.Empty;
             var listPageActionView = new AdminListPageActionView();
-            int total_record = 0;
             var isOk = true;
 
             string lang = LanguageModels.ActiveLanguage().LangCultureName;
@@ -75,7 +70,7 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            listPageActionView.ListUserPageAction = userModels.AdminGetAllPageAction(type, lang, search, (int)pageId, (int)pageIndex, (int)pageSize, orderBy, orderType, out total_record);
+            listPageActionView.ListUserPageAction = userModels.AdminGetAllPageAction(type, lang, search, (int)pageId, (int)pageIndex, (int)pageSize, orderBy, orderType, out int total_record);
             listPageActionView.CateType = roleModels.GetRoleByRole(type);
             listPageActionView.PageIndex = (int)pageIndex;
             listPageActionView.PageSize = (int)pageSize;
@@ -96,10 +91,6 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             RoleModels roleModels = new RoleModels();
             User cuser = new User();
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             var mess = string.Empty;
             var isOk = true;
@@ -138,10 +129,6 @@ namespace ApiBase.Controllers
             UserModels sv = new UserModels();
             IActionResult response = null;
             UserPageAction userPageAction = sv.GetUserPageActionbyId(id);
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             if (userPageAction != null)
             {
@@ -207,7 +194,7 @@ namespace ApiBase.Controllers
             bool is_valid = true;
             UserPageAction userPageAction = null;
 
-            if(userPageActionView.isCreate)
+            if(userPageActionView.IsCreate)
             {
                 if (!string.IsNullOrEmpty(userPageActionView.ActionName))
                 {
@@ -223,7 +210,6 @@ namespace ApiBase.Controllers
                     }
                 }
             }
-
 
             ////validation server
             if (string.IsNullOrEmpty(userPageActionView.ActionName))
@@ -266,17 +252,11 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             int rt = 0;
 
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-
             userPageAction = new UserPageAction
             {
                 ActionName = userPageActionView.ActionName,
                 ActionDescription = userPageActionView.ActionDescription,
                 ActionStatus = userPageActionView.ActionStatus,
-                CreateDate = DateTime.Now,
                 ModifyDate = DateTime.Now,
                 ActionPage = userPageActionView.ActionPage
             };
@@ -303,10 +283,6 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             string mess = string.Empty;
             UserModels userModels = new UserModels();
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             UserPageAction userPageAction = userModels.GetUserPageActionbyId(id);
             string[] listActionNameCanNotDelete = new string[] { CommonGlobal.View, CommonGlobal.Add, CommonGlobal.Delete, CommonGlobal.Edit };

@@ -28,10 +28,7 @@ export class ConfirmComponent implements OnInit {
     orderDisplay: 0,
     icon: "",
     path: "",
-    breadcrumb: "",
-    typeActionId: 0,
-    modifyDate: "",
-    createDate: ""
+    breadcrumb: ""
   }
 
   public isCreate: boolean = true;
@@ -145,10 +142,7 @@ export class ConfirmComponent implements OnInit {
       orderDisplay: this.adminPageDetail.orderDisplay,
       icon: this.adminPageDetail.icon,
       path: this.adminPageDetail.path,
-      breadcrumb: this.adminPageDetail.breadcrumb,
-      typeActionId: this.adminPageDetail.typeActionId,
-      modifyDate: this.adminPageDetail.modifyDate,
-      createDate: this.adminPageDetail.createDate
+      breadcrumb: this.adminPageDetail.breadcrumb
     }
 
     if (this.isCreate) {

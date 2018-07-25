@@ -223,6 +223,10 @@ namespace ApiBase.Controllers
                     }
                 }
             }
+            else
+            {
+                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
+            }
 
             return response;
         }
@@ -356,6 +360,66 @@ namespace ApiBase.Controllers
                 }
             }
 
+            if (is_valid)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageOk });
+            }
+
+            return response;
+        }
+
+        // POST api/<controller>
+        [HttpPost("validateChangePassword")]
+        [Authorize]
+        public IActionResult ValidateChangePassword([FromBody]ChangePasswordView passwordView)
+        {
+            IActionResult response = null;
+            UserModels userModels = new UserModels();
+            User user = new User();
+            var mess = string.Empty;
+            string rt = string.Empty;
+            bool is_valid = true;
+
+            if (string.IsNullOrEmpty(passwordView.OldPassword))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess, field = "oldPassword" });
+                }
+            }
+
+            if (string.IsNullOrEmpty(passwordView.Password))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess, field = "password" });
+                }
+            }
+
+            if (string.IsNullOrEmpty(passwordView.ConfirmPassword))
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageDataEmpty;
+                    response = Json(new { code = Constant.Empty, message = mess, field = "confirmPassword" });
+                }
+            }
+
+            if (passwordView.Password != passwordView.ConfirmPassword)
+            {
+                is_valid = false;
+                if (mess == string.Empty)
+                {
+                    mess = Constant.MessageConfirmPassword;
+                    response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
+                }
+            }
+                      
             if (is_valid)
             {
                 response = Json(new { code = Constant.Success, message = Constant.MessageOk });

@@ -34,7 +34,6 @@ export class AdminpageactionService {
     return this.http.get(url, this.options).map(this.extractData);
   }
 
-
   deleteAdminPageAction(id: number): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.deleteAdminPageActionApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
@@ -47,7 +46,6 @@ export class AdminpageactionService {
     let body = JSON.stringify(data);
     return this.http.put(url, body, this.options).map(this.extractData);
   }
-
 
   createAdminPageAction(data: any): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.createAdminPageActionApiUrl;
