@@ -240,6 +240,8 @@ export class EditComponent implements OnInit {
       else {
         this.avatarUrl = AppConstant.avatarDefault;
       }
+
+
     }
   }
 

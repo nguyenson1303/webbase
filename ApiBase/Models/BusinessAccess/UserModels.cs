@@ -426,98 +426,77 @@
         /// </summary>
         /// <param name="userName">The username.</param>
         /// <returns>Get List permission By User</returns>
-        public List<PagePermission> GetListPermissionByUser(string userName, int pageIndex, int pageSize, out int total)
+        public List<PagePermission> GetListPermissionByUser(string userName)
         {
-            List<PagePermission> lstPagePermission = new List<PagePermission>();
-            List<PagePermission> lstData = new List<PagePermission>();
             using (var data = new themanorContext())
             {
-                var query = from u in data.UserPermission
-                            join p in data.UserPage on u.PageId equals p.Id
-                            where u.User == userName
-                            select new
+                var query = (from u in data.UserPage
+                             join up in data.UserPermission on u.Id equals up.PageId into ups
+                             from y in ups.DefaultIfEmpty()
+                             where y.User == userName
+                             select new
+                             {
+                                 y.User,
+                                 PageId = u.Id,
+                                 u.Title,
+                                 u.ParentId,
+                                 u.OrderDisplay,
+                                 TypeActionId = y.TypeActionId,
+                             }).ToList();
+
+                List<PagePermission> lstPagePermission = new List<PagePermission>();
+
+                foreach (var obj in query)
+                {
+                    PagePermission pagePermission = new PagePermission();
+                    List<AdminUserPageActionFullView> listUserPageAction = new List<AdminUserPageActionFullView>();
+                    pagePermission.UserName = obj.User;
+                    pagePermission.PageId = (int)obj.PageId;
+                    pagePermission.Title = obj.Title;
+                    pagePermission.ParentId = (int)obj.ParentId;
+                    pagePermission.OrderDisplay = (int)obj.OrderDisplay;
+
+                    if (obj.TypeActionId != null)
+                    {
+                        Array arrAction = obj.TypeActionId.Split(",");
+
+                        for (int i = 1; i <= 4; i++)
+                        {
+                            var active = false;
+                            int pos = Array.IndexOf(arrAction, i.ToString());
+                            var action = GetUserPageActionbyId(i);
+
+                            if (pos > -1)
                             {
-                                u.User,
-                                u.PageId,
-                                p.Title,
-                                p.ParentId,
-                                p.OrderDisplay,
-                                u.TypeActionId
-                            };
-                if (query.Any())
-                {
-                    foreach (var obj in query)
-                    {
+                                active = true;
+                            }
+                            else
+                            {
+                                active = false;
+                            }
 
-                        PagePermission page = new PagePermission();
-                        page.PageId = (int)obj.PageId;
-                        page.UserName = obj.User;
-                        page.Title = obj.Title;
-                        page.ParentId = (int)obj.ParentId;
-                        page.OrderDisplay = (int)obj.OrderDisplay;
-                        page.ListActionId = obj.TypeActionId;
-                        lstPagePermission.Add(page);
-                    }
-
-                    List<UserPermission> lstUserPermission = data.UserPermission.Where(u => u.User == userName).ToList();
-                    List<int> lstPageID = (from c in data.UserPermission
-                                           where c.User == userName
-                                           select (int)c.PageId).ToList<int>();
-
-                    List<UserPage> lstUserPage = data.UserPage.Where(c => !lstPageID.Contains(c.Id) && c.ParentId > 0).ToList();
-                    if (lstUserPage.Any())
-                    {
-                        foreach (var obj in lstUserPage)
-                        {
-                            PagePermission page = new PagePermission();
-                            page.PageId = obj.Id;
-                            page.UserName = userName;
-                            page.Title = obj.Title;
-                            page.ParentId = (int)obj.ParentId;
-                            page.OrderDisplay = (int)obj.OrderDisplay;
-                            page.ListActionId = string.Empty;
-                            lstPagePermission.Add(page);
+                            AdminUserPageActionFullView userPageAction = new AdminUserPageActionFullView { Id = action.Id, ActionPage = action.ActionPage.Value, ActionName = action.ActionName, ActionDescription = action.ActionDescription, Active = active };
+                            listUserPageAction.Add(userPageAction);
                         }
                     }
-                }
-                else
-                {
-                    List<UserPage> lstUserPage = data.UserPage.Where(p => p.ParentId > 0).ToList();
-                    if (lstUserPage.Any())
+
+
+                    var otherPages = GetListUserPageActionbyActionPage(obj.PageId);
+                    foreach (var action in otherPages)
                     {
-                        foreach (var obj in lstUserPage)
-                        {
-                            PagePermission page = new PagePermission();
-                            page.PageId = obj.Id;
-                            page.UserName = userName;
-                            page.Title = obj.Title;
-                            page.ParentId = (int)obj.ParentId;
-                            page.OrderDisplay = (int)obj.OrderDisplay;
-                            page.ListActionId = string.Empty;
-                            lstPagePermission.Add(page);
-                        }
+                        AdminUserPageActionFullView userPageAction = new AdminUserPageActionFullView { Id = action.Id, ActionPage = action.ActionPage.Value, ActionName = action.ActionName, ActionDescription = action.ActionDescription, Active = true };
+                        listUserPageAction.Add(userPageAction);
                     }
+
+                    pagePermission.ListUserPageAction = listUserPageAction;
+                    lstPagePermission.Add(pagePermission);
                 }
 
-                List<UserPage> lstUserPageParent = data.UserPage.Where(p => p.ParentId == 0).OrderBy(p => p.OrderDisplay).ToList();
-                foreach (var parent in lstUserPageParent)
-                {
-                    PagePermission page = new PagePermission();
-                    page.PageId = parent.Id;
-                    page.UserName = userName;
-                    page.Title = parent.Title;
-                    page.ParentId = (int)parent.ParentId;
-                    page.OrderDisplay = (int)parent.OrderDisplay;
-                    page.ListActionId = string.Empty;
-                    lstData.Add(page);
-                    lstData.AddRange(lstPagePermission.Where(p => p.ParentId == parent.Id).OrderBy(p => p.OrderDisplay));
-                }
-
-                total = lstData.Count();
+                return lstPagePermission;
             }
-
-            return lstData.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
+
+
 
         /// <summary>
         /// Gets the user by role.
@@ -856,14 +835,14 @@
                                  select p).Union
                                  (from p in data.UserPageAction
                                   where p.ActionPage != 0 && p.ActionPage > 0 && p.ActionPage == pageId
-                                  select p).AsQueryable<UserPageAction>();                        
+                                  select p).AsQueryable<UserPageAction>();
                     }
                     else
                     {
                         c_gen = (from p in data.UserPageAction
                                  where p.ActionPage == 0
                                  select p).AsQueryable<UserPageAction>();
-                    }                    
+                    }
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -982,6 +961,27 @@
                 try
                 {
                     var c_gen = data.UserPageAction.Where(p => p.ActionName == actionName).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets Page Action detail
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns>Gets the name of the user by user</returns>
+        public List<UserPageAction> GetListUserPageActionbyActionPage(int actionPage)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    var c_gen = data.UserPageAction.Where(p => p.ActionPage == actionPage).ToList();
                     return c_gen;
                 }
                 catch (Exception ex)
@@ -1238,7 +1238,7 @@
                             data.SaveChanges();
                             var c_page = data.UserPage.Where(p => p.Id == id).FirstOrDefault();
                             if (c_page != null)
-                            {                            
+                            {
                                 if (deleteAllUserPageChild(data, id))
                                 {
                                     data.UserPage.Remove(c_page);
@@ -1279,7 +1279,7 @@
         {
             bool rt = true;
             var listUserPageChild = GetListUserPageByParrentID(id);
-            foreach(var item in listUserPageChild)
+            foreach (var item in listUserPageChild)
             {
                 var c_permission = data.UserPermission.Where(p => p.PageId == item.Id);
                 if (c_permission != null)
@@ -1304,7 +1304,7 @@
             }
 
             return rt;
-            
+
         }
 
         /// <summary>
@@ -1352,9 +1352,10 @@
                         {
                             orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
                         }
-                        else {
+                        else
+                        {
                             orderBy = char.ToUpper(orderBy[0]).ToString();
-                        }                        
+                        }
 
                         Type sortByPropType = typeof(UserPage).GetProperty(orderBy).PropertyType;
                         ////calling the extension method using reflection
@@ -1446,7 +1447,7 @@
                     c_gen = (from p in data.UserPage
                              where p.ParentId == (int)parentId
                              select p).AsQueryable<UserPage>();
-                                        
+
                     foreach (var item in c_gen)
                     {
                         AdminListUserPage alug = new AdminListUserPage

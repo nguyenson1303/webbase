@@ -147,7 +147,7 @@ namespace ApiBase.Controllers
         }
 
         [HttpGet("listUserPermission"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPermission(string type, int? pageIndex, int? pageSize)
+        public IActionResult ListUserPermission()
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -156,44 +156,14 @@ namespace ApiBase.Controllers
             User cuser = new User();
 
             var mess = string.Empty;
-            var permissionView = new AdminListUserPermissionView();
-            int totalRecord = 0;
-            var isOk = true;
 
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+          
+            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin);
 
-            type = type ?? string.Empty;
-
-            if (type == string.Empty)
-            {
-                isOk = false;
-                response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-            }
-
-            if (!isOk)
-            {
-                return response;
-            }
-
-            if (pageIndex == null || pageIndex == 0)
-            {
-                pageIndex = 1;
-            }
-
-            if (pageSize == null)
-            {
-                // fix get all page permission
-                pageSize = 1000; 
-            }
-
-            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin, (int)pageIndex, (int)pageSize, out totalRecord);
-            permissionView.ListPermission = lstPagePermission;
-            permissionView.PageIndex = (int)pageIndex;
-            permissionView.PageSize = (int)pageSize;
-            permissionView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
-            response = Json(permissionView);
+            response = Json(lstPagePermission);
 
             return response;
         }
@@ -213,7 +183,7 @@ namespace ApiBase.Controllers
                     {
                         PageId = item.PageId,
                         User = item.UserName,
-                        TypeActionId = item.ListActionId
+                        // TypeActionId = item.ListActionId
                     };
                     sv.UpdatePermission(up);
                 }
