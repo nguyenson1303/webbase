@@ -69,7 +69,7 @@ export class AdminpageService {
   }
 
   getAdminPageDetail(id: number) {
-    let url = AppConfig.serverAPI + AppConstant.getAdminPageApiUrlDetailApiUrl + "/" + id;
+    let url = AppConfig.serverAPI + AppConstant.getAdminPageDetailApiUrl + "/" + id;
     this.options = new RequestOptions({ headers: this.headers });
     return this.http.get(url, this.options).map(this.extractData);
   }
