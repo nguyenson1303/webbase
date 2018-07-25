@@ -9,6 +9,7 @@ import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,11 @@ const routes: Routes = [
       path: 'profile/:username',
       data: { breadcrumb: 'Hồ sơ' },
       component: ProfileComponent, canActivate: [AuthGuard]
+    },
+    {
+      path: 'setting/:username',
+      data: { breadcrumb: 'Setting' },
+      component: SettingComponent, canActivate: [AuthGuard]
     },
     { path: '', redirectTo: 'list/:type', pathMatch: 'full' },
     { path: '**', redirectTo: 'list/:type' },

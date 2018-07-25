@@ -14,6 +14,7 @@ import { AccountService } from '../../@core/data/account.service';
 import { ConfigurationService } from '../account/list/configuration.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ProfileComponent } from './profile/profile.component';
+import { SettingComponent } from './setting/setting.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { ProfileComponent } from './profile/profile.component';
     EditComponent,
     ConfirmComponent,
     ProfileComponent,
+    SettingComponent,
   ],
   providers: [
     AccountService,
