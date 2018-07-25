@@ -145,15 +145,10 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
-            StringBuilder sb = new StringBuilder();
             BaseClass baseClass = new BaseClass();
             UserModels userModels = new UserModels();
-            var mess = string.Empty;
             int rt = 0;
-           
-            string type = string.Empty;
 
-            List<SelectListItem> listSelectCatalog = new List<SelectListItem>();
             cate.CategoryName = adminCatalogView.CategoryName;
             cate.Description = string.IsNullOrEmpty(adminCatalogView.Description) == false ? adminCatalogView.Description : string.Empty;
             cate.Keyword = string.IsNullOrEmpty(adminCatalogView.Keyword) == false ? adminCatalogView.Keyword : string.Empty;
@@ -233,7 +228,6 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;          
-            string type = string.Empty;
 
             cate.CatalogId = id;
             cate.CategoryName = adminCatalogView.CategoryName;
