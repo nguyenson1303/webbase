@@ -1384,6 +1384,7 @@
             {
                 try
                 {
+                    int level = 1;
                     List<AdminListUserPage> result = new List<AdminListUserPage>();
                     IQueryable<UserPage> c_gen = null;
                     if (parentId != -1)
@@ -1396,15 +1397,10 @@
                     {
                         c_gen = (from p in data.UserPage
                                  select p).AsQueryable<UserPage>();
-                    }
-
-                    if (!string.IsNullOrEmpty(search))
-                    {
-                        c_gen = c_gen.Where(p => p.Title.Contains(search)).AsQueryable<UserPage>();
-                    }
+                    }                    
 
                     foreach (var item in c_gen)
-                    {
+                    {                        
                         AdminListUserPage alug = new AdminListUserPage
                         {
                             Id = item.Id,
@@ -1419,12 +1415,18 @@
                             Path = item.Path,
                             Breadcrumb = item.Breadcrumb,
                             ModifyDate = item.ModifyDate,
-                            CreateDate = item.CreateDate
+                            CreateDate = item.CreateDate,
+                            level = level
                         };
 
-                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
+                        alug.Children = AdminGetAllPageFullTreeChild(alug.Id, level);
 
                         result.Add(alug);
+                    }
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        result = result.Where(p => p.Title.Contains(search)).ToList();
                     }
 
                     return result;
@@ -1436,12 +1438,13 @@
             }
         }
 
-        public List<AdminListUserPage> AdminGetAllPageFullTreeChild(int parentId)
+        public List<AdminListUserPage> AdminGetAllPageFullTreeChild(int parentId, int level)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
+                    level = level + 1;
                     List<AdminListUserPage> result = new List<AdminListUserPage>();
                     IQueryable<UserPage> c_gen = null;
                     c_gen = (from p in data.UserPage
@@ -1464,10 +1467,11 @@
                             Path = item.Path,
                             Breadcrumb = item.Breadcrumb,
                             ModifyDate = item.ModifyDate,
-                            CreateDate = item.CreateDate
+                            CreateDate = item.CreateDate,
+                            level = level
                         };
 
-                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
+                        alug.Children = AdminGetAllPageFullTreeChild(alug.Id, level);
 
                         result.Add(alug);
                     }

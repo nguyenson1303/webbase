@@ -15,15 +15,15 @@
       </div>
     </div>
 
-    <ngx-table [configuration]="configuration"
+    <!--<ngx-table [configuration]="configuration"
                [data]="data"
                [columns]="columns"
-               [pagination]="pagination"
-               [detailsTemplate]="detailsTemplateRef"
+               [pagination]="pagination"            
                (event)="eventEmitted($event)">
       <ng-template let-row>
 
         <td class="td-action">
+          <i class={{row.classLevel}}></i>
           <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.id)"><i class="ion-eye"></i></a>
           <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
         </td>
@@ -35,7 +35,7 @@
           <div class="font-small">{{row.tye}}</div>
         </td>
         <td>
-          
+
           <label class="switch">
             <input type="checkbox" [checked]="row.isShow" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
             <span></span>
@@ -43,34 +43,98 @@
         </td>
 
       </ng-template>
-    </ngx-table>
-    <ng-template #detailsTemplate let-row>
-      <table class="ngx-table">
-        <tbody>
-          <tr *ngFor="let child of row.children">
+    </ngx-table>-->    
 
+    <div class="ngx-container">
+      <table id="tree-table" class="ngx-table ngx-table__table--normal ngx-table__table--hoverable">
+        <thead>
+          <tr class="ngx-table__header">
+            <th class="ngx-table__header-cell">
+              <div>
+                <div class="ngx-table__header-title">
+                  Tiêu đề
+                </div>
+              </div>
+            </th>
+            <th class="ngx-table__header-cell">
+              <div>
+                <div class="ngx-table__header-title">
+                  Đường dẫn
+                </div>
+              </div>
+            </th>
+            <th class="ngx-table__header-cell">
+              <div>
+                <div class="ngx-table__header-title">
+                  Kiểu
+                </div>
+              </div>
+            </th>
+            <th class="ngx-table__header-cell">
+              <div>
+                <div class="ngx-table__header-title">
+                  Action
+                </div>
+              </div>
+            </th>
+            <th class="ngx-table__header-cell">
+              <div>
+                <div class="ngx-table__header-title">
+                  Menu
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data" [attr.data-id]="item.id" [attr.data-parent]="item.parentId" [attr.data-level]="item.level">
+            <td data-column="name">
+              <i class={{item.classLevel}}></i>
+              <!--<i *ngIf="item.children?.length > 0" class="treegrid-expander ion-arrow-right-b"></i>-->
+              <a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(item.parentId, item.id)">{{item.title}}</a>
+            </td>
+            <td>
+              <div class="font-small">{{item.path}}</div>
+            </td>
+            <td>
+              <div class="font-small">{{item.tye}}</div>
+            </td>
             <td class="td-action">
-              <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(child.id)"><i class="ion-eye"></i></a>
-              <a class="button-action button-edit" nbPopover="Chỉnh sửa" nbPopoverMode="hover" (click)="editClick(child.id)"><i class="nb-edit"></i></a>
-              <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(child.id, child.title)"><i class="nb-trash"></i></a>
-            </td>
-            <td><a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="ListChildClick(child.parentId, child.id)">{{child.title}}</a> </td>
-            <td>
-              <div class="font-small">{{child.path}}</div>
-            </td>
-            <td>
-              <div class="font-small">{{child.tye}}</div>
+              <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(item.id)"><i class="ion-eye"></i></a>
+              <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(item.id, item.title)"><i class="nb-trash"></i></a>
             </td>
             <td>
               <label class="switch">
-                <input type="checkbox" [checked]="child.isShow" (click)="showChangeActiveConfirm(child.id, child.isShow, child.title)">
+                <input type="checkbox" [checked]="item.isShow" (click)="showChangeActiveConfirm(item.id, item.isShow, item.title)">
                 <span></span>
               </label>
             </td>
           </tr>
-        </tbody>
+
+          <!--<tr data-id="1" data-parent="0" data-level="1">
+            <td data-column="name">Node 1</td>
+            <td>Additional info</td>
+          </tr>
+          <tr data-id="2" data-parent="1" data-level="2">
+            <td data-column="name">Node 1</td>
+            <td>Additional info</td>
+          </tr>
+          <tr data-id="3" data-parent="1" data-level="2">
+            <td data-column="name">Node 1</td>
+            <td>Additional info</td>
+          </tr>
+          <tr data-id="4" data-parent="3" data-level="3">
+            <td data-column="name">Node 1</td>
+            <td>Additional info</td>
+          </tr>
+          <tr data-id="5" data-parent="3" data-level="3">
+            <td data-column="name">Node 1</td>
+            <td>Additional info</td>
+          </tr>-->
+        </tbody>       
+        
       </table>
-      <div *ngIf="row.children.length == 0"> Not found child</div>
-    </ng-template>
+    </div>
+
   </nb-card-body>
 </nb-card>

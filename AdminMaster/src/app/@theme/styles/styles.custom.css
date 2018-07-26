@@ -194,3 +194,59 @@ label.switch {
   pointer-events: none;
 }
 /*jstree*/
+
+/*table tree*/
+.treegrid-expander{
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.container-tree-table {
+  padding: 0px 6px;
+}
+
+#tree-table {
+  margin-top: 20px;
+}
+
+.level1 {
+  padding-left: 0px;
+}
+
+.level2 {
+  padding-left: 30px;
+}
+
+.level3 {
+  padding-left: 60px;
+}
+
+.level4 {
+  padding-left: 90px;
+}
+
+.level5 {
+  padding-left: 120px;
+}
+
+.level6 {
+  padding-left: 150px;
+}
+
+.level7 {
+  padding-left: 180px;
+}
+
+.level8 {
+  padding-left: 210px;
+}
+
+.level9 {
+  padding-left: 240px;
+}
+
+.level10 {
+  padding-left: 270px;
+}
+/*table tree*/

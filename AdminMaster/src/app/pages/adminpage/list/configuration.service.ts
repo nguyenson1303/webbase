@@ -9,7 +9,7 @@ export class ConfigurationService {
     headerEnabled: true,
     orderEnabled: true,
     globalSearchEnabled: false,
-    paginationEnabled: false,
+    paginationEnabled: true,
     exportEnabled: false,
     clickEvent: true,
     selectRow: false,

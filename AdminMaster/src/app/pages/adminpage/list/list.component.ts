@@ -7,6 +7,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { Jsonp } from '@angular/http';
 declare var $: any;
 
 @Component({
@@ -16,7 +17,7 @@ declare var $: any;
 })
 export class ListComponent {
 
-  @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
+  // @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
 
   listPageAdmin = {
     id: 0,
@@ -32,7 +33,10 @@ export class ListComponent {
     breadcrumb: "",
     typeActionId: 0,
     modifyDate: "",
-    createDate: ""
+    createDate: "",
+    level: "",
+    classLevel: "",
+    children: null
   };
 
   columns = [
@@ -43,6 +47,7 @@ export class ListComponent {
     { key: 'isShow', title: 'Menu' },
   ];
 
+  dataResult = [];
   data = [];
   configuration;
   pagination = {
@@ -127,6 +132,66 @@ export class ListComponent {
     })
   }
 
+  ngAfterViewInit() {
+     $(document).ready(() => {
+      var
+        $table = $('#tree-table'),
+        rows = $table.find('tr');
+
+      rows.each(function (index, row) {
+        var
+          $row = $(row),
+          level = $row.attr('data-level'),
+          id = $row.data('id'),
+          $columnName = $row.find('td[data-column="name"]'),
+          children = $table.find('tr[data-parent="' + id + '"]');
+
+        if (children.length) {
+          var expander = $columnName.prepend('' + '<i class="treegrid-expander ion-arrow-right-b"></i>' + '');
+
+          children.hide();
+
+          expander.on('click', function (e) {
+            var $target = $(e.target);
+            if ($target.get(0).tagName === "I") {
+              if ($target.hasClass('ion-arrow-right-b')) {
+                $target.removeClass('ion-arrow-right-b').addClass('ion-arrow-down-b');
+                children.show();
+              } else {
+                $target.removeClass('ion-arrow-down-b').addClass('ion-arrow-right-b');
+                reverseHide($table, $row);
+              }
+            }
+          });
+
+        }
+
+        $columnName.prepend('' + '<i class="treegrid-indent" style="padding-left:' + 30 * (level-1) + 'px"></i>' + '');
+      });
+
+      // Reverse hide all elements
+      var reverseHide = function (table, element) {
+        var
+          $element = $(element),
+          id = $element.data('id'),
+          children = table.find('tr[data-parent="' + id + '"]');
+
+        if (children.length) {
+          children.each(function (i, e) {
+            reverseHide(table, e);
+          });
+
+          $element
+            .find('.ion-arrow-down-b')
+            .removeClass('ion-arrow-down-b')
+            .addClass('ion-arrow-right-b');
+
+          children.hide();
+        }
+      };
+     });
+  }
+
   // function filter data
   filter(obj: EventObject) {
     this.params = "?";
@@ -195,6 +260,18 @@ export class ListComponent {
     this.getData(this.params);
   }
 
+  recursiveData(list: any) {
+    list.forEach(element => {
+      if (element.level) {
+        element.classLevel = 'level' + element.level;
+      }
+      this.data.push(element);
+      if (element.children.length > 0) {
+        this.recursiveData(element.children);
+      }
+    });
+  }
+
   getData(params: string) {
     this.configuration = ConfigurationService.config;
     this.configuration.isLoading = true;
@@ -203,11 +280,15 @@ export class ListComponent {
       if (result) {
         if (result && result.code) {
           this.data = [];
+          this.dataResult = [];
           this.configuration.isLoading = false;
         }
         else {
-          this.data = result.listUserPage;
+          this.data = [];
+          this.dataResult = result.listUserPage;
           this.configuration.isLoading = false;
+
+          this.recursiveData(this.dataResult);
         }
       }
     }),
@@ -268,6 +349,7 @@ export class ListComponent {
 
   // search by title
   onTitleSearch(value): void {
+    this.parentId = -1; // search on all page
     this.search = value;
     this.filter(null);
   }
