@@ -142,6 +142,7 @@ export class EditComponent implements OnInit {
     }
     else {
       localStorage.removeItem(AppConstant.objectUser);
+      localStorage.removeItem(AppConstant.objectUserPermission);
     }
 
     // get param from router ex: /:username
@@ -206,7 +207,8 @@ export class EditComponent implements OnInit {
 
       this.avatarUrl = this.userProfile.avatar;
     }
-    else {
+    else
+    {
       if (this.isCreate == false) {
         this.accountService.getUserDetail(this.username).subscribe(result => {
           if (result) {
@@ -273,25 +275,39 @@ export class EditComponent implements OnInit {
       else {
         this.avatarUrl = AppConstant.avatarDefault;
       }
+    }
 
-      this.configuration = ConfigurationService.config;
-      this.configuration.isLoading = true;
+    this.configuration = ConfigurationService.config;
+    this.configuration.isLoading = true;
 
+    if (localStorage.getItem(AppConstant.objectUserPermission) != null) {
+      this.userPermission = JSON.parse(localStorage.getItem(AppConstant.objectUserPermission));
+      this.data = this.userPermission;
+      this.rows = this.data;
+      let lst: any = this.userPermission;
+      lst.forEach((item, index) => {
+        this.isCheckAll = true;
+        this.isAllCheck(item);
+        item.isCheckAll = this.isCheckAll;
+      });
+      this.userPermission = lst;
+      this.configuration.isLoading = false;
+    }
+    else
+    {
       this.accountService.getListUserPermission(this.username).subscribe(result => {
         if (result) {
           this.userPermission = result;
           this.data = this.userPermission;
           this.rows = this.data;
-          this.configuration.isLoading = false;
-
           let lst: any = this.userPermission;
           lst.forEach((item, index) => {
             this.isCheckAll = true;
             this.isAllCheck(item);
             item.isCheckAll = this.isCheckAll;
           });
-
           this.userPermission = lst;
+          this.configuration.isLoading = false;
         }
       }),
         error => {
@@ -377,6 +393,7 @@ export class EditComponent implements OnInit {
 
           // set localStorage to confirm page
           localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
+          localStorage.setItem(AppConstant.objectUserPermission, JSON.stringify(this.userPermission));
           localStorage.setItem(AppConstant.isInProcess, "true");
 
           if (this.isCreate) {

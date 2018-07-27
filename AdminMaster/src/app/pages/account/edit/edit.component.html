@@ -99,16 +99,6 @@
   </nb-card-header>
   <nb-card-body>
 
-    <div class="row full-name-inputs">
-      <div class="col-sm-6 input-group input-group-border-only">
-        <input type="text" placeholder="Email" class="form-control" [(ngModel)]="search" (input)="onEmailSearch($event.target.value)" />
-      </div>
-      <div class="col-sm-6 btn-group btn-divided-group">
-        <button class="btn btn-hero-primary btn-with-icon" (click)="reset()"><i class="ion-refresh"></i> Reset </button>
-        <button class="btn btn-hero-success btn-with-icon" (click)="updatePermission()"><i class="ion-plus-round"></i> Cập nhật</button>
-      </div>
-    </div>
-
     <ngx-table [configuration]="configuration"
                [data]="rows"
                [columns]="columns"

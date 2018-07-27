@@ -92,6 +92,43 @@
   </div>
 </div>
 
+<nb-card>
+  <nb-card-header>
+    Danh sách quyền của user
+  </nb-card-header>
+  <nb-card-body>
+
+    <ngx-table [configuration]="configuration"
+               [data]="rows"
+               [columns]="columns"
+               [pagination]="pagination"
+               (event)="eventEmitted($event)">
+      <ng-template let-row>
+        <td>
+          <i class={{row.classLevel}}></i>
+          <a *ngIf="row.parentId == 0" class="button-view font-w-bold">{{row.title}}</a>
+          <a *ngIf="row.parentId != 0" class="button-view font-small">
+            <span>{{row.title}}</span>
+          </a>
+        </td>
+        <td>
+          <div *ngIf="row.parentId != 0">
+            <div class="control-group">
+              <label *ngFor="let userPageAction of row.listUserPageAction" class="control control--checkbox">
+                {{userPageAction.actionName}}
+                <input type="checkbox" disabled [checked]="userPageAction.active" (click)="changePermissionChild(row.pageId, userPageAction.active)" [(ngModel)]="userPageAction.active" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </td>
+        <td></td>
+      </ng-template>
+    </ngx-table>
+
+  </nb-card-body>
+</nb-card>
+
 <div class="row">
   <div class="col-md-12">
     <nb-card class="inline-form-card">

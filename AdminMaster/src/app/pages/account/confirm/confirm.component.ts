@@ -7,6 +7,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { AccountService } from '../../../@core/data/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
+import { ConfigurationService } from './configuration.service';
 
 declare var $: any;
 
@@ -16,6 +17,14 @@ declare var $: any;
   styleUrls: ['./confirm.component.scss']
 })
 export class ConfirmComponent implements OnInit {
+
+  columns = [
+    { key: 'Title', title: 'Tên trang' },
+    { key: 'role', title: 'Danh sách quyền' },
+  ];
+  data;
+  rows;
+  configuration;
 
   createUserObj = {
     username: AppConstant.stringEmpty,
@@ -35,6 +44,26 @@ export class ConfirmComponent implements OnInit {
     avatarFileType: AppConstant.stringEmpty,
     avatarFileName: AppConstant.stringEmpty
   }
+
+  userPermission = {
+    orderDisplay: 0,
+    pageId: 0,
+    parentId: 0,
+    title: "",
+    userName: "",
+    level: 0,
+    classLevel: "",
+    isCheckAll: false,
+    listUserPageAction: [
+      {
+        id: 0,
+        actionName: "",
+        actionDescription: "",
+        actionPage: 0,
+        active: false,
+      }
+    ]
+  };
 
   public progress: number = AppConstant.numberZero;
   public isCreate: boolean = AppConstant.trueDefault;
@@ -64,6 +93,7 @@ export class ConfirmComponent implements OnInit {
     }
     else {
       localStorage.removeItem(AppConstant.objectUser);
+      localStorage.removeItem(AppConstant.objectUserPermission);
     }
 
     // get param from router ex: /:username
@@ -99,11 +129,24 @@ export class ConfirmComponent implements OnInit {
     else {
       this.router.navigate(['/pages/miscellaneous/404']);
     }
+
+    this.userPermission = JSON.parse(localStorage.getItem(AppConstant.objectUserPermission));
+    if (this.userPermission !== null && this.userPermission !== undefined) {
+      this.configuration = ConfigurationService.config;
+      this.configuration.isLoading = true;
+      this.data = this.userPermission;
+      this.rows = this.data;
+      this.configuration.isLoading = false;
+    }
+    else {
+      this.router.navigate(['/pages/miscellaneous/404']);
+    }
   }
 
   backclick() {
     localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString())
     localStorage.setItem(AppConstant.objectUser, JSON.stringify(this.createUserObj))
+    localStorage.setItem(AppConstant.objectUserPermission, JSON.stringify(this.userPermission))
 
     if (this.isCreate) {
       this.router.navigate(['/pages/account/add', this.type]);
