@@ -21,18 +21,6 @@
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the list order.
-        /// </summary>
-        /// <value>
-        /// The list order.
-        /// </value>
-        public List<SelectListItem> List_order
-        {
-            get;
-            set;
-        }
       
         /// <summary>
         /// Gets or sets the page list user.
@@ -57,5 +45,43 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the page.
+        /// </summary>
+        /// <value>
+        /// The page.
+        /// </value>
+        public int PageIndex
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the page size.
+        /// </summary>
+        /// <value>
+        /// The page size.
+        /// </value>
+        public int PageSize
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the total record.
+        /// </summary>
+        /// <value>
+        /// The total record.
+        /// </value>
+        public int TotalPage
+        {
+            get;
+            set;
+        }
+
+        public int TotalRecord { get; set; }
     }
 }

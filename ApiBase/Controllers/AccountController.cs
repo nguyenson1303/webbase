@@ -134,12 +134,12 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int total_record);
+            listUserView.ListUser = userModels.AdminGetAllUser(type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
             listUserView.CateType = roleModels.GetRoleByRole(type);
             listUserView.PageIndex = (int)pageIndex;
             listUserView.PageSize = (int)pageSize;
-            listUserView.TotalPage = total_record > 0 ? (int)System.Math.Ceiling((double)total_record / (double)pageSize) : 0;
-            listUserView.TotalRecord = total_record;
+            listUserView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
+            listUserView.TotalRecord = totalRecord;
 
             response = Json(listUserView);
 

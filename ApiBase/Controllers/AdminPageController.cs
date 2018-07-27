@@ -61,7 +61,11 @@ namespace ApiBase.Controllers
             }
 
             listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
-            listPageView.CateType = roleModels.GetRoleByRole(type);           
+            listPageView.CateType = roleModels.GetRoleByRole(type);
+            listPageView.PageIndex = (int)pageIndex;
+            listPageView.PageSize = (int)pageSize;
+            listPageView.TotalPage = totalRecord > 0 ? (int)System.Math.Ceiling((double)totalRecord / (double)pageSize) : 0;
+            listPageView.TotalRecord = totalRecord;
 
             response = Json(listPageView);
 

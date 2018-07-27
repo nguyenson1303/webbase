@@ -22,18 +22,6 @@
         }
 
         /// <summary>
-        /// Gets or sets the list order.
-        /// </summary>
-        /// <value>
-        /// The list order.
-        /// </value>
-        public List<SelectListItem> List_order
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the page.
         /// </summary>
         /// <value>
