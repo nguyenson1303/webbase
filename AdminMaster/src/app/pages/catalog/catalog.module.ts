@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'ngx-easy-table';
 import { ThemeModule } from '../../@theme/theme.module';
-
+import { ConfigurationService } from '../catalog/list/configuration.service';
 import { CatalogRoutingModule } from './catalog-routing.module';
+
 import { CatalogComponent } from './catalog.component';
 import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminpageService } from '../../../@core/data/adminpage.service';
@@ -7,7 +7,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
-import { Jsonp } from '@angular/http';
+import { EventObject } from '../../../@core/interface/event-object';
 declare var $: any;
 
 @Component({
@@ -17,34 +17,12 @@ declare var $: any;
 })
 export class ListComponent {
 
-  // @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
-
-  listPageAdmin = {
-    id: 0,
-    act: "",
-    ctrl: "",
-    title: "",
-    isShow: false,
-    tye: "",
-    parentId: 0,
-    orderDisplay: 0,
-    icon: "",
-    path: "",
-    breadcrumb: "",
-    typeActionId: 0,
-    modifyDate: "",
-    createDate: "",
-    level: "",
-    classLevel: "",
-    children: null
-  };
-
   columns = [
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
-    { key: 'parentId', title: 'Action' },
     { key: 'isShow', title: 'Menu' },
+    { key: 'parentId', title: 'Action' }
   ];
 
   dataResult = [];
@@ -57,24 +35,24 @@ export class ListComponent {
   };
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  private params: string = "?";
-  private type: string = "";
-  private lang: string = "";
-  public search: string = "";
+  private params: string = AppConstant.paramsDefault;
+  private type: string = AppConstant.stringEmpty;
+  private lang: string = AppConstant.stringEmpty;
+  public search: string = AppConstant.stringEmpty;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
   private parentId: number = AppConstant.numberZero;
-  private orderBy: string = "";
-  private orderType: string = "";
+  private orderBy: string = AppConstant.stringEmpty;
+  private orderType: string = AppConstant.stringEmpty;
   private node: number = AppConstant.numberZero;
   private oldNode: number = AppConstant.numberZero;
   public isShowBack: boolean = false;
-  public parentName: string = "";
+  public parentName: string = AppConstant.stringEmpty;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -148,7 +126,7 @@ export class ListComponent {
 
   // function filter data
   filter(obj: EventObject) {
-    this.params = "?";
+    this.params = AppConstant.paramsDefault;
 
     if (obj != null) {
       this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
@@ -298,7 +276,7 @@ export class ListComponent {
     this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
   }
 
-  ListChildClick(node: number, parentId: number) {
+  listChildClick(node: number, parentId: number) {
     // redirect to list child admin page
     if (parentId == 0) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
@@ -441,9 +419,4 @@ export class ListComponent {
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-}
-
-interface EventObject {
-  event: string;
-  value: any;
 }

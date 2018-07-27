@@ -6,6 +6,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { EventObject } from '../../../@core/interface/event-object';
 declare var $: any;
 
 @Component({
@@ -373,9 +374,4 @@ export class ListComponent {
       }
     });
   }
-}
-
-interface EventObject {
-  event: string;
-  value: any;
 }
