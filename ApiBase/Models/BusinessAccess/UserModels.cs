@@ -1528,7 +1528,7 @@
                         recursivePageList.Add(alug);
 
                         var listChild = (from p in data.UserPage
-                                         where p.ParentId == item.Id
+                                         where p.ParentId == alug.Id
                                          select p).ToList<UserPage>();
 
                         if (listChild.Count > 0)

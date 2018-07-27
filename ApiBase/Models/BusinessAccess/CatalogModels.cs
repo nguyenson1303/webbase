@@ -264,7 +264,7 @@
                         recursiveCatalogList.Add(alug);
 
                         var listChild = (from p in data.Catalog
-                                         where p.ParentId == item.CatalogId
+                                         where p.ParentId == alug.CatalogId
                                          select p).ToList<Catalog>();
 
                         if (listChild.Count > 0)
