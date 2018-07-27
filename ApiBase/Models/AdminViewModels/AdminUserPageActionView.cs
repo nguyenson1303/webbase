@@ -34,5 +34,6 @@ namespace ApiBase.Models.AdminViewModels
         public string TypeActionId { get; set; }
         public int ActionId { get; set; }
         public int Level { get; set; }
+        public string ClassLevel { get; set; }
     }
 }

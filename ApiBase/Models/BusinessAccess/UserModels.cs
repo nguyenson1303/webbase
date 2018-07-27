@@ -493,6 +493,7 @@
                     pagePermission.ParentId = obj.ParentId;
                     pagePermission.OrderDisplay = obj.OrderDisplay;
                     pagePermission.Level = obj.Level;
+                    pagePermission.classLevel = "level" + obj.Level;
 
                     if (obj.TypeActionId != null)
                     {
