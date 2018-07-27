@@ -35,6 +35,12 @@ export class AccountService {
     return this.http.get(url, this.options).map(this.extractData);
   }
 
+  getListUserPermission(userName: string) {
+    let url = AppConfig.serverAPI + AppConstant.listUserPermissionApiUrl + "?userName=" + userName;
+    this.options = new RequestOptions({ headers: this.headers });
+    return this.http.get(url, this.options).map(this.extractData);
+  }
+
   checkPermission(data): Observable<any> {
     let url = AppConfig.serverAPI + AppConstant.checkPermissionApiUrl;
     this.options = new RequestOptions({ headers: this.headers });

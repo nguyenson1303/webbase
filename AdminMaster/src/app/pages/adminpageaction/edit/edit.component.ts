@@ -21,7 +21,7 @@ export class EditComponent implements OnInit {
     actionName: "",
     actionDescription: "",
     actionStatus: 0,
-    actionPage: "",
+    actionPage: 0,
     isCreate: false,
   }
 
@@ -128,7 +128,7 @@ export class EditComponent implements OnInit {
       }
       else
       {
-        this.adminPageActionDetail.actionPage = this.pageId.toString();
+        this.adminPageActionDetail.actionPage = this.pageId;
       }
     }
   }

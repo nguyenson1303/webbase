@@ -147,7 +147,7 @@ namespace ApiBase.Controllers
         }
 
         [HttpGet("listUserPermission"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPermission()
+        public IActionResult ListUserPermission(string userName)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -161,7 +161,7 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
           
-            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userLogin);
+            List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userName);
 
             response = Json(lstPagePermission);
 

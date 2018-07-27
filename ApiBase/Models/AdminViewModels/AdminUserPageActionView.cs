@@ -23,4 +23,16 @@ namespace ApiBase.Models.AdminViewModels
         public int ActionPage { get; set; }
         public bool Active { get; set; }
     }
+
+    public class AdminUserPagePermisionAction
+    {
+        public string UserName { get; set; }
+        public int PageId { get; set; }
+        public string Title { get; set; }
+        public int ParentId { get; set; }
+        public int OrderDisplay { get; set; }
+        public string TypeActionId { get; set; }
+        public int ActionId { get; set; }
+        public int Level { get; set; }
+    }
 }

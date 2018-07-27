@@ -8,6 +8,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { ConfigurationService } from './configuration.service';
 import * as enLocale from 'date-fns/locale/en';
 
 declare var $: any;
@@ -31,6 +32,7 @@ export class EditComponent implements OnInit {
     expire: AppConstant.stringEmpty
   };
 
+
   userProfile = {
     inforId: AppConstant.numberZero,
     fname: AppConstant.stringEmpty,
@@ -51,6 +53,35 @@ export class EditComponent implements OnInit {
     avatarFileName: AppConstant.stringEmpty,
     fullName: AppConstant.stringEmpty
   }
+
+  // use for setting column table
+  columns = [
+    { key: 'Title', title: 'Tên trang' },
+    { key: 'check', title: 'Check' },
+    { key: 'role', title: 'Danh sách quyền' },
+  ];
+  data;
+  rows;
+  configuration;
+
+  userPermission = {
+    orderDisplay: 0,
+    pageId: 0,
+    parentId: 0,
+    title: "",
+    userName: "",
+    level: 0,
+    isCheckAll: false,
+    listUserPageAction: [
+      {
+        id: 0,
+        actionName: "",
+        actionDescription: "",
+        actionPage: 0,
+        active: false,
+      }
+    ]
+  };
 
   pathInfor = {
     path: AppConstant.stringEmpty,
@@ -82,6 +113,9 @@ export class EditComponent implements OnInit {
   private type: string = AppConstant.stringEmpty;
   private errorMessage: string = AppConstant.stringEmpty;
   private objectUser: any;
+  private countCheck: number = 0;
+  private countList: number = 0;
+  private isCheckAll: boolean = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -239,8 +273,55 @@ export class EditComponent implements OnInit {
         this.avatarUrl = AppConstant.avatarDefault;
       }
 
+      this.configuration = ConfigurationService.config;
+      this.configuration.isLoading = true;
 
+      this.accountService.getListUserPermission(this.username).subscribe(result => {
+        if (result) {
+          this.userPermission = result;
+          this.data = this.userPermission;
+          this.rows = this.data;
+          this.configuration.isLoading = false;
+
+          let lst: any = this.userPermission;
+          lst.forEach((item, index) => {
+            this.isCheckAll = true;
+            this.isAllCheck(item);
+            item.isCheckAll = this.isCheckAll;
+          });
+
+          this.userPermission = lst;
+        }
+      }),
+        error => {
+          this.showModal(AppConstant.errorTitle, error.message);
+        };
     }
+  }
+
+  isAllCheck(item: any) {
+    let count = 0;
+    let countCheck = 0;
+    let lstPer: any = this.userPermission;
+
+    if (item.parentId != 0) {
+      item.listUserPageAction.forEach((item2, index2) => {
+        if (item2.active == true) {
+          countCheck++;
+        }
+        count++;
+      });
+
+      if (count != countCheck) {
+        this.isCheckAll = false;
+      }
+    }
+
+    lstPer.forEach((object, index) => {
+      if (object.parentId == item.pageId) {
+        this.isAllCheck(object)
+      }
+    });
   }
 
   backclick() {
@@ -327,6 +408,10 @@ export class EditComponent implements OnInit {
       };
   }
 
+  updatePermission() {
+    let a: any = this.userPermission;
+  }
+
   showModal(title: string, mess: string) {
     const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
 
@@ -372,7 +457,119 @@ export class EditComponent implements OnInit {
       else {
         $('#avatarDelete').show();
       }
+    });    
+  }
+
+  changePermission(pageId: number) {
+
+    let lstPer: any = this.userPermission;
+    let check: boolean = $("#" + pageId).is(":checked")
+    let item: any;
+    lstPer.forEach((object, index) => {
+      if (object.pageId == pageId) {
+        item = object;
+      }
     });
+
+    lstPer.forEach((object, index) => {
+      if (object.pageId == pageId) {
+        item = object;
+      }
+    });
+
+    this.setChecChild(item, check);
+    this.setChekAllChild(item, check);
+    this.setChekAllParent(item, check);
+
+    // this.setCheckAll(pageId);
+  }
+
+  changePermissionChild(pageId: number, check: boolean)
+  {
+    let lstPer: any = this.userPermission;
+    lstPer.forEach((object, index) => {
+      if (object.pageId == pageId) {
+        let count = 0;
+        let countTrueCheck = 0;
+
+        object.listUserPageAction.forEach((item2, index2) => {
+          if (item2.active == true)
+          {
+            countTrueCheck++;
+          }
+          count++;
+        });
+
+        if (count == countTrueCheck && check == true)
+        {
+          $("#" + object.pageId).prop('checked', false);
+          this.setChekAllParent(object, false);
+        }
+
+        if (countTrueCheck == count - 1 && check == false)
+        {
+          $("#" + object.pageId).prop('checked', true);
+          this.setChekAllParent(object, true);
+        }
+      }
+    });
+  }
+
+  setChecChild(item: any, check: boolean) {
+    let lstPer: any = this.userPermission;
+
+    item.listUserPageAction.forEach((item2, index2) => {
+      item2.active = check;
+    });
+
+    lstPer.forEach((object, index) => {
+      if (object.parentId == item.pageId) {
+        this.setChecChild(object, check);
+      }
+    });
+  }
+
+  setChekAllChild(item: any, check: boolean) {
+    let lstPer: any = this.userPermission;
+
+    $("#" + item.pageId).prop('checked', check);
+    lstPer.forEach((object, index) => {
+      if (object.parentId == item.pageId) {
+        this.setChekAllChild(object, check);
+      }
+    });
+  }
+
+  setChekAllParent(item: any, check: boolean) {
+    let lstPer: any = this.userPermission;
+    let parent: any;
+
+    lstPer.forEach((object, index) => {
+      if (object.pageId == item.parentId) {
+        parent = object
+      }
+    });
+
+    if (parent != null && parent != undefined) {
+      if (check == false) {
+        $("#" + parent.pageId).prop('checked', check);
+        this.setChekAllParent(parent, check);
+      }
+      else {
+        let count = 0;
+        let countCheck = 0;
+        parent.listUserPageAction.forEach((item2, index2) => {
+          if (item2.active == true) {
+            countCheck++;
+          }
+          count++;
+        });
+        if (count == countCheck) {
+          $("#" + parent.pageId).prop('checked', check);
+          this.setChekAllParent(parent, check);
+        }
+      }
+    }
   }
 
   onFileChanged(event) {

@@ -421,6 +421,23 @@
             }
         }
 
+        private List<AdminUserPagePermisionAction> resultGetChild = new List<AdminUserPagePermisionAction>();
+
+        private void GetListChild(List<AdminUserPagePermisionAction> list, AdminUserPagePermisionAction child, int level)
+        {
+            child.Level = level;
+            resultGetChild.Add(child);
+            var listChild = list.Where(x => x.ParentId == child.PageId).OrderBy(x=>x.OrderDisplay);
+            if(listChild.Count() > 0)
+            {
+                level = level + 1;
+            }
+            foreach(var item in listChild)
+            {
+                GetListChild(list, item, level);
+            }
+        }
+
         /// <summary>
         /// Gets the list permission by user.
         /// </summary>
@@ -431,30 +448,51 @@
             using (var data = new themanorContext())
             {
                 var query = (from u in data.UserPage
-                             join up in data.UserPermission on u.Id equals up.PageId into ups
+                             join up in data.UserPermission.Where(x=>x.User == userName) on u.Id equals up.PageId                     
+                             into ups
                              from y in ups.DefaultIfEmpty()
-                             where y.User == userName
-                             select new
+                             join ua in data.UserPageAction on u.Id equals ua.ActionPage
+                             into uas
+                             from z in uas.DefaultIfEmpty()
+                             select new AdminUserPagePermisionAction
                              {
-                                 y.User,
+                                 UserName = y.User,
                                  PageId = u.Id,
-                                 u.Title,
-                                 u.ParentId,
-                                 u.OrderDisplay,
-                                 TypeActionId = y.TypeActionId,
+                                 Title = u.Title,
+                                 ParentId = u.ParentId ?? 0,
+                                 OrderDisplay = u.OrderDisplay ?? 0,
+                                 TypeActionId = y != null ? y.TypeActionId : string.Empty,
+                                 ActionId = z != null ? z.Id : 0,
+                                 Level = 0
                              }).ToList();
 
                 List<PagePermission> lstPagePermission = new List<PagePermission>();
-
-                foreach (var obj in query)
+                resultGetChild.Clear();
+                var listOrderd = new List<AdminUserPagePermisionAction>();
+                var listParent = query.Where(x => x.ParentId == 0).OrderBy(x=>x.OrderDisplay);
+                foreach(var item in listParent)
                 {
+                    GetListChild(query, item, 0);
+                }
+
+                listOrderd.AddRange(resultGetChild);
+                resultGetChild.Clear();
+
+                var action1 = GetUserPageActionbyId(1);
+                var action2 = GetUserPageActionbyId(2);
+                var action3 = GetUserPageActionbyId(3);
+                var action4 = GetUserPageActionbyId(4);
+
+                foreach (var obj in listOrderd)
+                {                    
                     PagePermission pagePermission = new PagePermission();
                     List<AdminUserPageActionFullView> listUserPageAction = new List<AdminUserPageActionFullView>();
-                    pagePermission.UserName = obj.User;
-                    pagePermission.PageId = (int)obj.PageId;
+                    pagePermission.UserName = obj.UserName;
+                    pagePermission.PageId = obj.PageId;
                     pagePermission.Title = obj.Title;
-                    pagePermission.ParentId = (int)obj.ParentId;
-                    pagePermission.OrderDisplay = (int)obj.OrderDisplay;
+                    pagePermission.ParentId = obj.ParentId;
+                    pagePermission.OrderDisplay = obj.OrderDisplay;
+                    pagePermission.Level = obj.Level;
 
                     if (obj.TypeActionId != null)
                     {
@@ -464,8 +502,6 @@
                         {
                             var active = false;
                             int pos = Array.IndexOf(arrAction, i.ToString());
-                            var action = GetUserPageActionbyId(i);
-
                             if (pos > -1)
                             {
                                 active = true;
@@ -474,8 +510,23 @@
                             {
                                 active = false;
                             }
+                            AdminUserPageActionFullView userPageAction = null;
+                            switch (i)
+                            {
+                                case 1:
+                                    userPageAction = new AdminUserPageActionFullView { Id = action1.Id, ActionPage = action1.ActionPage.Value, ActionName = action1.ActionName, ActionDescription = action1.ActionDescription, Active = active };
+                                    break;
+                                case 2:
+                                    userPageAction = new AdminUserPageActionFullView { Id = action2.Id, ActionPage = action2.ActionPage.Value, ActionName = action2.ActionName, ActionDescription = action2.ActionDescription, Active = active };
+                                    break;
+                                case 3:
+                                    userPageAction = new AdminUserPageActionFullView { Id = action3.Id, ActionPage = action3.ActionPage.Value, ActionName = action3.ActionName, ActionDescription = action3.ActionDescription, Active = active };
+                                    break;
+                                case 4:
+                                    userPageAction = new AdminUserPageActionFullView { Id = action4.Id, ActionPage = action4.ActionPage.Value, ActionName = action4.ActionName, ActionDescription = action4.ActionDescription, Active = active };
+                                    break;
+                            }
 
-                            AdminUserPageActionFullView userPageAction = new AdminUserPageActionFullView { Id = action.Id, ActionPage = action.ActionPage.Value, ActionName = action.ActionName, ActionDescription = action.ActionDescription, Active = active };
                             listUserPageAction.Add(userPageAction);
                         }
                     }
@@ -492,7 +543,7 @@
                     lstPagePermission.Add(pagePermission);
                 }
 
-                return lstPagePermission;
+                return lstPagePermission.GroupBy(p => p.PageId).Select(g => g.First()).ToList();
             }
         }
 
