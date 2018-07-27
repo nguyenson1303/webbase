@@ -18,33 +18,33 @@ export class EditComponent implements OnInit {
   adminPages: any;
 
   adminPageDetail = {
-    id: 0,
-    act: "",
-    ctrl: "",
-    title: "",
-    isShow: false,
-    tye: "",
-    parentId: 0,
-    orderDisplay: 0,
-    icon: "",
-    path: "",
-    breadcrumb: ""
+    id: AppConstant.numberZero,
+    act: AppConstant.stringEmpty,
+    ctrl: AppConstant.stringEmpty,
+    title: AppConstant.stringEmpty,
+    isShow: AppConstant.falseDefault,
+    tye: AppConstant.stringEmpty,
+    parentId: AppConstant.numberZero,
+    orderDisplay: AppConstant.numberZero,
+    icon: AppConstant.stringEmpty,
+    path: AppConstant.stringEmpty,
+    breadcrumb: AppConstant.stringEmpty
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  public isCreate: boolean = true;
-  private id: number;
-  private parentId: number = 0;
-  private type: string = "";
-  private errorMessage: string = "";
-  private params: string = "?";
+  public isCreate: boolean = AppConstant.trueDefault;
+  private id: number = AppConstant.numberZero;
+  private parentId: number = AppConstant.numberZero;
+  private type: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
+  private params: string = AppConstant.paramsDefault;
   private objectAdminPage: any;
-  private node: number = 0;
+  private node: number = AppConstant.numberZero;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -65,7 +65,7 @@ export class EditComponent implements OnInit {
 
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
-    if (isInProcess != null && isInProcess != undefined) {
+    if (isInProcess !== null && isInProcess !== undefined) {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
@@ -79,19 +79,19 @@ export class EditComponent implements OnInit {
       this.parentId = params['parentId'];
     });
 
-    if (this.id != null && this.id != undefined) {
-      this.isCreate = false;
+    if (this.id !== null && this.id !== undefined) {
+      this.isCreate = AppConstant.falseDefault;
     }
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
+      this.type = AppConstant.stringEmpty;
     }
 
     // check user is permission for view page
     let lastPath = activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
-    this.pathInfor.typeAct = this.isCreate == true ? AppConstant.addAction : AppConstant.editAction;
+    this.pathInfor.typeAct = this.isCreate == AppConstant.trueDefault ? AppConstant.addAction : AppConstant.editAction;
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
@@ -107,7 +107,7 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+    if (this.parentId !== null && this.parentId > AppConstant.numberZero && this.parentId !== undefined) {
       this.adminPageService.getAdminPageDetail(this.parentId).subscribe(result => {
         if (result) {
           this.node = result.parentId;
@@ -121,7 +121,7 @@ export class EditComponent implements OnInit {
     let parentIdTree: number;
 
     // check localStorage exist
-    if (localStorage.getItem(AppConstant.objectAdminPage) != null) {
+    if (localStorage.getItem(AppConstant.objectAdminPage) !== null) {
       this.objectAdminPage = JSON.parse(localStorage.getItem(AppConstant.objectAdminPage));
       this.adminPageDetail.id = this.objectAdminPage.id;
       this.adminPageDetail.act = this.objectAdminPage.act;
@@ -138,7 +138,7 @@ export class EditComponent implements OnInit {
     }
     else {
       parentIdTree = this.parentId
-      if (this.isCreate == false) {
+      if (this.isCreate === false) {
         this.adminPageService.getAdminPageDetail(this.id).subscribe(result => {
           if (result) {
             this.adminPageDetail = result;
@@ -155,8 +155,8 @@ export class EditComponent implements OnInit {
 
     let paramGetTree: string = "?";
     // create tree list AdminPage
-    if (this.type != undefined && this.type.length > 0) {
-      if (paramGetTree.length > 1) {
+    if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&type=" + this.type;
       }
       else {
@@ -164,8 +164,8 @@ export class EditComponent implements OnInit {
       }
     }
 
-    if (parentIdTree != undefined && parentIdTree > 0) {
-      if (paramGetTree.length > 1) {
+    if (parentIdTree !== undefined && parentIdTree > AppConstant.numberZero) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&parentId=" + parentIdTree;
       }
       else {
@@ -173,8 +173,8 @@ export class EditComponent implements OnInit {
       }
     }
 
-    if (this.id != undefined && this.id > 0) {
-      if (paramGetTree.length > 1) {
+    if (this.id !== undefined && this.id > AppConstant.numberZero) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&id=" + this.id;
       }
       else {
@@ -208,8 +208,8 @@ export class EditComponent implements OnInit {
 
   nextclick() {
     // validate
-    let isValid = true;
-    let mess = "";
+    let isValid = AppConstant.trueDefault;
+    let mess = AppConstant.stringEmpty;
     let treeParentId: string = $(".jstree-clicked").attr('id').replace("_anchor", "");
     let validateAdminPageObj = {
       title: this.adminPageDetail.title,
@@ -244,7 +244,7 @@ export class EditComponent implements OnInit {
           // save obj to locate
           localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(createAdminPageObj));
 
-          localStorage.setItem(AppConstant.isInProcess, "true");
+          localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString());
           if (this.isCreate) {
             this.router.navigate(['/pages/adminpage/confirm', this.type, this.parentId]);
           }
@@ -259,7 +259,7 @@ export class EditComponent implements OnInit {
           var validateField = document.querySelectorAll(".validateServer");
           var i;
           for (i = 0; i < validateField.length; i++) {
-            validateField[i].textContent = "";
+            validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
             field.focus();
@@ -276,7 +276,7 @@ export class EditComponent implements OnInit {
   }
 
   backclick() {
-    if (this.parentId == 0) {
+    if (this.parentId === AppConstant.numberZero) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
     }
     else {

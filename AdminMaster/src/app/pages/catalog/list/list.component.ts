@@ -16,25 +16,6 @@ import { EventObject } from '../../../@core/interface/event-object';
 })
 export class ListComponent {
 
-//  listCatalog = {
-//    categoryName: AppConstant.stringEmpty,
-//    catalogId: AppConstant.numberZero,
-//    description: AppConstant.stringEmpty,
-//    imagePath: AppConstant.stringEmpty,
-//    intro: AppConstant.stringEmpty,
-//    keyword: AppConstant.stringEmpty,
-//    lang: AppConstant.stringEmpty,
-//    link: AppConstant.stringEmpty,
-//    moreInfo: AppConstant.stringEmpty,
-//    orderDisplay: AppConstant.numberZero,
-//    parent: AppConstant.numberZero,
-//    show: AppConstant.trueDefault,
-//    title: AppConstant.stringEmpty,
-//    type: AppConstant.stringEmpty,
-//    createDate: AppConstant.stringEmpty,
-//    modifyDate: AppConstant.stringEmpty
-//  }
-
   columns = [
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },

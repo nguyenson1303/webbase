@@ -18,29 +18,29 @@ declare var $: any;
 export class ConfirmComponent implements OnInit {
 
   createUserObj = {
-    username: "",
-    password: "",
-    confirmPassword: "",
-    ip: "",
-    online: "",
-    role: 0,
-    fname: "",
-    lname: "",
-    phone: "",
-    address: "",
-    birthday: "",
+    username: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    confirmPassword: AppConstant.stringEmpty,
+    ip: AppConstant.stringEmpty,
+    online: AppConstant.stringEmpty,
+    role: AppConstant.numberOne,
+    fname: AppConstant.stringEmpty,
+    lname: AppConstant.stringEmpty,
+    phone: AppConstant.stringEmpty,
+    address: AppConstant.stringEmpty,
+    birthday: AppConstant.stringEmpty,
     avatar: null,
-    avatarOld: "",
-    avatarFile: "",
-    avatarFileType: "",
-    avatarFileName: ""
+    avatarOld: AppConstant.stringEmpty,
+    avatarFile: AppConstant.stringEmpty,
+    avatarFileType: AppConstant.stringEmpty,
+    avatarFileName: AppConstant.stringEmpty
   }
 
-  public progress: number;
-  public isCreate: boolean = true;
-  private username: string = "";
+  public progress: number = AppConstant.numberZero;
+  public isCreate: boolean = AppConstant.trueDefault;
+  private username: string = AppConstant.stringEmpty;
   private objectUser: any;
-  private type: string = "";
+  private type: string = AppConstant.stringEmpty;
 
   constructor(private activatedRoute: ActivatedRoute,
     private accountService: AccountService,
@@ -72,23 +72,23 @@ export class ConfirmComponent implements OnInit {
       this.type = params['type'];
     });
 
-    if (this.username != null && this.username != "") {
+    if (this.username !== null && this.username !== AppConstant.stringEmpty) {
       this.isCreate = false;
     }
 
-    if (this.type == null || this.type == "") {
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
       this.type = "";
     }
 
     // check localStorage exist
     this.objectUser = localStorage.getItem(AppConstant.objectUser);
-    if (this.objectUser != null && this.objectUser != undefined) {
+    if (this.objectUser !== null && this.objectUser !== undefined) {
       this.createUserObj = JSON.parse(this.objectUser);
 
-      if (this.createUserObj.avatarFile != null && this.createUserObj.avatarFile != undefined) {
+      if (this.createUserObj.avatarFile !== null && this.createUserObj.avatarFile !== undefined) {
       }
       else {
-        if ((this.createUserObj.avatar === null || this.createUserObj.avatar === "")) {
+        if ((this.createUserObj.avatar === null || this.createUserObj.avatar === AppConstant.stringEmpty)) {
           this.createUserObj.avatarFile = AppConstant.avatarDefault;
         }
         else {
@@ -102,7 +102,7 @@ export class ConfirmComponent implements OnInit {
   }
 
   backclick() {
-    localStorage.setItem(AppConstant.isInProcess, "true")
+    localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString())
     localStorage.setItem(AppConstant.objectUser, JSON.stringify(this.createUserObj))
 
     if (this.isCreate) {
@@ -135,10 +135,10 @@ export class ConfirmComponent implements OnInit {
       // process upload file avatar
       if ((this.createUserObj.avatarFileName !== null
         && this.createUserObj.avatarFileName !== undefined
-        && this.createUserObj.avatarFileName !== "") && (
+        && this.createUserObj.avatarFileName !== AppConstant.stringEmpty) && (
           this.createUserObj.avatarFile !== null
           && this.createUserObj.avatarFile !== undefined
-          && this.createUserObj.avatarFile !== "")) {
+        && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
 
         // upload new avatar and create account
         var formData = new FormData();
@@ -195,7 +195,7 @@ export class ConfirmComponent implements OnInit {
     }
     else {
       let userAccount = {
-        ip: "",
+        ip: AppConstant.stringEmpty,
         online: this.createUserObj.online,
         role: this.createUserObj.role
       };
@@ -211,17 +211,17 @@ export class ConfirmComponent implements OnInit {
               phone: this.createUserObj.phone,
               address: this.createUserObj.address,
               birthday: this.createUserObj.birthday,
-              avatar: "",
-              fullName: this.createUserObj.fname + " " + this.createUserObj.lname
+              avatar: AppConstant.stringEmpty,
+              fullName: this.createUserObj.fname + AppConstant.spaceDefault + this.createUserObj.lname
             }
 
             // process upload file avatar
             if ((this.createUserObj.avatarFileName !== null
               && this.createUserObj.avatarFileName !== undefined
-              && this.createUserObj.avatarFileName !== "") && (
+              && this.createUserObj.avatarFileName !== AppConstant.stringEmpty) && (
                 this.createUserObj.avatarFile !== null
                 && this.createUserObj.avatarFile !== undefined
-                && this.createUserObj.avatarFile !== "")) {
+              && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
 
               // upload new avatar and update infor
               var formData = new FormData();

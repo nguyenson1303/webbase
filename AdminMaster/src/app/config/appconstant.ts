@@ -98,10 +98,12 @@ export class AppConstant {
   public static pageSizeMax: number = 100;
   public static numberZero: number = 0;
   public static numberOne: number = 1;
+  public static numberNegativeOne: number = -1;
 
   // const string
   public static stringEmpty: string = "";
   public static paramsDefault: string = "?";
+  public static spaceDefault: string = " ";
 
   // const boolean
   public static falseDefault: boolean = false;

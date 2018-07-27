@@ -34,30 +34,30 @@ export class ListComponent {
   };
 
   listUser = {
-    username: "",
-    password: "",
-    role: 0,
-    online: true,
-    lastLogin: "",
-    ip: "",
-    token: "",
-    expire: ""
+    username: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    role: AppConstant.numberOne,
+    online: AppConstant.trueDefault,
+    lastLogin: AppConstant.stringEmpty,
+    ip: AppConstant.stringEmpty,
+    token: AppConstant.stringEmpty,
+    expire: AppConstant.stringEmpty
   };
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  private params: string = "?";
-  private type: string = "";
-  private lang: string = "";
-  public search: string = "";
+  private params: string = AppConstant.paramsDefault;
+  private type: string = AppConstant.stringEmpty;
+  private lang: string = AppConstant.stringEmpty;
+  public search: string = AppConstant.stringEmpty;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
-  private orderBy: string = "";
-  private orderType: string = "";
+  private orderBy: string = AppConstant.stringEmpty;
+  private orderType: string = AppConstant.stringEmpty;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -111,7 +111,7 @@ export class ListComponent {
 
   // function filter data
   filter(obj: EventObject) {
-    this.params = "?";
+    this.params = AppConstant.paramsDefault;
 
     if (obj != null) {
       this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;

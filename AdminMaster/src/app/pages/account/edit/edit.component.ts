@@ -20,42 +20,42 @@ declare var $: any;
 export class EditComponent implements OnInit {
 
   userDetail = {
-    username: "",
-    password: "",
-    confirmPassword: "",
-    role: 1,
-    online: true,
-    lastLogin: "",
-    ip: "",
-    token: "",
-    expire: ""
+    username: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    confirmPassword: AppConstant.stringEmpty,
+    role: AppConstant.numberOne,
+    online: AppConstant.trueDefault,
+    lastLogin: AppConstant.stringEmpty,
+    ip: AppConstant.stringEmpty,
+    token: AppConstant.stringEmpty,
+    expire: AppConstant.stringEmpty
   };
 
   userProfile = {
-    inforId: 0,
-    fname: "",
-    lname: "",
-    phone: "",
-    address: "",
-    email: "",
+    inforId: AppConstant.numberZero,
+    fname: AppConstant.stringEmpty,
+    lname: AppConstant.stringEmpty,
+    phone: AppConstant.stringEmpty,
+    address: AppConstant.stringEmpty,
+    email: AppConstant.stringEmpty,
     eventId: null,
     birthday: null,
-    location: "",
-    note: "",
+    location: AppConstant.stringEmpty,
+    note: AppConstant.stringEmpty,
     dateJoin: null,
     dateRegister: null,
-    avatar: "",
-    avatarOld: "",
+    avatar: AppConstant.stringEmpty,
+    avatarOld: AppConstant.stringEmpty,
     avatarFile: null,
-    avatarFileType: "",
-    avatarFileName: "",
-    fullName: ""
+    avatarFileType: AppConstant.stringEmpty,
+    avatarFileName: AppConstant.stringEmpty,
+    fullName: AppConstant.stringEmpty
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
   options: DatepickerOptions = {
@@ -69,19 +69,18 @@ export class EditComponent implements OnInit {
     // minDate: new Date(Date.now()), // Minimal selectable date
     // maxDate: new Date(Date.now()),  // Maximal selectable date
     barTitleIfEmpty: 'Click to select a Birthday',
-    placeholder: 'Birthday', // HTML input placeholder attribute (default: '')
-    addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
-    fieldId: 'birthday', // ID to assign to the input field. Defaults to datepicker-<counter>
+    placeholder: 'Birthday',
+    addClass: 'form-control',
+    addStyle: {},
+    fieldId: 'birthday',
     useEmptyBarTitle: false,
-    // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown
   };
 
-  avatarUrl: string = "";
-  public isCreate: boolean = true;
-  private username: string = "";
-  private type: string = "";
-  private errorMessage: string = "";
+  avatarUrl: string = AppConstant.stringEmpty;
+  public isCreate: boolean = AppConstant.trueDefault;
+  private username: string = AppConstant.stringEmpty;
+  private type: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
   private objectUser: any;
 
   constructor(
@@ -103,7 +102,7 @@ export class EditComponent implements OnInit {
 
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
-    if (isInProcess != null && isInProcess != undefined) {
+    if (isInProcess !== null && isInProcess !== undefined) {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
@@ -111,16 +110,16 @@ export class EditComponent implements OnInit {
     }
 
     // get param from router ex: /:username
-     this.activatedRoute.params.forEach(params => {
-       this.username = params['username'];
-       this.type = params['type'];
-     });
+    this.activatedRoute.params.forEach(params => {
+      this.username = params['username'];
+      this.type = params['type'];
+    });
 
-    if (this.username != null && this.username != "") {
+    if (this.username !== null && this.username !== AppConstant.stringEmpty) {
       this.isCreate = false;
     }
 
-    if (this.type == null || this.type == "") {
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
       this.type = "";
     }
 
@@ -128,7 +127,7 @@ export class EditComponent implements OnInit {
     let lastPath = activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
     this.pathInfor.type = this.type;
-    this.pathInfor.typeAct = this.isCreate == true ? AppConstant.addAction : AppConstant.editAction;
+    this.pathInfor.typeAct = this.isCreate === true ? AppConstant.addAction : AppConstant.editAction;
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
       if (result) {
@@ -161,19 +160,18 @@ export class EditComponent implements OnInit {
       this.userProfile.avatar = this.objectUser.avatar;
       this.userProfile.avatarFile = this.objectUser.avatarFile;
 
-      if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
+      if (this.userProfile.avatarFile !== null && this.userProfile.avatarFile !== undefined) {
         this.userProfile.avatar = this.userProfile.avatarFile;
       }
       else {
-        if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
+        if ((this.userProfile.avatar === null || this.userProfile.avatar === AppConstant.stringEmpty)) {
           this.userProfile.avatar = AppConstant.avatarDefault;
         }
       }
 
       this.avatarUrl = this.userProfile.avatar;
     }
-    else
-    {
+    else {
       if (this.isCreate == false) {
         this.accountService.getUserDetail(this.username).subscribe(result => {
           if (result) {
@@ -195,7 +193,7 @@ export class EditComponent implements OnInit {
             this.userProfile = result;
             if (this.userProfile.avatar !== null
               && this.userProfile.avatar !== undefined
-              && this.userProfile.avatar !== "") {
+              && this.userProfile.avatar !== AppConstant.stringEmpty) {
 
               this.userProfile.avatarOld = this.userProfile.avatar;
 
@@ -220,11 +218,11 @@ export class EditComponent implements OnInit {
               this.avatarUrl = AppConstant.avatarDefault;
             }
 
-            if (this.userProfile.avatarFile != null && this.userProfile.avatarFile != undefined) {
+            if (this.userProfile.avatarFile !== null && this.userProfile.avatarFile !== undefined) {
               // this.userProfile.avatar = this.userProfile.avatarFile;
             }
             else {
-              if ((this.userProfile.avatar === null || this.userProfile.avatar === "")) {
+              if ((this.userProfile.avatar === null || this.userProfile.avatar === AppConstant.stringEmpty)) {
                 this.userProfile.avatar = AppConstant.avatarDefault;
               }
             }
@@ -251,13 +249,13 @@ export class EditComponent implements OnInit {
 
   nextclick() {
     // validate
-    let isValid = true;
-    let mess = "";
+    let isValid = AppConstant.trueDefault;
+    let mess = AppConstant.stringEmpty;
     let createUserValidateObj = {
       username: this.userDetail.username,
       password: this.userDetail.password,
       confirmPassword: this.userDetail.confirmPassword,
-      ip: "",
+      ip: AppConstant.stringEmpty,
       online: this.userDetail.online,
       role: this.userDetail.role,
       fname: this.userProfile.fname,
@@ -265,7 +263,7 @@ export class EditComponent implements OnInit {
       phone: this.userProfile.phone,
       address: this.userProfile.address,
       birthday: this.userProfile.birthday,
-      avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
+      avatar: this.userProfile.avatar !== AppConstant.avatarDefault ? this.userProfile.avatar : AppConstant.stringEmpty,
       isCreate: this.isCreate
     }
 
@@ -278,7 +276,7 @@ export class EditComponent implements OnInit {
             username: this.userDetail.username,
             password: this.userDetail.password,
             confirmPassword: this.userDetail.confirmPassword,
-            ip: "",
+            ip: AppConstant.stringEmpty,
             online: this.userDetail.online,
             role: this.userDetail.role,
             fname: this.userProfile.fname,
@@ -286,7 +284,8 @@ export class EditComponent implements OnInit {
             phone: this.userProfile.phone,
             address: this.userProfile.address,
             birthday: this.userProfile.birthday,
-            avatar: this.userProfile.avatar != AppConstant.avatarDefault ? this.userProfile.avatar : "",
+            avatar: this.userProfile.avatar !== AppConstant.avatarDefault
+              ? this.userProfile.avatar : AppConstant.stringEmpty,
             avatarOld: this.userProfile.avatarOld,
             avatarFile: this.userProfile.avatarFile,
             avatarFileType: this.userProfile.avatarFileType,
@@ -301,7 +300,7 @@ export class EditComponent implements OnInit {
           if (this.isCreate) {
             this.router.navigate(['/pages/account/confirm', this.type]);
           }
-          else{
+          else {
             this.router.navigate(['/pages/account/confirm', this.type, this.username]);
           }
         }
@@ -312,13 +311,12 @@ export class EditComponent implements OnInit {
           var validateField = document.querySelectorAll(".validateServer");
           var i;
           for (i = 0; i < validateField.length; i++) {
-            validateField[i].textContent = "";
+            validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
             field.focus();
           }
-          if (fieldValidate)
-          {
+          if (fieldValidate) {
             fieldValidate.textContent = result.message;
           }
         }

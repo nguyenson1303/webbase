@@ -8,6 +8,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { ConfigurationService } from './configuration.service';
+import { EventObject } from '../../../@core/interface/event-object';
 declare var $: any;
 
 @Component({
@@ -35,40 +36,40 @@ export class DetailComponent implements OnInit {
   ];
 
   adminPageDetail = {
-    id: 0,
-    act: "",
-    ctrl: "",
-    title: "",
-    isShow: true,
-    tye: "",
-    parentId: 0,
-    orderDisplay: 0,
-    icon: "",
-    path: "",
-    breadcrumb: ""
+    id: AppConstant.numberZero,
+    act: AppConstant.stringEmpty,
+    ctrl: AppConstant.stringEmpty,
+    title: AppConstant.stringEmpty,
+    isShow: AppConstant.trueDefault,
+    tye: AppConstant.stringEmpty,
+    parentId: AppConstant.numberZero,
+    orderDisplay: AppConstant.numberZero,
+    icon: AppConstant.stringEmpty,
+    path: AppConstant.stringEmpty,
+    breadcrumb: AppConstant.stringEmpty
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  private id: number;
-  private parentId: number = 0;
-  private type: string = "";
-  private errorMessage: string = "";
+  private id: number = AppConstant.numberZero;
+  private parentId: number = AppConstant.numberZero;
+  private type: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
   private objectAdminPage: any;
-  private node: number = 0;
+  private node: number = AppConstant.numberZero;
 
-  private params: string = "?";
-  private lang: string = "";
-  public search: string = "";
-  private pageId: number = 0;
+  private params: string = AppConstant.paramsDefault;
+  private lang: string = AppConstant.stringEmpty;
+  public search: string = AppConstant.stringEmpty;
+  private pageId: number = AppConstant.numberZero;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
-  private orderBy: string = "";
-  private orderType: string = "";
+  private orderBy: string = AppConstant.stringEmpty;
+  private orderType: string = AppConstant.stringEmpty;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -110,7 +111,7 @@ export class DetailComponent implements OnInit {
       this.parentId = params['parentId'];
     });
 
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+    if (this.parentId !== null && this.parentId > AppConstant.numberZero && this.parentId !== undefined) {
       this.adminPageService.getAdminPageDetail(this.parentId).subscribe(result => {
         if (result) {
           this.node = result.parentId;
@@ -121,8 +122,8 @@ export class DetailComponent implements OnInit {
         };
     }
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
+      this.type = AppConstant.stringEmpty;
     }
   }
 
@@ -136,10 +137,10 @@ export class DetailComponent implements OnInit {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
-    let paramGetTree: string = "?";
+    let paramGetTree: string = AppConstant.paramsDefault;
 
     // create tree list AdminPage
-    if (this.type != undefined && this.type.length > 0) {
+    if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
       if (paramGetTree.length > 1) {
         paramGetTree = paramGetTree + "&type=" + this.type;
       }
@@ -148,7 +149,7 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.parentId != undefined && this.parentId > 0) {
+    if (this.parentId !== undefined && this.parentId > AppConstant.numberZero) {
       if (paramGetTree.length > 1) {
         paramGetTree = paramGetTree + "&parentId=" + this.parentId;
       }
@@ -157,7 +158,7 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.id != undefined && this.id > 0) {
+    if (this.id !== undefined && this.id > AppConstant.numberZero) {
       if (paramGetTree.length > 1) {
         paramGetTree = paramGetTree + "&id=" + this.id;
       }
@@ -187,7 +188,7 @@ export class DetailComponent implements OnInit {
 
   // function filter data
   filter(obj: EventObject) {
-    this.params = "?";
+    this.params = AppConstant.paramsDefault;
 
     if (obj != null) {
       this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
@@ -306,7 +307,7 @@ export class DetailComponent implements OnInit {
   }
 
   backclick() {
-    if (this.parentId == 0) {
+    if (this.parentId == AppConstant.numberZero) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
     }
     else {
@@ -336,7 +337,7 @@ export class DetailComponent implements OnInit {
     activeModal.componentInstance.confirmationMessage = AppConstant.confirmDeleteContent + ": " + actionName;
 
     activeModal.result.then((userResponse) => {
-      if (userResponse === true) {
+      if (userResponse) {
         this.deleteClick(id);
       }
     });
@@ -377,9 +378,4 @@ export class DetailComponent implements OnInit {
         console.error('ERROR: ', error.message);
       };
   }
-}
-
-interface EventObject {
-  event: string;
-  value: any;
 }
