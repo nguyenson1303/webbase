@@ -44,8 +44,8 @@ const routes: Routes = [
         data: { breadcrumb: 'Xác nhận tạo catalog' },
         component: ConfirmComponent, canActivate: [AuthGuard]
       },
-      { path: '', redirectTo: 'list/:type', pathMatch: 'full' },
-      { path: '**', redirectTo: 'list/:type' },
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: '**', redirectTo: 'list' },
     ],
   }
 ];
