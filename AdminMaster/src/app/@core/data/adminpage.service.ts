@@ -28,7 +28,6 @@ export class AdminpageService {
       });
   }
 
-
   getListAdminPage(params: string) {
     let url = AppConfig.serverAPI + AppConstant.listAdminPageApiUrl + params;
     this.options = new RequestOptions({ headers: this.headers });
