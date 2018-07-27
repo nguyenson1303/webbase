@@ -100,20 +100,20 @@ export class ListComponent {
     this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
 
-      if (params['node'] != null && params['node'] != undefined) {
+      if (params['node'] !== null && params['node'] !== undefined) {
         this.node = params['node'];
       }
       else {
-        this.node = 0;
+        this.node = AppConstant.numberZero;
       }
 
-      if (params['parentId'] != null && params['parentId'] != undefined) {
+      if (params['parentId'] !== null && params['parentId'] !== undefined) {
         this.parentId = params['parentId'];
-        this.isShowBack = true;
+        this.isShowBack = AppConstant.trueDefault;
       }
       else {
-        this.parentId = 0;  // get all page parent root
-        this.isShowBack = false;
+        this.parentId = AppConstant.numberZero;  // get all page parent root
+        this.isShowBack = AppConstant.falseDefault;
       }
 
       this.filter(null);
