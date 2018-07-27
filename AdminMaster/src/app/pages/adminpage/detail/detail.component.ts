@@ -141,7 +141,7 @@ export class DetailComponent implements OnInit {
 
     // create tree list AdminPage
     if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
-      if (paramGetTree.length > 1) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&type=" + this.type;
       }
       else {
@@ -150,7 +150,7 @@ export class DetailComponent implements OnInit {
     }
 
     if (this.parentId !== undefined && this.parentId > AppConstant.numberZero) {
-      if (paramGetTree.length > 1) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&parentId=" + this.parentId;
       }
       else {
@@ -159,7 +159,7 @@ export class DetailComponent implements OnInit {
     }
 
     if (this.id !== undefined && this.id > AppConstant.numberZero) {
-      if (paramGetTree.length > 1) {
+      if (paramGetTree.length > AppConstant.numberOne) {
         paramGetTree = paramGetTree + "&id=" + this.id;
       }
       else {
@@ -204,8 +204,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.type != undefined && this.type.length > 0) {
-      if (this.params.length > 1) {
+    if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&type=" + this.type;
       }
       else {
@@ -213,8 +213,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.search != undefined && this.search.length > 0) {
-      if (this.params.length > 1) {
+    if (this.search !== undefined && this.search.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&search=" + this.search;
       }
       else {
@@ -222,8 +222,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.id != undefined && this.id >= 0) {
-      if (this.params.length > 1) {
+    if (this.id !== undefined && this.id >= AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&pageId=" + this.id;
       }
       else {
@@ -231,8 +231,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.pageIndex != undefined && this.pageIndex > 0) {
-      if (this.params.length > 1) {
+    if (this.pageIndex !== undefined && this.pageIndex > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&pageIndex=" + this.pageIndex;
       }
       else {
@@ -240,8 +240,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.pageSize != undefined && this.pageSize > 0) {
-      if (this.params.length > 1) {
+    if (this.pageSize !== undefined && this.pageSize > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&pageSize=" + this.pageSize;
       }
       else {
@@ -249,8 +249,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.orderBy != undefined && this.orderBy.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderBy !== undefined && this.orderBy.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderBy=" + this.orderBy;
       }
       else {
@@ -258,8 +258,8 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    if (this.orderType != undefined && this.orderType.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderType !== undefined && this.orderType.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderType=" + this.orderType;
       }
       else {
@@ -272,7 +272,7 @@ export class DetailComponent implements OnInit {
 
   getData(params: string) {
     this.configuration = ConfigurationService.config;
-    this.configuration.isLoading = true;
+    this.configuration.isLoading = AppConstant.trueDefault;
 
     this.adminPageActionService.getListAdminPageAction(params).subscribe(result => {
       if (result) {

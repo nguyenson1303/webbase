@@ -85,11 +85,12 @@ export class ConfirmComponent implements OnInit {
   ngOnInit() {
     // check localStorage exist
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
-    if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
+    if (this.objectAdminPage !== null && this.objectAdminPage !== undefined) {
       this.adminPageDetail = JSON.parse(this.objectAdminPage);
-      let paramGetTree: string = "?";
+      let paramGetTree: string = AppConstant.paramsDefault;
+
       if (this.type != undefined && this.type.length > 0) {
-        if (paramGetTree.length > 1) {
+        if (paramGetTree.length > AppConstant.numberOne) {
           paramGetTree = paramGetTree + "&type=" + this.type;
         }
         else {
@@ -97,8 +98,8 @@ export class ConfirmComponent implements OnInit {
         }
       }
 
-      if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
-        if (paramGetTree.length > 1) {
+      if (this.adminPageDetail.parentId !== undefined && this.adminPageDetail.parentId > AppConstant.numberZero) {
+        if (paramGetTree.length > AppConstant.numberZero) {
           paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
         }
         else {

@@ -258,7 +258,7 @@ export class EditComponent implements OnInit {
           let fieldValidate = document.getElementById(result.field + "-validate");
           var validateField = document.querySelectorAll(".validateServer");
           var i;
-          for (i = 0; i < validateField.length; i++) {
+          for (i = AppConstant.numberZero; i < validateField.length; i++) {
             validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
