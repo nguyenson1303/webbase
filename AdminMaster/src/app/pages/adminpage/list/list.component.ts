@@ -40,10 +40,10 @@ export class ListComponent {
   };
 
   columns = [
-    { key: 'parentId', title: 'Action' },
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
+    { key: 'parentId', title: 'Action' },
     { key: 'isShow', title: 'Menu' },
   ];
 
@@ -133,63 +133,7 @@ export class ListComponent {
   }
 
   ngAfterViewInit() {
-     $(document).ready(() => {
-      var
-        $table = $('#tree-table'),
-        rows = $table.find('tr');
 
-      rows.each(function (index, row) {
-        var
-          $row = $(row),
-          level = $row.attr('data-level'),
-          id = $row.data('id'),
-          $columnName = $row.find('td[data-column="name"]'),
-          children = $table.find('tr[data-parent="' + id + '"]');
-
-        if (children.length) {
-          var expander = $columnName.prepend('' + '<i class="treegrid-expander ion-arrow-right-b"></i>' + '');
-
-          children.hide();
-
-          expander.on('click', function (e) {
-            var $target = $(e.target);
-            if ($target.get(0).tagName === "I") {
-              if ($target.hasClass('ion-arrow-right-b')) {
-                $target.removeClass('ion-arrow-right-b').addClass('ion-arrow-down-b');
-                children.show();
-              } else {
-                $target.removeClass('ion-arrow-down-b').addClass('ion-arrow-right-b');
-                reverseHide($table, $row);
-              }
-            }
-          });
-
-        }
-
-        $columnName.prepend('' + '<i class="treegrid-indent" style="padding-left:' + 30 * (level-1) + 'px"></i>' + '');
-      });
-
-      // Reverse hide all elements
-      var reverseHide = function (table, element) {
-        var
-          $element = $(element),
-          id = $element.data('id'),
-          children = table.find('tr[data-parent="' + id + '"]');
-
-        if (children.length) {
-          children.each(function (i, e) {
-            reverseHide(table, e);
-          });
-
-          $element
-            .find('.ion-arrow-down-b')
-            .removeClass('ion-arrow-down-b')
-            .addClass('ion-arrow-right-b');
-
-          children.hide();
-        }
-      };
-     });
   }
 
   // function filter data
@@ -260,17 +204,17 @@ export class ListComponent {
     this.getData(this.params);
   }
 
-  recursiveData(list: any) {
-    list.forEach(element => {
-      if (element.level) {
-        element.classLevel = 'level' + element.level;
-      }
-      this.data.push(element);
-      if (element.children.length > 0) {
-        this.recursiveData(element.children);
-      }
-    });
-  }
+  // recursiveData(list: any) {
+  //  list.forEach(element => {
+  //    if (element.level) {
+  //      element.classLevel = 'level' + element.level;
+  //    }
+  //    this.data.push(element);
+  //    if (element.children.length > 0) {
+  //      this.recursiveData(element.children);
+  //    }
+  //  });
+  // }
 
   getData(params: string) {
     this.configuration = ConfigurationService.config;
@@ -280,15 +224,14 @@ export class ListComponent {
       if (result) {
         if (result && result.code) {
           this.data = [];
-          this.dataResult = [];
           this.configuration.isLoading = false;
         }
         else {
           this.data = [];
-          this.dataResult = result.listUserPage;
+          this.data = result.listUserPage;
           this.configuration.isLoading = false;
 
-          this.recursiveData(this.dataResult);
+          // this.recursiveData(this.dataResult);
         }
       }
     }),
@@ -323,8 +266,7 @@ export class ListComponent {
     this.filter($event);
   }
 
-  viewClick(id : number)
-  {
+  viewClick(id: number) {
     this.router.navigate(['/pages/adminpage/detail', this.type, this.parentId, id]);
   }
 

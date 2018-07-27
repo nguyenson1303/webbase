@@ -19,7 +19,7 @@ export class ConfigurationService {
     additionalActions: false,
     serverPagination: false,
     isLoading: false,
-    detailsTemplate: true,
+    detailsTemplate: false,
     groupRows: false,
     paginationRangeEnabled: true,
     collapseAllRows: false,
