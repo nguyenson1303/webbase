@@ -61,7 +61,6 @@ export class EditComponent implements OnInit {
     { key: 'role', title: 'Danh sách quyền' },
   ];
   data;
-  rows;
   configuration;
 
   userPermission = {
@@ -283,7 +282,6 @@ export class EditComponent implements OnInit {
     if (localStorage.getItem(AppConstant.objectUserPermission) != null) {
       this.userPermission = JSON.parse(localStorage.getItem(AppConstant.objectUserPermission));
       this.data = this.userPermission;
-      this.rows = this.data;
       let lst: any = this.userPermission;
       lst.forEach((item, index) => {
         this.isCheckAll = true;
@@ -291,6 +289,7 @@ export class EditComponent implements OnInit {
         item.isCheckAll = this.isCheckAll;
       });
       this.userPermission = lst;
+
       this.configuration.isLoading = false;
     }
     else
@@ -299,7 +298,7 @@ export class EditComponent implements OnInit {
         if (result) {
           this.userPermission = result;
           this.data = this.userPermission;
-          this.rows = this.data;
+
           let lst: any = this.userPermission;
           lst.forEach((item, index) => {
             this.isCheckAll = true;
@@ -307,6 +306,7 @@ export class EditComponent implements OnInit {
             item.isCheckAll = this.isCheckAll;
           });
           this.userPermission = lst;
+          console.log(this.userPermission);
           this.configuration.isLoading = false;
         }
       }),

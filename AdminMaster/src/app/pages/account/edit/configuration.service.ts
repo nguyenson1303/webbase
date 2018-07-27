@@ -7,7 +7,7 @@ export class ConfigurationService {
   public static config: Config = {
     searchEnabled: false,
     headerEnabled: true,
-    orderEnabled: true,
+    orderEnabled: false,
     globalSearchEnabled: false,
     paginationEnabled: false,
     exportEnabled: false,
