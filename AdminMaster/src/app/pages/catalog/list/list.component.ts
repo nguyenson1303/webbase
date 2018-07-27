@@ -100,20 +100,20 @@ export class ListComponent {
     this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
 
-      if (params['node'] != null && params['node'] != undefined) {
+      if (params['node'] !== null && params['node'] !== undefined) {
         this.node = params['node'];
       }
       else {
-        this.node = 0;
+        this.node = AppConstant.numberZero;
       }
 
-      if (params['parentId'] != null && params['parentId'] != undefined) {
+      if (params['parentId'] !== null && params['parentId'] !== undefined) {
         this.parentId = params['parentId'];
-        this.isShowBack = true;
+        this.isShowBack = AppConstant.trueDefault;
       }
       else {
-        this.parentId = 0;  // get all page parent root
-        this.isShowBack = false;
+        this.parentId = AppConstant.numberZero;  // get all page parent root
+        this.isShowBack = AppConstant.trueDefault;
       }
 
       this.filter(null);
@@ -125,7 +125,7 @@ export class ListComponent {
   filter(obj: EventObject) {
     this.params = AppConstant.paramsDefault;
 
-    if (obj != null) {
+    if (obj !== null) {
       this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
       this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
       this.pagination = { ...this.pagination };
@@ -139,8 +139,8 @@ export class ListComponent {
       }
     }
 
-    if (this.type != undefined && this.type.length > 0) {
-      if (this.params.length > 1) {
+    if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&type=" + this.type;
       }
       else {
@@ -148,8 +148,8 @@ export class ListComponent {
       }
     }
 
-    if (this.lang != undefined && this.lang.length > 0) {
-      if (this.params.length > 1) {
+    if (this.lang !== undefined && this.lang.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&lang=" + this.lang;
       }
       else {
@@ -157,8 +157,8 @@ export class ListComponent {
       }
     }
 
-    if (this.search != undefined && this.search.length > 0) {
-      if (this.params.length > 1) {
+    if (this.search !== undefined && this.search.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&search=" + this.search;
       }
       else {
@@ -166,8 +166,8 @@ export class ListComponent {
       }
     }
 
-    if (this.pageIndex != undefined && this.pageIndex > 0) {
-      if (this.params.length > 1) {
+    if (this.pageIndex !== undefined && this.pageIndex > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&pageIndex=" + this.pageIndex;
       }
       else {
@@ -175,8 +175,8 @@ export class ListComponent {
       }
     }
 
-    if (this.pageSize != undefined && this.pageSize > 0) {
-      if (this.params.length > 1) {
+    if (this.pageSize !== undefined && this.pageSize > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&pageSize=" + this.pageSize;
       }
       else {
@@ -184,8 +184,8 @@ export class ListComponent {
       }
     }
 
-    if (this.parentId != undefined && this.parentId != null) {
-      if (this.params.length > 1) {
+    if (this.parentId !== undefined && this.parentId !== null) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&parentId=" + this.parentId;
       }
       else {
@@ -193,8 +193,8 @@ export class ListComponent {
       }
     }
 
-    if (this.orderBy != undefined && this.orderBy.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderBy !== undefined && this.orderBy.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderBy=" + this.orderBy;
       }
       else {
@@ -202,8 +202,8 @@ export class ListComponent {
       }
     }
 
-    if (this.orderType != undefined && this.orderType.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderType !== undefined && this.orderType.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderType=" + this.orderType;
       }
       else {
@@ -216,13 +216,13 @@ export class ListComponent {
 
   getData(params: string) {
     this.configuration = ConfigurationService.config;
-    this.configuration.isLoading = true;
+    this.configuration.isLoading = AppConstant.trueDefault;
 
     this.catalogService.getListCatalog(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
           this.data = [];
-          this.configuration.isLoading = false;
+          this.configuration.isLoading = AppConstant.falseDefault;
         }
         else {
           this.data = [];
@@ -230,7 +230,7 @@ export class ListComponent {
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
           this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
-          this.configuration.isLoading = false;
+          this.configuration.isLoading = AppConstant.falseDefault;
         }
       }
     }),
@@ -238,7 +238,7 @@ export class ListComponent {
         console.error('ERROR: ', error.message);
       };
 
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+    if (this.parentId !== null && this.parentId > AppConstant.numberZero && this.parentId !== undefined) {
       this.catalogService.getCatalogDetail(this.parentId).subscribe(result => {
         if (result) {
           this.parentName = "con của " + result.title;
@@ -249,7 +249,7 @@ export class ListComponent {
         };
     }
 
-    if (this.node != null && this.node > 0 && this.node != undefined) {
+    if (this.node !== null && this.node > AppConstant.numberZero && this.node !== undefined) {
       this.catalogService.getCatalogDetail(this.node).subscribe(result => {
         if (result) {
           this.oldNode = result.parentId;
@@ -290,14 +290,14 @@ export class ListComponent {
 
   // search by title
   onTitleSearch(value): void {
-    this.parentId = -1; // search on all page
+    this.parentId = AppConstant.numberNegativeOne; // search on all page
     this.search = value;
     this.filter(null);
   }
 
   // resest search
   reset(): void {
-    this.search = "";
+    this.search = AppConstant.stringEmpty;
     this.filter(null);
   }
 
@@ -309,7 +309,7 @@ export class ListComponent {
     activeModal.componentInstance.confirmationMessage = AppConstant.confirmDeleteContent + ": " + title;
 
     activeModal.result.then((userResponse) => {
-      if (userResponse === true) {
+      if (userResponse) {
         this.deleteClick(id);
       }
     });
@@ -353,12 +353,12 @@ export class ListComponent {
 
   // show modal confirm active
   showChangeActiveConfirm(id: number, value: boolean, title: string) {
-    let newStatus = false;
+    let newStatus = AppConstant.falseDefault;
     if (value) {
-      newStatus = false;
+      newStatus = AppConstant.falseDefault;
     }
     else {
-      newStatus = true;
+      newStatus = AppConstant.trueDefault;
     }
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
@@ -367,7 +367,7 @@ export class ListComponent {
       AppConstant.confirmChangeContent + ": " + title + " " + (newStatus == true ? "On" : "Off");
 
     activeModal.result.then((userResponse) => {
-      if (userResponse === true) {
+      if (userResponse) {
         this.changeActive(id, newStatus);
       }
     });
