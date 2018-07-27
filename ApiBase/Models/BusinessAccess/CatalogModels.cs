@@ -160,7 +160,7 @@
             }
         }
 
-        public List<AdminListCatalog> AdminGetAllCatalogFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        public List<AdminListCatalog> AdminGetAllCatalogFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, out int total)
         {
             using (var data = new themanorContext())
             {
@@ -196,32 +196,7 @@
 
                     total = recursiveCatalogList.ToList().Count();
 
-                    var c_recursiveCatalogList = recursiveCatalogList.AsQueryable();
-
-                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
-                    {
-                        // First Char ToUpper
-                        if (orderBy.Length > 1)
-                        {
-                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
-                        }
-                        else
-                        {
-                            orderBy = char.ToUpper(orderBy[0]).ToString();
-                        }
-
-                        Type sortByPropType = typeof(AdminListCatalog).GetProperty(orderBy).PropertyType;
-                        ////calling the extension method using reflection
-                        c_recursiveCatalogList = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(AdminListCatalog), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_recursiveCatalogList, orderBy, orderType }) as IQueryable<AdminListCatalog>;
-                    }
-                    else
-                    {
-                        ////if  orderBy null set default is ID
-                        c_recursiveCatalogList = c_recursiveCatalogList.OrderBy(p => p.Title);
-                    }
-
-                    return c_recursiveCatalogList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                    return recursiveCatalogList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 }
                 catch (Exception)
                 {

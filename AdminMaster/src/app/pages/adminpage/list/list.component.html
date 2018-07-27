@@ -24,7 +24,8 @@
 
         <td>
           <i class={{row.classLevel}}></i>
-          <a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.title}}</a>
+          <a *ngIf="row.parentId == 0" class="button-view font-w-bold" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.title}}</a>
+          <a *ngIf="row.parentId != 0" class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.title}}</a>
         </td>
         <td>
           <div class="font-small">{{row.path}}</div>

@@ -1429,7 +1429,7 @@
             }
         }
 
-        public List<AdminListUserPage> AdminGetAllPageFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        public List<AdminListUserPage> AdminGetAllPageFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, out int total)
         {
             using (var data = new themanorContext())
             {
@@ -1441,12 +1441,12 @@
                     {
                         c_gen = (from p in data.UserPage
                                  where p.ParentId == (int)parentId
-                                 select p).AsQueryable<UserPage>();
+                                 select p).OrderBy(x => x.OrderDisplay).AsQueryable<UserPage>();
                     }
                     else
                     {
                         c_gen = (from p in data.UserPage
-                                 select p).AsQueryable<UserPage>();
+                                 select p).OrderBy(x => x.OrderDisplay).AsQueryable<UserPage>();
                     }
 
                     recursivePageList = new List<AdminListUserPage>();
@@ -1458,37 +1458,9 @@
                         recursivePageList = recursivePageList.Where(p => p.Title.Contains(search)).ToList();
                     }
 
-                    // return recursivePageList;
-
                     total = recursivePageList.ToList().Count();
 
-                    var c_recursivePageList = recursivePageList.AsQueryable();
-
-                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
-                    {
-                        // First Char ToUpper
-                        if (orderBy.Length > 1)
-                        {
-                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
-                        }
-                        else
-                        {
-                            orderBy = char.ToUpper(orderBy[0]).ToString();
-                        }
-
-                        Type sortByPropType = typeof(AdminListUserPage).GetProperty(orderBy).PropertyType;
-                        ////calling the extension method using reflection
-                        c_recursivePageList = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(AdminListUserPage), sortByPropType })
-                                .Invoke(c_gen, new object[] { c_recursivePageList, orderBy, orderType }) as IQueryable<AdminListUserPage>;
-                    }
-                    else
-                    {
-                        ////if  orderBy null set default is ID
-                        c_recursivePageList = c_recursivePageList.OrderBy(p => p.Title);
-                    }
-
-                    return c_recursivePageList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-
+                    return recursivePageList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 }
                 catch (Exception)
                 {
@@ -1529,7 +1501,7 @@
 
                         var listChild = (from p in data.UserPage
                                          where p.ParentId == alug.Id
-                                         select p).ToList<UserPage>();
+                                         select p).OrderBy(x => x.OrderDisplay).ToList<UserPage>();
 
                         if (listChild.Count > 0)
                         {
