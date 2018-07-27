@@ -18,7 +18,7 @@ namespace ApiBase.Controllers
     {
         // GET: api/<controller>/listUserPage
         [HttpGet("listUserPage"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize, string orderBy, string orderType)
+        public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -54,13 +54,7 @@ namespace ApiBase.Controllers
                 return response;
             }           
 
-            if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
-            {
-                orderBy = "Title";
-                orderType = "asc";
-            }
-
-            listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, out int totalRecord);
             listPageView.CateType = roleModels.GetRoleByRole(type);
             listPageView.PageIndex = (int)pageIndex;
             listPageView.PageSize = (int)pageSize;

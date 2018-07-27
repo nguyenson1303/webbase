@@ -71,20 +71,13 @@ namespace ApiBase.Controllers
                 lang = LanguageModels.ActiveLanguage().LangCultureName;
             }
 
-            if (string.IsNullOrEmpty(orderBy) || string.IsNullOrEmpty(orderType))
-            {
-                orderBy = "ModifyDate";
-                orderType = "asc";
-            }
-
             if (parent != 0)
             {
                 cate = cateModels.GetbyID((int)parent);
                 listCatalogView.CategoryName = cate.CategoryName;
             }
 
-            //listCatalogView.PageListCatalog = cateModels.GetAllCatalogByParentID((int)parent, type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
-            listCatalogView.PageListCatalog = cateModels.AdminGetAllCatalogFullTree(type, lang, search, (int)parent, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            listCatalogView.PageListCatalog = cateModels.AdminGetAllCatalogFullTree(type, lang, search, (int)parent, (int)pageIndex, (int)pageSize, out int totalRecord);
             listCatalogView.CateType = CommonGlobal.GetCatalogTypeName(type);
             listCatalogView.PageIndex = (int)pageIndex;
             listCatalogView.PageSize = (int)pageSize;
