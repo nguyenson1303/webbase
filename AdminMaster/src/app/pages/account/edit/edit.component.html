@@ -116,10 +116,11 @@
                (event)="eventEmitted($event)">
       <ng-template let-row>
         <td>
-          <div *ngIf="row.parentId == 0" class="font-w-bold">{{row.title}}</div>
-          <div *ngIf="row.parentId != 0" class="font-small">
-            {{ "-".repeat(5 * row.level) + " " + row.title}}           
-          </div>
+          <i class={{row.classLevel}}></i>
+          <a *ngIf="row.parentId == 0" class="button-view font-w-bold">{{row.title}}</a>
+          <a *ngIf="row.parentId != 0" class="button-view font-small">
+              <span>{{row.title}}</span> 
+          </a>
         </td>
         <td>
           <label class="control control--checkbox">

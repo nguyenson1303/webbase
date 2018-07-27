@@ -71,6 +71,7 @@ export class EditComponent implements OnInit {
     title: "",
     userName: "",
     level: 0,
+    classLevel: "",
     isCheckAll: false,
     listUserPageAction: [
       {
@@ -457,7 +458,7 @@ export class EditComponent implements OnInit {
       else {
         $('#avatarDelete').show();
       }
-    });    
+    });
   }
 
   changePermission(pageId: number) {
@@ -484,8 +485,7 @@ export class EditComponent implements OnInit {
     // this.setCheckAll(pageId);
   }
 
-  changePermissionChild(pageId: number, check: boolean)
-  {
+  changePermissionChild(pageId: number, check: boolean) {
     let lstPer: any = this.userPermission;
     lstPer.forEach((object, index) => {
       if (object.pageId == pageId) {
@@ -493,21 +493,18 @@ export class EditComponent implements OnInit {
         let countTrueCheck = 0;
 
         object.listUserPageAction.forEach((item2, index2) => {
-          if (item2.active == true)
-          {
+          if (item2.active == true) {
             countTrueCheck++;
           }
           count++;
         });
 
-        if (count == countTrueCheck && check == true)
-        {
+        if (count == countTrueCheck && check == true) {
           $("#" + object.pageId).prop('checked', false);
           this.setChekAllParent(object, false);
         }
 
-        if (countTrueCheck == count - 1 && check == false)
-        {
+        if (countTrueCheck == count - 1 && check == false) {
           $("#" + object.pageId).prop('checked', true);
           this.setChekAllParent(object, true);
         }
