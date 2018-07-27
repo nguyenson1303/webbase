@@ -30,6 +30,10 @@ export class AppConstant {
   public static getAdminPageDetailApiUrl: string = "/api/adminpage";
   public static validateAdminPageApiUrl: string = "/api/adminpage/validateAdminPage";
   public static updateStatusAdminPageApiUrl: string = "/api/adminpage/updateStatusAdminPage";
+  public static listCatalogApiUrl: string = "/api/adminCatalog";
+  public static getCatalogDetailApiUrl: string = "/api/adminCatalog";
+  public static deleteCatalogApiUrl: string = "/api/adminCatalog";
+  public static updateStatusCatalogApiUrl: string = "/api/adminCatalog/updateStatusCatalog";
 
   // adminpageAction api
   public static listUserPageActionByPageIdApiUrl: string = "/api/adminpageaction/listUserPageAction";
@@ -92,6 +96,19 @@ export class AppConstant {
   // const number
   public static pageIndexDefault: number = 1;
   public static pageSizeDefault: number = 25;
+  public static pageSizeMax: number = 100;
+  public static numberZero: number = 0;
+  public static numberOne: number = 1;
+  public static numberNegativeOne: number = -1;
+
+  // const string
+  public static stringEmpty: string = "";
+  public static paramsDefault: string = "?";
+  public static spaceDefault: string = " ";
+
+  // const boolean
+  public static falseDefault: boolean = false;
+  public static trueDefault: boolean = true;
 
   // const object local Storage
   public static objectUser: string = "objectUser";

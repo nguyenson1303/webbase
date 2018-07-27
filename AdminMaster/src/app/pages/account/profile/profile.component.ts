@@ -22,29 +22,29 @@ declare var $: any;
 export class ProfileComponent implements OnInit {
 
   userProfile = {
-    inforId: 0,
-    fname: "",
-    lname: "",
-    phone: "",
-    address: "",
-    email: "",
+    inforId: AppConstant.numberZero,
+    fname: AppConstant.stringEmpty,
+    lname: AppConstant.stringEmpty,
+    phone: AppConstant.stringEmpty,
+    address: AppConstant.stringEmpty,
+    email: AppConstant.stringEmpty,
     eventId: null,
     birthday: null,
-    location: "",
-    note: "",
+    location: AppConstant.stringEmpty,
+    note: AppConstant.stringEmpty,
     dateJoin: null,
     dateRegister: null,
-    avatar: "",
+    avatar: AppConstant.stringEmpty,
     avatarFile: null,
-    avatarFileType: "",
-    avatarFileName: "",
-    fullName: ""
+    avatarFileType: AppConstant.stringEmpty,
+    avatarFileName: AppConstant.stringEmpty,
+    fullName: AppConstant.stringEmpty
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
   options: DatepickerOptions = {
@@ -58,20 +58,19 @@ export class ProfileComponent implements OnInit {
     // minDate: new Date(Date.now()), // Minimal selectable date
     // maxDate: new Date(Date.now()),  // Maximal selectable date
     barTitleIfEmpty: 'Click to select a Birthday',
-    placeholder: 'Birthday', // HTML input placeholder attribute (default: '')
-    addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
-    fieldId: 'birthday', // ID to assign to the input field. Defaults to datepicker-<counter>
+    placeholder: 'Birthday',
+    addClass: 'form-control',
+    addStyle: {},
+    fieldId: 'birthday',
     useEmptyBarTitle: false,
-    // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown
   };
 
-  avatarUrl: string = "";
+  avatarUrl: string = AppConstant.stringEmpty;
 
   private currentProfile = AppConstant.currentProfile;
-  public progress: number;
-  private username: string = "";
-  private errorMessage: string = "";
+  public progress: number = AppConstant.numberZero;
+  private username: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
   private objectUser: any;
 
   constructor(
@@ -81,6 +80,7 @@ export class ProfileComponent implements OnInit {
     private modalService: NgbModal,
     private baseService: BaseService,
     private authenService: AuthService) {
+
     // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
     // check user is permission for view page
     let lastPath = activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
-    this.pathInfor.type = "";
+    this.pathInfor.type = AppConstant.stringEmpty;
     this.pathInfor.typeAct = AppConstant.viewAction;
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
 
           if (this.userProfile.avatar !== null
             && this.userProfile.avatar !== undefined
-            && this.userProfile.avatar !== "") {
+            && this.userProfile.avatar !== AppConstant.stringEmpty) {
             this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
               let fileName = result.url.split('/').pop().toString();
               let fileType = result.blob().type;
@@ -152,7 +152,7 @@ export class ProfileComponent implements OnInit {
 
       if (this.userProfile.avatar !== null
         && this.userProfile.avatar !== undefined
-        && this.userProfile.avatar !== "") {
+        && this.userProfile.avatar !== AppConstant.stringEmpty) {
         this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
           let fileName = result.url.split('/').pop().toString();
           let fileType = result.blob().type;
@@ -180,7 +180,7 @@ export class ProfileComponent implements OnInit {
       let avatarImage = $('#avatarImage').attr('src');
       if (avatarImage === null
         || avatarImage === undefined
-        || avatarImage === ""
+        || avatarImage === AppConstant.stringEmpty
         || avatarImage === AppConstant.avatarDefault) {
         $('#avatarDelete').hide();
       }
@@ -201,17 +201,17 @@ export class ProfileComponent implements OnInit {
       phone: this.userProfile.phone,
       address: this.userProfile.address,
       birthday: this.userProfile.birthday,
-      avatar: "",
-      fullName: this.userProfile.fname + " " + this.userProfile.lname
+      avatar: AppConstant.stringEmpty,
+      fullName: this.userProfile.fname + AppConstant.spaceDefault + this.userProfile.lname
     }
 
     // process upload file avatar
     if ((this.userProfile.avatarFileName !== null
       && this.userProfile.avatarFileName !== undefined
-      && this.userProfile.avatarFileName !== "") && (
-      this.userProfile.avatarFile !== null
-      && this.userProfile.avatarFile !== undefined
-      && this.userProfile.avatarFile !== "")) {
+      && this.userProfile.avatarFileName !== AppConstant.stringEmpty) && (
+        this.userProfile.avatarFile !== null
+        && this.userProfile.avatarFile !== undefined
+        && this.userProfile.avatarFile !== AppConstant.stringEmpty)) {
 
       // upload new avatar and update infor
       var formData = new FormData();

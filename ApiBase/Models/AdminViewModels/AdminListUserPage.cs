@@ -21,7 +21,7 @@ namespace ApiBase.Model.AdminViewModels
         public string Breadcrumb { get; set; }
         public DateTime? ModifyDate { get; set; }
         public DateTime? CreateDate { get; set; }
-
-        public List<AdminListUserPage> children { get; set; }
+        public int Level { get; set; }
+        public string ClassLevel { get; set; }
     }
 }

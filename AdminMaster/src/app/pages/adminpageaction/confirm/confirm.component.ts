@@ -17,26 +17,26 @@ declare var $: any;
 export class ConfirmComponent implements OnInit {
 
   adminPageActionDetail = {
-    id: 0,
-    actionName: "",
-    actionDescription: "",
-    actionStatus: 0,
-    actionPage: 0,
-    isCreate: false,
+    id: AppConstant.numberZero,
+    actionName: AppConstant.stringEmpty,
+    actionDescription: AppConstant.stringEmpty,
+    actionStatus: AppConstant.numberZero,
+    actionPage: AppConstant.numberZero,
+    isCreate: AppConstant.falseDefault,
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  public isCreate: boolean = true;
-  private id: number;
-  private pageId: number;
-  private type: string = "";
-  private errorMessage: string = "";
-  private params: string = "?";
+  public isCreate: boolean = AppConstant.trueDefault;
+  private id: number = AppConstant.numberZero;
+  private pageId: number = AppConstant.pageIndexDefault;
+  private type: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
+  private params: string = AppConstant.paramsDefault;
   private objectAdminPageAction: any;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -58,7 +58,7 @@ export class ConfirmComponent implements OnInit {
 
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
-    if (isInProcess != null && isInProcess != undefined) {
+    if (isInProcess !== null && isInProcess !== undefined) {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
@@ -77,19 +77,19 @@ export class ConfirmComponent implements OnInit {
       }
     });
 
-    if (this.id != null && this.id > 0) {
+    if (this.id !== null && this.id > AppConstant.numberZero) {
       this.isCreate = false;
     }
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === undefined) {
+      this.type = AppConstant.stringEmpty;
     }
   }
 
   ngOnInit() {
     // check localStorage exist
     this.objectAdminPageAction = localStorage.getItem(AppConstant.objectAdminPageAction);
-    if (this.objectAdminPageAction != null && this.objectAdminPageAction != undefined) {
+    if (this.objectAdminPageAction !== null && this.objectAdminPageAction !== undefined) {
       this.adminPageActionDetail = JSON.parse(this.objectAdminPageAction);
     }
     else {
@@ -117,8 +117,8 @@ export class ConfirmComponent implements OnInit {
             this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
 
             // navigate
-            let node: number = 0;
-            if (this.pageId != null && this.pageId > 0 && this.pageId != undefined) {
+            let node: number = AppConstant.numberZero;
+            if (this.pageId !== null && this.pageId > AppConstant.numberZero && this.pageId !== undefined) {
               this.adminPageService.getAdminPageDetail(this.pageId).subscribe(result => {
                 if (result) {
                   this.adminPageService.getAdminPageDetail(result.parentId).subscribe(result2 => {
@@ -155,8 +155,8 @@ export class ConfirmComponent implements OnInit {
             localStorage.removeItem(AppConstant.isInProcess);
             this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
             // navigate
-            let node: number = 0;
-            if (this.pageId != null && this.pageId > 0 && this.pageId != undefined) {
+            let node: number = AppConstant.numberZero;
+            if (this.pageId !== null && this.pageId > AppConstant.numberZero && this.pageId !== undefined) {
               this.adminPageService.getAdminPageDetail(this.pageId).subscribe(result => {
                 if (result) {
                   this.adminPageService.getAdminPageDetail(result.parentId).subscribe(result2 => {
@@ -187,7 +187,7 @@ export class ConfirmComponent implements OnInit {
   }
 
   backclick() {
-    localStorage.setItem(AppConstant.isInProcess, "true")
+    localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString())
     localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageActionDetail))
 
     if (this.isCreate) {

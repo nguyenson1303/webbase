@@ -6,6 +6,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { EventObject } from '../../../@core/interface/event-object';
 declare var $: any;
 
 @Component({
@@ -23,7 +24,6 @@ export class ListComponent {
     { key: 'online', title: 'Active' },
   ];
   data;
-  rows;
   configuration;
 
   // use for setting paging
@@ -34,30 +34,30 @@ export class ListComponent {
   };
 
   listUser = {
-    username: "",
-    password: "",
-    role: 0,
-    online: true,
-    lastLogin: "",
-    ip: "",
-    token: "",
-    expire: ""
+    username: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    role: AppConstant.numberOne,
+    online: AppConstant.trueDefault,
+    lastLogin: AppConstant.stringEmpty,
+    ip: AppConstant.stringEmpty,
+    token: AppConstant.stringEmpty,
+    expire: AppConstant.stringEmpty
   };
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  private params: string = "?";
-  private type: string = "";
-  private lang: string = "";
-  public search: string = "";
+  private params: string = AppConstant.paramsDefault;
+  private type: string = AppConstant.stringEmpty;
+  private lang: string = AppConstant.stringEmpty;
+  public search: string = AppConstant.stringEmpty;
   private pageIndex: number = AppConstant.pageIndexDefault;
   private pageSize: number = AppConstant.pageSizeDefault;
-  private orderBy: string = "";
-  private orderType: string = "";
+  private orderBy: string = AppConstant.stringEmpty;
+  private orderType: string = AppConstant.stringEmpty;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -94,7 +94,6 @@ export class ListComponent {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
-
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
     }
@@ -112,7 +111,7 @@ export class ListComponent {
 
   // function filter data
   filter(obj: EventObject) {
-    this.params = "?";
+    this.params = AppConstant.paramsDefault;
 
     if (obj != null) {
       this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
@@ -121,6 +120,10 @@ export class ListComponent {
 
       this.pageIndex = this.pagination.offset;
       this.pageSize = this.pagination.limit;
+
+      if (this.pageIndex == AppConstant.numberZero) {
+        this.pageIndex = AppConstant.numberOne;
+      }
 
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
@@ -203,12 +206,10 @@ export class ListComponent {
       if (result) {
         if (result && result.code) {
           this.data = this.listUser;
-          this.rows = this.data;
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUser;
-          this.rows = this.data;
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
           this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
@@ -377,9 +378,4 @@ export class ListComponent {
       }
     });
   }
-}
-
-interface EventObject {
-  event: string;
-  value: any;
 }

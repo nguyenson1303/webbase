@@ -1060,14 +1060,14 @@
                         data.SaveChanges();
                         rt = userPageAction.Id;
 
-                        if(rt > 0)
+                        if (rt > 0)
                         {
                             dbContextTransaction.Commit();
                         }
                         else
                         {
                             dbContextTransaction.Rollback();
-                        }                        
+                        }
                     }
                     catch (Exception)
                     {
@@ -1429,13 +1429,13 @@
             }
         }
 
-        public List<AdminListUserPage> AdminGetAllPageFullTree(string type, string lang, string search, int parentId)
+        public List<AdminListUserPage> AdminGetAllPageFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    List<AdminListUserPage> result = new List<AdminListUserPage>();
+                    int level = 1;
                     IQueryable<UserPage> c_gen = null;
                     if (parentId != -1)
                     {
@@ -1449,57 +1449,62 @@
                                  select p).AsQueryable<UserPage>();
                     }
 
+                    recursivePageList = new List<AdminListUserPage>();
+
+                    this.RecursiveDataAllPage(c_gen.ToList(), level);
+
                     if (!string.IsNullOrEmpty(search))
                     {
-                        c_gen = c_gen.Where(p => p.Title.Contains(search)).AsQueryable<UserPage>();
+                        recursivePageList = recursivePageList.Where(p => p.Title.Contains(search)).ToList();
                     }
 
-                    foreach (var item in c_gen)
+                    // return recursivePageList;
+
+                    total = recursivePageList.ToList().Count();
+
+                    var c_recursivePageList = recursivePageList.AsQueryable();
+
+                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
                     {
-                        AdminListUserPage alug = new AdminListUserPage
+                        // First Char ToUpper
+                        if (orderBy.Length > 1)
                         {
-                            Id = item.Id,
-                            Act = item.Act,
-                            Ctrl = item.Ctrl,
-                            Title = item.Title,
-                            IsShow = item.IsShow,
-                            Tye = item.Tye,
-                            ParentId = item.ParentId,
-                            OrderDisplay = item.OrderDisplay,
-                            Icon = item.Icon,
-                            Path = item.Path,
-                            Breadcrumb = item.Breadcrumb,
-                            ModifyDate = item.ModifyDate,
-                            CreateDate = item.CreateDate
-                        };
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else
+                        {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }
 
-                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
-
-                        result.Add(alug);
+                        Type sortByPropType = typeof(AdminListUserPage).GetProperty(orderBy).PropertyType;
+                        ////calling the extension method using reflection
+                        c_recursivePageList = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(AdminListUserPage), sortByPropType })
+                                .Invoke(c_gen, new object[] { c_recursivePageList, orderBy, orderType }) as IQueryable<AdminListUserPage>;
+                    }
+                    else
+                    {
+                        ////if  orderBy null set default is ID
+                        c_recursivePageList = c_recursivePageList.OrderBy(p => p.Title);
                     }
 
-                    return result;
+                    return c_recursivePageList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
                 }
                 catch (Exception)
                 {
+                    total = 0;
                     return null;
                 }
             }
         }
 
-        public List<AdminListUserPage> AdminGetAllPageFullTreeChild(int parentId)
+        public void RecursiveDataAllPage(List<UserPage> list, int level)
         {
             using (var data = new themanorContext())
             {
-                try
+                if (list != null)
                 {
-                    List<AdminListUserPage> result = new List<AdminListUserPage>();
-                    IQueryable<UserPage> c_gen = null;
-                    c_gen = (from p in data.UserPage
-                             where p.ParentId == (int)parentId
-                             select p).AsQueryable<UserPage>();
-
-                    foreach (var item in c_gen)
+                    foreach (var item in list)
                     {
                         AdminListUserPage alug = new AdminListUserPage
                         {
@@ -1515,22 +1520,27 @@
                             Path = item.Path,
                             Breadcrumb = item.Breadcrumb,
                             ModifyDate = item.ModifyDate,
-                            CreateDate = item.CreateDate
+                            CreateDate = item.CreateDate,
+                            Level = level,
+                            ClassLevel = "level" + level
                         };
 
-                        alug.children = AdminGetAllPageFullTreeChild(alug.Id);
+                        recursivePageList.Add(alug);
 
-                        result.Add(alug);
+                        var listChild = (from p in data.UserPage
+                                         where p.ParentId == item.Id
+                                         select p).ToList<UserPage>();
+
+                        if (listChild.Count > 0)
+                        {
+                            RecursiveDataAllPage(listChild, (level + 1));
+                        }
                     }
-
-                    return result;
-
                 }
-                catch (Exception ex)
-                {
-                    return null;
-                }
+
             }
         }
+
+        private List<AdminListUserPage> recursivePageList = new List<AdminListUserPage>();
     }
 }

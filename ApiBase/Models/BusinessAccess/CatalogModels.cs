@@ -8,6 +8,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Web;
+    using ApiBase.Model.AdminViewModels;
 
     /// <summary>
     /// Catalog Models
@@ -105,6 +106,7 @@
                     c_gen.OrderDisplay = catalogObject.OrderDisplay;
                     c_gen.Show = catalogObject.Show;
                     c_gen.Lang = catalogObject.Lang;
+                    c_gen.ModifyDate = catalogObject.ModifyDate;
                     data.SaveChanges();
                     rt = catalogObject.CatalogId;
                 }
@@ -157,6 +159,125 @@
                 }
             }
         }
+
+        public List<AdminListCatalog> AdminGetAllCatalogFullTree(string type, string lang, string search, int parentId, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    int level = 1;
+                    IQueryable<Catalog> c_gen = null;
+                    if (parentId != -1)
+                    {
+                        c_gen = (from p in data.Catalog
+                                 where p.ParentId == (int)parentId 
+                                 select p).AsQueryable<Catalog>();
+                    }
+                    else
+                    {
+                        c_gen = (from p in data.Catalog
+                                 select p).AsQueryable<Catalog>();
+                    }
+
+                    if (!string.IsNullOrEmpty(type))
+                    {
+                        c_gen = c_gen.Where(p => p.Type == type).AsQueryable<Catalog>();
+                    }
+
+                    recursiveCatalogList = new List<AdminListCatalog>();
+
+                    this.RecursiveDataAllPage(c_gen.ToList(), level);
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        recursiveCatalogList = recursiveCatalogList.Where(p => p.CategoryName.Contains(search)).ToList();
+                    }
+
+                    total = recursiveCatalogList.ToList().Count();
+
+                    var c_recursiveCatalogList = recursiveCatalogList.AsQueryable();
+
+                    if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderType))
+                    {
+                        // First Char ToUpper
+                        if (orderBy.Length > 1)
+                        {
+                            orderBy = char.ToUpper(orderBy[0]) + orderBy.Substring(1);
+                        }
+                        else
+                        {
+                            orderBy = char.ToUpper(orderBy[0]).ToString();
+                        }
+
+                        Type sortByPropType = typeof(AdminListCatalog).GetProperty(orderBy).PropertyType;
+                        ////calling the extension method using reflection
+                        c_recursiveCatalogList = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(AdminListCatalog), sortByPropType })
+                                .Invoke(c_gen, new object[] { c_recursiveCatalogList, orderBy, orderType }) as IQueryable<AdminListCatalog>;
+                    }
+                    else
+                    {
+                        ////if  orderBy null set default is ID
+                        c_recursiveCatalogList = c_recursiveCatalogList.OrderBy(p => p.Title);
+                    }
+
+                    return c_recursiveCatalogList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                }
+                catch (Exception)
+                {
+                    total = 0;
+                    return null;
+                }
+            }
+        }
+
+        public void RecursiveDataAllPage(List<Catalog> list, int level)
+        {
+            using (var data = new themanorContext())
+            {
+                if (list != null)
+                {
+                    foreach (var item in list)
+                    {
+                        AdminListCatalog alug = new AdminListCatalog
+                        {
+                            CatalogId = item.CatalogId,
+                            ParentId = item.ParentId,
+                            CategoryName = item.CategoryName,
+                            Link = item.Link,
+                            ImagePath = item.ImagePath,
+                            Intro = item.Intro,
+                            MoreInfo = item.MoreInfo,
+                            Lang = item.Lang,
+                            Show = item.Show,
+                            Keyword = item.Keyword,
+                            Description = item.Description,
+                            Title = item.Title,
+                            Type = item.Type,
+                            OrderDisplay = item.OrderDisplay,
+                            CreateDate = item.CreateDate,
+                            ModifyDate = item.ModifyDate,
+                            Level = level,
+                            ClassLevel = "level" + level
+                        };
+
+                        recursiveCatalogList.Add(alug);
+
+                        var listChild = (from p in data.Catalog
+                                         where p.ParentId == item.CatalogId
+                                         select p).ToList<Catalog>();
+
+                        if (listChild.Count > 0)
+                        {
+                            RecursiveDataAllPage(listChild, (level + 1));
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private List<AdminListCatalog> recursiveCatalogList = new List<AdminListCatalog>();
 
         /// <summary>
         /// Get by the identifier.
@@ -310,7 +431,7 @@
                     foreach (var it in list_gen)
                     {
                         Catalog c_gen = new Catalog();
-                        c_gen.CatalogId  = it.CatalogId;
+                        c_gen.CatalogId = it.CatalogId;
                         c_gen.CategoryName = it.CategoryName;
                         c_gen.Description = it.Description;
                         c_gen.ImagePath = it.ImagePath;
@@ -514,7 +635,7 @@
         public void ListCatalogParentWidthParentName(int parent, int level, int selected, string type, string lang, ref List<Catalog> listSelectCatalog)
         {
             ////CatalogModels cateModels = new CatalogModels();
-            if(selected != 0)
+            if (selected != 0)
             {
                 parent = selected;
             }

@@ -16,45 +16,45 @@ declare var $: any;
 })
 export class DetailComponent implements OnInit {
 
-  private username: string = "";
-  private type: string = "";
+  private username: string = AppConstant.stringEmpty;
+  private type: string = AppConstant.stringEmpty;
 
   userDetail = {
-    username: "",
-    password: "",
-    confirmPassword: "",
-    role: 0,
-    online: true,
-    lastLogin: "",
-    ip: "",
-    token: "",
-    expire: ""
+    username: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    confirmPassword: AppConstant.stringEmpty,
+    role: AppConstant.numberOne,
+    online: AppConstant.trueDefault,
+    lastLogin: AppConstant.stringEmpty,
+    ip: AppConstant.stringEmpty,
+    token: AppConstant.stringEmpty,
+    expire: AppConstant.stringEmpty
   };
 
   userProfile = {
-    inforId: 0,
-    fname: "",
-    lname: "",
-    phone: "",
-    address: "",
-    email: "",
+    inforId: AppConstant.numberZero,
+    fname: AppConstant.stringEmpty,
+    lname: AppConstant.stringEmpty,
+    phone: AppConstant.stringEmpty,
+    address: AppConstant.stringEmpty,
+    email: AppConstant.stringEmpty,
     eventId: null,
     birthday: null,
-    location: "",
-    note: "",
+    location: AppConstant.stringEmpty,
+    note: AppConstant.stringEmpty,
     dateJoin: null,
     dateRegister: null,
-    avatar: "",
-    fullName: ""
+    avatar: AppConstant.stringEmpty,
+    fullName: AppConstant.stringEmpty
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  avatarUrl: string = "";
+  avatarUrl: string = AppConstant.stringEmpty;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -78,8 +78,8 @@ export class DetailComponent implements OnInit {
       this.type = params['type'];
     });
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
+      this.type = AppConstant.stringEmpty;
     }
 
     // check user is permission for view page
@@ -120,7 +120,7 @@ export class DetailComponent implements OnInit {
 
         if (this.userProfile.avatar !== null
           && this.userProfile.avatar !== undefined
-          && this.userProfile.avatar !== "") {
+          && this.userProfile.avatar !== AppConstant.stringEmpty) {
           this.baseService.downloadFile(this.userProfile.avatar).subscribe(result => {
             let fileName = result.url.split('/').pop().toString();
             let fileType = result.blob().type;

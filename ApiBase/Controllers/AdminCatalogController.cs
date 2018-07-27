@@ -17,7 +17,7 @@ using System.Text;
 namespace ApiBase.Controllers
 {
     [Route("api/[controller]")]
-    public class AdminCatelogController : Controller
+    public class AdminCatalogController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
 
@@ -83,7 +83,8 @@ namespace ApiBase.Controllers
                 listCatalogView.CategoryName = cate.CategoryName;
             }
 
-            listCatalogView.PageListCatalog = cateModels.GetAllCatalogByParentID((int)parent, type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            //listCatalogView.PageListCatalog = cateModels.GetAllCatalogByParentID((int)parent, type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            listCatalogView.PageListCatalog = cateModels.AdminGetAllCatalogFullTree(type, lang, search, (int)parent, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
             listCatalogView.CateType = CommonGlobal.GetCatalogTypeName(type);
             listCatalogView.PageIndex = (int)pageIndex;
             listCatalogView.PageSize = (int)pageSize;
@@ -145,15 +146,10 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
-            StringBuilder sb = new StringBuilder();
             BaseClass baseClass = new BaseClass();
             UserModels userModels = new UserModels();
-            var mess = string.Empty;
             int rt = 0;
-           
-            string type = string.Empty;
 
-            List<SelectListItem> listSelectCatalog = new List<SelectListItem>();
             cate.CategoryName = adminCatalogView.CategoryName;
             cate.Description = string.IsNullOrEmpty(adminCatalogView.Description) == false ? adminCatalogView.Description : string.Empty;
             cate.Keyword = string.IsNullOrEmpty(adminCatalogView.Keyword) == false ? adminCatalogView.Keyword : string.Empty;
@@ -194,9 +190,9 @@ namespace ApiBase.Controllers
         }
 
         // POST api/<controller>
-        [HttpPost("validateCatelog")]
+        [HttpPost("validateCatalog")]
         [Authorize(Roles = "Admin")]
-        public IActionResult ValidateCatelog([FromBody]AdminCatalogEditView adminCatalogView)
+        public IActionResult ValidateCatalog([FromBody]AdminCatalogEditView adminCatalogView)
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
@@ -228,12 +224,8 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
-            StringBuilder sb = new StringBuilder();
-            BaseClass baseClass = new BaseClass();
-            UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;          
-            string type = string.Empty;
 
             cate.CatalogId = id;
             cate.CategoryName = adminCatalogView.CategoryName;
@@ -259,6 +251,36 @@ namespace ApiBase.Controllers
             cate.ImagePath = adminCatalogView.ImagePath;
             cate.ModifyDate = DateTime.Now;
                        
+            rt = cateModels.Edit(cate);
+
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
+            }
+
+            return response;
+        }
+
+        // UpdateStatusCatalog api/<controller>/5
+        [HttpPut("updateStatusCatalog/{id}/{isShow}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateStatusCatalog(int id, Boolean isShow)
+        {
+            IActionResult response = null;
+            CatalogModels cateModels = new CatalogModels();
+            Catalog cate = new Catalog();
+            var mess = string.Empty;
+            int rt = 0;
+
+            cate = cateModels.GetbyID(id);
+
+            cate.Show = isShow;
+            cate.ModifyDate = DateTime.Now;
+
             rt = cateModels.Edit(cate);
 
             if (rt > 0)

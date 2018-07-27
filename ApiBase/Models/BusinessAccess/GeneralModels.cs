@@ -104,6 +104,34 @@
             }
         }
 
+        public bool DeleteById(int id)
+        {
+            using (var data = new themanorContext())
+            {
+                bool rt;
+                try
+                {
+                    var c_gen = data.General.Where(p => p.GeneralId == id).FirstOrDefault();
+                    if (c_gen != null)
+                    {
+                        data.General.Remove(c_gen);
+                        data.SaveChanges();
+                        rt = true;
+                    }
+                    else
+                    {
+                        rt = false;
+                    }
+                }
+                catch (Exception)
+                {
+                    rt = false;
+                }
+
+                return rt;
+            }
+        }
+
         /// <summary>
         /// Edit the specified it.
         /// </summary>
@@ -152,6 +180,33 @@
                     //}
 
                     var c_gen = data.General.Where(p => p.GeneralName == name && p.Lang.Trim().ToLower() == lang.Trim().ToLower()).FirstOrDefault();
+                    return c_gen;
+                }
+                catch (Exception ex)
+                {
+                    return new General();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the general.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="lang">The language.</param>
+        /// <returns>get General</returns>
+        public General GetGeneral(int id, string lang)
+        {
+            using (var data = new themanorContext())
+            {
+                try
+                {
+                    //if (string.IsNullOrEmpty(lang))
+                    //{
+                    //    lang = LanguageModels.ActiveLanguage().LangCultureName;
+                    //}
+
+                    var c_gen = data.General.Where(p => p.GeneralId == id && p.Lang.Trim().ToLower() == lang.Trim().ToLower()).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception ex)

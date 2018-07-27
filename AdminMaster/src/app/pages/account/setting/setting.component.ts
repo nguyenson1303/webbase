@@ -16,15 +16,15 @@ import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.
 export class SettingComponent implements OnInit {
 
   userDetail = {
-    oldPassword: "",
-    password: "",
-    confirmPassword: ""
+    oldPassword: AppConstant.stringEmpty,
+    password: AppConstant.stringEmpty,
+    confirmPassword: AppConstant.stringEmpty
   };
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -46,7 +46,7 @@ export class SettingComponent implements OnInit {
     // check user is permission for view page
     let lastPath = activatedRoute.snapshot.url[0].path;
     this.pathInfor.path = this.router.url.split('/' + lastPath)[0] + '/' + lastPath;
-    this.pathInfor.type = "";
+    this.pathInfor.type = AppConstant.stringEmpty;
     this.pathInfor.typeAct = AppConstant.viewAction;
 
     this.accountService.checkPermission(this.pathInfor).subscribe(result => {
@@ -70,8 +70,8 @@ export class SettingComponent implements OnInit {
 
   nextclick() {
     // validate
-    let isValid = true;
-    let mess = "";
+    let isValid = AppConstant.trueDefault;
+    let mess = AppConstant.stringEmpty;
 
     // call api validate user
     this.accountService.validateChangePassword(this.userDetail).subscribe(result => {
@@ -98,7 +98,7 @@ export class SettingComponent implements OnInit {
           var validateField = document.querySelectorAll(".validateServer");
           var i;
           for (i = 0; i < validateField.length; i++) {
-            validateField[i].textContent = "";
+            validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
             field.focus();

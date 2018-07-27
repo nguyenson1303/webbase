@@ -1,3 +1,47 @@
-<p>
-  list works!
-</p>
+<nb-card>
+  <nb-card-header>
+    Danh mục {{parentName}}
+  </nb-card-header>
+  <nb-card-body>
+
+    <div class="row full-name-inputs">
+      <div class="col-sm-6 input-group input-group-border-only">
+        <input type="text" placeholder="Tiêu đề" class="form-control" [(ngModel)]="search" (input)="onTitleSearch($event.target.value)" />
+      </div>
+      <div class="col-sm-6 btn-group btn-divided-group">
+        <button class="btn btn-hero-primary btn-with-icon" (click)="reset()"><i class="ion-refresh"></i> Reset </button>
+        <button class="btn btn-hero-success btn-with-icon" (click)="addClick()"><i class="ion-plus-round"></i> Tạo mới</button>
+        <button *ngIf="isShowBack" class="btn btn-hero-info btn-with-icon" (click)="listChildClick(oldNode, node)"><i class="ion-arrow-left-c"></i>Quay lại</button>
+      </div>
+    </div>
+
+    <ngx-table [configuration]="configuration"
+               [data]="data"
+               [columns]="columns"
+               [pagination]="pagination"
+               (event)="eventEmitted($event)">
+      <ng-template let-row>
+
+        <td>
+          <i class={{row.classLevel}}></i>
+          <a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.categoryName}}</a>
+        </td>
+        <td>
+          <div class="font-small">{{row.type}}</div>
+        </td>
+        <td>
+          <label class="switch">
+            <input type="checkbox" [checked]="row.show" (click)="showChangeActiveConfirm(row.catalogId, row.show, row.categoryName)">
+            <span></span>
+          </label>
+        </td>
+        <td class="td-action">
+          <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.catalogId)"><i class="ion-eye"></i></a>
+          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.catalogId, row.categoryName)"><i class="nb-trash"></i></a>
+        </td>
+
+      </ng-template>
+    </ngx-table>
+
+  </nb-card-body>
+</nb-card>

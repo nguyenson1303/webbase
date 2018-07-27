@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminpageService } from '../../../@core/data/adminpage.service';
@@ -7,6 +7,7 @@ import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { EventObject } from '../../../@core/interface/event-object';
 declare var $: any;
 
 @Component({
@@ -16,33 +17,15 @@ declare var $: any;
 })
 export class ListComponent {
 
-  @ViewChild('detailsTemplate') detailsTemplateRef: TemplateRef<any>;
-
-  listPageAdmin = {
-    id: 0,
-    act: "",
-    ctrl: "",
-    title: "",
-    isShow: false,
-    tye: "",
-    parentId: 0,
-    orderDisplay: 0,
-    icon: "",
-    path: "",
-    breadcrumb: "",
-    typeActionId: 0,
-    modifyDate: "",
-    createDate: ""
-  };
-
   columns = [
-    { key: 'parentId', title: 'Action' },
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
     { key: 'isShow', title: 'Menu' },
+    { key: 'parentId', title: 'Action' }
   ];
 
+  dataResult = [];
   data = [];
   configuration;
   pagination = {
@@ -52,22 +35,24 @@ export class ListComponent {
   };
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  private params: string = "?";
-  private type: string = "";
-  private lang: string = "";
-  public search: string = "";
-  private parentId: number = 0;
-  private orderBy: string = "";
-  private orderType: string = "";
-  private node: number = 0;
-  private oldNode: number = 0;
+  private params: string = AppConstant.paramsDefault;
+  private type: string = AppConstant.stringEmpty;
+  private lang: string = AppConstant.stringEmpty;
+  public search: string = AppConstant.stringEmpty;
+  private pageIndex: number = AppConstant.pageIndexDefault;
+  private pageSize: number = AppConstant.pageSizeDefault;
+  private parentId: number = AppConstant.numberZero;
+  private orderBy: string = AppConstant.stringEmpty;
+  private orderType: string = AppConstant.stringEmpty;
+  private node: number = AppConstant.numberZero;
+  private oldNode: number = AppConstant.numberZero;
   public isShowBack: boolean = false;
-  public parentName: string = "";
+  public parentName: string = AppConstant.stringEmpty;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -103,43 +88,66 @@ export class ListComponent {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
+    if (this.pageIndex === undefined || this.pageIndex === null) {
+      this.pageIndex = AppConstant.pageIndexDefault;
+    }
+
+    if (this.pageSize === undefined || this.pageSize === null) {
+      this.pageSize = AppConstant.pageSizeDefault;
+    }
+
     // get param from router ex: /:type
     this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
 
-      if (params['node'] != null && params['node'] != undefined) {
+      if (params['node'] !== null && params['node'] !== undefined) {
         this.node = params['node'];
       }
       else {
-        this.node = 0;
+        this.node = AppConstant.numberZero;
       }
 
-      if (params['parentId'] != null && params['parentId'] != undefined) {
+      if (params['parentId'] !== null && params['parentId'] !== undefined) {
         this.parentId = params['parentId'];
-        this.isShowBack = true;
+        this.isShowBack = AppConstant.trueDefault;
       }
       else {
-        this.parentId = 0;  // get all page parent root
-        this.isShowBack = false;
+        this.parentId = AppConstant.numberZero;  // get all page parent root
+        this.isShowBack = AppConstant.falseDefault;
       }
 
       this.filter(null);
     })
   }
 
+  ngAfterViewInit() {
+
+  }
+
   // function filter data
   filter(obj: EventObject) {
-    this.params = "?";
+    this.params = AppConstant.paramsDefault;
 
-    if (obj != null) {
+    if (obj !== null) {
+      this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
+      this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
+      this.pagination = { ...this.pagination };
+
+      this.pageIndex = this.pagination.offset;
+      this.pageSize = this.pagination.limit;
+
+      if (this.pageIndex == AppConstant.numberZero) {
+        this.pageIndex = AppConstant.numberOne;
+      }
+
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
         this.orderType = obj.value.order;
       }
     }
 
-    if (this.type != undefined && this.type.length > 0) {
-      if (this.params.length > 1) {
+    if (this.type !== undefined && this.type.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&type=" + this.type;
       }
       else {
@@ -147,8 +155,8 @@ export class ListComponent {
       }
     }
 
-    if (this.lang != undefined && this.lang.length > 0) {
-      if (this.params.length > 1) {
+    if (this.lang !== undefined && this.lang.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&lang=" + this.lang;
       }
       else {
@@ -156,8 +164,8 @@ export class ListComponent {
       }
     }
 
-    if (this.search != undefined && this.search.length > 0) {
-      if (this.params.length > 1) {
+    if (this.search !== undefined && this.search.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&search=" + this.search;
       }
       else {
@@ -165,8 +173,26 @@ export class ListComponent {
       }
     }
 
-    if (this.parentId != undefined && this.parentId != null) {
-      if (this.params.length > 1) {
+    if (this.pageIndex !== undefined && this.pageIndex > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
+        this.params = this.params + "&pageIndex=" + this.pageIndex;
+      }
+      else {
+        this.params = this.params + "pageIndex=" + this.pageIndex;
+      }
+    }
+
+    if (this.pageSize !== undefined && this.pageSize > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
+        this.params = this.params + "&pageSize=" + this.pageSize;
+      }
+      else {
+        this.params = this.params + "pageSize=" + this.pageSize;
+      }
+    }
+
+    if (this.parentId !== undefined && this.parentId !== null) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&parentId=" + this.parentId;
       }
       else {
@@ -174,8 +200,8 @@ export class ListComponent {
       }
     }
 
-    if (this.orderBy != undefined && this.orderBy.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderBy !== undefined && this.orderBy.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderBy=" + this.orderBy;
       }
       else {
@@ -183,8 +209,8 @@ export class ListComponent {
       }
     }
 
-    if (this.orderType != undefined && this.orderType.length > 0) {
-      if (this.params.length > 1) {
+    if (this.orderType !== undefined && this.orderType.length > AppConstant.numberZero) {
+      if (this.params.length > AppConstant.numberOne) {
         this.params = this.params + "&orderType=" + this.orderType;
       }
       else {
@@ -197,17 +223,21 @@ export class ListComponent {
 
   getData(params: string) {
     this.configuration = ConfigurationService.config;
-    this.configuration.isLoading = true;
+    this.configuration.isLoading = AppConstant.trueDefault;
 
     this.adminpageService.getListAdminPage(params).subscribe(result => {
       if (result) {
         if (result && result.code) {
           this.data = [];
-          this.configuration.isLoading = false;
+          this.configuration.isLoading = AppConstant.falseDefault;
         }
         else {
+          this.data = [];
           this.data = result.listUserPage;
-          this.configuration.isLoading = false;
+          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
+          this.pagination.limit = this.pageSize;
+          this.pagination = { ...this.pagination };
+          this.configuration.isLoading = AppConstant.falseDefault;
         }
       }
     }),
@@ -215,7 +245,7 @@ export class ListComponent {
         console.error('ERROR: ', error.message);
       };
 
-    if (this.parentId != null && this.parentId > 0 && this.parentId != undefined) {
+    if (this.parentId !== null && this.parentId > AppConstant.numberZero && this.parentId !== undefined) {
       this.adminpageService.getAdminPageDetail(this.parentId).subscribe(result => {
         if (result) {
           this.parentName = "con của " + result.title;
@@ -226,7 +256,7 @@ export class ListComponent {
         };
     }
 
-    if (this.node != null && this.node > 0 && this.node != undefined) {
+    if (this.node !== null && this.node > AppConstant.numberZero && this.node !== undefined) {
       this.adminpageService.getAdminPageDetail(this.node).subscribe(result => {
         if (result) {
           this.oldNode = result.parentId;
@@ -242,8 +272,7 @@ export class ListComponent {
     this.filter($event);
   }
 
-  viewClick(id : number)
-  {
+  viewClick(id: number) {
     this.router.navigate(['/pages/adminpage/detail', this.type, this.parentId, id]);
   }
 
@@ -251,9 +280,9 @@ export class ListComponent {
     this.router.navigate(['/pages/adminpage/add', this.type, this.parentId]);
   }
 
-  ListChildClick(node: number, parentId: number) {
+  listChildClick(node: number, parentId: number) {
     // redirect to list child admin page
-    if (parentId == 0) {
+    if (parentId === AppConstant.numberZero) {
       this.router.navigate(['/pages/adminpage/list', this.type]);
     }
     else {
@@ -268,13 +297,14 @@ export class ListComponent {
 
   // search by title
   onTitleSearch(value): void {
+    this.parentId = AppConstant.numberNegativeOne; // search on all page
     this.search = value;
     this.filter(null);
   }
 
   // resest search
   reset(): void {
-    this.search = "";
+    this.search = AppConstant.stringEmpty;
     this.filter(null);
   }
 
@@ -330,21 +360,22 @@ export class ListComponent {
 
   // show modal confirm active
   showChangeActiveConfirm(id: number, value: boolean, title: string) {
-    let newStatus = false;
+    let newStatus = AppConstant.falseDefault;
     if (value) {
-      newStatus = false;
+      newStatus = AppConstant.falseDefault;
     }
     else {
-      newStatus = true;
+      newStatus = AppConstant.trueDefault;
     }
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
 
     activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
     activeModal.componentInstance.confirmationMessage =
-      AppConstant.confirmChangeContent + ": " + title + " " + (newStatus == true ? "On" : "Off");
+      AppConstant.confirmChangeContent + ": " + title +
+      AppConstant.spaceDefault + (newStatus == AppConstant.trueDefault ? "On" : "Off");
 
     activeModal.result.then((userResponse) => {
-      if (userResponse === true) {
+      if (userResponse) {
         this.changeActive(id, newStatus);
       }
     });
@@ -393,9 +424,4 @@ export class ListComponent {
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
   }
-}
-
-interface EventObject {
-  event: string;
-  value: any;
 }

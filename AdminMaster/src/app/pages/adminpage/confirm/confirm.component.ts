@@ -18,24 +18,24 @@ export class ConfirmComponent implements OnInit {
   objectAdminPageActions: any;
 
   adminPageDetail = {
-    id: 0,
-    act: "",
-    ctrl: "",
-    title: "",
-    isShow: true,
-    tye: "",
-    parentId: 0,
-    orderDisplay: 0,
-    icon: "",
-    path: "",
-    breadcrumb: ""
+    id: AppConstant.numberZero,
+    act: AppConstant.stringEmpty,
+    ctrl: AppConstant.stringEmpty,
+    title: AppConstant.stringEmpty,
+    isShow: AppConstant.trueDefault,
+    tye: AppConstant.stringEmpty,
+    parentId: AppConstant.numberZero,
+    orderDisplay: AppConstant.numberZero,
+    icon: AppConstant.stringEmpty,
+    path: AppConstant.stringEmpty,
+    breadcrumb: AppConstant.stringEmpty
   }
 
-  public isCreate: boolean = true;
-  private id: number = 0;
+  public isCreate: boolean = AppConstant.trueDefault;
+  private id: number = AppConstant.numberZero;
   private objectAdminPage: any;
-  private type: string = "";
-  private parentId: number = 0;
+  private type: string = AppConstant.stringEmpty;
+  private parentId: number = AppConstant.numberZero;
 
   constructor(private activatedRoute: ActivatedRoute,
     private adminPageService: AdminpageService,
@@ -54,7 +54,7 @@ export class ConfirmComponent implements OnInit {
 
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
-    if (isInProcess != null && isInProcess != undefined) {
+    if (isInProcess !== null && isInProcess !== undefined) {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
@@ -65,31 +65,32 @@ export class ConfirmComponent implements OnInit {
     this.activatedRoute.params.forEach(params => {
       this.id = params['id'];
       this.type = params['type'];
-      if (params['parentId'] == null || params['parentId'] == undefined) {
-        this.parentId = 0;
+      if (params['parentId'] === null || params['parentId'] === undefined) {
+        this.parentId = AppConstant.numberZero;
       }
       else {
         this.parentId = params['parentId'];
       }
     });
 
-    if (this.id != null && this.id > 0) {
-      this.isCreate = false;
+    if (this.id !== null && this.id > AppConstant.numberZero) {
+      this.isCreate = AppConstant.falseDefault;
     }
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
+      this.type = AppConstant.stringEmpty;
     }
   }
 
   ngOnInit() {
     // check localStorage exist
     this.objectAdminPage = localStorage.getItem(AppConstant.objectAdminPage);
-    if (this.objectAdminPage != null && this.objectAdminPage != undefined) {
+    if (this.objectAdminPage !== null && this.objectAdminPage !== undefined) {
       this.adminPageDetail = JSON.parse(this.objectAdminPage);
-      let paramGetTree: string = "?";
+      let paramGetTree: string = AppConstant.paramsDefault;
+
       if (this.type != undefined && this.type.length > 0) {
-        if (paramGetTree.length > 1) {
+        if (paramGetTree.length > AppConstant.numberOne) {
           paramGetTree = paramGetTree + "&type=" + this.type;
         }
         else {
@@ -97,8 +98,8 @@ export class ConfirmComponent implements OnInit {
         }
       }
 
-      if (this.adminPageDetail.parentId != undefined && this.adminPageDetail.parentId > 0) {
-        if (paramGetTree.length > 1) {
+      if (this.adminPageDetail.parentId !== undefined && this.adminPageDetail.parentId > AppConstant.numberZero) {
+        if (paramGetTree.length > AppConstant.numberZero) {
           paramGetTree = paramGetTree + "&parentId=" + this.adminPageDetail.parentId;
         }
         else {
@@ -186,7 +187,7 @@ export class ConfirmComponent implements OnInit {
   }
 
   backclick() {
-    localStorage.setItem(AppConstant.isInProcess, "true")
+    localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString())
     localStorage.setItem(AppConstant.objectAdminPage, JSON.stringify(this.adminPageDetail))
 
     if (this.isCreate) {
