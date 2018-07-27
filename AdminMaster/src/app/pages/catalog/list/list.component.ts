@@ -39,7 +39,7 @@ export class ListComponent {
     { key: 'title', title: 'Tiêu đề' },
     { key: 'path', title: 'Đường dẫn' },
     { key: 'tye', title: 'Kiểu' },
-    { key: 'isShow', title: 'Menu' },
+    { key: 'isShow', title: 'Active' },
     { key: 'parentId', title: 'Action' }
   ];
 
