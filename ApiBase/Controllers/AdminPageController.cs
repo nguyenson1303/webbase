@@ -18,7 +18,7 @@ namespace ApiBase.Controllers
     {
         // GET: api/<controller>/listUserPage
         [HttpGet("listUserPage"), Authorize(Roles = "Admin")]
-        public IActionResult ListUserPage(string type, string search, int? parentId, string orderBy, string orderType)
+        public IActionResult ListUserPage(string type, string search, int? parentId, int? pageIndex, int? pageSize, string orderBy, string orderType)
         {
             IActionResult response = null;
             BaseClass baseClass = new BaseClass();
@@ -60,7 +60,7 @@ namespace ApiBase.Controllers
                 orderType = "asc";
             }
 
-            listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId);
+            listPageView.ListUserPage = userModels.AdminGetAllPageFullTree(type, lang, search, (int)parentId, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
             listPageView.CateType = roleModels.GetRoleByRole(type);           
 
             response = Json(listPageView);

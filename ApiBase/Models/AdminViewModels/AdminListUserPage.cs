@@ -23,7 +23,5 @@ namespace ApiBase.Model.AdminViewModels
         public DateTime? CreateDate { get; set; }
         public int Level { get; set; }
         public string ClassLevel { get; set; }
-
-        // public List<AdminListUserPage> Children { get; set; }
     }
 }

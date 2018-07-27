@@ -17,10 +17,9 @@ import { EventObject } from '../../../@core/interface/event-object';
 export class ListComponent {
 
   columns = [
-    { key: 'title', title: 'Tiêu đề' },
-    { key: 'path', title: 'Đường dẫn' },
-    { key: 'tye', title: 'Kiểu' },
-    { key: 'isShow', title: 'Active' },
+    { key: 'title', title: 'Tên danh mục' },
+    { key: 'type', title: 'Kiểu' },
+    { key: 'show', title: 'Active' },
     { key: 'parentId', title: 'Action' }
   ];
 
@@ -132,6 +131,10 @@ export class ListComponent {
 
       this.pageIndex = this.pagination.offset;
       this.pageSize = this.pagination.limit;
+
+      if (this.pageIndex == AppConstant.numberZero) {
+        this.pageIndex = AppConstant.numberOne;
+      }
 
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;

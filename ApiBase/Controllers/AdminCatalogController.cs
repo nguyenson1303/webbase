@@ -83,7 +83,8 @@ namespace ApiBase.Controllers
                 listCatalogView.CategoryName = cate.CategoryName;
             }
 
-            listCatalogView.PageListCatalog = cateModels.GetAllCatalogByParentID((int)parent, type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            //listCatalogView.PageListCatalog = cateModels.GetAllCatalogByParentID((int)parent, type, lang, search, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
+            listCatalogView.PageListCatalog = cateModels.AdminGetAllCatalogFullTree(type, lang, search, (int)parent, (int)pageIndex, (int)pageSize, orderBy, orderType, out int totalRecord);
             listCatalogView.CateType = CommonGlobal.GetCatalogTypeName(type);
             listCatalogView.PageIndex = (int)pageIndex;
             listCatalogView.PageSize = (int)pageSize;

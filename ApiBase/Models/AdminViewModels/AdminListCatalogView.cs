@@ -1,4 +1,5 @@
-﻿using ApiBase.Models.DB;
+﻿using ApiBase.Model.AdminViewModels;
+using ApiBase.Models.DB;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
@@ -63,7 +64,7 @@ namespace ApiBase.Models.AdminViewModels
         /// <value>
         /// The page list catalog.
         /// </value>
-        public List<Catalog> PageListCatalog
+        public List<AdminListCatalog> PageListCatalog
         {
             get;
             set;

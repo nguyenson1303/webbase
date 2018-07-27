@@ -121,6 +121,10 @@ export class ListComponent {
       this.pageIndex = this.pagination.offset;
       this.pageSize = this.pagination.limit;
 
+      if (this.pageIndex == AppConstant.numberZero) {
+        this.pageIndex = AppConstant.numberOne;
+      }
+
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
         this.orderType = obj.value.order;

@@ -24,23 +24,20 @@
 
         <td>
           <i class={{row.classLevel}}></i>
-          <a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.title}}</a>
+          <a class="button-view font-small" nbPopover="Xem page con" nbPopoverMode="hover" (click)="listChildClick(row.parentId, row.id)">{{row.categoryName}}</a>
         </td>
         <td>
-          <div class="font-small">{{row.path}}</div>
-        </td>
-        <td>
-          <div class="font-small">{{row.tye}}</div>
+          <div class="font-small">{{row.type}}</div>
         </td>
         <td>
           <label class="switch">
-            <input type="checkbox" [checked]="row.isShow" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
+            <input type="checkbox" [checked]="row.show" (click)="showChangeActiveConfirm(row.catalogId, row.show, row.categoryName)">
             <span></span>
           </label>
         </td>
         <td class="td-action">
-          <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.id)"><i class="ion-eye"></i></a>
-          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.id, row.title)"><i class="nb-trash"></i></a>
+          <a class="button-action button-view" nbPopover="Xem" nbPopoverMode="hover" (click)="viewClick(row.catalogId)"><i class="ion-eye"></i></a>
+          <a class="button-action button-delete" nbPopover="Xóa" nbPopoverMode="hover" (click)="showDeleteConfirm(row.catalogId, row.categoryName)"><i class="nb-trash"></i></a>
         </td>
 
       </ng-template>
