@@ -69,6 +69,13 @@ namespace DBBase.EntitysObject
             set;
         }
 
+        public int Level
+        {
+            get;
+            set;
+        }
+
+
         public List<AdminUserPageActionFullView> ListUserPageAction { get; set; }
     }
 }

@@ -21,7 +21,7 @@ export class ConfirmComponent implements OnInit {
     actionName: "",
     actionDescription: "",
     actionStatus: 0,
-    actionPage: "",
+    actionPage: 0,
     isCreate: false,
   }
 
