@@ -364,7 +364,7 @@ export class ListComponent {
 
     activeModal.componentInstance.confirmationBoxTitle = AppConstant.confirmTitle;
     activeModal.componentInstance.confirmationMessage =
-      AppConstant.confirmChangeContent + ": " + title + " " + (newStatus == true ? "On" : "Off");
+      AppConstant.confirmChangeContent + ": " + title + " " + (newStatus == AppConstant.trueDefault ? "On" : "Off");
 
     activeModal.result.then((userResponse) => {
       if (userResponse) {

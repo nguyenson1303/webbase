@@ -185,7 +185,6 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            ////check permission update
             userPage = new UserPage
             {
                 Title = userPageView.Title,
@@ -266,7 +265,6 @@ namespace ApiBase.Controllers
             var mess = string.Empty;
             int rt = 0;
 
-            ////check permission update
             userPage = new UserPage
             {
                 Title = userPageView.Title,
@@ -301,26 +299,13 @@ namespace ApiBase.Controllers
         {
             IActionResult response = null;
             UserModels userModels = new UserModels();
-            UserPage userPage = null;
             var mess = string.Empty;
             int rt = 0;
-            var userPageView = new UserPage();
-            userPageView = userModels.GetUserPagebyId(id);
-
-            ////check permission update
-            userPage = new UserPage
-            {
-                Title = userPageView.Title,
-                IsShow = isShow,
-                Tye = userPageView.Tye,
-                ParentId = userPageView.ParentId,
-                OrderDisplay = userPageView.OrderDisplay,
-                Icon = userPageView.Icon,
-                Path = userPageView.Path,
-                Breadcrumb = userPageView.Breadcrumb,
-                ModifyDate = DateTime.Now
-            };
-
+            var userPage = new UserPage();
+            userPage = userModels.GetUserPagebyId(id);
+            userPage.IsShow = isShow;
+            userPage.ModifyDate = DateTime.Now;
+                       
             rt = userModels.UpdateUserPage(id, userPage);
 
             if (rt > 0)
@@ -348,7 +333,6 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-            ////check permission delete
             UserPage userPage = userModels.GetUserPagebyId(id);
             if (userPage != null)
             {

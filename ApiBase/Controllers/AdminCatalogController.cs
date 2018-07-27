@@ -223,9 +223,6 @@ namespace ApiBase.Controllers
             IActionResult response = null;
             CatalogModels cateModels = new CatalogModels();
             Catalog cate = new Catalog();
-            StringBuilder sb = new StringBuilder();
-            BaseClass baseClass = new BaseClass();
-            UserModels userModels = new UserModels();
             var mess = string.Empty;
             int rt = 0;          
 
@@ -253,6 +250,36 @@ namespace ApiBase.Controllers
             cate.ImagePath = adminCatalogView.ImagePath;
             cate.ModifyDate = DateTime.Now;
                        
+            rt = cateModels.Edit(cate);
+
+            if (rt > 0)
+            {
+                response = Json(new { code = Constant.Success, message = Constant.MessageUpdateCompleted });
+            }
+            else
+            {
+                response = Json(new { code = Constant.Fail, message = Constant.MessageUpdateUncompleted });
+            }
+
+            return response;
+        }
+
+        // UpdateStatusCatalog api/<controller>/5
+        [HttpPut("updateStatusCatalog/{id}/{isShow}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateStatusCatalog(int id, Boolean isShow)
+        {
+            IActionResult response = null;
+            CatalogModels cateModels = new CatalogModels();
+            Catalog cate = new Catalog();
+            var mess = string.Empty;
+            int rt = 0;
+
+            cate = cateModels.GetbyID(id);
+
+            cate.Show = isShow;
+            cate.ModifyDate = DateTime.Now;
+
             rt = cateModels.Edit(cate);
 
             if (rt > 0)

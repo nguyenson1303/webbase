@@ -105,6 +105,7 @@
                     c_gen.OrderDisplay = catalogObject.OrderDisplay;
                     c_gen.Show = catalogObject.Show;
                     c_gen.Lang = catalogObject.Lang;
+                    c_gen.ModifyDate = catalogObject.ModifyDate;
                     data.SaveChanges();
                     rt = catalogObject.CatalogId;
                 }
