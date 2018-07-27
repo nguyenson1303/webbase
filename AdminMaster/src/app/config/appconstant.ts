@@ -91,6 +91,9 @@ export class AppConstant {
   // const number
   public static pageIndexDefault: number = 1;
   public static pageSizeDefault: number = 25;
+  public static pageSizeMax: number = 100;
+  public static numberZero: number = 0;
+  public static numberOne: number = 1;
 
   // const object local Storage
   public static objectUser: string = "objectUser";

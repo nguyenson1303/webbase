@@ -66,11 +66,13 @@ export class ListComponent {
   private type: string = "";
   private lang: string = "";
   public search: string = "";
-  private parentId: number = 0;
+  private pageIndex: number = AppConstant.pageIndexDefault;
+  private pageSize: number = AppConstant.pageSizeDefault;
+  private parentId: number = AppConstant.numberZero;
   private orderBy: string = "";
   private orderType: string = "";
-  private node: number = 0;
-  private oldNode: number = 0;
+  private node: number = AppConstant.numberZero;
+  private oldNode: number = AppConstant.numberZero;
   public isShowBack: boolean = false;
   public parentName: string = "";
 
@@ -108,6 +110,14 @@ export class ListComponent {
         this.showModal(AppConstant.errorTitle, error.message);
       };
 
+    if (this.pageIndex === undefined || this.pageIndex === null) {
+      this.pageIndex = AppConstant.pageIndexDefault;
+    }
+
+    if (this.pageSize === undefined || this.pageSize === null) {
+      this.pageSize = AppConstant.pageSizeDefault;
+    }
+
     // get param from router ex: /:type
     this.activatedRoute.params.forEach(params => {
       this.type = params['type'];
@@ -141,6 +151,13 @@ export class ListComponent {
     this.params = "?";
 
     if (obj != null) {
+      this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit;
+      this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset;
+      this.pagination = { ...this.pagination };
+
+      this.pageIndex = this.pagination.offset;
+      this.pageSize = this.pagination.limit;
+
       if (obj.event === 'onOrder') {
         this.orderBy = obj.value.key;
         this.orderType = obj.value.order;
@@ -174,6 +191,24 @@ export class ListComponent {
       }
     }
 
+    if (this.pageIndex != undefined && this.pageIndex > 0) {
+      if (this.params.length > 1) {
+        this.params = this.params + "&pageIndex=" + this.pageIndex;
+      }
+      else {
+        this.params = this.params + "pageIndex=" + this.pageIndex;
+      }
+    }
+
+    if (this.pageSize != undefined && this.pageSize > 0) {
+      if (this.params.length > 1) {
+        this.params = this.params + "&pageSize=" + this.pageSize;
+      }
+      else {
+        this.params = this.params + "pageSize=" + this.pageSize;
+      }
+    }
+
     if (this.parentId != undefined && this.parentId != null) {
       if (this.params.length > 1) {
         this.params = this.params + "&parentId=" + this.parentId;
@@ -204,18 +239,6 @@ export class ListComponent {
     this.getData(this.params);
   }
 
-  // recursiveData(list: any) {
-  //  list.forEach(element => {
-  //    if (element.level) {
-  //      element.classLevel = 'level' + element.level;
-  //    }
-  //    this.data.push(element);
-  //    if (element.children.length > 0) {
-  //      this.recursiveData(element.children);
-  //    }
-  //  });
-  // }
-
   getData(params: string) {
     this.configuration = ConfigurationService.config;
     this.configuration.isLoading = true;
@@ -229,9 +252,10 @@ export class ListComponent {
         else {
           this.data = [];
           this.data = result.listUserPage;
+          this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
+          this.pagination.limit = this.pageSize;
+          this.pagination = { ...this.pagination };
           this.configuration.isLoading = false;
-
-          // this.recursiveData(this.dataResult);
         }
       }
     }),

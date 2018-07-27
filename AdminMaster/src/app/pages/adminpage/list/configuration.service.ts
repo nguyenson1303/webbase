@@ -15,7 +15,7 @@ export class ConfigurationService {
     selectRow: false,
     selectCol: false,
     selectCell: false,
-    rows: 1000, // AppConstant.pageSizeDefault,
+    rows: AppConstant.pageSizeDefault,
     additionalActions: false,
     serverPagination: false,
     isLoading: false,

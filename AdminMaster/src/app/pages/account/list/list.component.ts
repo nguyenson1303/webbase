@@ -23,7 +23,6 @@ export class ListComponent {
     { key: 'online', title: 'Active' },
   ];
   data;
-  rows;
   configuration;
 
   // use for setting paging
@@ -93,7 +92,6 @@ export class ListComponent {
       error => {
         this.showModal(AppConstant.errorTitle, error.message);
       };
-
 
     if (this.pageIndex === undefined || this.pageIndex === null) {
       this.pageIndex = AppConstant.pageIndexDefault;
@@ -203,12 +201,10 @@ export class ListComponent {
       if (result) {
         if (result && result.code) {
           this.data = this.listUser;
-          this.rows = this.data;
           this.configuration.isLoading = false;
         }
         else {
           this.data = result.listUser;
-          this.rows = this.data;
           this.pagination.count = this.pagination.count ? this.pagination.count : result.totalRecord;
           this.pagination.limit = this.pageSize;
           this.pagination = { ...this.pagination };
