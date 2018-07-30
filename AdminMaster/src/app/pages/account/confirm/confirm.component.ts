@@ -304,7 +304,7 @@ export class ConfirmComponent implements OnInit {
               this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
                 if (result) {
                   if (result.code === AppConstant.successCode) {
-                    localStorage.removeItem(AppConstant.objectUser);
+                    localStorage.removeItem(AppConstant.objectUserPermission);
                     this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
                     this.router.navigate(['/pages/account/list', this.type]);
                   }
@@ -328,6 +328,23 @@ export class ConfirmComponent implements OnInit {
           this.showModal(AppConstant.errorTitle, error.message);
         };
     }
+
+    // update userPermission
+    this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
+      if (result) {
+        if (result.code === AppConstant.successCode) {
+          localStorage.removeItem(AppConstant.objectUser);
+          this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+          this.router.navigate(['/pages/account/list', this.type]);
+        }
+        else {
+          this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+        }
+      }
+    }),
+      error => {
+        this.showModal(AppConstant.errorTitle, error.message);
+      };
   }
 
   ngOnInit() {

@@ -11,6 +11,7 @@ export class AppConstant {
   public static deleteUserApiUrl: string = "/api/account";
   public static updateUserApiUrl: string = "/api/account";
   public static updateUserInforApiUrl: string = "/api/account/updateUserInfor";
+  public static updateUserPermissionApiUrl: string = "/api/account/saveUserPermission";
   public static createUserApiUrl: string = "/api/account";
   public static getUserDetailApiUrl: string = "/api/account/getUserDetail";
   public static getUserProfileApiUrl: string = "/api/account";

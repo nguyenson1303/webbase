@@ -75,6 +75,13 @@ export class AccountService {
     return this.http.post(url, body, this.options).map(this.extractData);
   }
 
+  updateUserPermission(data: any): Observable<any> {
+    let url = AppConfig.serverAPI + AppConstant.updateUserPermissionApiUrl;
+    this.options = new RequestOptions({ headers: this.headers });
+    let body = JSON.stringify(data);
+    return this.http.post(url, body, this.options).map(this.extractData);
+  }
+
   getUserDetail(userName: string) {
     let url = AppConfig.serverAPI + AppConstant.getUserDetailApiUrl + "?userName=" + userName;
     this.options = new RequestOptions({ headers: this.headers });

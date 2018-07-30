@@ -456,7 +456,7 @@
                              from z in uas.DefaultIfEmpty()
                              select new AdminUserPagePermisionAction
                              {
-                                 UserName = y.User,
+                                 UserName = userName,
                                  PageId = u.Id,
                                  Title = u.Title,
                                  ParentId = u.ParentId ?? 0,
@@ -666,16 +666,28 @@
                 using (var data = new themanorContext())
                 {
                     UserPermission objUserPer = data.UserPermission.Where(p => p.PageId == userPermission.PageId && p.User == userPermission.User).FirstOrDefault();
-                    if (objUserPer != null)
+                    if(string.IsNullOrEmpty(userPermission.TypeActionId))
                     {
-                        objUserPer.TypeActionId = userPermission.TypeActionId;
-                        data.SaveChanges();
+                        if (objUserPer != null)
+                        {
+                            data.UserPermission.Remove(objUserPer);
+                            data.SaveChanges();
+                        }
                     }
                     else
                     {
-                        data.UserPermission.Add(userPermission);
-                        data.SaveChanges();
+                        if (objUserPer != null)
+                        {
+                            objUserPer.TypeActionId = userPermission.TypeActionId;
+                            data.SaveChanges();
+                        }
+                        else
+                        {
+                            data.UserPermission.Add(userPermission);
+                            data.SaveChanges();
+                        }
                     }
+                   
                 }
 
                 return true;

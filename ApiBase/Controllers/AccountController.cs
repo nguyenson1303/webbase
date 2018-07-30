@@ -34,14 +34,14 @@ namespace ApiBase.Controllers
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             var userInfor = sv.GetUserInforByEmail(userLogin);
-            if(userInfor != null)
+            if (userInfor != null)
             {
                 response = Json(userInfor);
             }
             else
             {
                 response = Json(new { code = Constant.NotExist, message = Constant.MessageNotExist });
-            }            
+            }
 
             return response;
         }
@@ -53,7 +53,7 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-                       
+
             var userDetail = sv.GetUserbyUserName(userName);
             if (userDetail != null)
             {
@@ -76,7 +76,7 @@ namespace ApiBase.Controllers
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
-        
+
             var userInfor = sv.GetUserInforByEmail(userName);
             if (userInfor != null)
             {
@@ -117,11 +117,11 @@ namespace ApiBase.Controllers
             {
                 return response;
             }
-            
+
             if (pageIndex == null || pageIndex == 0)
             {
                 pageIndex = 1;
-            }            
+            }
 
             if (pageSize == null)
             {
@@ -160,7 +160,7 @@ namespace ApiBase.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-          
+
             List<PagePermission> lstPagePermission = userModels.GetListPermissionByUser(userName);
 
             response = Json(lstPagePermission);
@@ -170,22 +170,73 @@ namespace ApiBase.Controllers
 
         [HttpPost("saveUserPermission")]
         [Authorize(Roles = "Admin")]
-        public IActionResult SaveUserPermission([FromBody]AdminSaveUserPermissionView saveView)
+        public IActionResult SaveUserPermission([FromBody]List<PagePermission> saveView)
         {
             UserModels sv = new UserModels();
             IActionResult response = null;
+            UserModels userModels = new UserModels();
+           
 
-            if(saveView.ListPermission.Count() > 0)
+            using (var data = new themanorContext())
             {
-                foreach(var item in saveView.ListPermission)
+                using (var dbContextTransaction = data.Database.BeginTransaction())
                 {
-                    UserPermission up = new UserPermission
+                    try
                     {
-                        PageId = item.PageId,
-                        User = item.UserName,
-                        // TypeActionId = item.ListActionId
-                    };
-                    sv.UpdatePermission(up);
+                        foreach (var item in saveView)
+                        {
+                            var lstActionId = "";
+                            foreach (var action in item.ListUserPageAction)
+                            {
+                                if (action.Id == 1 || action.Id == 2 || action.Id == 3 | action.Id == 4)
+                                {
+                                    if (action.Active == true)
+                                    {
+                                        if (lstActionId == "")
+                                        {
+                                            lstActionId = lstActionId + action.Id;
+                                        }
+                                        else
+                                        {
+                                            lstActionId = lstActionId + "," + action.Id;
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    UserPageAction userPageAction = null;
+                                    userPageAction = new UserPageAction
+                                    {
+                                        ActionName = action.ActionName,
+                                        ActionDescription = action.ActionDescription,
+                                        ActionStatus = 0,
+                                        CreateDate = DateTime.Now,
+                                        ModifyDate = DateTime.Now,
+                                        ActionPage = action.ActionPage
+                                    };
+
+                                    data.UserPageAction.Add(userPageAction);
+                                    data.SaveChanges();
+                                }
+                            }
+
+                            UserPermission userPermission = null;
+                            userPermission = new UserPermission
+                            {
+                                PageId = item.PageId,
+                                TypeActionId = lstActionId,
+                                User = item.UserName
+                            };
+
+
+                            userModels.UpdatePermission(userPermission);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
                 }
             }
 
@@ -348,7 +399,7 @@ namespace ApiBase.Controllers
                         response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
                     }
                 }
-            }            
+            }
 
             if (userModels.GetRolebyId(userView.Role) == null)
             {
@@ -419,7 +470,7 @@ namespace ApiBase.Controllers
                     response = Json(new { code = Constant.Fail, message = mess, field = "confirmPassword" });
                 }
             }
-                      
+
             if (is_valid)
             {
                 response = Json(new { code = Constant.Success, message = Constant.MessageOk });
@@ -437,7 +488,7 @@ namespace ApiBase.Controllers
             UserModels userModels = new UserModels();
             User user = null;
             var mess = string.Empty;
-            string rt = string.Empty;       
+            string rt = string.Empty;
 
             if (!string.IsNullOrEmpty(userName))
             {
@@ -464,7 +515,7 @@ namespace ApiBase.Controllers
 
             return response;
         }
-        
+
         // PUT api/<controller>/email
         [HttpPut("updateUserInfor/{userName}")]
         [Authorize]
@@ -495,7 +546,8 @@ namespace ApiBase.Controllers
                 infor.Lname = userView.Lname;
                 infor.Phone = userView.Phone;
                 infor.Address = userView.Address;
-                if (!string.IsNullOrEmpty(userView.Birthday)) {
+                if (!string.IsNullOrEmpty(userView.Birthday))
+                {
                     infor.Birthday = DateTime.Parse(userView.Birthday);
                 }
                 infor.Avatar = userView.Avatar;
@@ -531,7 +583,7 @@ namespace ApiBase.Controllers
             if (cuser != null)
             {
                 //// delete user
-                bool rt = userModels.DeleteUser(userName);                
+                bool rt = userModels.DeleteUser(userName);
 
                 if (rt)
                 {
@@ -579,9 +631,9 @@ namespace ApiBase.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userLogin = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-             var action = userModels.GetActionByActionName(checkView.TypeAct);
+            var action = userModels.GetActionByActionName(checkView.TypeAct);
 
-             string typeAct = action != null ? action.Id.ToString() : string.Empty;
+            string typeAct = action != null ? action.Id.ToString() : string.Empty;
 
             ////check permission update
             if (UserModels.CheckPermission(userLogin, checkView.Path, typeAct, checkView.Type))
