@@ -120,6 +120,9 @@ export class AppConstant {
 
   // const upload
   public static avatarUploadFolder: string = "uploads\\avatar\\";
+  public static catalogUploadFolder: string = "uploads\\catalog\\";
+  public static productUploadFolder: string = "uploads\\product\\";
+  public static postUploadFolder: string = "uploads\\post\\";
   public static fileKey: string = "Files";
   public static filePath: string = "FilePath";
   public static fileOld: string = "FileOld";
