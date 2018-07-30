@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
 import { ConfigurationService } from './configuration.service';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { EventObject } from '../../../@core/interface/event-object';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
@@ -338,14 +337,6 @@ export class ListComponent {
   reset(): void {
     this.search = "";
     this.filter(null);
-  }
-
-  // show modal by title and message
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
   }
 
   // show modal confirm delete

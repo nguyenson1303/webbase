@@ -5,7 +5,6 @@ import { AccountService } from '../../../@core/data/account.service';
 import { BaseService } from '../../../@core/data/base.service';
 import { AppConfig } from '../../../config/appconfig';
 import { AppConstant } from '../../../config/appconstant';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import 'style-loader!angular2-toaster/toaster.css';
@@ -117,13 +116,6 @@ export class SettingComponent implements OnInit {
       error => {
         this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
-  }
-
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
   }
 
   private showToast(type: string, title: string, body: string) {

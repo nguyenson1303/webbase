@@ -5,10 +5,11 @@ import { AdminpageService } from '../../../@core/data/adminpage.service';
 import { AdminpageactionService } from '../../../@core/data/adminpageaction.service';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { ConfigurationService } from './configuration.service';
 import { EventObject } from '../../../@core/interface/event-object';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 declare var $: any;
 
 @Component({
@@ -55,6 +56,8 @@ export class DetailComponent implements OnInit {
     type: AppConstant.stringEmpty
   };
 
+  config: ToasterConfig;
+
   private id: number = AppConstant.numberZero;
   private parentId: number = AppConstant.numberZero;
   private type: string = AppConstant.stringEmpty;
@@ -76,7 +79,8 @@ export class DetailComponent implements OnInit {
     private adminPageService: AdminpageService,
     private adminPageActionService: AdminpageactionService,
     private accountService: AccountService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toasterService: ToasterService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -101,7 +105,7 @@ export class DetailComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
 
     // get param from router ex: /:username
@@ -118,7 +122,7 @@ export class DetailComponent implements OnInit {
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
 
@@ -134,7 +138,7 @@ export class DetailComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
 
     let paramGetTree: string = AppConstant.paramsDefault;
@@ -176,11 +180,11 @@ export class DetailComponent implements OnInit {
         });
       }
       else {
-        this.showModal(AppConstant.errorTitle, result.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
 
     this.filter(null);
@@ -323,12 +327,6 @@ export class DetailComponent implements OnInit {
     this.router.navigate(['/pages/adminpageaction/edit', this.type, this.id, id]);
   }
 
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
-  }
-
   // show modal confirm delete
   showDeleteConfirm(id: number, actionName: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });
@@ -354,7 +352,7 @@ export class DetailComponent implements OnInit {
       if (result) {
         if (result && result.code) {
           if (result.code === AppConstant.permissionDeniedCode) {
-            this.showModal(AppConstant.permissionDeniedTitle, result.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.permissionDeniedTitle, result.message);
           }
           else if (result.code === AppConstant.permissionAccessCode) {
             // call api delete user
@@ -362,7 +360,7 @@ export class DetailComponent implements OnInit {
               if (result) {
                 if (result && result.code) {
                   if (result.code === AppConstant.successCode) {
-                    this.showModal(AppConstant.successTitle, result.message);
+                    this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, result.message);
                     // reload data
                     this.filter(null);
                   }
@@ -377,5 +375,26 @@ export class DetailComponent implements OnInit {
       error => {
         console.error('ERROR: ', error.message);
       };
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }
