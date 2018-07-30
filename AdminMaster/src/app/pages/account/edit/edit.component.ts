@@ -393,7 +393,7 @@ export class EditComponent implements OnInit {
           // set localStorage to confirm page
           localStorage.setItem(AppConstant.objectUser, JSON.stringify(createUserObj));
           localStorage.setItem(AppConstant.objectUserPermission, JSON.stringify(this.userPermission));
-          localStorage.setItem(AppConstant.isInProcess, "true");
+          localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString());
 
           if (this.isCreate) {
             this.router.navigate(['/pages/account/confirm', this.type]);

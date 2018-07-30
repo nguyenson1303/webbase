@@ -10,6 +10,8 @@ import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { CatalogService } from '../../@core/data/catalog.service';
+import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
   imports: [
@@ -24,6 +26,11 @@ import { ConfirmComponent } from './confirm/confirm.component';
     DetailComponent,
     EditComponent,
     ConfirmComponent
-  ]
+  ],
+  providers: [
+    CatalogService,
+    ConfigurationService,
+    ToasterService
+  ],
 })
 export class CatalogModule { }

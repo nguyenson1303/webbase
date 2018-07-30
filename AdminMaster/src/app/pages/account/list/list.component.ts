@@ -335,7 +335,7 @@ export class ListComponent {
 
   // resest search
   reset(): void {
-    this.search = "";
+    this.search = AppConstant.stringEmpty;
     this.filter(null);
   }
 
