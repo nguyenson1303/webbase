@@ -19,8 +19,11 @@ import { ToasterService } from 'angular2-toaster';
     Ng2SmartTableModule,
     TableModule,
   ],
-  declarations: [AdminpageactionComponent, EditComponent, ConfirmComponent]
-  ,
+  declarations: [
+    AdminpageactionComponent,
+    EditComponent,
+    ConfirmComponent
+  ],
   providers: [
     AdminpageactionService,
     ConfigurationService,
