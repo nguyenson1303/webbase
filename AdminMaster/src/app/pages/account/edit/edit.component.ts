@@ -5,7 +5,6 @@ import { AccountService } from '../../../@core/data/account.service';
 import { BaseService } from '../../../@core/data/base.service';
 import { AppConfig } from '../../../config/appconfig';
 import { AppConstant } from '../../../config/appconstant';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ConfigurationService } from './configuration.service';
@@ -428,13 +427,6 @@ export class EditComponent implements OnInit {
 
   updatePermission() {
     let a: any = this.userPermission;
-  }
-
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
   }
 
   // show modal confirm delete
