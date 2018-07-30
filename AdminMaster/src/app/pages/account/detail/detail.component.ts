@@ -6,6 +6,8 @@ import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { AccountService } from '../../../@core/data/account.service';
 import { BaseService } from '../../../@core/data/base.service';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 declare var $: any;
 
@@ -56,12 +58,15 @@ export class DetailComponent implements OnInit {
 
   avatarUrl: string = AppConstant.stringEmpty;
 
+  config: ToasterConfig;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
     private modalService: NgbModal,
-    private baseService: BaseService) {
+    private baseService: BaseService,
+    private toasterService: ToasterService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -96,7 +101,7 @@ export class DetailComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -107,11 +112,11 @@ export class DetailComponent implements OnInit {
         this.userDetail = result;
       }
       else {
-        this.showModal(AppConstant.errorTitle, result.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
 
     this.accountService.getUserInforDetail(this.username).subscribe(result => {
@@ -143,11 +148,11 @@ export class DetailComponent implements OnInit {
         }
       }
       else {
-        this.showModal(AppConstant.errorTitle, result.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -169,4 +174,24 @@ export class DetailComponent implements OnInit {
     this.router.navigate(['/pages/account/edit', this.type, this.username]);
   }
 
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
+  }
 }

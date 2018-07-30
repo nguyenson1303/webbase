@@ -125,6 +125,21 @@ export class AppConstant {
   public static thumbnailSizeKey: string = "ThumbnailSize";
   public static thumbnailSizeValue: number = 150;
 
+  // const toastr
+  public static toastrTypeDefault: string = "default";
+  public static toastrTypeInfo: string = "info";
+  public static toastrTypeSuccess: string = "success";
+  public static toastrTypeWarning: string = "warning";
+  public static toastrTypeError: string = "error";
+  public static toastrPositions: string = "toast-top-right";
+  public static toastrAnimationType: string = "fade";
+  public static toastrLimit: number = 10;
+  public static toastrTimeout: number = 5000;
+  public static toastrIsNewestOnTop: boolean = true;
+  public static toastrIsHideOnClick: boolean = true;
+  public static toastrIsDuplicatesPrevented: boolean = true;
+  public static toastrIsCloseButton: boolean = true;
+
   // avatar default
   public static logoDefault: string
     = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABHNCSVQICAgIfAhkiAAAAAl" +

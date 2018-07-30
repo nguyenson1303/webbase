@@ -12,6 +12,7 @@ import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
   ],
     providers: [
       AdminpageService,
-      ConfigurationService
+      ConfigurationService,
+      ToasterService
   ],
 })
 export class AdminpageModule { }

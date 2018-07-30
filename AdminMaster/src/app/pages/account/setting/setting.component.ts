@@ -7,6 +7,8 @@ import { AppConfig } from '../../../config/appconfig';
 import { AppConstant } from '../../../config/appconstant';
 import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   selector: 'setting',
@@ -27,11 +29,14 @@ export class SettingComponent implements OnInit {
     type: AppConstant.stringEmpty
   };
 
+  config: ToasterConfig;
+
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
     private modalService: NgbModal,
-    private baseService: BaseService) {
+    private baseService: BaseService,
+    private toasterService: ToasterService) {
 
     // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
@@ -57,7 +62,7 @@ export class SettingComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -80,14 +85,14 @@ export class SettingComponent implements OnInit {
           this.accountService.changePassword(this.userDetail).subscribe(change => {
             if (change) {
               if (change.code === AppConstant.successCode) {
-                this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, AppConstant.messupdateSuccess);
               }
               else {
-                this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
               }
             }
             else {
-              this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+              this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
             }
           });
         }
@@ -110,7 +115,7 @@ export class SettingComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -119,5 +124,26 @@ export class SettingComponent implements OnInit {
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }
