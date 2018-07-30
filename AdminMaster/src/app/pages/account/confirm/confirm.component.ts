@@ -8,6 +8,8 @@ import { AccountService } from '../../../@core/data/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from "../../ui-features/modals/modal/modal.component";
 import { ConfigurationService } from './configuration.service';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 declare var $: any;
 
@@ -46,24 +48,26 @@ export class ConfirmComponent implements OnInit {
   }
 
   userPermission = {
-    orderDisplay: 0,
-    pageId: 0,
-    parentId: 0,
-    title: "",
-    userName: "",
-    level: 0,
-    classLevel: "",
-    isCheckAll: false,
+    orderDisplay: AppConstant.numberZero,
+    pageId: AppConstant.numberZero,
+    parentId: AppConstant.numberZero,
+    title: AppConstant.stringEmpty,
+    userName: AppConstant.stringEmpty,
+    level: AppConstant.numberZero,
+    classLevel: AppConstant.stringEmpty,
+    isCheckAll: AppConstant.falseDefault,
     listUserPageAction: [
       {
-        id: 0,
-        actionName: "",
-        actionDescription: "",
-        actionPage: 0,
-        active: false,
+        id: AppConstant.numberZero,
+        actionName: AppConstant.stringEmpty,
+        actionDescription: AppConstant.stringEmpty,
+        actionPage: AppConstant.numberZero,
+        active: AppConstant.falseDefault,
       }
     ]
   };
+
+  config: ToasterConfig;
 
   public progress: number = AppConstant.numberZero;
   public isCreate: boolean = AppConstant.trueDefault;
@@ -75,7 +79,8 @@ export class ConfirmComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private modalService: NgbModal,
-    private baseService: BaseService) {
+    private baseService: BaseService,
+    private toasterService: ToasterService) {
 
     $(document).ready(() => {
       let breadcrumb = $("#main_breadcrumb");
@@ -181,7 +186,7 @@ export class ConfirmComponent implements OnInit {
         && this.createUserObj.avatarFileName !== AppConstant.stringEmpty) && (
           this.createUserObj.avatarFile !== null
           && this.createUserObj.avatarFile !== undefined
-        && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
+          && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
 
         // upload new avatar and create account
         var formData = new FormData();
@@ -202,16 +207,18 @@ export class ConfirmComponent implements OnInit {
               if (result) {
                 if (result.code === AppConstant.successCode) {
                   localStorage.removeItem(AppConstant.objectUser);
-                  this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+                  this.showToast(AppConstant.toastrTypeSuccess,
+                    AppConstant.successTitle,
+                    AppConstant.messcreateSuccess);
                   this.router.navigate(['/pages/account/list', this.type]);
                 }
                 else {
-                  this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+                  this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
                 }
               }
             }),
               error => {
-                this.showModal(AppConstant.errorTitle, error.message);
+                this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
               };
           }
         });
@@ -222,16 +229,16 @@ export class ConfirmComponent implements OnInit {
           if (result) {
             if (result.code === AppConstant.successCode) {
               localStorage.removeItem(AppConstant.objectUser);
-              this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
+              this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, AppConstant.messcreateSuccess);
               this.router.navigate(['/pages/account/list', this.type]);
             }
             else {
-              this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+              this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
             }
           }
         }),
           error => {
-            this.showModal(AppConstant.errorTitle, error.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
           };
       }
 
@@ -264,7 +271,7 @@ export class ConfirmComponent implements OnInit {
               && this.createUserObj.avatarFileName !== AppConstant.stringEmpty) && (
                 this.createUserObj.avatarFile !== null
                 && this.createUserObj.avatarFile !== undefined
-              && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
+                && this.createUserObj.avatarFile !== AppConstant.stringEmpty)) {
 
               // upload new avatar and update infor
               var formData = new FormData();
@@ -285,16 +292,18 @@ export class ConfirmComponent implements OnInit {
                     if (result) {
                       if (result.code === AppConstant.successCode) {
                         localStorage.removeItem(AppConstant.objectUser);
-                        this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                        this.showToast(AppConstant.toastrTypeSuccess,
+                          AppConstant.successTitle,
+                          AppConstant.messupdateSuccess);
                         this.router.navigate(['/pages/account/list', this.type]);
                       }
                       else {
-                        this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                        this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
                       }
                     }
                   }),
                     error => {
-                      this.showModal(AppConstant.errorTitle, error.message);
+                      this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                     };
                 }
               });
@@ -305,27 +314,29 @@ export class ConfirmComponent implements OnInit {
                 if (result) {
                   if (result.code === AppConstant.successCode) {
                     localStorage.removeItem(AppConstant.objectUserPermission);
-                    this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                    this.showToast(AppConstant.toastrTypeSuccess,
+                      AppConstant.successTitle,
+                      AppConstant.messupdateSuccess);
                     this.router.navigate(['/pages/account/list', this.type]);
                   }
                   else {
-                    this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                    this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
                   }
                 }
               }),
                 error => {
-                  this.showModal(AppConstant.errorTitle, error.message);
+                  this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                 };
             }
             // end process upload file
           }
           else {
-            this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
           }
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
 
@@ -355,5 +366,26 @@ export class ConfirmComponent implements OnInit {
 
     activeModal.componentInstance.modalHeader = title;
     activeModal.componentInstance.modalContent = mess;
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }

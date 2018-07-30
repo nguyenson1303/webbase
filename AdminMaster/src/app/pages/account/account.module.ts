@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeModule } from '../../@theme/theme.module';
 import { TableModule } from 'ngx-easy-table';
+import { ToasterModule } from 'angular2-toaster';
 
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
@@ -15,6 +16,7 @@ import { ConfigurationService } from '../account/list/configuration.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingComponent } from './setting/setting.component';
+import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
   imports: [
@@ -22,7 +24,8 @@ import { SettingComponent } from './setting/setting.component';
     ThemeModule,
     AccountRoutingModule,
     TableModule,
-    NgDatepickerModule
+    NgDatepickerModule,
+    ToasterModule.forRoot(),
   ],
   declarations: [
     AccountComponent,
@@ -35,7 +38,8 @@ import { SettingComponent } from './setting/setting.component';
   ],
   providers: [
     AccountService,
-    ConfigurationService
+    ConfigurationService,
+    ToasterService
   ],
 })
 export class AccountModule { }

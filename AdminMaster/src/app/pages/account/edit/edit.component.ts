@@ -10,6 +10,8 @@ import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ConfigurationService } from './configuration.service';
 import * as enLocale from 'date-fns/locale/en';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 declare var $: any;
 
@@ -31,7 +33,6 @@ export class EditComponent implements OnInit {
     token: AppConstant.stringEmpty,
     expire: AppConstant.stringEmpty
   };
-
 
   userProfile = {
     inforId: AppConstant.numberZero,
@@ -64,21 +65,21 @@ export class EditComponent implements OnInit {
   configuration;
 
   userPermission = {
-    orderDisplay: 0,
-    pageId: 0,
-    parentId: 0,
-    title: "",
-    userName: "",
-    level: 0,
-    classLevel: "",
-    isCheckAll: false,
+    orderDisplay: AppConstant.numberZero,
+    pageId: AppConstant.numberZero,
+    parentId: AppConstant.numberZero,
+    title: AppConstant.stringEmpty,
+    userName: AppConstant.stringEmpty,
+    level: AppConstant.numberZero,
+    classLevel: AppConstant.stringEmpty,
+    isCheckAll: AppConstant.falseDefault,
     listUserPageAction: [
       {
-        id: 0,
-        actionName: "",
-        actionDescription: "",
-        actionPage: 0,
-        active: false,
+        id: AppConstant.numberZero,
+        actionName: AppConstant.stringEmpty,
+        actionDescription: AppConstant.stringEmpty,
+        actionPage: AppConstant.numberZero,
+        active: AppConstant.falseDefault,
       }
     ]
   };
@@ -88,6 +89,8 @@ export class EditComponent implements OnInit {
     typeAct: AppConstant.stringEmpty,
     type: AppConstant.stringEmpty
   };
+
+  config: ToasterConfig;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -113,16 +116,17 @@ export class EditComponent implements OnInit {
   private type: string = AppConstant.stringEmpty;
   private errorMessage: string = AppConstant.stringEmpty;
   private objectUser: any;
-  private countCheck: number = 0;
-  private countList: number = 0;
-  private isCheckAll: boolean = true;
+  private countCheck: number = AppConstant.numberZero;
+  private countList: number = AppConstant.numberZero;
+  private isCheckAll: boolean = AppConstant.trueDefault;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
     private modalService: NgbModal,
-    private baseService: BaseService) {
+    private baseService: BaseService,
+    private toasterService: ToasterService) {
 
     // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
@@ -151,11 +155,11 @@ export class EditComponent implements OnInit {
     });
 
     if (this.username !== null && this.username !== AppConstant.stringEmpty) {
-      this.isCreate = false;
+      this.isCreate = AppConstant.falseDefault;
     }
 
     if (this.type === null || this.type === AppConstant.stringEmpty) {
-      this.type = "";
+      this.type = AppConstant.stringEmpty;
     }
 
     // check user is permission for view page
@@ -172,7 +176,7 @@ export class EditComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
 
   }
@@ -206,8 +210,7 @@ export class EditComponent implements OnInit {
 
       this.avatarUrl = this.userProfile.avatar;
     }
-    else
-    {
+    else {
       if (this.isCreate == false) {
         this.accountService.getUserDetail(this.username).subscribe(result => {
           if (result) {
@@ -217,11 +220,11 @@ export class EditComponent implements OnInit {
             this.userDetail.confirmPassword = "******";
           }
           else {
-            this.showModal(AppConstant.errorTitle, result.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
           }
         }),
           error => {
-            this.showModal(AppConstant.errorTitle, error.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
           };
 
         this.accountService.getUserInforDetail(this.username).subscribe(result => {
@@ -255,7 +258,6 @@ export class EditComponent implements OnInit {
             }
 
             if (this.userProfile.avatarFile !== null && this.userProfile.avatarFile !== undefined) {
-              // this.userProfile.avatar = this.userProfile.avatarFile;
             }
             else {
               if ((this.userProfile.avatar === null || this.userProfile.avatar === AppConstant.stringEmpty)) {
@@ -264,11 +266,11 @@ export class EditComponent implements OnInit {
             }
           }
           else {
-            this.showModal(AppConstant.errorTitle, result.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
           }
         }),
           error => {
-            this.showModal(AppConstant.errorTitle, error.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
           };
       }
       else {
@@ -292,8 +294,7 @@ export class EditComponent implements OnInit {
 
       this.configuration.isLoading = false;
     }
-    else
-    {
+    else {
       this.accountService.getListUserPermission(this.username).subscribe(result => {
         if (result) {
           this.userPermission = result;
@@ -306,12 +307,11 @@ export class EditComponent implements OnInit {
             item.isCheckAll = this.isCheckAll;
           });
           this.userPermission = lst;
-          console.log(this.userPermission);
           this.configuration.isLoading = false;
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
   }
@@ -422,7 +422,7 @@ export class EditComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -468,7 +468,7 @@ export class EditComponent implements OnInit {
       let avatarImage = $('#avatarImage').attr('src');
       if (avatarImage === null
         || avatarImage === undefined
-        || avatarImage === ""
+        || avatarImage === AppConstant.stringEmpty
         || avatarImage === AppConstant.avatarDefault) {
         $('#avatarDelete').hide();
       }
@@ -516,12 +516,12 @@ export class EditComponent implements OnInit {
           count++;
         });
 
-        if (count == countTrueCheck && check == true) {
+        if (count === countTrueCheck && check === true) {
           $("#" + object.pageId).prop('checked', false);
           this.setChekAllParent(object, false);
         }
 
-        if (countTrueCheck == count - 1 && check == false) {
+        if (countTrueCheck === count - 1 && check === false) {
           $("#" + object.pageId).prop('checked', true);
           this.setChekAllParent(object, true);
         }
@@ -570,10 +570,10 @@ export class EditComponent implements OnInit {
         this.setChekAllParent(parent, check);
       }
       else {
-        let count = 0;
-        let countCheck = 0;
+        let count = AppConstant.numberZero;
+        let countCheck = AppConstant.numberZero;
         parent.listUserPageAction.forEach((item2, index2) => {
-          if (item2.active == true) {
+          if (item2.active === true) {
             countCheck++;
           }
           count++;
@@ -605,5 +605,26 @@ export class EditComponent implements OnInit {
       this.userProfile.avatarFileType = file.type;
       this.userProfile.avatarFileName = file.name;
     }
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }

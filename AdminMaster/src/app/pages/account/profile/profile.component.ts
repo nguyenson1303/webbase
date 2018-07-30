@@ -11,6 +11,8 @@ import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as enLocale from 'date-fns/locale/en';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 declare var $: any;
 
@@ -67,6 +69,8 @@ export class ProfileComponent implements OnInit {
 
   avatarUrl: string = AppConstant.stringEmpty;
 
+  config: ToasterConfig;
+
   private currentProfile = AppConstant.currentProfile;
   public progress: number = AppConstant.numberZero;
   private username: string = AppConstant.stringEmpty;
@@ -79,7 +83,8 @@ export class ProfileComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal,
     private baseService: BaseService,
-    private authenService: AuthService) {
+    private authenService: AuthService,
+    private toasterService: ToasterService) {
 
     // copy main_breadcrumb to child_breadcrumb
     $(document).ready(() => {
@@ -110,7 +115,7 @@ export class ProfileComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -233,16 +238,16 @@ export class ProfileComponent implements OnInit {
             if (result) {
               if (result.code === AppConstant.successCode) {
                 localStorage.removeItem(AppConstant.objectUser);
-                this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+                this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, AppConstant.messupdateSuccess);
                 window.location.reload();
               }
               else {
-                this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+                this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
               }
             }
           }),
             error => {
-              this.showModal(AppConstant.errorTitle, error.message);
+              this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
             };
         }
       });
@@ -253,15 +258,15 @@ export class ProfileComponent implements OnInit {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectUser);
-            this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+            this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, AppConstant.messupdateSuccess);
           }
           else {
-            this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
           }
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
     // end process upload file
@@ -314,5 +319,26 @@ export class ProfileComponent implements OnInit {
       this.userProfile.avatarFileType = file.type;
       this.userProfile.avatarFileName = file.name;
     }
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }
