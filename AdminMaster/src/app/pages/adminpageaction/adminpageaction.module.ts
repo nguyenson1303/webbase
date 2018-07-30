@@ -9,6 +9,7 @@ import { AdminpageactionRoutingModule } from './adminpageaction-routing.module';
 import { AdminpageactionComponent } from './adminpageaction.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
   ,
   providers: [
     AdminpageactionService,
-    ConfigurationService
+    ConfigurationService,
+    ToasterService
   ],
 })
 export class AdminpageactionModule { }

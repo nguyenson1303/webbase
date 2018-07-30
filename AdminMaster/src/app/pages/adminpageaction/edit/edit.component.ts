@@ -5,8 +5,9 @@ import { AdminpageactionService } from '../../../@core/data/adminpageaction.serv
 import { AdminpageService } from '../../../@core/data/adminpage.service';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 declare var $: any;
 
 @Component({
@@ -17,35 +18,37 @@ declare var $: any;
 export class EditComponent implements OnInit {
 
   adminPageActionDetail = {
-    id: 0,
-    actionName: "",
-    actionDescription: "",
-    actionStatus: 0,
-    actionPage: 0,
-    isCreate: false,
+    id: AppConstant.numberZero,
+    actionName: AppConstant.stringEmpty,
+    actionDescription: AppConstant.stringEmpty,
+    actionStatus: AppConstant.numberZero,
+    actionPage: AppConstant.numberZero,
+    isCreate: AppConstant.falseDefault,
   }
 
   pathInfor = {
-    path: "",
-    typeAct: "",
-    type: ""
+    path: AppConstant.stringEmpty,
+    typeAct: AppConstant.stringEmpty,
+    type: AppConstant.stringEmpty
   };
 
-  public isCreate: boolean = true;
+  config: ToasterConfig;
+
+  public isCreate: boolean = AppConstant.trueDefault;
   private id: number;
   private pageId: number;
-  private type: string = "";
-  private errorMessage: string = "";
-  private params: string = "?";
+  private type: string = AppConstant.stringEmpty;
+  private errorMessage: string = AppConstant.stringEmpty;
+  private params: string = AppConstant.paramsDefault;
   private objectAdminPageAction: any;
-
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private adminPageActionService: AdminpageactionService,
     private adminPageService: AdminpageService,
     private accountService: AccountService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toasterService: ToasterService) {
 
     // set breadcrumd
     $(document).ready(() => {
@@ -73,12 +76,12 @@ export class EditComponent implements OnInit {
       this.pageId = params['pageId'];
     });
 
-    if (this.id != null && this.id != undefined) {
-      this.isCreate = false;
+    if (this.id !== null && this.id !== undefined) {
+      this.isCreate = AppConstant.falseDefault;
     }
 
-    if (this.type == null || this.type == "") {
-      this.type = "";
+    if (this.type === null || this.type === AppConstant.stringEmpty) {
+      this.type = AppConstant.stringEmpty;
     }
 
     // check user is permission for view page
@@ -95,7 +98,7 @@ export class EditComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
@@ -119,11 +122,11 @@ export class EditComponent implements OnInit {
             this.adminPageActionDetail.isCreate = this.isCreate;
           }
           else {
-            this.showModal(AppConstant.errorTitle, result.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, result.message);
           }
         }),
           error => {
-            this.showModal(AppConstant.errorTitle, error.message);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
           };
       }
       else
@@ -135,15 +138,15 @@ export class EditComponent implements OnInit {
 
   nextclick() {
     // validate
-    let isValid = true;
-    let mess = "";
+    let isValid = AppConstant.trueDefault;
+    let mess = AppConstant.stringEmpty;
     let validateAdminPageActionObj = {
       actionName: this.adminPageActionDetail.actionName,
       actionDescription: this.adminPageActionDetail.actionDescription,
       actionPage: this.pageId,
-      actionStatus: 1,
-      modifyDate: "",
-      createDate: "",
+      actionStatus: AppConstant.numberOne,
+      modifyDate: AppConstant.stringEmpty,
+      createDate: AppConstant.stringEmpty,
       isCreate : this.adminPageActionDetail.isCreate
     }
 
@@ -164,7 +167,7 @@ export class EditComponent implements OnInit {
           // save obj to locate
           localStorage.setItem(AppConstant.objectAdminPageAction, JSON.stringify(createAdminPageActionObj));
 
-          localStorage.setItem(AppConstant.isInProcess, "true");
+          localStorage.setItem(AppConstant.isInProcess, AppConstant.trueDefault.toString());
           if (this.isCreate) {
             this.router.navigate(['/pages/adminpageaction/confirm', this.type, this.pageId]);
           }
@@ -178,8 +181,8 @@ export class EditComponent implements OnInit {
           let fieldValidate = document.getElementById(result.field + "-validate");
           var validateField = document.querySelectorAll(".validateServer");
           var i;
-          for (i = 0; i < validateField.length; i++) {
-            validateField[i].textContent = "";
+          for (i = AppConstant.numberZero; i < validateField.length; i++) {
+            validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
             field.focus();
@@ -191,13 +194,13 @@ export class EditComponent implements OnInit {
       }
     }),
       error => {
-        this.showModal(AppConstant.errorTitle, error.message);
+        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
       };
   }
 
   backclick() {
-    let node: number = 0;
-    if (this.pageId != null && this.pageId > 0 && this.pageId != undefined) {
+    let node: number = AppConstant.numberZero;
+    if (this.pageId !== null && this.pageId > AppConstant.numberZero && this.pageId !== undefined) {
       this.adminPageService.getAdminPageDetail(this.pageId).subscribe(result => {
         if (result) {
           this.adminPageService.getAdminPageDetail(result.parentId).subscribe(result2 => {
@@ -206,20 +209,35 @@ export class EditComponent implements OnInit {
             }
           }),
             error => {
-              this.showModal(AppConstant.errorTitle, error.message);
+              this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
             };
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
     this.router.navigate(['/pages/adminpage/detail', this.type, node, this.pageId]);
   }
 
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }

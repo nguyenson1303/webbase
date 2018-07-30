@@ -107,11 +107,11 @@ export class ConfirmComponent implements OnInit {
     });
 
     if (this.username !== null && this.username !== AppConstant.stringEmpty) {
-      this.isCreate = false;
+      this.isCreate = AppConstant.falseDefault;
     }
 
     if (this.type === null || this.type === AppConstant.stringEmpty) {
-      this.type = "";
+      this.type = AppConstant.stringEmpty;
     }
 
     // check localStorage exist
@@ -167,7 +167,7 @@ export class ConfirmComponent implements OnInit {
         username: this.createUserObj.username,
         password: this.createUserObj.password,
         confirmPassword: this.createUserObj.confirmPassword,
-        ip: "",
+        ip: AppConstant.stringEmpty,
         online: this.createUserObj.online,
         role: this.createUserObj.role,
         fname: this.createUserObj.fname,
@@ -175,8 +175,8 @@ export class ConfirmComponent implements OnInit {
         phone: this.createUserObj.phone,
         address: this.createUserObj.address,
         birthday: this.createUserObj.birthday,
-        avatar: "",
-        IsCreate: true
+        avatar: AppConstant.stringEmpty,
+        IsCreate: AppConstant.trueDefault
       }
 
       // process upload file avatar
@@ -205,11 +205,27 @@ export class ConfirmComponent implements OnInit {
             this.accountService.createUser(createUserObjNew).subscribe(result => {
               if (result) {
                 if (result.code === AppConstant.successCode) {
-                  localStorage.removeItem(AppConstant.objectUser);
-                  this.showToast(AppConstant.toastrTypeSuccess,
-                    AppConstant.successTitle,
-                    AppConstant.messcreateSuccess);
-                  this.router.navigate(['/pages/account/list', this.type]);
+
+                  // update userPermission
+                  this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
+                    if (result) {
+                      if (result.code === AppConstant.successCode) {
+                        localStorage.removeItem(AppConstant.objectUser);
+                        this.showToast(AppConstant.toastrTypeSuccess,
+                          AppConstant.successTitle,
+                          AppConstant.messupdateSuccess);
+                        this.router.navigate(['/pages/account/list', this.type]);
+                      }
+                      else {
+                        this.showToast(AppConstant.toastrTypeError,
+                          AppConstant.failTitle,
+                          AppConstant.messUpdateFail);
+                      }
+                    }
+                  }),
+                    error => {
+                      this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
+                    };
                 }
                 else {
                   this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
@@ -227,9 +243,28 @@ export class ConfirmComponent implements OnInit {
         this.accountService.createUser(createUserObjNew).subscribe(result => {
           if (result) {
             if (result.code === AppConstant.successCode) {
-              localStorage.removeItem(AppConstant.objectUser);
-              this.showToast(AppConstant.toastrTypeSuccess, AppConstant.successTitle, AppConstant.messcreateSuccess);
-              this.router.navigate(['/pages/account/list', this.type]);
+
+              // update userPermission
+              this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
+                if (result) {
+                  if (result.code === AppConstant.successCode) {
+                    localStorage.removeItem(AppConstant.objectUser);
+                    this.showToast(AppConstant.toastrTypeSuccess,
+                      AppConstant.successTitle,
+                      AppConstant.messupdateSuccess);
+                    this.router.navigate(['/pages/account/list', this.type]);
+                  }
+                  else {
+                    this.showToast(AppConstant.toastrTypeError,
+                      AppConstant.failTitle,
+                      AppConstant.messUpdateFail);
+                  }
+                }
+              }),
+                error => {
+                  this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
+                };
+
             }
             else {
               this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
@@ -290,11 +325,28 @@ export class ConfirmComponent implements OnInit {
                   this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
                     if (result) {
                       if (result.code === AppConstant.successCode) {
-                        localStorage.removeItem(AppConstant.objectUser);
-                        this.showToast(AppConstant.toastrTypeSuccess,
-                          AppConstant.successTitle,
-                          AppConstant.messupdateSuccess);
-                        this.router.navigate(['/pages/account/list', this.type]);
+
+                        // update userPermission
+                        this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
+                          if (result) {
+                            if (result.code === AppConstant.successCode) {
+                              localStorage.removeItem(AppConstant.objectUser);
+                              this.showToast(AppConstant.toastrTypeSuccess,
+                                AppConstant.successTitle,
+                                AppConstant.messupdateSuccess);
+                              this.router.navigate(['/pages/account/list', this.type]);
+                            }
+                            else {
+                              this.showToast(AppConstant.toastrTypeError,
+                                AppConstant.failTitle,
+                                AppConstant.messUpdateFail);
+                            }
+                          }
+                        }),
+                          error => {
+                            this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
+                          };
+
                       }
                       else {
                         this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
@@ -312,11 +364,28 @@ export class ConfirmComponent implements OnInit {
               this.accountService.updateUserInfor(this.username, userInfor).subscribe(result => {
                 if (result) {
                   if (result.code === AppConstant.successCode) {
-                    localStorage.removeItem(AppConstant.objectUserPermission);
-                    this.showToast(AppConstant.toastrTypeSuccess,
-                      AppConstant.successTitle,
-                      AppConstant.messupdateSuccess);
-                    this.router.navigate(['/pages/account/list', this.type]);
+
+                    // update userPermission
+                    this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
+                      if (result) {
+                        if (result.code === AppConstant.successCode) {
+                          localStorage.removeItem(AppConstant.objectUser);
+                          this.showToast(AppConstant.toastrTypeSuccess,
+                            AppConstant.successTitle,
+                            AppConstant.messupdateSuccess);
+                          this.router.navigate(['/pages/account/list', this.type]);
+                        }
+                        else {
+                          this.showToast(AppConstant.toastrTypeError,
+                            AppConstant.failTitle,
+                            AppConstant.messUpdateFail);
+                        }
+                      }
+                    }),
+                      error => {
+                        this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
+                      };
+
                   }
                   else {
                     this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messUpdateFail);
@@ -338,23 +407,6 @@ export class ConfirmComponent implements OnInit {
           this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
-
-    // update userPermission
-    this.accountService.updateUserPermission(this.userPermission).subscribe(result => {
-      if (result) {
-        if (result.code === AppConstant.successCode) {
-          localStorage.removeItem(AppConstant.objectUser);
-          this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
-          this.router.navigate(['/pages/account/list', this.type]);
-        }
-        else {
-          this.showModal(AppConstant.failTitle, AppConstant.messUpdateFail);
-        }
-      }
-    }),
-      error => {
-        this.showModal(AppConstant.errorTitle, error.message);
-      };
   }
 
   ngOnInit() {

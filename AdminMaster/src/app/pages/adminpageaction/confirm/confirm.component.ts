@@ -5,8 +5,9 @@ import { AdminpageactionService } from '../../../@core/data/adminpageaction.serv
 import { AdminpageService } from '../../../@core/data/adminpage.service';
 import { AccountService } from '../../../@core/data/account.service';
 import { AppConstant } from '../../../config/appconstant';
-import { ModalComponent } from '../../ui-features/modals/modal/modal.component';
 import { ConfirmModalComponent } from '../../ui-features/modals/confirm/confirm.component';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 declare var $: any;
 
 @Component({
@@ -31,6 +32,8 @@ export class ConfirmComponent implements OnInit {
     type: AppConstant.stringEmpty
   };
 
+  config: ToasterConfig;
+
   public isCreate: boolean = AppConstant.trueDefault;
   private id: number = AppConstant.numberZero;
   private pageId: number = AppConstant.pageIndexDefault;
@@ -44,7 +47,8 @@ export class ConfirmComponent implements OnInit {
     private adminPageActionService: AdminpageactionService,
     private adminPageService: AdminpageService,
     private accountService: AccountService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toasterService: ToasterService) {
 
     // set breadcrumd
     $(document).ready(() => {
@@ -108,14 +112,13 @@ export class ConfirmComponent implements OnInit {
     }
 
     if (this.isCreate) {
-      // call api create adminpage
+      // call api create adminpage action
       this.adminPageActionService.createAdminPageAction(createAdminPageActionObj).subscribe(result => {
         if (result) {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectAdminPageAction);
             localStorage.removeItem(AppConstant.isInProcess);
-            this.showModal(AppConstant.successTitle, AppConstant.messcreateSuccess);
-
+            this.showToast(AppConstant.toastrTypeSuccess, AppConstant.errorTitle, AppConstant.messcreateSuccess);
             // navigate
             let node: number = AppConstant.numberZero;
             if (this.pageId !== null && this.pageId > AppConstant.numberZero && this.pageId !== undefined) {
@@ -127,23 +130,23 @@ export class ConfirmComponent implements OnInit {
                     }
                   }),
                     error => {
-                      this.showModal(AppConstant.errorTitle, error.message);
+                      this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                     };
                 }
               }),
                 error => {
-                  this.showModal(AppConstant.errorTitle, error.message);
+                  this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                 };
             }
             this.router.navigate(['/pages/adminpage/detail', this.type, node, this.pageId]);
           }
           else {
-            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
           }
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
     else {
@@ -153,7 +156,7 @@ export class ConfirmComponent implements OnInit {
           if (result.code === AppConstant.successCode) {
             localStorage.removeItem(AppConstant.objectAdminPageAction);
             localStorage.removeItem(AppConstant.isInProcess);
-            this.showModal(AppConstant.successTitle, AppConstant.messupdateSuccess);
+            this.showToast(AppConstant.toastrTypeSuccess, AppConstant.errorTitle, AppConstant.messupdateSuccess);
             // navigate
             let node: number = AppConstant.numberZero;
             if (this.pageId !== null && this.pageId > AppConstant.numberZero && this.pageId !== undefined) {
@@ -165,23 +168,23 @@ export class ConfirmComponent implements OnInit {
                     }
                   }),
                     error => {
-                      this.showModal(AppConstant.errorTitle, error.message);
+                      this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                     };
                 }
               }),
                 error => {
-                  this.showModal(AppConstant.errorTitle, error.message);
+                  this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
                 };
             }
             this.router.navigate(['/pages/adminpage/detail', this.type, node, this.pageId]);
           }
           else {
-            this.showModal(AppConstant.failTitle, AppConstant.messCreateFail);
+            this.showToast(AppConstant.toastrTypeError, AppConstant.failTitle, AppConstant.messCreateFail);
           }
         }
       }),
         error => {
-          this.showModal(AppConstant.errorTitle, error.message);
+          this.showToast(AppConstant.toastrTypeError, AppConstant.errorTitle, error.message);
         };
     }
   }
@@ -198,10 +201,24 @@ export class ConfirmComponent implements OnInit {
     }
   }
 
-  showModal(title: string, mess: string) {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = mess;
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: AppConstant.toastrPositions,
+      timeout: AppConstant.toastrTimeout,
+      newestOnTop: AppConstant.toastrIsNewestOnTop,
+      tapToDismiss: AppConstant.toastrIsHideOnClick,
+      preventDuplicates: AppConstant.toastrIsDuplicatesPrevented,
+      animation: AppConstant.toastrAnimationType,
+      limit: AppConstant.toastrLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: AppConstant.toastrTimeout,
+      showCloseButton: AppConstant.toastrIsCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }
