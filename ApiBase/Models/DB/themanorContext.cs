@@ -34,6 +34,7 @@ namespace ApiBase.Models.DB
         public virtual DbSet<Pages> Pages { get; set; }
         public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Post> Post { get; set; }
+        public virtual DbSet<PostDetail> PostDetail { get; set; }
         public virtual DbSet<PostTag> PostTag { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductProperty> ProductProperty { get; set; }
@@ -474,7 +475,20 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.PostId).HasColumnName("PostID");
 
-                entity.Property(e => e.CatelogId).HasColumnName("CatelogID");
+                entity.Property(e => e.CatalogId).HasColumnName("CatalogID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DateModified).HasColumnType("datetime");
+
+                entity.Property(e => e.ImagePath).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<PostDetail>(entity =>
+            {
+                entity.ToTable("_PostDetail");
+
+                entity.Property(e => e.PostDetailId).HasColumnName("PostDetailID");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -482,13 +496,13 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.Description).HasMaxLength(500);
 
-                entity.Property(e => e.ImagePath).HasMaxLength(200);
-
                 entity.Property(e => e.Keyword).HasMaxLength(500);
 
                 entity.Property(e => e.Lang).HasMaxLength(10);
 
                 entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.PostId).HasColumnName("PostID");
 
                 entity.Property(e => e.PostName).HasMaxLength(200);
 

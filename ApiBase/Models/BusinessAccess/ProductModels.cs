@@ -1,5 +1,6 @@
 ﻿namespace ApiBase.Models.BusinessAccess
 {
+    using ApiBase.Model.AdminViewModels;
     using ApiBase.Models.DB;
     using Microsoft.EntityFrameworkCore;
     using System;
@@ -479,12 +480,12 @@
                     List<Product> list_pro = new List<Product>();
                     if (parent > 0)
                     {
-                        List<Catalog> lstCate = new List<Catalog>();
+                        List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
 
                         //// Lấy ds các danh mục con
                         lstCate = (new CatalogModels()).GetbyParentID(parent, CommonGlobal.CateProduct, lang);
 
-                        foreach (Catalog catalogItem in lstCate)
+                        foreach (AdminListCatalog catalogItem in lstCate)
                         {
                             //// Lấy sản phẩm của danh mục con
                             list_pro.AddRange(GetAllProducts().Where(sp => sp.CatalogId.Split(',').Contains(catalogItem.CatalogId.ToString())).ToList<Product>());
@@ -647,12 +648,12 @@
                     List<Product> list_pro = new List<Product>();
                     if (parent > 0)
                     {
-                        List<Catalog> lstCate = new List<Catalog>();
+                        List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
 
                         //// Lấy ds các danh mục con
                         lstCate = (new CatalogModels()).GetbyParentID(parent, CommonGlobal.CateProduct, lang);
 
-                        foreach (Catalog catalogItem in lstCate)
+                        foreach (AdminListCatalog catalogItem in lstCate)
                         {
                             //// Lấy sản phẩm của danh mục con
                             list_pro.AddRange(GetAllProducts().Where(sp => sp.CatalogId.Split(',').Contains(catalogItem.CatalogId.ToString())).ToList<Product>());
@@ -1026,7 +1027,7 @@
             {
                 try
                 {
-                    List<Catalog> lstCate = new List<Catalog>();
+                    List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
                     List<Product> lstProduct = new List<Product>();
 
                     if (cate_id == 0)
@@ -1038,7 +1039,7 @@
                         //// Lấy ds các danh mục con
                         lstCate = (new CatalogModels()).GetbyParentID(cate_id, CommonGlobal.CateProduct, lang);
                         //int NoSearch = 0;
-                        foreach (Catalog catalogItem in lstCate)
+                        foreach (var catalogItem in lstCate)
                         {
                             //NoSearch = 0;
                             //// Lấy sản phẩm của danh mục con
