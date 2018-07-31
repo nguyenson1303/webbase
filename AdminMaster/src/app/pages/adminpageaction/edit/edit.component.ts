@@ -62,7 +62,7 @@ export class EditComponent implements OnInit {
 
     // check reload from browser or move from process
     let isInProcess = localStorage.getItem(AppConstant.isInProcess)
-    if (isInProcess != null && isInProcess != undefined) {
+    if (isInProcess !== null && isInProcess !== undefined) {
       localStorage.removeItem(AppConstant.isInProcess);
     }
     else {
