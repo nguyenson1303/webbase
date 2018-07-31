@@ -192,7 +192,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).AsQueryable<CatalogFull>();
                     }
                     else
@@ -219,7 +220,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).AsQueryable<CatalogFull>();
                     }
 
@@ -330,7 +332,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).FirstOrDefault();
                     return c_gen;
                 }
@@ -374,7 +377,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).FirstOrDefault();
                     return c_gen;
                 }
@@ -423,7 +427,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).ToList();
                     }
                     else
@@ -450,7 +455,8 @@
                                      ParentId = a.ParentId,
                                      Show = a.Show,
                                      Title = b.Title,
-                                     Type = a.Type
+                                     Type = a.Type,
+                                     CatalogDetailId = b.CatalogDetailId
                                  }).ToList();
                     }
 
@@ -556,7 +562,8 @@
                             ParentId = it.ParentId,
                             Show = it.Show,
                             Title = it.Title,
-                            Type = it.Type
+                            Type = it.Type,
+                            CatalogDetailId = it.CatalogDetailId
                         };
                         list_catalog.Add(c_gen);
                     }
@@ -683,7 +690,8 @@
                          ParentId = a.ParentId,
                          Show = a.Show,
                          Title = b.Title,
-                         Type = a.Type
+                         Type = a.Type,
+                         CatalogDetailId = b.CatalogDetailId
                      }).OrderBy(p => p.OrderDisplay).ToList();
 
                     return c_gen;

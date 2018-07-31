@@ -1,5 +1,6 @@
 ﻿namespace ApiBase.Models.BusinessAccess
 {
+    using ApiBase.Model.AdminViewModels;
     using ApiBase.Models.DB;
     using System;
     using System.Collections;
@@ -108,28 +109,35 @@
         /// </summary>
         /// <param name="post">post object.</param>
         /// <returns>identity post Edit</returns>
-        public int Edit(Post post)
+        public int Edit(PostFull post, string lang)
         {
             using (var data = new themanorContext())
             {
                 int rt = 0;
                 try
                 {
-                    var c_gen = data.Post.Where(p => p.PostId == post.PostId).FirstOrDefault();
-                    c_gen.Title = post.Title;
-                    c_gen.Summary = post.Summary;
-                    c_gen.PostName = post.PostName;
-                    c_gen.PostContent = post.PostContent;
-                    c_gen.IsHot = post.IsHot;
-                    c_gen.OrderDisplay = post.OrderDisplay;
-                    c_gen.ImagePath = post.ImagePath;
-                    c_gen.Link = post.Link;
-                    c_gen.Lang = post.Lang;
-                    c_gen.Keyword = post.Keyword;
-                    c_gen.Description = post.Description;
-                    c_gen.DateModified = post.DateModified;
-                    c_gen.CatelogId = post.CatelogId;
-                    c_gen.Approve = post.Approve;
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 where a.PostId == post.PostId && b.Lang == lang
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).FirstOrDefault();
 
                     data.SaveChanges();
                     rt = post.PostId;
@@ -148,18 +156,39 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>get by ID</returns>
-        public Post GetbyID(int id)
+        public PostFull GetbyID(int id, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.Post.Where(p => p.PostId == id).FirstOrDefault();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 where a.PostId == id && b.Lang == lang
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception)
                 {
-                    return new Post();
+                    return new PostFull();
                 }
             }
         }
@@ -179,14 +208,14 @@
         /// <param name="order_type">Type of the order.</param>
         /// <param name="total">The total.</param>
         /// <returns>Get List Post All</returns>
-        public List<Post> GetListPostAll(string lang, string cate_type, int? cate_id, string search, string tag, string param, int page_index, int page_size, string order_by, string order_type, out int total)
+        public List<PostFull> GetListPostAll(string lang, string cate_type, int? cate_id, string search, string tag, string param, int page_index, int page_size, string order_by, string order_type, out int total)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     //// First, check the cache
-                    IQueryable<Post> list = null;
+                    IQueryable<PostFull> list = null;
                     if (list == null)
                     {
                         if (string.IsNullOrEmpty(search))
@@ -197,16 +226,54 @@
                         if (cate_id == null || cate_id == 0)
                         {
                             list = (from p in data.Post
-                                    join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                    where c.Type == cate_type && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.Approve == true && p.PostName.Contains(search) && p.Title.Contains(search) && p.Summary.Contains(search) && p.PostContent.Contains(search)
-                                    select p).OrderBy(p => p.OrderDisplay).AsQueryable<Post>();
+                                    join b in data.PostDetail on p.PostId equals b.PostId
+                                    join c in data.Catalog on p.CatalogId equals c.CatalogId
+                                    where c.Type == cate_type && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.Approve == true && b.PostName.Contains(search) && b.Title.Contains(search) && b.Summary.Contains(search) && b.PostContent.Contains(search)
+                                    select new PostFull
+                                    {
+                                        CatalogId = p.CatalogId,
+                                        PostId = p.PostId,
+                                        PostDetailId = b.PostDetailId,
+                                        Title = b.Title,
+                                        Summary = b.Summary,
+                                        PostName = b.PostName,
+                                        PostContent = b.PostContent,
+                                        IsHot = p.IsHot,
+                                        OrderDisplay = p.OrderDisplay,
+                                        ImagePath = p.ImagePath,
+                                        Link = b.Link,
+                                        Lang = b.Lang,
+                                        Keyword = b.Keyword,
+                                        Description = b.Description,
+                                        DateModified = b.DateModified,
+                                        Approve = p.Approve
+                                    }).OrderBy(p => p.OrderDisplay).AsQueryable<PostFull>();
                         }
                         else
                         {
                             list = (from p in data.Post
-                                    join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                    where c.CatalogId == cate_id && c.Type == cate_type && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.Approve == true && p.PostName.Contains(search) && p.Title.Contains(search) && p.Summary.Contains(search) && p.PostContent.Contains(search)
-                                    select p).OrderBy(p => p.OrderDisplay).AsQueryable<Post>();
+                                    join b in data.PostDetail on p.PostId equals b.PostId
+                                    join c in data.Catalog on p.CatalogId equals c.CatalogId
+                                    where c.CatalogId == cate_id && c.Type == cate_type && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.Approve == true && b.PostName.Contains(search) && b.Title.Contains(search) && b.Summary.Contains(search) && b.PostContent.Contains(search)
+                                    select new PostFull
+                                    {
+                                        CatalogId = p.CatalogId,
+                                        PostId = p.PostId,
+                                        PostDetailId = b.PostDetailId,
+                                        Title = b.Title,
+                                        Summary = b.Summary,
+                                        PostName = b.PostName,
+                                        PostContent = b.PostContent,
+                                        IsHot = p.IsHot,
+                                        OrderDisplay = p.OrderDisplay,
+                                        ImagePath = p.ImagePath,
+                                        Link = b.Link,
+                                        Lang = b.Lang,
+                                        Keyword = b.Keyword,
+                                        Description = b.Description,
+                                        DateModified = b.DateModified,
+                                        Approve = p.Approve
+                                    }).OrderBy(p => p.OrderDisplay).AsQueryable<PostFull>();
                         }
 
                         if (!string.IsNullOrEmpty(tag))
@@ -214,7 +281,7 @@
                             list = (from p in list
                                     join t in data.PostTag on p.PostId equals t.PostId
                                     where t.Link == tag
-                                    select p).AsQueryable<Post>();
+                                    select p).AsQueryable<PostFull>();
                         }
 
                         total = list.Count();
@@ -223,22 +290,22 @@
                         {
                             Type sortByPropType = typeof(Post).GetProperty(order_by).PropertyType;
                             ////calling the extension method using reflection
-                            list = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(Post), sortByPropType })
-                                   .Invoke(list, new object[] { list, order_by, order_type }) as IQueryable<Post>;
+                            list = typeof(MyExtensions).GetMethod("CustomSort").MakeGenericMethod(new Type[] { typeof(PostFull), sortByPropType })
+                                   .Invoke(list, new object[] { list, order_by, order_type }) as IQueryable<PostFull>;
                         }
                         else
                         {
                             ////if  orderBy null set default is OrderDisplay
                             list = list.OrderByDescending(p => p.OrderDisplay);
                         }
-                                               
+
                     }
                     else
                     {
                         total = 0;
                     }
 
-                    return list.Skip((page_index-1) * page_size).Take(page_size).ToList();
+                    return list.Skip((page_index - 1) * page_size).Take(page_size).ToList();
                 }
                 catch (Exception)
                 {
@@ -261,18 +328,18 @@
         /// <param name="order_type">Type of the order.</param>
         /// <param name="total">The total.</param>
         /// <returns>Get List Post All</returns>
-        public List<Post> GetListPostAll(string lang, string cate_type, int? cate_id, string search, int page_index, int page_size, string order_by, string order_type, out int total)
+        public List<PostFull> GetListPostAll(string lang, string cate_type, int? cate_id, string search, int page_index, int page_size, string order_by, string order_type, out int total)
         {
             try
             {
-                List<Post> lstPost = new List<Post>();
+                List<PostFull> lstPost = new List<PostFull>();
                 if (cate_id == null || cate_id == 0)
                 {
                     lstPost = this.ListAll(cate_type, lang).ToList();
                 }
                 else
                 {
-                    lstPost = this.ListAll(cate_type, lang).Where(p => p.CatelogId == cate_id).ToList();
+                    lstPost = this.ListAll(cate_type, lang).Where(p => p.CatalogId == cate_id).ToList();
                 }
 
                 if (!string.IsNullOrEmpty(search))
@@ -282,7 +349,7 @@
 
                 total = lstPost.Count();
 
-                return lstPost.Skip((page_index-1) * page_size).Take(page_size).ToList();
+                return lstPost.Skip((page_index - 1) * page_size).Take(page_size).ToList();
             }
             catch (Exception)
             {
@@ -296,19 +363,19 @@
         /// </summary>
         /// <param name="list">The list.</param>
         /// <returns>Get List Post View</returns>
-        public List<Post> GetListPostView(ArrayList list)
+        public List<PostFull> GetListPostView(ArrayList list, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    List<Post> returnList = new List<Post>();
+                    List<PostFull> returnList = new List<PostFull>();
 
                     foreach (var postId in list)
                     {
                         if (postId != null && postId.ToString() != string.Empty)
                         {
-                            returnList.Add(this.GetbyID(Convert.ToInt32(postId)));
+                            returnList.Add(this.GetbyID(Convert.ToInt32(postId), lang));
                         }
                     }
 
@@ -329,24 +396,62 @@
         /// <param name="lang">The language.</param>
         /// <param name="number">The number.</param>
         /// <returns>Get Others</returns>
-        public List<Post> GetOthers(int id, int cate, string lang, int number)
+        public List<PostFull> GetOthers(int id, int cate, string lang, int number)
         {
             using (var data = new themanorContext())
             {
-                var c_gen = new List<Post>();
+                var c_gen = new List<PostFull>();
                 try
                 {
                     if (cate <= 0)
                     {
-                        c_gen = (from p in data.Post
-                                 where p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.PostId != id
-                                 select p).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<Post>();
+                        c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 where b.Lang.Trim().ToLower() == lang.Trim().ToLower() && a.PostId != id
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<PostFull>();
                     }
                     else
                     {
-                        c_gen = (from p in data.Post
-                                 where p.CatelogId == cate && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.PostId != id
-                                 select p).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<Post>();
+                        c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 where a.CatalogId == cate && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && a.PostId != id
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<PostFull>();
                     }
 
                     return c_gen;
@@ -363,18 +468,39 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>get Post by ID Not Approve</returns>
-        public Post GetPostByIDNotApprove(int id)
+        public PostFull GetPostByIDNotApprove(int id, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.Post.Where(p => p.PostId == id && (p.Approve == false || p.Approve == null)).FirstOrDefault();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 where a.PostId == id && b.Lang == lang && (a.Approve == false || a.Approve == null)
+                    select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception)
                 {
-                    return new Post();
+                    return new PostFull();
                 }
             }
         }
@@ -385,16 +511,35 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>List All</returns>
-        public List<Post> ListAll(string type, string lang)
+        public List<PostFull> ListAll(string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower()
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<Post>();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower()
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<PostFull>();
                     return c_gen;
                 }
                 catch (Exception)
@@ -410,16 +555,35 @@
         /// <param name="id">The identifier.</param>
         /// <param name="lang">The language.</param>
         /// <returns>List By Cate Not Approve</returns>
-        public List<Post> ListByCateNotApprove(int id, string lang)
+        public List<PostFull> ListByCateNotApprove(int id, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.CatalogId == id && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && (p.Approve == false || p.Approve == null)
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<Post>();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.CatalogId == id && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && (a.Approve == false || a.Approve == null)
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<PostFull>();
                     return c_gen;
                 }
                 catch (Exception)
@@ -435,16 +599,35 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>Top 10 Type</returns>
-        public List<Post> Top10Type(string type, string lang)
+        public List<PostFull> Top10Type(string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower()
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(10).ToList<Post>();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower()
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(10).ToList<PostFull>();
                     return c_gen;
                 }
                 catch (Exception)
@@ -460,16 +643,35 @@
         /// <param name="id">The identifier.</param>
         /// <param name="lang">The language.</param>
         /// <returns>Top By Cate</returns>
-        public List<Post> TopByCate(int id, string lang)
+        public List<PostFull> TopByCate(int id, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.CatalogId == id && p.Lang.Trim().ToLower() == lang.Trim().ToLower()
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(10).ToList<Post>();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.CatalogId == id && b.Lang.Trim().ToLower() == lang.Trim().ToLower()
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(10).ToList<PostFull>();
                     return c_gen;
                 }
                 catch (Exception)
@@ -485,16 +687,35 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>Top By Type</returns>
-        public List<Post> TopByType(string type, string lang)
+        public List<PostFull> TopByType(string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower()
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<Post>();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower()
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).ToList<PostFull>();
                     return c_gen;
                 }
                 catch (Exception)
@@ -511,22 +732,41 @@
         /// <param name="lang">The language.</param>
         /// <param name="number">The number.</param>
         /// <returns>Top Post Hot</returns>
-        public List<Post> TopPostHot(string type, string lang, int number)
+        public List<PostFull> TopPostHot(string type, string lang, int number)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     //// First, check the cache
-                    List<Post> c_gen = new List<Post>();
+                    List<PostFull> c_gen = new List<PostFull>();
 
                     if (c_gen == null)
                     {
-                        c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.IsHot == true && p.Approve == true
-                                 select p).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<Post>();
-                        
+                        c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && a.IsHot == true && a.Approve == true
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<PostFull>();
+
                     }
 
                     return c_gen;
@@ -546,30 +786,68 @@
         /// <param name="lang">The language.</param>
         /// <param name="number">The number.</param>
         /// <returns>Top Post Hot</returns>
-        public List<Post> TopPostHot(string type, int? cate_id, string lang, int number)
+        public List<PostFull> TopPostHot(string type, int? cate_id, string lang, int number)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     //// First, check the cache
-                    List<Post> c_gen = null; ////Cache.Get(CommonGlobal.POST + type + lang + number) as List<Post>;
+                    List<PostFull> c_gen = null; ////Cache.Get(CommonGlobal.POST + type + lang + number) as List<Post>;
 
                     if (c_gen == null)
                     {
                         if (cate_id != null)
                         {
-                            c_gen = (from p in data.Post
-                                     join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                     where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.IsHot == true && p.Approve == true && c.CatalogId == cate_id
-                                     select p).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<Post>();
+                            c_gen = (from a in data.Post
+                                     join b in data.PostDetail on a.PostId equals b.PostId
+                                     join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                     where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && a.IsHot == true && a.Approve == true && c.CatalogId == cate_id
+                                     select new PostFull
+                                     {
+                                         CatalogId = a.CatalogId,
+                                         PostId = a.PostId,
+                                         PostDetailId = b.PostDetailId,
+                                         Title = b.Title,
+                                         Summary = b.Summary,
+                                         PostName = b.PostName,
+                                         PostContent = b.PostContent,
+                                         IsHot = a.IsHot,
+                                         OrderDisplay = a.OrderDisplay,
+                                         ImagePath = a.ImagePath,
+                                         Link = b.Link,
+                                         Lang = b.Lang,
+                                         Keyword = b.Keyword,
+                                         Description = b.Description,
+                                         DateModified = b.DateModified,
+                                         Approve = a.Approve
+                                     }).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<PostFull>();
                         }
                         else
                         {
-                            c_gen = (from p in data.Post
-                                     join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                     where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower() && p.IsHot == true && p.Approve == true
-                                     select p).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<Post>();
+                            c_gen = (from a in data.Post
+                                     join b in data.PostDetail on a.PostId equals b.PostId
+                                     join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                     where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower() && a.IsHot == true && a.Approve == true
+                                     select new PostFull
+                                     {
+                                         CatalogId = a.CatalogId,
+                                         PostId = a.PostId,
+                                         PostDetailId = b.PostDetailId,
+                                         Title = b.Title,
+                                         Summary = b.Summary,
+                                         PostName = b.PostName,
+                                         PostContent = b.PostContent,
+                                         IsHot = a.IsHot,
+                                         OrderDisplay = a.OrderDisplay,
+                                         ImagePath = a.ImagePath,
+                                         Link = b.Link,
+                                         Lang = b.Lang,
+                                         Keyword = b.Keyword,
+                                         Description = b.Description,
+                                         DateModified = b.DateModified,
+                                         Approve = a.Approve
+                                     }).OrderByDescending(p => p.DateModified).OrderByDescending(p => p.IsHot).OrderBy(p => p.OrderDisplay).Take(number).ToList<PostFull>();
                         }
                     }
 
@@ -588,16 +866,35 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>Top Type</returns>
-        public Post TopType(string type, string lang)
+        public PostFull TopType(string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = (from p in data.Post
-                                 join c in data.Catalog on p.CatelogId equals c.CatalogId
-                                 where c.Type == type && p.Lang.Trim().ToLower() == lang.Trim().ToLower()
-                                 select p).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(1).FirstOrDefault();
+                    var c_gen = (from a in data.Post
+                                 join b in data.PostDetail on a.PostId equals b.PostId
+                                 join c in data.Catalog on a.CatalogId equals c.CatalogId
+                                 where c.Type == type && b.Lang.Trim().ToLower() == lang.Trim().ToLower()
+                                 select new PostFull
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     PostId = a.PostId,
+                                     PostDetailId = b.PostDetailId,
+                                     Title = b.Title,
+                                     Summary = b.Summary,
+                                     PostName = b.PostName,
+                                     PostContent = b.PostContent,
+                                     IsHot = a.IsHot,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ImagePath = a.ImagePath,
+                                     Link = b.Link,
+                                     Lang = b.Lang,
+                                     Keyword = b.Keyword,
+                                     Description = b.Description,
+                                     DateModified = b.DateModified,
+                                     Approve = a.Approve
+                                 }).OrderByDescending(p => p.DateModified).OrderBy(p => p.OrderDisplay).Take(1).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception)
