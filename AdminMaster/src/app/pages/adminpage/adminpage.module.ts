@@ -12,6 +12,7 @@ import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ToasterModule } from 'angular2-toaster';
 import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ToasterService } from 'angular2-toaster';
     AdminpageRoutingModule,
     Ng2SmartTableModule,
     TableModule,
+    ToasterModule.forRoot(),
   ],
   declarations: [
     AdminpageComponent,

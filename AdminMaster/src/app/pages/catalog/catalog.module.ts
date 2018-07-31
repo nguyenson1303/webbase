@@ -11,6 +11,7 @@ import { DetailComponent } from './detail/detail.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { CatalogService } from '../../@core/data/catalog.service';
+import { ToasterModule } from 'angular2-toaster';
 import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ToasterService } from 'angular2-toaster';
     CommonModule,
     CatalogRoutingModule,
     ThemeModule,
-    TableModule
+    TableModule,
+    ToasterModule.forRoot(),
   ],
   declarations: [
     CatalogComponent,

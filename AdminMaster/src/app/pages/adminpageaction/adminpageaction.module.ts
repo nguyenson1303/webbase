@@ -9,6 +9,7 @@ import { AdminpageactionRoutingModule } from './adminpageaction-routing.module';
 import { AdminpageactionComponent } from './adminpageaction.component';
 import { EditComponent } from './edit/edit.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ToasterModule } from 'angular2-toaster';
 import { ToasterService } from 'angular2-toaster';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ToasterService } from 'angular2-toaster';
     AdminpageactionRoutingModule,
     Ng2SmartTableModule,
     TableModule,
+    ToasterModule.forRoot(),
   ],
   declarations: [
     AdminpageactionComponent,

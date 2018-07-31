@@ -316,20 +316,20 @@ export class EditComponent implements OnInit {
   }
 
   isAllCheck(item: any) {
-    let count = 0;
-    let countCheck = 0;
+    let count = AppConstant.numberZero;
+    let countCheck = AppConstant.numberZero;
     let lstPer: any = this.userPermission;
 
-    if (item.parentId != 0) {
+    if (item.parentId != AppConstant.numberZero) {
       item.listUserPageAction.forEach((item2, index2) => {
-        if (item2.active == true) {
+        if (item2.active == AppConstant.trueDefault) {
           countCheck++;
         }
         count++;
       });
 
       if (count != countCheck) {
-        this.isCheckAll = false;
+        this.isCheckAll = AppConstant.falseDefault;
       }
     }
 
@@ -408,7 +408,7 @@ export class EditComponent implements OnInit {
           let fieldValidate = document.getElementById(result.field + "-validate");
           var validateField = document.querySelectorAll(".validateServer");
           var i;
-          for (i = 0; i < validateField.length; i++) {
+          for (i = AppConstant.numberZero; i < validateField.length; i++) {
             validateField[i].textContent = AppConstant.stringEmpty;
           }
           if (field) {
