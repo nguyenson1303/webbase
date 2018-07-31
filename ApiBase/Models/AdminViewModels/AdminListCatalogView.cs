@@ -64,7 +64,7 @@ namespace ApiBase.Models.AdminViewModels
         /// <value>
         /// The page list catalog.
         /// </value>
-        public List<AdminListCatalog> PageListCatalog
+        public List<CatalogFull> PageListCatalog
         {
             get;
             set;

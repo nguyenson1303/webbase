@@ -6,9 +6,10 @@ namespace ApiBase.Model.AdminViewModels
     /// <summary>
     /// admin menu view
     /// </summary>
-    public class AdminListCatalog
+    public class CatalogFull
     {
         public int CatalogId { get; set; }
+        public int CatalogDetailId { get; set; }
         public int? ParentId { get; set; }
         public string CategoryName { get; set; }
         public string Link { get; set; }

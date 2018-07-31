@@ -480,12 +480,12 @@
                     List<Product> list_pro = new List<Product>();
                     if (parent > 0)
                     {
-                        List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
+                        List<CatalogFull> lstCate = new List<CatalogFull>();
 
                         //// Lấy ds các danh mục con
                         lstCate = (new CatalogModels()).GetbyParentID(parent, CommonGlobal.CateProduct, lang);
 
-                        foreach (AdminListCatalog catalogItem in lstCate)
+                        foreach (CatalogFull catalogItem in lstCate)
                         {
                             //// Lấy sản phẩm của danh mục con
                             list_pro.AddRange(GetAllProducts().Where(sp => sp.CatalogId.Split(',').Contains(catalogItem.CatalogId.ToString())).ToList<Product>());
@@ -648,12 +648,12 @@
                     List<Product> list_pro = new List<Product>();
                     if (parent > 0)
                     {
-                        List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
+                        List<CatalogFull> lstCate = new List<CatalogFull>();
 
                         //// Lấy ds các danh mục con
                         lstCate = (new CatalogModels()).GetbyParentID(parent, CommonGlobal.CateProduct, lang);
 
-                        foreach (AdminListCatalog catalogItem in lstCate)
+                        foreach (CatalogFull catalogItem in lstCate)
                         {
                             //// Lấy sản phẩm của danh mục con
                             list_pro.AddRange(GetAllProducts().Where(sp => sp.CatalogId.Split(',').Contains(catalogItem.CatalogId.ToString())).ToList<Product>());
@@ -1027,7 +1027,7 @@
             {
                 try
                 {
-                    List<AdminListCatalog> lstCate = new List<AdminListCatalog>();
+                    List<CatalogFull> lstCate = new List<CatalogFull>();
                     List<Product> lstProduct = new List<Product>();
 
                     if (cate_id == 0)
