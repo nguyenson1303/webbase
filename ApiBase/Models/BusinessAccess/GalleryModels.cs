@@ -65,14 +65,16 @@
                     {
                         c_gen = (from p in data.ImageAlbums
                                  join c in data.Catalog on p.CatalogId equals c.CatalogId
-                                 where c.Type == type && c.CatalogId == parent && c.Lang.Trim().ToLower() == lang
+                                 join d in data.CatalogDetail on c.CatalogId equals d.CatalogId
+                                 where c.Type == type && c.CatalogId == parent && d.Lang.Trim().ToLower() == lang
                                  select p).OrderByDescending(p => p.Id).AsQueryable<ImageAlbums>();
                     }
                     else
                     {
                         c_gen = (from p in data.ImageAlbums
                                  join c in data.Catalog on p.CatalogId equals c.CatalogId
-                                 where c.Type == type && c.Lang.Trim().ToLower() == lang
+                                 join d in data.CatalogDetail on c.CatalogId equals d.CatalogId
+                                 where c.Type == type && d.Lang.Trim().ToLower() == lang
                                  select p).OrderByDescending(p => p.Id).AsQueryable<ImageAlbums>();
                     }
 
