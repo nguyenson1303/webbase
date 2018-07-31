@@ -85,7 +85,7 @@
         /// </summary>
         /// <param name="catalogObject">catalog Object.</param>
         /// <returns>the Edit</returns>
-        public int Edit(Catalog catalogObject)
+        public int Edit(Catalog catalogObject, CatalogDetail catalogDetail)
         {
             using (var data = new themanorContext())
             {
@@ -93,19 +93,20 @@
                 try
                 {
                     var c_gen = data.Catalog.Where(p => p.CatalogId == catalogObject.CatalogId).FirstOrDefault();
+                    var c_genDetail = data.CatalogDetail.Where(x => x.CatalogId == catalogObject.CatalogId && x.Lang == catalogDetail.Lang).FirstOrDefault();
                     c_gen.ParentId = catalogObject.ParentId;
-                    c_gen.CategoryName = catalogObject.CategoryName;
+                    c_genDetail.CategoryName = catalogDetail.CategoryName;
                     c_gen.ImagePath = catalogObject.ImagePath;
-                    c_gen.Link = catalogObject.Link;
-                    c_gen.Intro = catalogObject.Intro;
-                    c_gen.MoreInfo = catalogObject.MoreInfo;
-                    c_gen.Keyword = catalogObject.Keyword;
-                    c_gen.Description = catalogObject.Description;
-                    c_gen.Title = catalogObject.Title;
+                    c_genDetail.Link = catalogDetail.Link;
+                    c_genDetail.Intro = catalogDetail.Intro;
+                    c_genDetail.MoreInfo = catalogDetail.MoreInfo;
+                    c_genDetail.Keyword = catalogDetail.Keyword;
+                    c_genDetail.Description = catalogDetail.Description;
+                    c_genDetail.Title = catalogDetail.Title;
                     c_gen.Type = catalogObject.Type;
                     c_gen.OrderDisplay = catalogObject.OrderDisplay;
                     c_gen.Show = catalogObject.Show;
-                    c_gen.Lang = catalogObject.Lang;
+                    c_genDetail.Lang = catalogDetail.Lang;
                     c_gen.ModifyDate = catalogObject.ModifyDate;
                     data.SaveChanges();
                     rt = catalogObject.CatalogId;
@@ -132,25 +133,25 @@
         /// <param name="orderType">Type of the order.</param>
         /// <param name="total">The total.</param>
         /// <returns>get All Catalog By ParentID</returns>
-        public List<Catalog> GetAllCatalogByParentID(int parent, string type, string lang, string search, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
+        public List<AdminListCatalog> GetAllCatalogByParentID(int parent, string type, string lang, string search, int pageIndex, int pageSize, string orderBy, string orderType, out int total)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     int level = 0;
-                    List<Catalog> listSelectCatalog = new List<Catalog>();
+                    List<AdminListCatalog> listSelectCatalog = new List<AdminListCatalog>();
                     this.ListCatalogParentWidthParentName(0, level, (int)parent, type, lang, ref listSelectCatalog);
 
-                    IQueryable<Catalog> c_gen = listSelectCatalog.AsQueryable<Catalog>();
+                    IQueryable<AdminListCatalog> c_gen = listSelectCatalog.AsQueryable<AdminListCatalog>();
                     if (!string.IsNullOrEmpty(search))
                     {
-                        c_gen = c_gen.Where(p => p.CategoryName.Contains(search) || p.Link.Contains(search)).AsQueryable<Catalog>();
+                        c_gen = c_gen.Where(p => p.CategoryName.Contains(search) || p.Link.Contains(search)).AsQueryable<AdminListCatalog>();
                     }
 
                     total = c_gen.Count();
 
-                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<Catalog>();
+                    return c_gen.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<AdminListCatalog>();
                 }
                 catch (Exception)
                 {
@@ -167,27 +168,69 @@
                 try
                 {
                     int level = 1;
-                    IQueryable<Catalog> c_gen = null;
+                    IQueryable<AdminListCatalog> c_gen = null;
                     if (parentId != -1)
                     {
-                        c_gen = (from p in data.Catalog
-                                 where p.ParentId == (int)parentId 
-                                 select p).AsQueryable<Catalog>();
+                        c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where a.ParentId == (int)parentId && b.Lang == lang
+                                 select new AdminListCatalog {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).AsQueryable<AdminListCatalog>();
                     }
                     else
                     {
-                        c_gen = (from p in data.Catalog
-                                 select p).AsQueryable<Catalog>();
+                        c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where b.Lang == lang
+                                 select new AdminListCatalog
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).AsQueryable<AdminListCatalog>();
                     }
 
                     if (!string.IsNullOrEmpty(type))
                     {
-                        c_gen = c_gen.Where(p => p.Type == type).AsQueryable<Catalog>();
+                        c_gen = c_gen.Where(p => p.Type == type).AsQueryable<AdminListCatalog>();
                     }
 
                     recursiveCatalogList = new List<AdminListCatalog>();
 
-                    this.RecursiveDataAllPage(c_gen.ToList(), level);
+                    // this.RecursiveDataAllPage(c_gen.ToList(), level);
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -206,51 +249,51 @@
             }
         }
 
-        public void RecursiveDataAllPage(List<Catalog> list, int level)
-        {
-            using (var data = new themanorContext())
-            {
-                if (list != null)
-                {
-                    foreach (var item in list)
-                    {
-                        AdminListCatalog alug = new AdminListCatalog
-                        {
-                            CatalogId = item.CatalogId,
-                            ParentId = item.ParentId,
-                            CategoryName = item.CategoryName,
-                            Link = item.Link,
-                            ImagePath = item.ImagePath,
-                            Intro = item.Intro,
-                            MoreInfo = item.MoreInfo,
-                            Lang = item.Lang,
-                            Show = item.Show,
-                            Keyword = item.Keyword,
-                            Description = item.Description,
-                            Title = item.Title,
-                            Type = item.Type,
-                            OrderDisplay = item.OrderDisplay,
-                            CreateDate = item.CreateDate,
-                            ModifyDate = item.ModifyDate,
-                            Level = level,
-                            ClassLevel = "level" + level
-                        };
+        //public void RecursiveDataAllPage(List<Catalog> list, int level)
+        //{
+        //    using (var data = new themanorContext())
+        //    {
+        //        if (list != null)
+        //        {
+        //            foreach (var item in list)
+        //            {
+        //                AdminListCatalog alug = new AdminListCatalog
+        //                {
+        //                    CatalogId = item.CatalogId,
+        //                    ParentId = item.ParentId,
+        //                    CategoryName = item.CategoryName,
+        //                    Link = item.Link,
+        //                    ImagePath = item.ImagePath,
+        //                    Intro = item.Intro,
+        //                    MoreInfo = item.MoreInfo,
+        //                    Lang = item.Lang,
+        //                    Show = item.Show,
+        //                    Keyword = item.Keyword,
+        //                    Description = item.Description,
+        //                    Title = item.Title,
+        //                    Type = item.Type,
+        //                    OrderDisplay = item.OrderDisplay,
+        //                    CreateDate = item.CreateDate,
+        //                    ModifyDate = item.ModifyDate,
+        //                    Level = level,
+        //                    ClassLevel = "level" + level
+        //                };
 
-                        recursiveCatalogList.Add(alug);
+        //                recursiveCatalogList.Add(alug);
 
-                        var listChild = (from p in data.Catalog
-                                         where p.ParentId == alug.CatalogId
-                                         select p).ToList<Catalog>();
+        //                var listChild = (from p in data.Catalog
+        //                                 where p.ParentId == alug.CatalogId
+        //                                 select p).ToList<Catalog>();
 
-                        if (listChild.Count > 0)
-                        {
-                            RecursiveDataAllPage(listChild, (level + 1));
-                        }
-                    }
-                }
+        //                if (listChild.Count > 0)
+        //                {
+        //                    RecursiveDataAllPage(listChild, (level + 1));
+        //                }
+        //            }
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         private List<AdminListCatalog> recursiveCatalogList = new List<AdminListCatalog>();
 
@@ -259,13 +302,36 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>get by ID</returns>
-        public Catalog GetbyID(int id)
+        public AdminListCatalog GetbyID(int id, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.Catalog.Where(p => p.CatalogId == id).FirstOrDefault();
+                    var c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where a.CatalogId == id && b.Lang == lang
+                                 select new AdminListCatalog
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception)
@@ -280,13 +346,36 @@
         /// </summary>
         /// <param name="link">The link.</param>
         /// <returns>get by Link</returns>
-        public Catalog GetbyLink(string link)
+        public AdminListCatalog GetbyLink(string link)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.Catalog.Where(p => p.Link == link).FirstOrDefault();
+                    var c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where b.Link == link
+                                 select new AdminListCatalog
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).FirstOrDefault();
                     return c_gen;
                 }
                 catch (Exception)
@@ -303,20 +392,66 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>get by ParentID</returns>
-        public List<Catalog> GetbyParentID(int id, string type, string lang)
+        public List<AdminListCatalog> GetbyParentID(int id, string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    List<Catalog> c_gen = new List<Catalog>();
+                    List<AdminListCatalog> c_gen = new List<AdminListCatalog>();
                     if (!string.IsNullOrEmpty(type))
                     {
-                        c_gen = data.Catalog.Where(p => p.ParentId == id && p.Type == type && p.Lang.Trim() == lang).ToList();
+                        c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where a.ParentId == id && a.Type == type && b.Lang == lang
+                                 select new AdminListCatalog
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).ToList();
                     }
                     else
                     {
-                        c_gen = data.Catalog.Where(p => p.ParentId == id && (p.Type == CommonGlobal.CateProduct || p.Type == CommonGlobal.CateCollection) && p.Lang.Trim() == lang).ToList();
+                        c_gen = (from a in data.Catalog
+                                 join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                                 where a.ParentId == id && (a.Type == CommonGlobal.CateProduct || a.Type == CommonGlobal.CateCollection) && b.Lang == lang
+                                 select new AdminListCatalog
+                                 {
+                                     CatalogId = a.CatalogId,
+                                     CategoryName = b.CategoryName,
+                                     ClassLevel = "",
+                                     CreateDate = a.CreateDate,
+                                     Description = b.Description,
+                                     ImagePath = a.ImagePath,
+                                     Intro = b.Intro,
+                                     Keyword = b.Keyword,
+                                     Lang = b.Lang,
+                                     Level = 0,
+                                     Link = b.Link,
+                                     ModifyDate = a.ModifyDate,
+                                     MoreInfo = b.MoreInfo,
+                                     OrderDisplay = a.OrderDisplay,
+                                     ParentId = a.ParentId,
+                                     Show = a.Show,
+                                     Title = b.Title,
+                                     Type = a.Type
+                                 }).ToList();
                     }
 
                     return c_gen;
@@ -336,14 +471,14 @@
         /// <param name="lang">The language.</param>
         /// <param name="number">The number.</param>
         /// <returns>get by ParentID</returns>
-        public List<Catalog> GetbyParentID(int id, string type, string lang, int number)
+        public List<AdminListCatalog> GetbyParentID(int id, string type, string lang, int number)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
                     int level = 0;
-                    List<Catalog> list_select_catalog = new List<Catalog>();
+                    List<AdminListCatalog> list_select_catalog = new List<AdminListCatalog>();
                     this.List_catalog_parent_no_append_name(0, level, id, type, lang, ref list_select_catalog);
 
                     if (number > 0)
@@ -370,7 +505,7 @@
         /// <param name="lang">The language.</param>
         /// <param name="without">The without.</param>
         /// <returns>get by Parent Without Cate</returns>
-        public List<Catalog> GetbyParentWithoutCate(int id, string type, string lang, string without)
+        public List<AdminListCatalog> GetbyParentWithoutCate(int id, string type, string lang, string without)
         {
             using (var data = new themanorContext())
             {
@@ -390,36 +525,39 @@
         /// </summary>
         /// <param name="lang">The language.</param>
         /// <returns>get Catalog For Product Hot</returns>
-        public List<Catalog> GetCatalogForProductHot(string lang)
+        public List<AdminListCatalog> GetCatalogForProductHot(string lang)
         {
             using (var data = new themanorContext())
             {
-                List<Catalog> list_catalog = new List<Catalog>();
+                List<AdminListCatalog> list_catalog = new List<AdminListCatalog>();
                 try
                 {
                     //var list_gen = data.f_Catalog_GetByProductHot(lang).ToList();
 
                     var Lang = new SqlParameter("@Lang", lang);
+                    DbSet<AdminListCatalog> list_record = null;
 
-                    var list_gen = data.Catalog.FromSql("EXECUTE _Catalog_GetByProductHot  @Lang", Lang).ToList();
+                    var list_gen = list_record.FromSql("EXECUTE _Catalog_GetByProductHot  @Lang", Lang).ToList();
 
                     foreach (var it in list_gen)
                     {
-                        Catalog c_gen = new Catalog();
-                        c_gen.CatalogId = it.CatalogId;
-                        c_gen.CategoryName = it.CategoryName;
-                        c_gen.Description = it.Description;
-                        c_gen.ImagePath = it.ImagePath;
-                        c_gen.Intro = it.Intro;
-                        c_gen.Keyword = it.Keyword;
-                        c_gen.Lang = it.Lang;
-                        c_gen.Link = it.Link;
-                        c_gen.MoreInfo = it.MoreInfo;
-                        c_gen.OrderDisplay = it.OrderDisplay;
-                        c_gen.ParentId = it.ParentId;
-                        c_gen.Show = it.Show;
-                        c_gen.Title = it.Title;
-                        c_gen.Type = it.Type;
+                        AdminListCatalog c_gen = new AdminListCatalog
+                        {
+                            CatalogId = it.CatalogId,
+                            CategoryName = it.CategoryName,
+                            Description = it.Description,
+                            ImagePath = it.ImagePath,
+                            Intro = it.Intro,
+                            Keyword = it.Keyword,
+                            Lang = it.Lang,
+                            Link = it.Link,
+                            MoreInfo = it.MoreInfo,
+                            OrderDisplay = it.OrderDisplay,
+                            ParentId = it.ParentId,
+                            Show = it.Show,
+                            Title = it.Title,
+                            Type = it.Type
+                        };
                         list_catalog.Add(c_gen);
                     }
 
@@ -517,13 +655,37 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <returns>get Menu by Parent ID</returns>
-        public List<Catalog> GetMenubyParentID(int id, string type, string lang)
+        public List<AdminListCatalog> GetMenubyParentID(int id, string type, string lang)
         {
             using (var data = new themanorContext())
             {
                 try
                 {
-                    var c_gen = data.Catalog.Where(p => p.ParentId == id && p.Type == type && p.Lang.Trim() == lang && p.Show == true).OrderBy(p => p.OrderDisplay).ToList();
+                    var c_gen = (from a in data.Catalog
+                     join b in data.CatalogDetail on a.CatalogId equals b.CatalogId
+                     where a.ParentId == id && b.Lang == lang && a.Show == true
+                     select new AdminListCatalog
+                     {
+                         CatalogId = a.CatalogId,
+                         CategoryName = b.CategoryName,
+                         ClassLevel = "",
+                         CreateDate = a.CreateDate,
+                         Description = b.Description,
+                         ImagePath = a.ImagePath,
+                         Intro = b.Intro,
+                         Keyword = b.Keyword,
+                         Lang = b.Lang,
+                         Level = 0,
+                         Link = b.Link,
+                         ModifyDate = a.ModifyDate,
+                         MoreInfo = b.MoreInfo,
+                         OrderDisplay = a.OrderDisplay,
+                         ParentId = a.ParentId,
+                         Show = a.Show,
+                         Title = b.Title,
+                         Type = a.Type
+                     }).OrderBy(p => p.OrderDisplay).ToList();
+
                     return c_gen;
                 }
                 catch (Exception)
@@ -545,7 +707,7 @@
         public void List_catalog_parent(int parent, int level, int selected, string type, string lang, ref List<SelectListItem> list_select_catalog)
         {
             ////CatalogModels cateModels = new CatalogModels();
-            List<Catalog> catalog = this.GetbyParentID(parent, type, lang);
+            List<AdminListCatalog> catalog = this.GetbyParentID(parent, type, lang);
             if (parent == 0)
             {
                 list_select_catalog.Add(new SelectListItem { Selected = selected == parent ? true : false, Text = "Không thuộc mục nào", Value = "0" });
@@ -555,7 +717,7 @@
                 level++;
             }
 
-            foreach (Catalog cata in catalog)
+            foreach (AdminListCatalog cata in catalog)
             {
                 if (parent == 0)
                 {
@@ -579,10 +741,10 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <param name="list_select_catalog">The list select catalog.</param>
-        public void List_catalog_parent_no_append_name(int parent, int level, int selected, string type, string lang, ref List<Catalog> list_select_catalog)
+        public void List_catalog_parent_no_append_name(int parent, int level, int selected, string type, string lang, ref List<AdminListCatalog> list_select_catalog)
         {
             ////CatalogModels cateModels = new CatalogModels();
-            List<Catalog> catalog = this.GetbyParentID(parent, type, lang);
+            List<AdminListCatalog> catalog = this.GetbyParentID(parent, type, lang);
             if (parent == 0)
             {
             }
@@ -591,7 +753,7 @@
                 level++;
             }
 
-            foreach (Catalog cata in catalog)
+            foreach (AdminListCatalog cata in catalog)
             {
                 list_select_catalog.Add(cata);
                 this.List_catalog_parent_no_append_name(cata.CatalogId, level, selected, type, lang, ref list_select_catalog);
@@ -607,14 +769,14 @@
         /// <param name="type">The type.</param>
         /// <param name="lang">The language.</param>
         /// <param name="listSelectCatalog">The list select catalog.</param>
-        public void ListCatalogParentWidthParentName(int parent, int level, int selected, string type, string lang, ref List<Catalog> listSelectCatalog)
+        public void ListCatalogParentWidthParentName(int parent, int level, int selected, string type, string lang, ref List<AdminListCatalog> listSelectCatalog)
         {
             ////CatalogModels cateModels = new CatalogModels();
             if (selected != 0)
             {
                 parent = selected;
             }
-            List<Catalog> catalog = this.GetbyParentID(parent, type, lang);
+            List<AdminListCatalog> catalog = this.GetbyParentID(parent, type, lang);
             if (parent == 0)
             {
             }
@@ -623,7 +785,7 @@
                 level++;
             }
 
-            foreach (Catalog cata in catalog)
+            foreach (AdminListCatalog cata in catalog)
             {
                 if (parent == 0)
                 {
@@ -633,7 +795,7 @@
                 else
                 {
                     ////get parent category
-                    var pa = GetbyID((int)cata.ParentId);
+                    var pa = GetbyID((int)cata.ParentId, lang);
                     cata.CategoryName = pa.CategoryName + " > " + cata.CategoryName.ToString();
                     listSelectCatalog.Add(cata);
                     ////list_select_catalog.Add(new SelectListItem { Selected = (selected == cata.CatalogID ? true : false), Text = pa.CategoryName + " > " + cata.CategoryName.ToString(), Value = cata.CatalogID.ToString() });
