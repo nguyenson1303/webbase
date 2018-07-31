@@ -327,6 +327,10 @@ export class DetailComponent implements OnInit {
     this.router.navigate(['/pages/adminpageaction/edit', this.type, this.id, id]);
   }
 
+  editclickAdminPage() {
+    this.router.navigate(['/pages/adminpage/edit', this.type, this.parentId, this.id]);
+  }
+
   // show modal confirm delete
   showDeleteConfirm(id: number, actionName: string) {
     const activeModal = this.modalService.open(ConfirmModalComponent, { size: 'lg', container: 'nb-layout' });

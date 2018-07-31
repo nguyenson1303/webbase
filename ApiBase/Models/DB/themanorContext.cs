@@ -16,6 +16,7 @@ namespace ApiBase.Models.DB
         }
 
         public virtual DbSet<Catalog> Catalog { get; set; }
+        public virtual DbSet<CatalogDetail> CatalogDetail { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Contact> Contact { get; set; }
         public virtual DbSet<DetailOrder> DetailOrder { get; set; }
@@ -69,13 +70,30 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.CatalogId).HasColumnName("CatalogID");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ImagePath).HasMaxLength(200);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ParentId).HasColumnName("ParentID");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<CatalogDetail>(entity =>
+            {
+                entity.ToTable("_CatalogDetail");
+
+                entity.Property(e => e.CatalogDetailId).HasColumnName("CatalogDetailID");
+
+                entity.Property(e => e.CatalogId).HasColumnName("CatalogID");
+
                 entity.Property(e => e.CategoryName).HasMaxLength(100);
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Description).HasMaxLength(500);
-
-                entity.Property(e => e.ImagePath).HasMaxLength(200);
 
                 entity.Property(e => e.Keyword).HasMaxLength(500);
 
@@ -85,11 +103,7 @@ namespace ApiBase.Models.DB
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ParentId).HasColumnName("ParentID");
-
                 entity.Property(e => e.Title).HasMaxLength(500);
-
-                entity.Property(e => e.Type).HasMaxLength(50);
             });
 
             modelBuilder.Entity<City>(entity =>

@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   template: `
     <span class="created-by">
       <img src="../../../../assets/images/logo.png" />
-      <b><a href="#" target="_blank">Gorilla</a></b> 2018
+      <b><a href="#" target="_blank">Chameleon</a></b> 2018
     </span>
     <div class="socials">
       <a href="#" target="_blank" class="ion ion-social-github"></a>
