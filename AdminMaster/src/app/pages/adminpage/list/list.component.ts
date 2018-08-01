@@ -381,6 +381,9 @@ export class ListComponent {
       if (userResponse) {
         this.changeActive(id, newStatus);
       }
+      else {
+        $("#" + id.toString()).prop('checked', value);
+      }
     });
   }
 

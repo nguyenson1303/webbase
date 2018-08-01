@@ -35,7 +35,7 @@
         </td>
         <td>
           <label class="switch">
-            <input type="checkbox" [checked]="row.isShow" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
+            <input type="checkbox" [checked]="row.isShow" id="{{row.id}}" (click)="showChangeActiveConfirm(row.id, row.isShow, row.title)">
             <span></span>
           </label>
         </td>
