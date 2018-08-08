@@ -372,6 +372,10 @@ export class ListComponent {
       if (userResponse === true) {
         this.changeActive(username, role, newStatus);
       }
+      else {
+        console.log(value);
+        $("input[type=checkbox][data-id='" + username + "']").prop('checked', value);
+      }
     });
   }
 
